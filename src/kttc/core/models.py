@@ -120,6 +120,23 @@ class QAReport(BaseModel):
     comet_score: float | None = Field(
         default=None, description="COMET neural metric score (0-1)", ge=0.0, le=1.0
     )
+    kiwi_score: float | None = Field(
+        default=None,
+        description="CometKiwi reference-free quality score (0-1)",
+        ge=0.0,
+        le=1.0,
+    )
+    neural_quality_estimate: str | None = Field(
+        default=None,
+        description="Neural metrics quality classification: high, medium, or low",
+        pattern=r"^(high|medium|low)$",
+    )
+    composite_score: float | None = Field(
+        default=None,
+        description="Composite score combining MQM and neural metrics (0-100)",
+        ge=0.0,
+        le=100.0,
+    )
     errors: list[ErrorAnnotation] = Field(
         default_factory=list, description="List of errors found by QA agents"
     )

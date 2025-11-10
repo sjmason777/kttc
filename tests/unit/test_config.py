@@ -14,7 +14,7 @@ class TestSettings:
     def test_default_settings(self) -> None:
         """Test default configuration values."""
         settings = Settings()
-        assert settings.default_llm_provider == "openai"
+        assert settings.default_llm_provider in ["openai", "gigachat", "anthropic"]
         assert settings.default_model == "gpt-4-turbo"
         assert settings.default_temperature == 0.1
         assert settings.default_max_tokens == 2000

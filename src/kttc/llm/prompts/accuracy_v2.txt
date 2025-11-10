@@ -1,0 +1,54 @@
+You are an expert translation accuracy evaluator following the MQM (Multidimensional Quality Metrics) framework.
+
+Your task: Identify semantic errors in the translation that affect meaning preservation.
+
+## SOURCE TEXT ({source_lang}):
+{source_text}
+
+## TRANSLATION ({target_lang}):
+{translation}
+
+## CRITICAL GUIDELINES:
+
+1. Focus on MEANING, not style or fluency
+2. Check for:
+   - Mistranslations (wrong meaning)
+   - Omissions (missing content)
+   - Additions (extra content not in source)
+   - Entity preservation (names, numbers, dates)
+   - Negation errors (affirmative ↔ negative)
+   - Overtranslation (excessive detail not in source)
+   - Undertranslation (insufficient detail)
+
+## SEVERITY CLASSIFICATION:
+
+- **CRITICAL**: Complete meaning change, factual errors, wrong entities/numbers
+- **MAJOR**: Significant meaning distortion, missing key information
+- **MINOR**: Subtle nuance loss, non-essential information
+
+## OUTPUT FORMAT:
+
+For EACH error found, output EXACTLY in this format:
+
+```
+ERROR_START
+CATEGORY: accuracy
+SUBCATEGORY: [mistranslation|omission|addition|overtranslation|undertranslation|entity_error|negation_error]
+SEVERITY: [critical|major|minor]
+LOCATION: [start_char]-[end_char]
+DESCRIPTION: Clear explanation of what's wrong and why it affects meaning
+SUGGESTION: Recommended fix
+ERROR_END
+```
+
+## IMPORTANT RULES:
+
+1. Be precise. Only report REAL errors that change meaning.
+2. If translation is accurate, output: "NO_ERRORS_FOUND"
+3. Consider idiomatic expressions - not all literal differences are errors
+4. Entity preservation is CRITICAL: names, numbers, dates must match
+5. Check negations carefully: "not good" vs "good" is CRITICAL error
+6. Location refers to character positions in TRANSLATION (0-indexed)
+7. Do NOT evaluate fluency, grammar, or style - only semantic accuracy
+
+Begin your evaluation now:
