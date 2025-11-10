@@ -4,6 +4,8 @@ Handles API keys, model settings, and other configuration using Pydantic Setting
 Supports environment variables and .env files.
 """
 
+from __future__ import annotations
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 

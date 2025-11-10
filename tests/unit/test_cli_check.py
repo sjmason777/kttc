@@ -122,7 +122,7 @@ class TestCheckCommand:
                 "utf-8", b"", 0, 1, "invalid"
             )
 
-            def path_side_effect(arg):
+            def path_side_effect(arg: str) -> Path:
                 if "source" in str(arg):
                     return mock_source_path
                 # Return real Path for other files

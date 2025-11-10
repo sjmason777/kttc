@@ -6,6 +6,8 @@ Supports various GigaChat models with OAuth 2.0 authentication.
 Documentation: https://developers.sber.ru/docs/ru/gigachat/api/
 """
 
+from __future__ import annotations
+
 import base64
 import uuid
 from collections.abc import AsyncGenerator

@@ -9,6 +9,8 @@ References:
     - WMT Metrics Task: https://machinetranslate.org/wmt
 """
 
+from __future__ import annotations
+
 from typing import Any
 
 from kttc.core.models import ErrorAnnotation

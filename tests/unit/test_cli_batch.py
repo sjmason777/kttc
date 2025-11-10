@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
@@ -242,7 +243,7 @@ class TestBatchCommand:
 
         call_count = {"count": 0}
 
-        async def mock_evaluate(*args, **kwargs):
+        async def mock_evaluate(*args: Any, **kwargs: Any) -> QAReport:
             call_count["count"] += 1
             return pass_report if call_count["count"] == 1 else fail_report
 
@@ -485,7 +486,7 @@ class TestBatchCommand:
 
         call_count = {"count": 0}
 
-        async def mock_evaluate(*args, **kwargs):
+        async def mock_evaluate(*args: Any, **kwargs: Any) -> QAReport:
             call_count["count"] += 1
             if call_count["count"] == 1:
                 return mock_report
@@ -738,7 +739,7 @@ class TestReportCommand:
         """Test report command with unsupported format."""
         input_file = tmp_path / "batch_report.json"
 
-        data = {"summary": {}, "files": []}
+        data: dict[str, Any] = {"summary": {}, "files": []}
         input_file.write_text(json.dumps(data), encoding="utf-8")
 
         result = runner.invoke(app, ["report", str(input_file), "--format", "pdf"])

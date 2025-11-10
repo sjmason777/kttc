@@ -4,6 +4,8 @@ KTTC - Knowledge Translation Transmutation Core
 Transforming translations into gold-standard quality.
 """
 
+from __future__ import annotations
+
 import asyncio
 import json
 from pathlib import Path

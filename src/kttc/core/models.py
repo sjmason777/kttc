@@ -6,6 +6,8 @@ This module defines the fundamental data structures used throughout the platform
 - Quality assessment reports
 """
 
+from __future__ import annotations
+
 from enum import Enum
 from typing import Any
 

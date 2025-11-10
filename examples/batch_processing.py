@@ -11,6 +11,7 @@ import asyncio
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 from kttc.agents.orchestrator import AgentOrchestrator
 from kttc.core.models import TranslationTask
@@ -19,7 +20,7 @@ from kttc.llm.openai_provider import OpenAIProvider
 
 async def evaluate_batch(
     tasks: list[TranslationTask], llm_provider: OpenAIProvider, max_parallel: int = 3
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     """Evaluate multiple translation tasks in parallel.
 
     Args:
@@ -35,7 +36,7 @@ async def evaluate_batch(
     # Use semaphore to limit parallelism
     semaphore = asyncio.Semaphore(max_parallel)
 
-    async def evaluate_with_semaphore(task: TranslationTask) -> dict:
+    async def evaluate_with_semaphore(task: TranslationTask) -> dict[str, Any]:
         async with semaphore:
             report = await orchestrator.evaluate(task)
             return {
@@ -66,7 +67,7 @@ async def evaluate_batch(
     return results
 
 
-def print_summary(results: list[dict]) -> None:
+def print_summary(results: list[dict[str, Any]]) -> None:
     """Print summary statistics."""
     passed = sum(1 for r in results if r["status"] == "pass")
     failed = sum(1 for r in results if r["status"] == "fail")
