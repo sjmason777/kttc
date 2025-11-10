@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/kttc-ai/kttc/workflows/CI/badge.svg)](https://github.com/kttc-ai/kttc/actions)
 [![CodeQL](https://github.com/kttc-ai/kttc/workflows/CodeQL/badge.svg)](https://github.com/kttc-ai/kttc/security/code-scanning)
-[![codecov](https://codecov.io/gh/kttc-ai/kttc/branch/main/graph/badge.svg)](https://codecov.io/gh/kttc-ai/kttc)
-[![OpenSSF Best Practices](https://www.bestpractices.coreinfrastructure.org/projects/9865/badge)](https://www.bestpractices.coreinfrastructure.org/projects/9865)
+<!-- [![codecov](https://codecov.io/gh/kttc-ai/kttc/branch/main/graph/badge.svg)](https://codecov.io/gh/kttc-ai/kttc) -->
+<!-- [![OpenSSF Best Practices](https://www.bestpractices.coreinfrastructure.org/projects/9865/badge)](https://www.bestpractices.coreinfrastructure.org/projects/9865) -->
 [![PyPI](https://img.shields.io/pypi/v/kttc)](https://pypi.org/project/kttc/)
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)

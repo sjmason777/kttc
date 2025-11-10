@@ -365,33 +365,33 @@ class TestGigaChatProvider:
         provider = GigaChatProvider(client_id="test-id", client_secret="test-secret")
         provider._access_token = "expired-token"
 
+        # Mock token refresh method
+        async def mock_get_token() -> str:
+            provider._access_token = "new-token"
+            return "new-token"
+
         # First response: 401 (token expired)
         mock_401_response = AsyncMock()
         mock_401_response.status = 401
 
-        # Token refresh response
-        mock_auth_response = AsyncMock()
-        mock_auth_response.status = 200
-        mock_auth_response.json = AsyncMock(return_value={"access_token": "new-token"})
-
-        # Retry response: success
+        # Retry response: success with new token
         mock_success_response = AsyncMock()
         mock_success_response.status = 200
         mock_success_response.json = AsyncMock(
             return_value={"choices": [{"message": {"content": "Hello"}}]}
         )
 
-        with patch("aiohttp.ClientSession.post") as mock_post:
-            # Setup multiple responses
-            mock_post.return_value.__aenter__.side_effect = [
-                mock_401_response,  # First attempt fails
-                mock_auth_response,  # Get new token
-                mock_success_response,  # Retry succeeds
-            ]
+        with patch.object(provider, "_get_access_token", side_effect=mock_get_token):
+            with patch("aiohttp.ClientSession.post") as mock_post:
+                # Setup responses: first fails, retry succeeds
+                mock_post.return_value.__aenter__.side_effect = [
+                    mock_401_response,  # First attempt fails with 401
+                    mock_success_response,  # Retry succeeds after token refresh
+                ]
 
-            result = await provider.complete("Translate: Hello")
-            assert result == "Hello"
-            assert provider._access_token == "new-token"
+                result = await provider.complete("Translate: Hello")
+                assert result == "Hello"
+                assert provider._access_token == "new-token"
 
     async def test_stream_success(self) -> None:
         """Test successful streaming from GigaChat."""
@@ -894,22 +894,23 @@ class TestAdditionalErrorPaths:
         provider = GigaChatProvider(client_id="test-id", client_secret="test-secret")
         provider._access_token = "expired-token"
 
+        # Mock token refresh
+        async def mock_get_token() -> str:
+            provider._access_token = "new-token"
+            return "new-token"
+
         mock_401_response = AsyncMock()
         mock_401_response.status = 401
 
-        mock_auth_response = AsyncMock()
-        mock_auth_response.status = 200
-        mock_auth_response.json = AsyncMock(return_value={"access_token": "new-token"})
-
-        with patch("aiohttp.ClientSession.post") as mock_post:
-            # First complete gets 401, get new token succeeds, retry also gets 401
-            mock_post.return_value.__aenter__.side_effect = [
-                mock_401_response,  # First complete attempt
-                mock_auth_response,  # Get new token
-                mock_401_response,  # Retry also fails with 401
-            ]
-            with pytest.raises(LLMAuthenticationError, match="authentication failed"):
-                await provider.complete("Test")
+        with patch.object(provider, "_get_access_token", side_effect=mock_get_token):
+            with patch("aiohttp.ClientSession.post") as mock_post:
+                # Both attempts fail with 401
+                mock_post.return_value.__aenter__.side_effect = [
+                    mock_401_response,  # First complete attempt -> 401
+                    mock_401_response,  # Retry also fails with 401
+                ]
+                with pytest.raises(LLMAuthenticationError, match="authentication failed"):
+                    await provider.complete("Test")
 
     async def test_gigachat_complete_rate_limit(self) -> None:
         """Test GigaChat complete with rate limit error."""
