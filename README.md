@@ -1,18 +1,22 @@
-# KTTC - Translation Quality Assurance Platform
+# KTTC - Knowledge Translation Transmutation Core
 
-**Autonomous multi-agent platform for translation quality assurance**
+**Transforming translations into gold-standard quality**
 
-> "Strix для переводов" - Automated quality checking with 90% cost reduction
+> Autonomous multi-agent platform with 90% cost reduction and 1000x speed improvement
 
+[![CI](https://github.com/kttc-ai/kttc/workflows/CI/badge.svg)](https://github.com/kttc-ai/kttc/actions)
+[![codecov](https://codecov.io/gh/kttc-ai/kttc/branch/main/graph/badge.svg)](https://codecov.io/gh/kttc-ai/kttc)
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/badge/linter-ruff-red)](https://github.com/astral-sh/ruff)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](https://github.com/kttc-ai/kttc)
 
 ---
 
 ## 🎯 Overview
 
-KTTC is an autonomous translation quality assurance platform inspired by [Strix](https://github.com/usestrix/strix). It uses multi-agent AI systems to automatically detect and validate translation quality issues.
+KTTC (Knowledge Translation Transmutation Core) is an autonomous translation quality assurance platform. It uses multi-agent AI systems to transmute raw translations into gold-standard quality through automated detection and validation of translation issues.
 
 **Key Features:**
 - 🤖 **Multi-agent QA** - 7 specialized agents for different quality aspects
@@ -48,24 +52,35 @@ kttc check \
 # ⚠️  2 minor issues found
 ```
 
-### In GitHub Actions
+### GitHub Actions Integration
+
+Add automated translation quality checks to your CI/CD pipeline:
 
 ```yaml
-- name: Translation QA
-  run: |
-    kttc check-pr --base main --threshold 95
+name: Translation QA
+
+on:
+  pull_request:
+    paths: ['translations/**']
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: your-org/kttc@v1
+        with:
+          source-dir: 'translations/en'
+          translation-dir: 'translations/es'
+          source-lang: 'en'
+          target-lang: 'es'
+          threshold: '95.0'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 ```
 
----
-
-## 📚 Documentation
-
-**Full documentation:** [kttc-ai/docs](https://github.com/kttc-ai/docs) (private)
-
-**Quick links:**
-- [Development Plan](https://github.com/kttc-ai/docs) - 12-week MVP roadmap
-- [Best Practices](https://github.com/kttc-ai/docs) - Modern Python/CLI practices
-- [Architecture](https://github.com/kttc-ai/docs) - Multi-agent design
+See [GitHub Actions Documentation](docs/github-actions.md) for more examples.
 
 ---
 
@@ -131,43 +146,34 @@ kttc/
 
 ---
 
-## 📊 Status
-
-**Phase:** MVP Development (Week 1 of 12)
-
-- [x] Research (18+ arXiv papers)
-- [x] Design (architecture defined)
-- [ ] **MVP Development** ← Current (12 weeks)
-- [ ] Testing (WMT benchmarks)
-- [ ] Production release
-
----
-
 ## 🤝 Contributing
 
-This is currently a private project in active development.
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-For questions or suggestions, contact: dev@kttc.ai
+**Quick Start for Contributors:**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes and add tests
+4. Run `pre-commit run --all-files` and `pytest`
+5. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
+### Reporting Issues
+
+Found a bug or have a feature request? Please check our [issue tracker](https://github.com/kttc-ai/kttc/issues)
+
+### Security
+
+For security vulnerabilities, please see our [Security Policy](SECURITY.md)
 
 ---
 
 ## 📝 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-**Inspired by:**
-- [Strix](https://github.com/usestrix/strix) - Autonomous security testing
-- [MAATS](https://arxiv.org/abs/2505.14848) - Multi-agent translation
-- [Andrew Ng's Translation Agent](https://github.com/andrewyng/translation-agent)
-
-**Built with:**
-- [Typer](https://typer.tiangolo.com/) - CLI framework
-- [Rich](https://rich.readthedocs.io/) - Terminal output
-- [COMET](https://github.com/Unbabel/COMET) - Translation metrics
 
 ---
 

@@ -5,12 +5,12 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "kttc"
 version = "0.1.0"
-description = "Autonomous Translation Quality Assurance Platform"
+description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}
 authors = [
-    {name = "KTTC Development", email = "dev@kttc.ai"}
+    {name = "KTTC Development", email = "dev@kt.tc"}
 ]
 keywords = ["translation", "qa", "quality-assurance", "llm", "agents", "automation"]
 classifiers = [
@@ -24,29 +24,29 @@ classifiers = [
 ]
 
 dependencies = [
-    "typer>=0.12.0",
-    "rich>=13.7.0",
-    "pydantic>=2.0.0",
-    "aiohttp>=3.9.0",
-    "unbabel-comet>=2.2.0",
-    "sentence-transformers>=2.5.0",
-    "sacrebleu>=2.4.0",
-    "openai>=1.0.0",
-    "anthropic>=0.18.0",
-    "aiosqlite>=0.19.0",
-    "orjson>=3.9.0",
+    "typer>=0.20.0",
+    "rich>=14.2.0",
+    "pydantic>=2.12.4",
+    "pydantic-settings>=2.11.0",
+    "aiohttp>=3.13.2",
+    "unbabel-comet>=2.2.7",
+    "sentence-transformers>=5.1.2",
+    "sacrebleu>=2.5.1",
+    "openai>=2.7.1",
+    "anthropic>=0.72.0",
+    "aiosqlite>=0.21.0",
+    "orjson>=3.11.4",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.4.0",
-    "pytest-asyncio>=0.23.0",
-    "pytest-cov>=4.1.0",
-    "pytest-xdist>=3.5.0",
-    "black>=23.12.0",
-    "ruff>=0.1.9",
-    "mypy>=1.8.0",
-    "pre-commit>=3.6.0",
+    "pytest>=9.0.0",
+    "pytest-cov>=7.0.0",
+    "pytest-xdist>=3.8.0",
+    "black>=25.11.0",
+    "ruff>=0.14.4",
+    "mypy>=1.18.2",
+    "pre-commit>=4.4.0",
 ]
 
 [project.scripts]
@@ -62,10 +62,12 @@ Issues = "https://github.com/kttc-ai/kttc/issues"
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 ignore = ["E501"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "tests/*" = ["ANN"]
 
 # Black configuration
@@ -86,13 +88,16 @@ testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-asyncio_mode = "auto"
 addopts = [
     "--strict-markers",
     "--cov=kttc",
     "--cov-report=term-missing",
     "--cov-report=html",
     "-v",
+]
+markers = [
+    "benchmark: mark test as performance benchmark",
+    "slow: mark test as slow-running",
 ]
 
 # Coverage configuration

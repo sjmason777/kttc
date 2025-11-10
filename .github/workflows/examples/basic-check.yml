@@ -1,0 +1,28 @@
+# Example: Basic translation quality check
+# This workflow checks translation quality when translation files are modified
+
+name: Translation QA - Basic
+
+on:
+  pull_request:
+    paths:
+      - 'translations/**'
+      - 'locales/**'
+
+jobs:
+  check-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check translation quality
+        uses: ./  # Use local action, or replace with: your-org/kttc@v1
+        with:
+          source-dir: 'translations/en'
+          translation-dir: 'translations/es'
+          source-lang: 'en'
+          target-lang: 'es'
+          threshold: '95.0'
+          provider: 'openai'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}

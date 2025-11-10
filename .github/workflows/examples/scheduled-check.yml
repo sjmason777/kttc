@@ -1,0 +1,74 @@
+# Example: Scheduled quality checks
+# This workflow runs translation quality checks on a schedule
+
+name: Translation QA - Scheduled
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  scheduled-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run weekly quality audit
+        uses: ./
+        with:
+          source-dir: 'translations/en'
+          translation-dir: 'translations/es'
+          source-lang: 'en'
+          target-lang: 'es'
+          threshold: '95.0'
+          output: 'weekly-qa-report.json'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Upload weekly report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: weekly-qa-report-${{ github.run_number }}
+          path: |
+            weekly-qa-report.json
+            weekly-qa-report.md
+          retention-days: 90
+
+      - name: Create issue if quality degraded
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            if (!fs.existsSync('weekly-qa-report.json')) {
+              console.log('Report file not found');
+              return;
+            }
+
+            const report = JSON.parse(fs.readFileSync('weekly-qa-report.json', 'utf8'));
+            const summary = report.summary;
+
+            if (summary.failed > 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `⚠️ Weekly Translation QA: ${summary.failed} file(s) below quality threshold`,
+                body: `## Weekly Translation Quality Report\n\n` +
+                  `The scheduled quality check has detected issues:\n\n` +
+                  `- **Failed Files**: ${summary.failed}/${summary.total_files}\n` +
+                  `- **Average MQM Score**: ${summary.average_score.toFixed(2)}/100\n` +
+                  `- **Total Errors**: ${summary.total_errors}\n\n` +
+                  `### Files Below Threshold\n\n` +
+                  report.files
+                    .filter(f => f.status === 'fail')
+                    .map(f => `- **${f.filename}**: ${f.mqm_score.toFixed(2)}/100 (${f.error_count} errors)`)
+                    .join('\n') +
+                  `\n\n---\n` +
+                  `[View full report](${context.payload.repository.html_url}/actions/runs/${context.runId})`,
+                labels: ['translation', 'quality', 'automated']
+              });
+            }

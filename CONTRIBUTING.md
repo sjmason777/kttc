@@ -118,7 +118,7 @@ kttc/
 
 ## Questions?
 
-Open an issue or contact: dev@kttc.ai
+Open an issue or contact: dev@kt.tc
 
 ---
 

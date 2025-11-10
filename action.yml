@@ -1,0 +1,129 @@
+name: 'KTTC Translation Quality Check'
+description: 'Check translation quality using KTTC multi-agent QA system'
+author: 'KTTC Contributors'
+
+branding:
+  icon: 'globe'
+  color: 'blue'
+
+inputs:
+  source-dir:
+    description: 'Directory containing source translation files'
+    required: true
+  translation-dir:
+    description: 'Directory containing target translation files'
+    required: true
+  source-lang:
+    description: 'Source language code (ISO 639-1, e.g., en)'
+    required: true
+  target-lang:
+    description: 'Target language code (ISO 639-1, e.g., es)'
+    required: true
+  threshold:
+    description: 'Minimum MQM score threshold (0-100)'
+    required: false
+    default: '95.0'
+  provider:
+    description: 'LLM provider (openai or anthropic)'
+    required: false
+    default: 'openai'
+  output:
+    description: 'Output report file path'
+    required: false
+    default: 'kttc-report.json'
+  parallel:
+    description: 'Number of parallel workers'
+    required: false
+    default: '4'
+
+outputs:
+  status:
+    description: 'Overall QA status (pass or fail)'
+    value: ${{ steps.check.outputs.status }}
+  mqm-score:
+    description: 'Average MQM score across all files'
+    value: ${{ steps.check.outputs.mqm_score }}
+  total-files:
+    description: 'Total number of files checked'
+    value: ${{ steps.check.outputs.total_files }}
+  passed:
+    description: 'Number of files that passed'
+    value: ${{ steps.check.outputs.passed }}
+  failed:
+    description: 'Number of files that failed'
+    value: ${{ steps.check.outputs.failed }}
+  report-path:
+    description: 'Path to the generated report file'
+    value: ${{ inputs.output }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install KTTC
+      shell: bash
+      run: |
+        pip install --upgrade pip
+        pip install kttc
+
+    - name: Run translation quality check
+      id: check
+      shell: bash
+      env:
+        OPENAI_API_KEY: ${{ env.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ env.ANTHROPIC_API_KEY }}
+      run: |
+        set +e  # Don't exit on error
+
+        kttc batch \
+          --source-dir "${{ inputs.source-dir }}" \
+          --translation-dir "${{ inputs.translation-dir }}" \
+          --source-lang "${{ inputs.source-lang }}" \
+          --target-lang "${{ inputs.target-lang }}" \
+          --threshold ${{ inputs.threshold }} \
+          --output "${{ inputs.output }}" \
+          --parallel ${{ inputs.parallel }} \
+          --provider "${{ inputs.provider }}"
+
+        EXIT_CODE=$?
+
+        # Parse report and set outputs
+        if [ -f "${{ inputs.output }}" ]; then
+          STATUS=$(jq -r '.summary.failed == 0 | if . then "pass" else "fail" end' "${{ inputs.output }}")
+          MQM_SCORE=$(jq -r '.summary.average_score' "${{ inputs.output }}")
+          TOTAL=$(jq -r '.summary.total_files' "${{ inputs.output }}")
+          PASSED=$(jq -r '.summary.passed' "${{ inputs.output }}")
+          FAILED=$(jq -r '.summary.failed' "${{ inputs.output }}")
+
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "mqm_score=$MQM_SCORE" >> $GITHUB_OUTPUT
+          echo "total_files=$TOTAL" >> $GITHUB_OUTPUT
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failed=$FAILED" >> $GITHUB_OUTPUT
+
+          echo "📊 Translation QA Summary:"
+          echo "  Status: $STATUS"
+          echo "  MQM Score: $MQM_SCORE/100"
+          echo "  Files: $TOTAL (✅ $PASSED, ❌ $FAILED)"
+        else
+          echo "⚠️ Report file not found"
+          echo "status=error" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+
+        exit $EXIT_CODE
+
+    - name: Generate Markdown report
+      if: always()
+      shell: bash
+      run: |
+        if [ -f "${{ inputs.output }}" ]; then
+          kttc report "${{ inputs.output }}" --format markdown --output "${OUTPUT%.json}.md"
+        fi
+      env:
+        OUTPUT: ${{ inputs.output }}

@@ -1,0 +1,115 @@
+You are a professional translation terminology evaluator using the MQM (Multidimensional Quality Metrics) framework.
+
+Your task is to evaluate the TERMINOLOGY accuracy of the translation - how well technical, domain-specific, and specialized terms are handled.
+
+## TRANSLATION TASK
+
+**Source Language:** {source_lang}
+**Target Language:** {target_lang}
+
+**Source Text:**
+{source_text}
+
+**Translation:**
+{translation}
+
+{context_section}
+
+## EVALUATION CRITERIA
+
+Evaluate the translation for terminology issues in these subcategories:
+
+### Inconsistent Term Use
+- Same source term translated differently across the text
+- Lack of consistency in technical terminology
+- Mixing different translations for equivalent concepts
+
+### Term Misuse
+- Wrong technical term chosen
+- Incorrect domain-specific vocabulary
+- Using general term instead of specialized one
+- Using specialized term incorrectly
+
+### Untranslated Terms
+- Technical terms left in source language when translation exists
+- Acronyms that should be localized but aren't
+- Brand names that have official translated versions
+
+### Term Formatting
+- Incorrect capitalization of technical terms
+- Wrong use of singular/plural for technical concepts
+- Improper formatting of units, measurements, or technical notation
+
+## SEVERITY LEVELS
+
+- **neutral** (0 penalty): Acceptable variation, style preference
+- **minor** (1 penalty): Slightly imprecise but understandable
+- **major** (5 penalty): Wrong term that could cause confusion
+- **critical** (10 penalty): Completely incorrect term, dangerous misunderstanding
+
+## OUTPUT FORMAT
+
+For each terminology error found, provide:
+
+ERROR_START
+CATEGORY: terminology
+SUBCATEGORY: [inconsistency|misuse|untranslated|formatting]
+SEVERITY: [neutral|minor|major|critical]
+LOCATION: [start_char]-[end_char]
+DESCRIPTION: [Clear explanation of the terminology issue]
+SUGGESTION: [Correct term or how to fix it - optional]
+ERROR_END
+
+## IMPORTANT GUIDELINES
+
+1. **Focus on terminology only** - do not evaluate grammar, fluency, or accuracy
+2. **Consider domain context** - terms may have specific meanings in certain fields
+3. **Check consistency** - same term should be translated the same way
+4. **Provide character positions** - use 0-based indexing for LOCATION
+5. **One error per block** - do not combine multiple issues
+6. **If no errors found** - do not output any ERROR blocks
+7. **Respect established terminology** - prefer industry-standard translations
+8. **Consider target audience** - technical level appropriate for context
+
+## EXAMPLES
+
+Good error annotation:
+ERROR_START
+CATEGORY: terminology
+SUBCATEGORY: inconsistency
+SEVERITY: major
+LOCATION: 25-35
+DESCRIPTION: Term "API" translated as "interfaz" here but as "API" earlier - should be consistent
+SUGGESTION: Use "API" throughout (established technical term)
+ERROR_END
+
+ERROR_START
+CATEGORY: terminology
+SUBCATEGORY: misuse
+SEVERITY: critical
+LOCATION: 50-58
+DESCRIPTION: "Cloud computing" incorrectly translated as "computación de nubes" (literal) instead of standard term
+SUGGESTION: Use "computación en la nube" (established technical term)
+ERROR_END
+
+ERROR_START
+CATEGORY: terminology
+SUBCATEGORY: untranslated
+SEVERITY: minor
+LOCATION: 100-105
+DESCRIPTION: Acronym "RAM" left untranslated when Spanish equivalent "memoria RAM" exists
+SUGGESTION: Use "memoria RAM" or explain on first use
+ERROR_END
+
+Poor error annotation (too vague):
+ERROR_START
+CATEGORY: terminology
+SUBCATEGORY: misuse
+SEVERITY: minor
+LOCATION: 0-100
+DESCRIPTION: Bad terminology
+ERROR_END
+
+## YOUR EVALUATION
+
+Analyze the translation above and identify all terminology issues:
