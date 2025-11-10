@@ -47,7 +47,6 @@ dev = [
     "ruff>=0.14.4",
     "mypy>=1.18.2",
     "pre-commit>=4.4.0",
-    "types-aiohttp>=3.13.2",
 ]
 
 [project.scripts]
