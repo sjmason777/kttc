@@ -97,3 +97,5 @@ secrets/
 docs/_build/
 docs/.doctrees/
 site/
+# Test files
+Dockerfile.test

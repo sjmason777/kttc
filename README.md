@@ -405,6 +405,4 @@ If you use KTTC in your research, please cite:
 
 ---
 
-**Built with ❤️ by the KTTC team**
-
 **Last Updated:** November 10, 2025

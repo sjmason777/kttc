@@ -3,12 +3,21 @@
 Tests CLI commands, argument parsing, and output formatting.
 """
 
+import re
+
 import pytest
 from typer.testing import CliRunner
 
 from kttc.cli.main import app
 
+# Create CLI runner
 runner = CliRunner()
+
+
+def strip_ansi(text: str) -> str:
+    """Remove ANSI escape codes from text for consistent testing."""
+    ansi_escape = re.compile(r"\x1b\[[0-9;]*m")
+    return ansi_escape.sub("", text)
 
 
 @pytest.mark.unit
@@ -41,35 +50,39 @@ class TestCLI:
     def test_check_command_help(self) -> None:
         """Test check command help."""
         result = runner.invoke(app, ["check", "--help"])
+        output = strip_ansi(result.stdout)
         assert result.exit_code == 0
-        assert "Check translation quality" in result.stdout
-        assert "--source" in result.stdout
-        assert "--translation" in result.stdout
-        assert "--threshold" in result.stdout
+        assert "Check translation quality" in output
+        assert "--source" in output
+        assert "--translation" in output
+        assert "--threshold" in output
 
     def test_translate_command_help(self) -> None:
         """Test translate command help."""
         result = runner.invoke(app, ["translate", "--help"])
+        output = strip_ansi(result.stdout)
         assert result.exit_code == 0
-        assert "Translate text with automatic quality checking" in result.stdout
-        assert "--text" in result.stdout
-        assert "--source-lang" in result.stdout
-        assert "--target-lang" in result.stdout
+        assert "Translate text with automatic quality checking" in output
+        assert "--text" in output
+        assert "--source-lang" in output
+        assert "--target-lang" in output
 
     def test_batch_command_help(self) -> None:
         """Test batch command help."""
         result = runner.invoke(app, ["batch", "--help"])
+        output = strip_ansi(result.stdout)
         assert result.exit_code == 0
-        assert "Batch process multiple translation files" in result.stdout
-        assert "--source-dir" in result.stdout
-        assert "--translation-dir" in result.stdout
+        assert "Batch process multiple translation files" in output
+        assert "--source-dir" in output
+        assert "--translation-dir" in output
 
     def test_report_command_help(self) -> None:
         """Test report command help."""
         result = runner.invoke(app, ["report", "--help"])
+        output = strip_ansi(result.stdout)
         assert result.exit_code == 0
-        assert "Generate formatted report" in result.stdout
-        assert "--format" in result.stdout
+        assert "Generate formatted report" in output
+        assert "--format" in output
 
     def test_check_command_requires_files(self) -> None:
         """Test that check command requires valid file paths."""
