@@ -1,125 +1,149 @@
 # Contributing to KTTC
 
-Thank you for your interest in contributing to KTTC!
+## Code Quality Standards
 
-## Development Setup
+All code contributions must meet strict quality standards enforced by automated checks.
 
-### Prerequisites
-- Python 3.11+
-- Git
-- OpenAI or Anthropic API key
+### Pre-commit Hook
 
-### Setup Environment
+A pre-commit hook is installed that automatically runs before each commit to ensure code quality.
+
+#### What It Checks:
+
+1. **Black** - Code formatting
+   - Ensures consistent code style
+   - Runs in check mode (won't modify files)
+
+2. **Ruff** - Python linter
+   - Catches common bugs and code smells
+   - Enforces best practices
+
+3. **MyPy** - Static type checker (src/ files only)
+   - Runs in `--strict` mode
+   - Ensures type safety
+
+#### Hook is Already Installed
+
+The pre-commit hook is located at `.git/hooks/pre-commit` and runs automatically.
+
+#### Example Output
+
+**When code has issues:**
+```
+🔍 Running pre-commit checks...
+
+📝 Files to check:
+  - src/kttc/example.py
+
+▶️  Running Black...
+✗ Black: Code needs formatting
+  Run: python3.11 -m black src/kttc/example.py
+
+❌ Pre-commit checks FAILED
+```
+
+**When code is clean:**
+```
+🔍 Running pre-commit checks...
+
+📝 Files to check:
+  - src/kttc/example.py
+
+▶️  Running Black...
+✓ Black: Code is formatted
+
+▶️  Running Ruff...
+✓ Ruff: No linting issues
+
+▶️  Running MyPy (strict mode)...
+✓ MyPy: No type errors
+
+✅ All pre-commit checks PASSED
+```
+
+### Fixing Issues
+
+If the pre-commit hook fails, fix the issues before committing:
 
 ```bash
-# Clone repository
-git clone git@github.com:kttc-ai/kttc.git
-cd kttc
+# Fix formatting
+python3.11 -m black src/ tests/ examples/
 
-# Create virtual environment
-python3.11 -m venv venv
-source venv/bin/activate
+# Fix linting issues  
+python3.11 -m ruff check --fix src/ tests/ examples/
 
-# Install dependencies
-pip install -e ".[dev]"
-
-# Setup pre-commit hooks
-pre-commit install
+# Check types
+python3.11 -m mypy --strict src/
 ```
 
-### Running Tests
+### Skipping Checks (Not Recommended)
+
+In rare cases, you can skip the hook:
 
 ```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov=kttc
-
-# Run specific tests
-pytest tests/unit/test_agents.py -v
-
-# Run in parallel
-pytest -n auto
+git commit --no-verify
 ```
 
-### Code Quality
+**WARNING:** This should only be used in exceptional circumstances.
+
+## Manual Quality Checks
+
+You can run checks manually before committing:
 
 ```bash
-# Format code
-black src/ tests/
+# Run all checks
+python3.11 -m black --check src/ tests/ examples/
+python3.11 -m ruff check src/ tests/ examples/
+python3.11 -m mypy --strict src/
 
-# Lint code
-ruff check src/ tests/
-
-# Type check
-mypy src/
+# Auto-fix issues
+python3.11 -m black src/ tests/ examples/
+python3.11 -m ruff check --fix src/ tests/ examples/
 ```
 
-## Development Workflow
+## Code Style Requirements
 
-1. **Create branch** from `main`
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+### English Only
 
-2. **Make changes**
-   - Write tests first (TDD)
-   - Follow code style (Black, Ruff)
-   - Add type hints
-   - Update documentation
+- ALL code, comments, documentation, and commit messages MUST be in English
+- No Cyrillic (Russian) text allowed in source code
+- See `claude.md` for details
 
-3. **Run checks**
-   ```bash
-   pre-commit run --all-files
-   pytest
-   ```
+### Type Hints
 
-4. **Commit**
-   ```bash
-   git commit -m "feat: add new feature"
-   ```
+- All functions must have type hints (strict mode)
+- Use modern Python 3.11+ syntax: `str | None` instead of `Optional[str]`
 
-   Use [Conventional Commits](https://www.conventionalcommits.org/):
-   - `feat:` - New feature
-   - `fix:` - Bug fix
-   - `docs:` - Documentation
-   - `test:` - Tests
-   - `chore:` - Maintenance
+### Formatting
 
-5. **Push and create PR**
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+- Follow Black's code style (line length: 100)
+- Imports sorted by Ruff
+- Docstrings in Google style
 
-## Code Style
+### Testing
 
-- Follow PEP 8
-- Use type hints everywhere
-- Write docstrings (Google style)
-- Keep functions small and focused
-- Test coverage > 80%
+- Write tests for new features
+- Maintain >80% code coverage
+- All tests must pass before commit
 
-## Project Structure
+## Python Version
 
+This project requires **Python 3.11+**
+
+Always use:
+```bash
+python3.11 -m <command>
 ```
-kttc/
-├── src/kttc/           # Source code
-│   ├── cli/            # CLI commands
-│   ├── agents/         # QA agents
-│   ├── core/           # Core logic
-│   └── llm/            # LLM providers
-├── tests/              # Tests
-│   ├── unit/
-│   ├── integration/
-│   └── e2e/
-└── docs/               # Documentation
+
+NOT:
+```bash
+python3 -m <command>  # Wrong - this is Python 3.9
 ```
+
+See `claude.md` for details.
 
 ## Questions?
 
-Open an issue or contact: dev@kt.tc
-
----
-
-Thank you for contributing! 🎉
+- Check `README.md` for project overview
+- Check `claude.md` for development guidelines
+- Open an issue on GitHub

@@ -92,6 +92,7 @@ secrets/
 # Testing artifacts
 .pytest_cache/
 .benchmarks/
+test_results/
 
 # Documentation builds
 docs/_build/
@@ -99,3 +100,6 @@ docs/.doctrees/
 site/
 # Test files
 Dockerfile.test
+
+# Claude Code configuration
+claude.md

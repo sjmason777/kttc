@@ -227,7 +227,7 @@ class TestYandexGPTProvider:
             api_key="test-key", folder_id="test-folder", model="yandexgpt/latest"
         )
 
-        mock_response_data = {"result": {"alternatives": [{"message": {"text": "Привет"}}]}}
+        mock_response_data = {"result": {"alternatives": [{"message": {"text": "Hello"}}]}}
 
         mock_response = AsyncMock()
         mock_response.status = 200
@@ -236,7 +236,7 @@ class TestYandexGPTProvider:
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_post.return_value.__aenter__.return_value = mock_response
             result = await provider.complete("Translate: Hello")
-            assert result == "Привет"
+            assert result == "Hello"
 
     async def test_authentication_error(self) -> None:
         """Test handling of authentication errors."""
@@ -281,8 +281,8 @@ class TestYandexGPTProvider:
 
         # Mock streaming response
         mock_chunks = [
-            json.dumps({"result": {"alternatives": [{"message": {"text": "При"}}]}}),
-            json.dumps({"result": {"alternatives": [{"message": {"text": "вет"}}]}}),
+            json.dumps({"result": {"alternatives": [{"message": {"text": "Hel"}}]}}),
+            json.dumps({"result": {"alternatives": [{"message": {"text": "lo"}}]}}),
         ]
 
         mock_response = AsyncMock()
@@ -310,7 +310,7 @@ class TestYandexGPTProvider:
             result = []
             async for chunk in provider.stream("Translate: Hello"):
                 result.append(chunk)
-            assert result == ["При", "вет"]
+            assert result == ["Hel", "lo"]
 
 
 class TestGigaChatProvider:
@@ -352,13 +352,13 @@ class TestGigaChatProvider:
         mock_response = AsyncMock()
         mock_response.status = 200
         mock_response.json = AsyncMock(
-            return_value={"choices": [{"message": {"content": "Привет"}}]}
+            return_value={"choices": [{"message": {"content": "Hello"}}]}
         )
 
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_post.return_value.__aenter__.return_value = mock_response
             result = await provider.complete("Translate: Hello")
-            assert result == "Привет"
+            assert result == "Hello"
 
     async def test_complete_token_refresh(self) -> None:
         """Test automatic token refresh on 401."""
@@ -378,7 +378,7 @@ class TestGigaChatProvider:
         mock_success_response = AsyncMock()
         mock_success_response.status = 200
         mock_success_response.json = AsyncMock(
-            return_value={"choices": [{"message": {"content": "Привет"}}]}
+            return_value={"choices": [{"message": {"content": "Hello"}}]}
         )
 
         with patch("aiohttp.ClientSession.post") as mock_post:
@@ -390,7 +390,7 @@ class TestGigaChatProvider:
             ]
 
             result = await provider.complete("Translate: Hello")
-            assert result == "Привет"
+            assert result == "Hello"
             assert provider._access_token == "new-token"
 
     async def test_stream_success(self) -> None:

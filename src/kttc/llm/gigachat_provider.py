@@ -36,7 +36,7 @@ class GigaChatProvider(BaseLLMProvider):
         ...     client_secret="your-client-secret",
         ...     scope="GIGACHAT_API_PERS"  # or B2B, CORP
         ... )
-        >>> response = await provider.complete("Переведи: Hello")
+        >>> response = await provider.complete("Write a short greeting")
     """
 
     BASE_URL = "https://gigachat.devices.sberbank.ru/api/v1"
@@ -75,6 +75,10 @@ class GigaChatProvider(BaseLLMProvider):
         Raises:
             LLMAuthenticationError: If authentication fails
         """
+        # Return cached token if available
+        if self._access_token:
+            return self._access_token
+
         # Create RqUID (unique request ID)
         rq_uid = str(uuid.uuid4())
 
@@ -106,6 +110,7 @@ class GigaChatProvider(BaseLLMProvider):
                         raise LLMAuthenticationError(f"No access token in response: {result}")
 
                     token: str = result["access_token"]
+                    self._access_token = token  # Cache the token
                     return token
 
         except aiohttp.ClientError as e:

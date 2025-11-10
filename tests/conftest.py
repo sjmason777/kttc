@@ -3,9 +3,22 @@
 This module provides common fixtures and configuration for all tests.
 """
 
+import os
+from pathlib import Path
+
 import pytest
 
 from kttc.core import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
+
+# Load .env file BEFORE test modules are imported (for @skip_if_no_gigachat decorators)
+_env_file = Path(__file__).parent.parent / ".env"
+if _env_file.exists():
+    with open(_env_file) as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _key, _value = _line.split("=", 1)
+                os.environ.setdefault(_key.strip(), _value.strip())
 
 # Configure anyio to use only asyncio backend (not trio)
 pytest_plugins = ("anyio",)

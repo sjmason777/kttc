@@ -41,10 +41,42 @@ class Settings(BaseSettings):
         json_schema_extra={"env": "KTTC_ANTHROPIC_API_KEY"},
     )
 
+    # GigaChat (Sber) credentials
+    gigachat_client_id: str | None = Field(
+        default=None,
+        description="GigaChat Client ID",
+        json_schema_extra={"env": "KTTC_GIGACHAT_CLIENT_ID"},
+    )
+
+    gigachat_client_secret: str | None = Field(
+        default=None,
+        description="GigaChat Client Secret",
+        json_schema_extra={"env": "KTTC_GIGACHAT_CLIENT_SECRET"},
+    )
+
+    gigachat_scope: str = Field(
+        default="GIGACHAT_API_PERS",
+        description="GigaChat API scope",
+        json_schema_extra={"env": "KTTC_GIGACHAT_SCOPE"},
+    )
+
+    # Yandex GPT credentials
+    yandex_api_key: str | None = Field(
+        default=None,
+        description="Yandex GPT API key",
+        json_schema_extra={"env": "KTTC_YANDEX_API_KEY"},
+    )
+
+    yandex_folder_id: str | None = Field(
+        default=None,
+        description="Yandex Cloud Folder ID",
+        json_schema_extra={"env": "KTTC_YANDEX_FOLDER_ID"},
+    )
+
     # Default LLM Configuration
     default_llm_provider: str = Field(
         default="openai",
-        description="Default LLM provider (openai or anthropic)",
+        description="Default LLM provider (openai, anthropic, gigachat, yandex)",
         json_schema_extra={"env": "KTTC_DEFAULT_LLM_PROVIDER"},
     )
 
@@ -109,34 +141,88 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    def get_llm_provider_key(self, provider: str | None = None) -> str:
-        """Get API key for specified LLM provider.
+    def get_llm_provider_credentials(self, provider: str | None = None) -> dict[str, str]:
+        """Get credentials for specified LLM provider.
 
         Args:
-            provider: Provider name (openai or anthropic). Uses default if None.
+            provider: Provider name (openai, anthropic, gigachat, yandex).
+                     Uses default if None.
 
         Returns:
-            API key string
+            Dictionary with provider credentials
 
         Raises:
-            ValueError: If API key not configured
+            ValueError: If credentials not configured
 
         Example:
             >>> settings = Settings()
-            >>> key = settings.get_llm_provider_key("openai")
+            >>> creds = settings.get_llm_provider_credentials("openai")
+            >>> # Returns: {"api_key": "sk-..."}
+            >>> creds = settings.get_llm_provider_credentials("gigachat")
+            >>> # Returns: {"client_id": "...", "client_secret": "...", "scope": "..."}
         """
         provider = provider or self.default_llm_provider
 
         if provider == "openai":
             if not self.openai_api_key:
                 raise ValueError("OpenAI API key not configured. Set KTTC_OPENAI_API_KEY")
-            return self.openai_api_key
+            return {"api_key": self.openai_api_key}
+
         elif provider == "anthropic":
             if not self.anthropic_api_key:
                 raise ValueError("Anthropic API key not configured. Set KTTC_ANTHROPIC_API_KEY")
-            return self.anthropic_api_key
+            return {"api_key": self.anthropic_api_key}
+
+        elif provider == "gigachat":
+            if not self.gigachat_client_id or not self.gigachat_client_secret:
+                raise ValueError(
+                    "GigaChat credentials not configured. "
+                    "Set KTTC_GIGACHAT_CLIENT_ID and KTTC_GIGACHAT_CLIENT_SECRET"
+                )
+            return {
+                "client_id": self.gigachat_client_id,
+                "client_secret": self.gigachat_client_secret,
+                "scope": self.gigachat_scope,
+            }
+
+        elif provider == "yandex":
+            if not self.yandex_api_key or not self.yandex_folder_id:
+                raise ValueError(
+                    "Yandex GPT credentials not configured. "
+                    "Set KTTC_YANDEX_API_KEY and KTTC_YANDEX_FOLDER_ID"
+                )
+            return {
+                "api_key": self.yandex_api_key,
+                "folder_id": self.yandex_folder_id,
+            }
+
         else:
             raise ValueError(f"Unknown LLM provider: {provider}")
+
+    def get_llm_provider_key(self, provider: str | None = None) -> str:
+        """Get API key for specified LLM provider (legacy method).
+
+        Deprecated: Use get_llm_provider_credentials() instead.
+
+        Args:
+            provider: Provider name. Uses default if None.
+
+        Returns:
+            API key string
+
+        Raises:
+            ValueError: If API key not configured or provider uses different auth
+        """
+        provider = provider or self.default_llm_provider
+        creds = self.get_llm_provider_credentials(provider)
+
+        if "api_key" in creds:
+            return creds["api_key"]
+        else:
+            raise ValueError(
+                f"Provider {provider} does not use simple API key authentication. "
+                f"Use get_llm_provider_credentials() instead."
+            )
 
 
 # Global settings instance

@@ -1,29 +1,76 @@
-repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-json
-      - id: check-added-large-files
-      - id: check-toml
+# Pre-commit hooks configuration for KTTC
+# These hooks run automatically before each commit to ensure code quality
+#
+# Setup:
+#   pip install pre-commit
+#   pre-commit install
+#
+# Manual run:
+#   pre-commit run --all-files
+#
+# Skip hooks (use sparingly):
+#   git commit --no-verify
 
+repos:
+  # Black - code formatter (must run first)
   - repo: https://github.com/psf/black
-    rev: 23.12.0
+    rev: 24.10.0
     hooks:
       - id: black
         language_version: python3.11
+        args: ["--config=pyproject.toml"]
 
+  # Ruff - fast Python linter (runs after black)
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.9
+    rev: v0.8.4
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
+        language_version: python3.11
+        args: ["--fix", "--exit-non-zero-on-fix", "--config=pyproject.toml"]
 
+  # MyPy - static type checker with strict mode
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
+    rev: v1.13.0
     hooks:
       - id: mypy
-        additional_dependencies: [pydantic>=2.0.0]
-        args: [--config-file=pyproject.toml]
+        language_version: python3.11
+        args: ["--strict", "--config-file=pyproject.toml"]
+        additional_dependencies:
+          # Type stubs
+          - types-aiofiles
+          - types-requests
+          # Project dependencies
+          - pydantic>=2.0.0
+          - aiohttp
+          - anthropic
+          - openai
+          - pytest
+          - anyio
+        files: ^src/
+        exclude: ^tests/
+
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(.*\.md|.*\.txt)$
+      - id: end-of-file-fixer
+        exclude: ^(.*\.md|.*\.txt)$
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+      - id: check-case-conflict
+
+  # Check for secrets/credentials in code
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ["--baseline", ".secrets.baseline"]
+        exclude: package.lock.json
