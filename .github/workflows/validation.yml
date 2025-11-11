@@ -1,0 +1,228 @@
+name: Error Detection Accuracy Validation
+
+on:
+  schedule:
+    # Run monthly on the 1st at midnight UTC
+    - cron: '0 0 1 * *'
+
+  workflow_dispatch:
+    inputs:
+      gold-dataset:
+        description: 'Path to gold-standard annotations'
+        required: false
+        default: 'tests/data/gold_annotations.json'
+      target-recall:
+        description: 'Target recall (detection rate)'
+        required: false
+        default: '0.971'
+      target-precision:
+        description: 'Target precision'
+        required: false
+        default: '0.90'
+
+jobs:
+  validate-accuracy:
+    name: Validate Error Detection Accuracy
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Create sample gold dataset (if not exists)
+        run: |
+          if [ ! -f "${{ inputs.gold-dataset || 'tests/data/gold_annotations.json' }}" ]; then
+            echo "📝 Creating sample gold-standard dataset..."
+            python3.11 -c "
+            from tests.validation.error_detection_accuracy import create_sample_gold_dataset
+            create_sample_gold_dataset('${{ inputs.gold-dataset || 'tests/data/gold_annotations.json' }}')
+            "
+          else
+            echo "✅ Using existing gold-standard dataset"
+          fi
+
+      - name: Run accuracy validation
+        env:
+          KTTC_OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          KTTC_ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python3.11 -c "
+          import asyncio
+          import json
+          from tests.validation.error_detection_accuracy import ErrorDetectionAccuracyTest
+          from kttc.agents.orchestrator import AgentOrchestrator
+          from kttc.llm.providers.openai import OpenAIProvider
+
+          async def main():
+              # Initialize
+              llm = OpenAIProvider(model='gpt-4')
+              orchestrator = AgentOrchestrator(llm)
+
+              # Run validation
+              test = ErrorDetectionAccuracyTest()
+              test.load_gold_standard('${{ inputs.gold-dataset || 'tests/data/gold_annotations.json' }}')
+
+              metrics = await test.evaluate_accuracy(orchestrator)
+
+              # Save metrics
+              results = {
+                  'precision': metrics.precision,
+                  'recall': metrics.recall,
+                  'f1_score': metrics.f1_score,
+                  'accuracy': metrics.accuracy,
+                  'true_positives': metrics.true_positives,
+                  'false_positives': metrics.false_positives,
+                  'false_negatives': metrics.false_negatives,
+                  'true_negatives': metrics.true_negatives,
+                  'meets_target': metrics.meets_target(
+                      target_recall=float('${{ inputs.target-recall || '0.971' }}'),
+                      target_precision=float('${{ inputs.target-precision || '0.90' }}')
+                  )
+              }
+
+              with open('validation_metrics.json', 'w') as f:
+                  json.dump(results, f, indent=2)
+
+              # Export detailed report
+              test.export_detailed_report('validation_detailed.json')
+
+              # Analyze failure patterns
+              failures = test.analyze_failure_patterns()
+              with open('validation_failures.json', 'w') as f:
+                  json.dump(failures, f, indent=2)
+
+              print('✅ Validation completed!')
+              print(f'Precision: {metrics.precision:.1%}')
+              print(f'Recall (Detection Rate): {metrics.recall:.1%}')
+              print(f'F1-Score: {metrics.f1_score:.1%}')
+
+              if results['meets_target']:
+                  print('🎉 Target metrics achieved!')
+              else:
+                  print('⚠️ Below target metrics')
+
+          asyncio.run(main())
+          "
+
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-results-${{ github.run_id }}
+          path: |
+            validation_metrics.json
+            validation_detailed.json
+            validation_failures.json
+          retention-days: 90
+
+      - name: Comment on PR with validation results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            try {
+              const metrics = JSON.parse(fs.readFileSync('validation_metrics.json', 'utf8'));
+
+              let comment = '## 🎯 Error Detection Accuracy Validation\n\n';
+              comment += `### Target Metrics\n\n`;
+              comment += `| Metric | Current | Target | Status |\n`;
+              comment += `|--------|---------|--------|--------|\n`;
+
+              const recallStatus = metrics.recall >= 0.971 ? '✅' : '❌';
+              const precisionStatus = metrics.precision >= 0.90 ? '✅' : '❌';
+              const f1Status = metrics.f1_score >= 0.92 ? '✅' : '⚠️';
+
+              comment += `| **Recall (Detection Rate)** | ${(metrics.recall * 100).toFixed(1)}% | ≥ 97.1% | ${recallStatus} |\n`;
+              comment += `| **Precision** | ${(metrics.precision * 100).toFixed(1)}% | ≥ 90.0% | ${precisionStatus} |\n`;
+              comment += `| **F1-Score** | ${(metrics.f1_score * 100).toFixed(1)}% | ≥ 92.0% | ${f1Status} |\n`;
+
+              comment += `\n### Detailed Metrics\n\n`;
+              comment += `- True Positives: ${metrics.true_positives}\n`;
+              comment += `- False Positives: ${metrics.false_positives}\n`;
+              comment += `- False Negatives: ${metrics.false_negatives}\n`;
+              comment += `- Overall Accuracy: ${(metrics.accuracy * 100).toFixed(1)}%\n`;
+
+              comment += `\n### Result\n\n`;
+              if (metrics.meets_target) {
+                comment += `🎉 **All target metrics achieved!** KTTC meets state-of-the-art standards.\n`;
+              } else {
+                comment += `⚠️ **Some targets not met.** Further optimization needed.\n`;
+              }
+
+              comment += `\n📊 [View detailed report](${context.payload.repository.html_url}/actions/runs/${context.runId})\n`;
+
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            } catch (error) {
+              console.log('Could not post validation results:', error.message);
+            }
+
+      - name: Create validation summary
+        if: always()
+        run: |
+          echo "# Error Detection Accuracy Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f validation_metrics.json ]; then
+            PRECISION=$(jq -r '.precision' validation_metrics.json)
+            RECALL=$(jq -r '.recall' validation_metrics.json)
+            F1=$(jq -r '.f1_score' validation_metrics.json)
+            MEETS_TARGET=$(jq -r '.meets_target' validation_metrics.json)
+
+            PRECISION_PCT=$(echo "$PRECISION * 100" | bc -l | xargs printf "%.1f")
+            RECALL_PCT=$(echo "$RECALL * 100" | bc -l | xargs printf "%.1f")
+            F1_PCT=$(echo "$F1 * 100" | bc -l | xargs printf "%.1f")
+
+            echo "✅ **Validation completed**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Score | Target | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Precision | ${PRECISION_PCT}% | ≥ 90.0% | $([ $(echo "$PRECISION >= 0.90" | bc -l) -eq 1 ] && echo "✅" || echo "❌") |" >> $GITHUB_STEP_SUMMARY
+            echo "| Recall | ${RECALL_PCT}% | ≥ 97.1% | $([ $(echo "$RECALL >= 0.971" | bc -l) -eq 1 ] && echo "✅" || echo "❌") |" >> $GITHUB_STEP_SUMMARY
+            echo "| F1-Score | ${F1_PCT}% | ≥ 92.0% | $([ $(echo "$F1 >= 0.92" | bc -l) -eq 1 ] && echo "✅" || echo "⚠️") |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            if [ "$MEETS_TARGET" = "true" ]; then
+              echo "🎉 **All targets achieved!**" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "⚠️ **Some targets not met - optimization needed**" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ **Validation failed** - no metrics generated" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Fail if targets not met
+        if: always()
+        run: |
+          if [ -f validation_metrics.json ]; then
+            MEETS_TARGET=$(jq -r '.meets_target' validation_metrics.json)
+
+            if [ "$MEETS_TARGET" = "false" ]; then
+              echo "❌ Error detection accuracy below target thresholds"
+              echo "📊 Review validation report for details"
+              exit 1
+            fi
+
+            echo "✅ All accuracy targets met"
+          else
+            echo "⚠️ No validation metrics generated"
+            exit 1
+          fi

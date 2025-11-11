@@ -8,4 +8,7 @@ Provides benchmarking and evaluation tools:
 
 from __future__ import annotations
 
-__all__ = ["TranslationArena", "WMTBenchmark"]
+from tests.benchmarks.translation_arena import TranslationArena
+from tests.benchmarks.wmt_benchmark import WMTBenchmark, quick_benchmark
+
+__all__ = ["TranslationArena", "WMTBenchmark", "quick_benchmark"]

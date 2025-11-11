@@ -291,6 +291,18 @@ class TestIterativeRefinement:
         assert result["converged"] is True
         assert "Threshold met" in result["reason"]
 
+    def test_check_convergence_empty_reports(self, mock_llm: Mock) -> None:
+        """Test convergence check with empty reports list (edge case)."""
+        refinement = IterativeRefinement(
+            llm_provider=mock_llm, max_iterations=3, convergence_threshold=95.0
+        )
+
+        # Edge case: empty reports list
+        result = refinement._check_convergence([], 0)
+
+        assert result["converged"] is False
+        assert result["reason"] == ""
+
     def test_check_convergence_stagnation(self, mock_llm: Mock) -> None:
         """Test convergence detection on improvement stagnation."""
         refinement = IterativeRefinement(

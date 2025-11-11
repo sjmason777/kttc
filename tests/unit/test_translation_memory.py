@@ -226,8 +226,10 @@ class TestTranslationMemory:
         await tm.increment_usage(segment_id)
         await tm.increment_usage(segment_id)
 
-        # Search to verify usage count
-        results = await tm.search_similar(source="Test", source_lang="en", target_lang="es")
+        # Search to verify usage count (disable MQM filter for test data without scores)
+        results = await tm.search_similar(
+            source="Test", source_lang="en", target_lang="es", min_mqm_score=None
+        )
 
         assert results[0].segment.usage_count == 2
 
@@ -286,3 +288,225 @@ class TestTranslationMemory:
         assert tm.db is None
         assert tm.encoder is None
         assert tm._initialized is False
+
+    async def test_initialize_already_initialized(self):
+        """Test that initialize() skips if already initialized."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+        await tm.initialize()
+
+        # Mark as already initialized
+        assert tm._initialized is True
+
+        # Initialize again - should skip
+        await tm.initialize()
+
+        # Should still be initialized
+        assert tm._initialized is True
+
+        await tm.cleanup()
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_initialize_import_error(self):
+        """Test initialization with missing sentence-transformers."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+
+        # Mock SentenceTransformer to raise ImportError
+        import sys
+
+        old_modules = sys.modules.copy()
+
+        try:
+            # Remove sentence_transformers from modules to simulate ImportError
+            if "sentence_transformers" in sys.modules:
+                del sys.modules["sentence_transformers"]
+
+            # Mock import to fail
+            import builtins
+
+            original_import = builtins.__import__
+
+            def mock_import(name, *args, **kwargs):
+                if "sentence_transformers" in name:
+                    raise ImportError("No module named 'sentence_transformers'")
+                return original_import(name, *args, **kwargs)
+
+            builtins.__import__ = mock_import
+
+            with pytest.raises(RuntimeError, match="Failed to import sentence-transformers"):
+                await tm.initialize()
+
+        finally:
+            builtins.__import__ = original_import
+            sys.modules.update(old_modules)
+            Path(db_path).unlink(missing_ok=True)
+
+    async def test_initialize_general_error(self):
+        """Test initialization with general error."""
+        # Use invalid path to trigger error
+        tm = TranslationMemory("/invalid/path/that/does/not/exist/tm.db")
+
+        with pytest.raises(RuntimeError, match="Failed to initialize Translation Memory"):
+            await tm.initialize()
+
+    async def test_not_initialized_error_add_translation(self):
+        """Test add_translation fails when not initialized."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+
+        # Try to add without initializing
+        with pytest.raises(RuntimeError, match="not initialized"):
+            await tm.add_translation("test", "prueba", "en", "es")
+
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_not_initialized_error_search(self):
+        """Test search_similar fails when not initialized."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+
+        # Try to search without initializing
+        with pytest.raises(RuntimeError, match="not initialized"):
+            await tm.search_similar("test", "en", "es")
+
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_not_initialized_error_increment_usage(self):
+        """Test increment_usage fails when not initialized."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+
+        # Try to increment without initializing
+        with pytest.raises(RuntimeError, match="not initialized"):
+            await tm.increment_usage(1)
+
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_not_initialized_error_get_statistics(self):
+        """Test get_statistics fails when not initialized."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+
+        # Try to get stats without initializing
+        with pytest.raises(RuntimeError, match="not initialized"):
+            await tm.get_statistics()
+
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_del_method_cleanup(self):
+        """Test __del__ method closes database."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+        await tm.initialize()
+
+        # Manually call __del__
+        tm.__del__()
+
+        # Database should be closed
+        # Note: we can't easily verify this, but we ensure it doesn't crash
+
+        Path(db_path).unlink(missing_ok=True)
+
+    async def test_search_similar_no_min_mqm_score(self, tm):
+        """Test search without minimum MQM score filter."""
+        # Add translation without MQM score
+        await tm.add_translation(
+            source="Test without score",
+            translation="Prueba sin puntuación",
+            source_lang="en",
+            target_lang="es",
+        )
+
+        # Search without MQM filter
+        results = await tm.search_similar(
+            source="Test without score",
+            source_lang="en",
+            target_lang="es",
+            min_mqm_score=None,  # No MQM filtering
+            threshold=0.9,
+        )
+
+        # Should find the result even though it has no MQM score
+        assert len(results) >= 1
+
+    async def test_cosine_similarity_orthogonal_vectors(self, tm):
+        """Test cosine similarity with orthogonal vectors."""
+        import numpy as np
+
+        vec1 = np.array([1.0, 0.0, 0.0])
+        vec2 = np.array([0.0, 1.0, 0.0])
+
+        similarity = tm._cosine_similarity(vec1, vec2)
+
+        # Orthogonal vectors should have 0 similarity
+        assert similarity == pytest.approx(0.0, abs=1e-6)
+
+    async def test_search_similar_sorts_by_similarity(self, tm):
+        """Test that search results are sorted by similarity."""
+        # Add multiple translations
+        await tm.add_translation(
+            source="exact match",
+            translation="coincidencia exacta",
+            source_lang="en",
+            target_lang="es",
+            mqm_score=95.0,
+        )
+
+        await tm.add_translation(
+            source="close match test",
+            translation="coincidencia cercana",
+            source_lang="en",
+            target_lang="es",
+            mqm_score=90.0,
+        )
+
+        await tm.add_translation(
+            source="distant match example",
+            translation="ejemplo lejano",
+            source_lang="en",
+            target_lang="es",
+            mqm_score=85.0,
+        )
+
+        # Search for "exact match" - should return results sorted by similarity
+        results = await tm.search_similar(
+            source="exact match",
+            source_lang="en",
+            target_lang="es",
+            threshold=0.3,
+            limit=10,
+            min_mqm_score=None,
+        )
+
+        # Results should be sorted by similarity (descending)
+        if len(results) > 1:
+            for i in range(len(results) - 1):
+                assert results[i].similarity >= results[i + 1].similarity
+
+    def test_create_schema_not_initialized_error(self):
+        """Test _create_schema fails when db is None."""
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            db_path = f.name
+
+        tm = TranslationMemory(db_path)
+        # Don't initialize, so db will be None
+
+        with pytest.raises(RuntimeError, match="Database not initialized"):
+            tm._create_schema()
+
+        Path(db_path).unlink(missing_ok=True)

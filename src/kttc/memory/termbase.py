@@ -1,3 +1,17 @@
+# Copyright 2025 KTTC AI (https://github.com/kttc-ai)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Terminology Base for domain-specific term management.
 
 Provides centralized terminology database with:
@@ -122,9 +136,16 @@ class TerminologyBase:
                 domain TEXT,
                 definition TEXT,
                 usage_note TEXT,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(source_term, source_lang, target_lang, domain)
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        """
+        )
+
+        # Create unique index that treats NULL domain as empty string
+        self.db.execute(
+            """
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_unique_term
+            ON terms(source_term COLLATE NOCASE, source_lang, target_lang, COALESCE(domain, ''))
         """
         )
 
@@ -223,9 +244,12 @@ class TerminologyBase:
             cursor = self.db.execute(
                 """
                 SELECT id FROM terms
-                WHERE source_term = ? COLLATE NOCASE AND source_lang = ? AND target_lang = ?
+                WHERE source_term = ? COLLATE NOCASE
+                  AND source_lang = ?
+                  AND target_lang = ?
+                  AND (domain = ? OR (domain IS NULL AND ? IS NULL))
                 """,
-                (source_term, source_lang, target_lang),
+                (source_term, source_lang, target_lang, domain, domain),
             )
             row = cursor.fetchone()
             return row["id"] if row else 0

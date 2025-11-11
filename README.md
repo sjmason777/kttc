@@ -6,11 +6,11 @@
 
 [![CI](https://github.com/kttc-ai/kttc/workflows/CI/badge.svg)](https://github.com/kttc-ai/kttc/actions)
 [![CodeQL](https://github.com/kttc-ai/kttc/workflows/CodeQL/badge.svg)](https://github.com/kttc-ai/kttc/security/code-scanning)
-<!-- [![codecov](https://codecov.io/gh/kttc-ai/kttc/branch/main/graph/badge.svg)](https://codecov.io/gh/kttc-ai/kttc) -->
-<!-- [![OpenSSF Best Practices](https://www.bestpractices.coreinfrastructure.org/projects/9865/badge)](https://www.bestpractices.coreinfrastructure.org/projects/9865) -->
 [![PyPI](https://img.shields.io/pypi/v/kttc)](https://pypi.org/project/kttc/)
 [![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
+<!-- [![codecov](https://codecov.io/gh/kttc-ai/kttc/branch/main/graph/badge.svg)](https://codecov.io/gh/kttc-ai/kttc) -->
+<!-- [![OpenSSF Best Practices](https://www.bestpractices.coreinfrastructure.org/projects/9865/badge)](https://www.bestpractices.coreinfrastructure.org/projects/9865) -->
 
 ---
 
@@ -600,7 +600,21 @@ Performance comparison with manual review:
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+Copyright 2025 KTTC AI (https://github.com/kttc-ai)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 ---
 
@@ -620,7 +634,7 @@ If you use KTTC in your research, please cite:
 ```bibtex
 @software{kttc2025,
   title = {KTTC: Knowledge Translation Transmutation Core},
-  author = {KTTC Development Team},
+  author = {KTTC AI},
   year = {2025},
   url = {https://github.com/kttc-ai/kttc},
   version = {0.1.0}

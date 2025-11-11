@@ -82,6 +82,15 @@ class TestModelSelector:
         scores = [r[1] for r in recommendations]
         assert scores == sorted(scores, reverse=True)
 
+    def test_recommend_models_unsupported_pair(self, selector):
+        """Test recommendations fallback for unsupported language pair."""
+        # Test with completely unsupported pair
+        recommendations = selector.recommend_models(source_lang="xx", target_lang="yy", top_n=3)
+        # Should return fallback recommendation
+        assert len(recommendations) == 1
+        assert recommendations[0][0] == "claude-3.5-sonnet"
+        assert recommendations[0][1] == 0.85
+
     def test_domain_overrides_language_pair(self, selector):
         """Test that domain preference overrides language pair."""
         # Even though yandexgpt is best for en-ru, legal domain should pick gpt-4.5

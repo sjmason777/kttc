@@ -93,6 +93,8 @@ secrets/
 .pytest_cache/
 .benchmarks/
 test_results/
+benchmark_results/
+validation_results/
 
 # Documentation builds
 docs/_build/
@@ -103,3 +105,11 @@ Dockerfile.test
 
 # Claude Code configuration
 claude.md
+
+# ML models cache (already excluded by pattern)
+*.bin
+*.safetensors
+*.pt
+*.pth
+models/
+checkpoints/

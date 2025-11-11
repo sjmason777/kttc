@@ -1,5 +1,115 @@
 # Contributing to KTTC
 
+Thank you for your interest in contributing to KTTC (Knowledge Translation Transmutation Core)! We welcome contributions from the community.
+
+## Table of Contents
+
+- [Contributor License Agreement](#contributor-license-agreement)
+- [How to Contribute](#how-to-contribute)
+- [Development Setup](#development-setup)
+- [Code Quality Standards](#code-quality-standards)
+- [Pull Request Process](#pull-request-process)
+- [Coding Standards](#coding-standards)
+
+## Contributor License Agreement
+
+**IMPORTANT**: By submitting a contribution to this project, you agree to the following terms:
+
+### Grant of Copyright License
+
+You hereby grant to KTTC AI (https://github.com/kttc-ai) and to recipients of software distributed by KTTC AI a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, sublicense, and distribute your contributions and such derivative works.
+
+### Grant of Patent License
+
+You hereby grant to KTTC AI and to recipients of software distributed by KTTC AI a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the work, where such license applies only to those patent claims licensable by you that are necessarily infringed by your contribution(s) alone or by combination of your contribution(s) with the work to which such contribution(s) was submitted.
+
+### Representations
+
+You represent that:
+1. You are legally entitled to grant the above licenses
+2. Each of your contributions is your original creation
+3. Your contribution submissions include complete details of any third-party license or other restriction of which you are aware
+
+### Submissions on Behalf of Your Employer
+
+If you are making contributions as part of your employment, you represent that you have received permission from your employer to make contributions, or that your employer has waived such rights for your contributions to KTTC AI.
+
+### Agreement
+
+**By submitting a pull request or contribution to this project, you acknowledge that you have read this Contributor License Agreement and agree to its terms.**
+
+---
+
+**Note for Corporate Contributors**: If you are contributing on behalf of a company, we may require a Corporate Contributor License Agreement (CCLA). Please contact us at the project repository.
+
+## How to Contribute
+
+### Reporting Bugs
+
+If you find a bug, please create an issue on GitHub with:
+- A clear, descriptive title
+- Steps to reproduce the issue
+- Expected behavior vs actual behavior
+- Your environment (OS, Python version, KTTC version)
+- Any relevant logs or error messages
+
+### Suggesting Enhancements
+
+We welcome feature requests! Please create an issue with:
+- A clear description of the feature
+- Use cases and benefits
+- Any relevant examples or mockups
+
+### Contributing Code
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes following our coding standards
+4. Write or update tests as needed
+5. Ensure all quality checks pass
+6. Commit your changes (see commit message guidelines below)
+7. Push to your fork
+8. Open a Pull Request
+
+## Development Setup
+
+### Prerequisites
+
+- Python 3.11 or 3.12
+- Git
+
+### Setup Instructions
+
+```bash
+# Clone your fork
+git clone https://github.com/YOUR_USERNAME/kttc.git
+cd kttc
+
+# Create virtual environment
+python3.11 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+python3.11 -m pip install -e ".[dev]"
+
+# Install pre-commit hooks (automatic)
+# The hook is already configured in .git/hooks/pre-commit
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+python3.11 -m pytest
+
+# Run specific test suite
+python3.11 -m pytest tests/unit/
+python3.11 -m pytest tests/integration/
+
+# Run with coverage
+python3.11 -m pytest --cov=kttc --cov-report=html
+```
+
 ## Code Quality Standards
 
 All code contributions must meet strict quality standards enforced by automated checks.
@@ -142,8 +252,70 @@ python3 -m <command>  # Wrong - this is Python 3.9
 
 See `claude.md` for details.
 
+## Pull Request Process
+
+1. **Update Documentation**: Update README.md or other docs if needed
+2. **Add Tests**: Ensure new features have appropriate test coverage (>80%)
+3. **Follow Coding Standards**: Use Black for formatting, Ruff for linting, MyPy for type checking
+4. **Write Clear Commit Messages**: Use conventional commit format (see below)
+5. **Keep PRs Focused**: One feature or fix per PR
+6. **Pass All Quality Checks**: Pre-commit hook must pass
+
+### Commit Message Guidelines
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, no logic change)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+
+**Example:**
+```
+feat(agents): add context-aware agent for cultural nuances
+
+Implement new agent that analyzes cultural context in translations
+and suggests culturally appropriate alternatives.
+
+Closes #123
+```
+
+## Coding Standards
+
+### Documentation
+
+- Write clear, self-documenting code
+- Add docstrings to all public modules, functions, classes, and methods (Google style)
+- Use meaningful variable and function names
+- Keep functions focused and small
+- Add inline comments for complex logic
+
+### Best Practices
+
+- Write unit tests for new functionality
+- Test edge cases and error conditions
+- Use descriptive test names
+- Avoid deep nesting (max 3-4 levels)
+- Follow the Single Responsibility Principle
+
 ## Questions?
 
 - Check `README.md` for project overview
-- Check `claude.md` for development guidelines
+- Check `CLAUDE.md` for development guidelines
 - Open an issue on GitHub
+
+---
+
+Thank you for contributing to KTTC! Your contributions help make translation QA better for everyone.

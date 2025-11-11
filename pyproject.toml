@@ -8,15 +8,15 @@ version = "0.1.0"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "MIT"}
+license = {text = "Apache-2.0"}
 authors = [
-    {name = "KTTC Development", email = "dev@kt.tc"}
+    {name = "KTTC AI", email = "dev@kt.tc"}
 ]
 keywords = ["translation", "qa", "quality-assurance", "llm", "agents", "automation"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Quality Assurance",
@@ -36,6 +36,9 @@ dependencies = [
     "anthropic>=0.72.0",
     "aiosqlite>=0.21.0",
     "orjson>=3.11.4",
+    "fastapi>=0.121.1",  # For WebUI server
+    "uvicorn>=0.38.0",  # For WebUI server
+    "websockets>=15.0.1",  # For WebUI real-time updates
 ]
 
 [project.optional-dependencies]
@@ -48,6 +51,9 @@ dev = [
     "ruff>=0.14.4",
     "mypy>=1.18.2",
     "pre-commit>=4.4.0",
+    "datasets>=4.4.1",  # For WMT/FLORES benchmarking
+    "numpy>=2.3.4",  # For statistical analysis in benchmarks
+    "types-requests>=2.32.4",  # Type stubs
 ]
 
 [project.scripts]
