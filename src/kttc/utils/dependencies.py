@@ -28,7 +28,6 @@ import sys
 from typing import Literal
 
 from rich.panel import Panel
-from rich.prompt import Confirm
 from rich.progress import (
     BarColumn,
     DownloadColumn,
@@ -37,6 +36,7 @@ from rich.progress import (
     TextColumn,
     TimeRemainingColumn,
 )
+from rich.prompt import Confirm
 
 from kttc.cli.ui import console, print_error, print_info, print_success, print_warning
 
@@ -136,15 +136,17 @@ def show_missing_dependencies_prompt(
         elif "lightweight" in desc or pkg in ["sacrebleu", "numpy"]:
             total_size += 50
 
-    lines.extend([
-        "",
-        f"[bold]Estimated download size:[/bold] ~{total_size}MB",
-        "",
-        "[bold]Installation options:[/bold]",
-        "  1. Auto-install now (recommended)",
-        f"  2. Manual: [dim]pip install kttc[{group}][/dim]",
-        "  3. Skip (limited functionality)",
-    ])
+    lines.extend(
+        [
+            "",
+            f"[bold]Estimated download size:[/bold] ~{total_size}MB",
+            "",
+            "[bold]Installation options:[/bold]",
+            "  1. Auto-install now (recommended)",
+            f"  2. Manual: [dim]pip install kttc[{group}][/dim]",
+            "  3. Skip (limited functionality)",
+        ]
+    )
 
     # Show panel
     panel = Panel(
@@ -227,9 +229,7 @@ def install_dependency_group(group: DependencyGroup) -> bool:
         return False
 
 
-def ensure_dependency_group(
-    group: DependencyGroup, command: str, required: bool = True
-) -> bool:
+def ensure_dependency_group(group: DependencyGroup, command: str, required: bool = True) -> bool:
     """Ensure a dependency group is installed, prompting user if needed.
 
     Args:
