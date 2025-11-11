@@ -351,9 +351,10 @@ Common terms: {common_terms}
 
         logger.info(f"Adapting {base_agent.__class__.__name__} for domain: {self.domain}")
 
-        # Create domain-enhanced prompt
+        # Create domain-enhanced prompt using agent's base prompt
         enhanced_prompt = self._enhance_prompt(
-            base_agent.get_base_prompt(), patterns  # type: ignore[attr-defined]
+            base_agent.get_base_prompt(),
+            patterns,
         )
 
         # Create adapted agent with modified prompt
@@ -364,7 +365,9 @@ Common terms: {common_terms}
         setattr(base_agent, "_domain", self.domain)
         setattr(base_agent, "_domain_patterns", patterns)
         setattr(
-            base_agent, "_original_prompt", base_agent.get_base_prompt()  # type: ignore[attr-defined]
+            base_agent,
+            "_original_prompt",
+            base_agent.get_base_prompt(),
         )
         setattr(base_agent, "_enhanced_prompt", enhanced_prompt)
 

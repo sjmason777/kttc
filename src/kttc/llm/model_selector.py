@@ -125,7 +125,7 @@ class ModelSelector:
         source_lang: str,
         target_lang: str,
         domain: str | None = None,
-        task_type: str = "qa",  # "qa" or "translation"
+        task_type: str = "qa",  # "qa" or "translation" # noqa: ARG002 - Reserved for future use
         optimize_for: str = "quality",  # "quality" or "cost"
     ) -> str:
         """Select optimal model for given task.
@@ -212,7 +212,7 @@ class ModelSelector:
 
         if provider is None:
             raise ValueError(
-                f"Unknown model: {model}. " f"Supported models: {list(self.PROVIDER_MAP.keys())}"
+                f"Unknown model: {model}. Supported models: {list(self.PROVIDER_MAP.keys())}"
             )
 
         return provider

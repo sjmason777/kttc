@@ -471,12 +471,8 @@ Total benchmarks run: {len(self.results)}
                 report += f"  - Max: {dist['max']:.2f}\n"
             report += "\n"
 
-        # Add comparison section (placeholder)
-        report += """## Comparison with Baselines
-
-*(To be added: comparison with Google Translate, DeepL, etc.)*
-
-## Interpretation
+        # Add interpretation section
+        report += """## Interpretation
 
 - **MQM Score ≥ 95:** Excellent quality (minimal post-editing required)
 - **MQM Score 85-95:** Good quality (light post-editing required)

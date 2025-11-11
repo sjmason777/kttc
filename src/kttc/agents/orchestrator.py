@@ -44,6 +44,7 @@ from kttc.llm import BaseLLMProvider
 from .accuracy import AccuracyAgent
 from .base import AgentEvaluationError, BaseAgent
 from .fluency import FluencyAgent
+from .fluency_russian import RussianFluencyAgent
 from .terminology import TerminologyAgent
 
 
@@ -82,6 +83,11 @@ class AgentOrchestrator:
             agent_temperature: Temperature setting for all agents (default: 0.1)
             agent_max_tokens: Max tokens for agent responses (default: 2000)
         """
+        self.llm_provider = llm_provider
+        self.agent_temperature = agent_temperature
+        self.agent_max_tokens = agent_max_tokens
+
+        # Core agents (always enabled)
         self.agents: list[BaseAgent] = [
             AccuracyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
             FluencyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
@@ -92,11 +98,39 @@ class AgentOrchestrator:
         self.scorer = MQMScorer()
         self.quality_threshold = quality_threshold
 
+    def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
+        """Get language-specific agents based on target language.
+
+        Args:
+            task: Translation task with target language info
+
+        Returns:
+            List of language-specific agent instances
+        """
+        language_agents: list[BaseAgent] = []
+
+        # Russian-specific fluency agent
+        if task.target_lang == "ru":
+            language_agents.append(
+                RussianFluencyAgent(
+                    self.llm_provider,
+                    temperature=self.agent_temperature,
+                    max_tokens=self.agent_max_tokens,
+                )
+            )
+
+        # Future: Add more language-specific agents here
+        # if task.target_lang == "zh":
+        #     language_agents.append(ChineseFluencyAgent(...))
+
+        return language_agents
+
     async def evaluate(self, task: TranslationTask) -> QAReport:
         """Evaluate translation quality using all agents in parallel.
 
-        Runs all configured agents concurrently, aggregates their error findings,
-        calculates MQM score, and generates a comprehensive quality report.
+        Runs all configured agents concurrently, including language-specific agents,
+        aggregates their error findings, calculates MQM score, and generates a
+        comprehensive quality report.
 
         Args:
             task: Translation task to evaluate
@@ -119,8 +153,14 @@ class AgentOrchestrator:
             >>> print(f"MQM Score: {report.mqm_score}")
         """
         try:
+            # Get language-specific agents
+            language_agents = self._get_language_specific_agents(task)
+
+            # Combine core agents with language-specific agents
+            all_agents = self.agents + language_agents
+
             # Run all agents in parallel using asyncio.gather
-            results = await asyncio.gather(*[agent.evaluate(task) for agent in self.agents])
+            results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
 
             # Flatten error lists from all agents
             all_errors: list[ErrorAnnotation] = []

@@ -1,0 +1,15 @@
+# Vulture configuration for dead code detection
+# Paths to scan
+paths = src/kttc
+
+# Exclude patterns
+exclude = tests/,examples/,__pycache__/,*.pyc,*.pyo
+
+# Minimum confidence (0-100)
+min_confidence = 60
+
+# Sort by size
+sort_by_size = true
+
+# Whitelist file for false positives
+# Run with: vulture src/kttc .vulture_whitelist.py

@@ -1,0 +1,9 @@
+# Bandit strict security configuration
+[bandit]
+exclude_dirs = /tests,/examples,/.venv,/venv,/__pycache__
+severity = low
+confidence = low
+recursive = true
+aggregate = json
+number = 3
+format = screen

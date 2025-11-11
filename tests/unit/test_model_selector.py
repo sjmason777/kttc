@@ -43,7 +43,8 @@ class TestModelSelector:
     def test_fallback_for_unsupported_pair(self, selector):
         """Test fallback for unsupported language pair."""
         model = selector.select_best_model(
-            source_lang="xx", target_lang="yy"  # Unsupported  # Unsupported
+            source_lang="xx",
+            target_lang="yy",  # Unsupported  # Unsupported
         )
         assert model == "claude-3.5-sonnet"  # Default fallback
 

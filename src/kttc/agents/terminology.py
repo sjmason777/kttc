@@ -70,6 +70,14 @@ class TerminologyAgent(BaseAgent):
         """Get error category this agent checks."""
         return "terminology"
 
+    def get_base_prompt(self) -> str:
+        """Get the base prompt template for terminology evaluation.
+
+        Returns:
+            The raw prompt template string
+        """
+        return self._prompt_template.template
+
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate translation terminology and return found errors.
 

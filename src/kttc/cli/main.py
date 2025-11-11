@@ -54,7 +54,7 @@ def version_callback(value: bool) -> None:
 
 @app.callback()
 def main(
-    version: bool = typer.Option(
+    version: bool = typer.Option(  # noqa: ARG001 - Used by Typer callback
         False,
         "--version",
         "-v",
@@ -86,6 +86,17 @@ def check(
     provider: str | None = typer.Option(
         None, "--provider", help="LLM provider (openai or anthropic)"
     ),
+    auto_select_model: bool = typer.Option(
+        False, "--auto-select-model", help="Automatically select best model for language pair"
+    ),
+    auto_correct: bool = typer.Option(
+        False, "--auto-correct", help="Automatically correct detected errors"
+    ),
+    correction_level: str = typer.Option(
+        "light",
+        "--correction-level",
+        help="Correction level: light (critical/major) or full (all errors)",
+    ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
 ) -> None:
     """
@@ -94,9 +105,12 @@ def check(
     Evaluates a translation using multi-agent QA system and provides
     MQM score, error annotations, and pass/fail status.
 
+    Optionally can auto-correct detected errors using AI post-editing.
+
     Example:
         kttc check --source source.txt --translation trans.txt \\
-                   --source-lang en --target-lang es --threshold 95
+                   --source-lang en --target-lang es --threshold 95 \\
+                   --auto-correct --correction-level light
     """
     # Run async function
     try:
@@ -110,6 +124,9 @@ def check(
                 output,
                 format,
                 provider,
+                auto_select_model,
+                auto_correct,
+                correction_level,
                 verbose,
             )
         )
@@ -123,6 +140,68 @@ def check(
         raise typer.Exit(code=1)
 
 
+def _load_translation_files(source: str, translation: str, verbose: bool) -> tuple[str, str]:
+    """Load source and translation text files.
+
+    Args:
+        source: Path to source file
+        translation: Path to translation file
+        verbose: Whether to show verbose output
+
+    Returns:
+        Tuple of (source_text, translation_text)
+
+    Raises:
+        FileNotFoundError: If files don't exist
+    """
+    source_path = Path(source)
+    translation_path = Path(translation)
+
+    if not source_path.exists():
+        raise FileNotFoundError(f"Source file not found: {source}")
+    if not translation_path.exists():
+        raise FileNotFoundError(f"Translation file not found: {translation}")
+
+    source_text = source_path.read_text(encoding="utf-8")
+    translation_text = translation_path.read_text(encoding="utf-8")
+
+    if verbose:
+        console.print(f"[dim]Loaded {len(source_text)} chars from source[/dim]")
+        console.print(f"[dim]Loaded {len(translation_text)} chars from translation[/dim]\n")
+
+    return source_text, translation_text
+
+
+def _create_translation_task(
+    source_text: str,
+    translation_text: str,
+    source_lang: str,
+    target_lang: str,
+    verbose: bool,
+) -> TranslationTask:
+    """Create translation task from loaded texts.
+
+    Args:
+        source_text: Source text content
+        translation_text: Translation text content
+        source_lang: Source language code
+        target_lang: Target language code
+        verbose: Whether to show verbose output
+
+    Returns:
+        Configured TranslationTask instance
+    """
+    task = TranslationTask(
+        source_text=source_text,
+        translation=translation_text,
+        source_lang=source_lang,
+        target_lang=target_lang,
+    )
+    if verbose:
+        console.print(f"[dim]Created task with {task.word_count} words[/dim]\n")
+    return task
+
+
 async def _check_async(
     source: str,
     translation: str,
@@ -132,9 +211,14 @@ async def _check_async(
     output: str | None,
     format: str,
     provider: str | None,
+    auto_select_model: bool,
+    auto_correct: bool,
+    correction_level: str,
     verbose: bool,
 ) -> None:
     """Async implementation of check command."""
+    from kttc.core.correction import AutoCorrector
+
     # Load settings
     settings = get_settings()
 
@@ -144,56 +228,31 @@ async def _check_async(
     console.print(f"Translation file: [cyan]{translation}[/cyan]")
     console.print(f"Languages:        [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
     console.print(f"Threshold:        [cyan]{threshold}[/cyan]")
+    if auto_select_model:
+        console.print("Model selection:  [cyan]automatic (intelligent)[/cyan]")
+    if auto_correct:
+        console.print(f"Auto-correct:     [cyan]enabled ({correction_level})[/cyan]")
     console.print()
 
     # Load files
     try:
-        source_path = Path(source)
-        translation_path = Path(translation)
-
-        if not source_path.exists():
-            raise FileNotFoundError(f"Source file not found: {source}")
-        if not translation_path.exists():
-            raise FileNotFoundError(f"Translation file not found: {translation}")
-
-        source_text = source_path.read_text(encoding="utf-8")
-        translation_text = translation_path.read_text(encoding="utf-8")
-
-        if verbose:
-            console.print(f"[dim]Loaded {len(source_text)} chars from source[/dim]")
-            console.print(f"[dim]Loaded {len(translation_text)} chars from translation[/dim]\n")
-
+        source_text, translation_text = _load_translation_files(source, translation, verbose)
     except Exception as e:
         raise RuntimeError(f"Failed to load files: {e}") from e
 
     # Create translation task
     try:
-        task = TranslationTask(
-            source_text=source_text,
-            translation=translation_text,
-            source_lang=source_lang,
-            target_lang=target_lang,
+        task = _create_translation_task(
+            source_text, translation_text, source_lang, target_lang, verbose
         )
-        if verbose:
-            console.print(f"[dim]Created task with {task.word_count} words[/dim]\n")
     except Exception as e:
         raise RuntimeError(f"Failed to create translation task: {e}") from e
 
-    # Setup LLM provider
+    # Setup LLM provider with intelligent model selection
     try:
-        provider_name = provider or settings.default_llm_provider
-        api_key = settings.get_llm_provider_key(provider_name)
-
-        llm_provider: BaseLLMProvider
-        if provider_name == "openai":
-            llm_provider = OpenAIProvider(api_key=api_key, model=settings.default_model)
-        elif provider_name == "anthropic":
-            llm_provider = AnthropicProvider(api_key=api_key, model=settings.default_model)
-        else:
-            raise ValueError(f"Unknown provider: {provider_name}")
-
-        if verbose:
-            console.print(f"[dim]Using {provider_name} provider[/dim]\n")
+        llm_provider = _setup_llm_provider(
+            provider, settings, verbose, task=task, auto_select_model=auto_select_model
+        )
     except Exception as e:
         raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
 
@@ -213,6 +272,48 @@ async def _check_async(
     # Display results
     _display_report(report, format, verbose)
 
+    # Auto-correct if requested and errors found
+    if auto_correct and len(report.errors) > 0:
+        console.print(f"\n[yellow]🔧 Applying auto-correction ({correction_level})...[/yellow]")
+        try:
+            corrector = AutoCorrector(llm_provider)
+            corrected_text = await corrector.auto_correct(
+                task=task,
+                errors=report.errors,
+                correction_level=correction_level,
+                temperature=settings.default_temperature,
+            )
+
+            # Save corrected version
+            corrected_path = Path(translation).parent / f"{Path(translation).stem}_corrected.txt"
+            corrected_path.write_text(corrected_text, encoding="utf-8")
+
+            console.print(f"[green]✓ Corrected translation saved to: {corrected_path}[/green]")
+
+            # Re-evaluate corrected translation
+            if verbose:
+                console.print("\n[dim]Re-evaluating corrected translation...[/dim]")
+            corrected_task = _create_translation_task(
+                source_text, corrected_text, source_lang, target_lang, verbose=False
+            )
+            corrected_report = await orchestrator.evaluate(corrected_task)
+
+            console.print("\n[bold]Corrected Translation Quality:[/bold]")
+            console.print(f"MQM Score: [cyan]{corrected_report.mqm_score:.2f}[/cyan]")
+            console.print(
+                f"Errors: {len(report.errors)} → [cyan]{len(corrected_report.errors)}[/cyan]"
+            )
+            console.print(
+                f"Status: {report.status} → "
+                f"[{'green' if corrected_report.status == 'pass' else 'red'}]"
+                f"{corrected_report.status}[/{'green' if corrected_report.status == 'pass' else 'red'}]"
+            )
+
+        except Exception as e:
+            console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
+            if verbose:
+                console.print_exception()
+
     # Save output if requested
     if output:
         _save_report(report, output, format)
@@ -223,93 +324,129 @@ async def _check_async(
         raise typer.Exit(code=1)
 
 
-async def _batch_async(
-    source_dir: str,
-    translation_dir: str,
+def _scan_batch_directories(
+    source_dir: str, translation_dir: str, verbose: bool
+) -> list[tuple[Path, Path]]:
+    """Scan directories and find matching source-translation file pairs.
+
+    Args:
+        source_dir: Path to source files directory
+        translation_dir: Path to translation files directory
+        verbose: Whether to show verbose output
+
+    Returns:
+        List of (source_file, translation_file) path pairs
+
+    Raises:
+        FileNotFoundError: If directories don't exist
+        ValueError: If no matching pairs found
+    """
+    source_path = Path(source_dir)
+    translation_path = Path(translation_dir)
+
+    if not source_path.exists() or not source_path.is_dir():
+        raise FileNotFoundError(f"Source directory not found: {source_dir}")
+    if not translation_path.exists() or not translation_path.is_dir():
+        raise FileNotFoundError(f"Translation directory not found: {translation_dir}")
+
+    # Find matching files
+    source_files = sorted(source_path.glob("*.txt"))
+    if not source_files:
+        raise ValueError(f"No .txt files found in source directory: {source_dir}")
+
+    # Match source and translation files
+    file_pairs: list[tuple[Path, Path]] = []
+    for source_file in source_files:
+        translation_file = translation_path / source_file.name
+        if translation_file.exists():
+            file_pairs.append((source_file, translation_file))
+        elif verbose:
+            console.print(
+                f"[yellow]⚠ Skipping {source_file.name}: no matching translation[/yellow]"
+            )
+
+    if not file_pairs:
+        raise ValueError("No matching source-translation file pairs found")
+
+    return file_pairs
+
+
+def _setup_llm_provider(
+    provider: str | None,
+    settings: Any,
+    verbose: bool,
+    task: TranslationTask | None = None,
+    auto_select_model: bool = False,
+) -> BaseLLMProvider:
+    """Setup and configure LLM provider with optional intelligent model selection.
+
+    Args:
+        provider: Provider name (openai/anthropic) or None for default
+        settings: Application settings
+        verbose: Whether to show verbose output
+        task: Optional translation task for intelligent model selection
+        auto_select_model: Whether to use ModelSelector for optimal model
+
+    Returns:
+        Configured LLM provider instance
+
+    Raises:
+        ValueError: If provider is unknown
+        RuntimeError: If provider setup fails
+    """
+    from kttc.llm.model_selector import ModelSelector
+
+    provider_name = provider or settings.default_llm_provider
+    api_key = settings.get_llm_provider_key(provider_name)
+
+    # Intelligent model selection if enabled and task provided
+    model = settings.default_model
+    if auto_select_model and task is not None:
+        selector = ModelSelector()
+        recommended_model = selector.select_best_model(
+            source_lang=task.source_lang,
+            target_lang=task.target_lang,
+            domain=task.context.get("domain") if task.context else None,
+            task_type="qa",
+            optimize_for="quality",
+        )
+        model = recommended_model
+        if verbose:
+            console.print(f"[dim]🤖 Auto-selected model: {model}[/dim]")
+
+    llm_provider: BaseLLMProvider
+    if provider_name == "openai":
+        llm_provider = OpenAIProvider(api_key=api_key, model=model)
+    elif provider_name == "anthropic":
+        llm_provider = AnthropicProvider(api_key=api_key, model=model)
+    else:
+        raise ValueError(f"Unknown provider: {provider_name}")
+
+    if verbose:
+        console.print(f"[dim]Using {provider_name} provider with model {model}[/dim]\n")
+
+    return llm_provider
+
+
+async def _process_batch_files(
+    file_pairs: list[tuple[Path, Path]],
+    orchestrator: AgentOrchestrator,
     source_lang: str,
     target_lang: str,
-    threshold: float,
-    output: str,
     parallel: int,
-    provider: str | None,
-    verbose: bool,
-) -> None:
-    """Async implementation of batch command."""
-    # Load settings
-    settings = get_settings()
+) -> list[tuple[str, QAReport]]:
+    """Process file pairs in parallel and collect results.
 
-    # Display header
-    console.print("\n[bold]KTTC - Batch Translation Quality Check[/bold]\n")
-    console.print(f"Source directory:      [cyan]{source_dir}[/cyan]")
-    console.print(f"Translation directory: [cyan]{translation_dir}[/cyan]")
-    console.print(f"Languages:             [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
-    console.print(f"Threshold:             [cyan]{threshold}[/cyan]")
-    console.print(f"Parallel workers:      [cyan]{parallel}[/cyan]")
-    console.print()
+    Args:
+        file_pairs: List of (source, translation) file path pairs
+        orchestrator: Agent orchestrator for evaluation
+        source_lang: Source language code
+        target_lang: Target language code
+        parallel: Number of parallel workers
 
-    # Scan directories
-    try:
-        source_path = Path(source_dir)
-        translation_path = Path(translation_dir)
-
-        if not source_path.exists() or not source_path.is_dir():
-            raise FileNotFoundError(f"Source directory not found: {source_dir}")
-        if not translation_path.exists() or not translation_path.is_dir():
-            raise FileNotFoundError(f"Translation directory not found: {translation_dir}")
-
-        # Find matching files
-        source_files = sorted(source_path.glob("*.txt"))
-        if not source_files:
-            raise ValueError(f"No .txt files found in source directory: {source_dir}")
-
-        # Match source and translation files
-        file_pairs: list[tuple[Path, Path]] = []
-        for source_file in source_files:
-            translation_file = translation_path / source_file.name
-            if translation_file.exists():
-                file_pairs.append((source_file, translation_file))
-            elif verbose:
-                console.print(
-                    f"[yellow]⚠ Skipping {source_file.name}: no matching translation[/yellow]"
-                )
-
-        if not file_pairs:
-            raise ValueError("No matching source-translation file pairs found")
-
-        console.print(f"Found [cyan]{len(file_pairs)}[/cyan] file pairs to process\n")
-
-    except Exception as e:
-        raise RuntimeError(f"Failed to scan directories: {e}") from e
-
-    # Setup LLM provider
-    try:
-        provider_name = provider or settings.default_llm_provider
-        api_key = settings.get_llm_provider_key(provider_name)
-
-        llm_provider: BaseLLMProvider
-        if provider_name == "openai":
-            llm_provider = OpenAIProvider(api_key=api_key, model=settings.default_model)
-        elif provider_name == "anthropic":
-            llm_provider = AnthropicProvider(api_key=api_key, model=settings.default_model)
-        else:
-            raise ValueError(f"Unknown provider: {provider_name}")
-
-        if verbose:
-            console.print(f"[dim]Using {provider_name} provider[/dim]\n")
-    except Exception as e:
-        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
-
-    # Create orchestrator
-    orchestrator = AgentOrchestrator(
-        llm_provider,
-        quality_threshold=threshold,
-        agent_temperature=settings.default_temperature,
-        agent_max_tokens=settings.default_max_tokens,
-    )
-
-    # Process files in parallel
-    console.print("[yellow]⏳ Processing translations...[/yellow]\n")
-
+    Returns:
+        List of (filename, report) tuples
+    """
     results: list[tuple[str, QAReport]] = []
     semaphore = asyncio.Semaphore(parallel)
 
@@ -355,6 +492,60 @@ async def _batch_async(
             except Exception as e:
                 progress.console.print(f"  [red]✗ Error processing file: {e}[/red]")
                 progress.advance(task_id)
+
+    return results
+
+
+async def _batch_async(
+    source_dir: str,
+    translation_dir: str,
+    source_lang: str,
+    target_lang: str,
+    threshold: float,
+    output: str,
+    parallel: int,
+    provider: str | None,
+    verbose: bool,
+) -> None:
+    """Async implementation of batch command."""
+    # Load settings
+    settings = get_settings()
+
+    # Display header
+    console.print("\n[bold]KTTC - Batch Translation Quality Check[/bold]\n")
+    console.print(f"Source directory:      [cyan]{source_dir}[/cyan]")
+    console.print(f"Translation directory: [cyan]{translation_dir}[/cyan]")
+    console.print(f"Languages:             [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
+    console.print(f"Threshold:             [cyan]{threshold}[/cyan]")
+    console.print(f"Parallel workers:      [cyan]{parallel}[/cyan]")
+    console.print()
+
+    # Scan directories
+    try:
+        file_pairs = _scan_batch_directories(source_dir, translation_dir, verbose)
+        console.print(f"Found [cyan]{len(file_pairs)}[/cyan] file pairs to process\n")
+    except Exception as e:
+        raise RuntimeError(f"Failed to scan directories: {e}") from e
+
+    # Setup LLM provider
+    try:
+        llm_provider = _setup_llm_provider(provider, settings, verbose)
+    except Exception as e:
+        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
+
+    # Create orchestrator
+    orchestrator = AgentOrchestrator(
+        llm_provider,
+        quality_threshold=threshold,
+        agent_temperature=settings.default_temperature,
+        agent_max_tokens=settings.default_max_tokens,
+    )
+
+    # Process files in parallel
+    console.print("[yellow]⏳ Processing translations...[/yellow]\n")
+    results = await _process_batch_files(
+        file_pairs, orchestrator, source_lang, target_lang, parallel
+    )
 
     # Generate aggregated report
     console.print()
@@ -554,7 +745,11 @@ def translate(
         95.0, "--threshold", help="Quality threshold for auto-refinement"
     ),
     max_iterations: int = typer.Option(3, "--max-iterations", help="Maximum refinement iterations"),
-    output: str = typer.Option(None, "--output", "-o", help="Output file path"),
+    output: str | None = typer.Option(None, "--output", "-o", help="Output file path"),
+    provider: str | None = typer.Option(
+        None, "--provider", help="LLM provider (openai or anthropic)"
+    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
 ) -> None:
     """
     Translate text with automatic quality checking.
@@ -566,14 +761,154 @@ def translate(
         kttc translate --text "Hello world" \\
                       --source-lang en --target-lang es --threshold 95
     """
-    console.print("[yellow]Translating with quality assurance...[/yellow]")
-    console.print(f"Source language: [cyan]{source_lang}[/cyan]")
-    console.print(f"Target language: [cyan]{target_lang}[/cyan]")
-    console.print(f"Quality threshold: [cyan]{threshold}[/cyan]")
-    console.print(f"Max iterations: [cyan]{max_iterations}[/cyan]")
+    # Run async function
+    try:
+        asyncio.run(
+            _translate_async(
+                text,
+                source_lang,
+                target_lang,
+                threshold,
+                max_iterations,
+                output,
+                provider,
+                verbose,
+            )
+        )
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
+        raise typer.Exit(code=130)
+    except Exception as e:
+        console.print(f"\n[red]✗ Error: {e}[/red]")
+        if verbose:
+            console.print_exception()
+        raise typer.Exit(code=1)
 
-    # TODO: Implement translation with TEaR loop
-    console.print("\n[red]⚠ Not implemented yet - coming in future phases![/red]")
+
+async def _translate_async(
+    text: str,
+    source_lang: str,
+    target_lang: str,
+    threshold: float,
+    max_iterations: int,
+    output: str | None,
+    provider: str | None,
+    verbose: bool,
+) -> None:
+    """Async implementation of translate command using TEaR loop."""
+    from kttc.core.refinement import IterativeRefinement
+
+    # Load settings
+    settings = get_settings()
+
+    # Display header
+    console.print("\n[bold]KTTC - AI Translation with Quality Assurance[/bold]\n")
+    console.print(f"Languages:        [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
+    console.print(f"Quality threshold: [cyan]{threshold}[/cyan]")
+    console.print(f"Max iterations:   [cyan]{max_iterations}[/cyan]")
+    console.print()
+
+    # Load text (from file if starts with @)
+    if text.startswith("@"):
+        text_path = Path(text[1:])
+        if not text_path.exists():
+            raise FileNotFoundError(f"Text file not found: {text[1:]}")
+        source_text = text_path.read_text(encoding="utf-8")
+        if verbose:
+            console.print(f"[dim]Loaded {len(source_text)} chars from {text_path}[/dim]\n")
+    else:
+        source_text = text
+
+    # Setup LLM provider
+    try:
+        llm_provider = _setup_llm_provider(provider, settings, verbose)
+    except Exception as e:
+        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
+
+    # Step 1: Generate initial translation
+    console.print("[yellow]⏳ Generating initial translation...[/yellow]")
+    try:
+        translation_prompt = f"""Translate the following text from {source_lang} to {target_lang}.
+Provide only the translation without any explanation.
+
+Text to translate:
+{source_text}
+
+Translation:"""
+
+        initial_translation = await llm_provider.complete(
+            translation_prompt,
+            temperature=settings.default_temperature,
+            max_tokens=settings.default_max_tokens,
+        )
+
+        console.print("[green]✓ Initial translation generated[/green]")
+        if verbose:
+            console.print(f"\n[dim]Translation: {initial_translation[:200]}...[/dim]\n")
+
+    except Exception as e:
+        raise RuntimeError(f"Failed to generate translation: {e}") from e
+
+    # Step 2: Iterative refinement (TEaR loop)
+    console.print("\n[yellow]⏳ Running TEaR (Translate-Estimate-Refine) loop...[/yellow]\n")
+    try:
+        # Create initial task
+        task = TranslationTask(
+            source_text=source_text,
+            translation=initial_translation,
+            source_lang=source_lang,
+            target_lang=target_lang,
+        )
+
+        # Create orchestrator for evaluation
+        orchestrator = AgentOrchestrator(
+            llm_provider,
+            quality_threshold=threshold,
+            agent_temperature=settings.default_temperature,
+            agent_max_tokens=settings.default_max_tokens,
+        )
+
+        # Create refinement engine
+        refinement = IterativeRefinement(
+            llm_provider=llm_provider,
+            max_iterations=max_iterations,
+            convergence_threshold=threshold,
+            min_improvement=1.0,
+        )
+
+        # Run refinement
+        result = await refinement.refine_until_convergence(task, orchestrator)
+
+        # Display results
+        console.print("\n[bold]Final Results:[/bold]")
+        console.print(f"Final MQM Score: [cyan]{result.final_score:.2f}[/cyan]")
+        console.print(f"Iterations: [cyan]{result.iterations}[/cyan]")
+        console.print(f"Improvement: [cyan]+{result.improvement:.2f}[/cyan] points")
+        console.print(
+            f"Status: "
+            f"[{'green' if result.converged else 'yellow'}]"
+            f"{'Converged' if result.converged else 'Max iterations reached'}"
+            f"[/{'green' if result.converged else 'yellow'}]"
+        )
+        console.print("\n[bold]Translation:[/bold]")
+        console.print(f"[cyan]{result.final_translation}[/cyan]")
+
+        # Save output if requested
+        if output:
+            output_path = Path(output)
+            output_path.write_text(result.final_translation, encoding="utf-8")
+            console.print(f"\n[dim]Translation saved to: {output}[/dim]")
+
+        # Show iteration history if verbose
+        if verbose:
+            console.print("\n[bold]Iteration History:[/bold]")
+            for i, report in enumerate(result.qa_reports):
+                console.print(
+                    f"  Iteration {i + 1}: MQM {report.mqm_score:.2f}, {len(report.errors)} errors"
+                )
+
+    except Exception as e:
+        raise RuntimeError(f"Translation refinement failed: {e}") from e
 
 
 @app.command()

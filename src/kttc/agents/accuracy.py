@@ -70,6 +70,14 @@ class AccuracyAgent(BaseAgent):
         """Get error category this agent checks."""
         return "accuracy"
 
+    def get_base_prompt(self) -> str:
+        """Get the base prompt template for accuracy evaluation.
+
+        Returns:
+            The raw prompt template string
+        """
+        return self._prompt_template.template
+
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate translation accuracy and return found errors.
 

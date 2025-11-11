@@ -81,6 +81,71 @@ class RussianFluencyAgent(FluencyAgent):
             max_tokens: Maximum tokens in response
         """
         super().__init__(llm_provider, temperature, max_tokens)
+        # Store Russian-specific prompt template
+        self._russian_prompt_base = """You are a native Russian speaker and linguistic expert.
+
+Your task: Identify Russian-specific linguistic errors in the translation.
+
+## TRANSLATION (Russian):
+{translation}
+
+## RUSSIAN-SPECIFIC CHECKS:
+
+1. **Case Agreement (Падежное согласование)**
+   - Check noun-adjective agreement
+   - Check numeral-noun agreement
+   - Check pronoun-noun agreement
+
+2. **Verb Aspect (Вид глагола)**
+   - Perfective (совершенный): completed action
+   - Imperfective (несовершенный): ongoing/repeated action
+   - Check if aspect matches context
+
+3. **Word Order**
+   - Russian has flexible word order but some orders sound more natural
+   - Check if word order is natural for native speakers
+
+4. **Particle Usage**
+   - Particles: же, ли, бы, ведь, вот, etc.
+   - Check if particles are used correctly
+
+5. **Register Consistency**
+   - Formal (вы, Вы) vs informal (ты)
+   - Check consistency throughout text
+
+6. **Diminutives (Уменьшительно-ласкательные)**
+   - Check if diminutives are appropriate for context
+   - Overuse can sound childish
+
+Output JSON format:
+{{
+  "errors": [
+    {{
+      "subcategory": "case_agreement|aspect_usage|word_order|particle_usage|register|diminutive",
+      "severity": "critical|major|minor",
+      "location": [start_char, end_char],
+      "description": "Specific Russian linguistic issue",
+      "suggestion": "Corrected version in Russian"
+    }}
+  ]
+}}
+
+Rules:
+- Be strict - native Russians should find text natural
+- Focus ONLY on Russian-specific issues
+- If no Russian-specific errors, return empty errors array
+- Provide character positions (0-indexed)
+
+Output only valid JSON, no explanation."""
+
+    def get_base_prompt(self) -> str:
+        """Get the combined base prompt for Russian fluency evaluation.
+
+        Returns:
+            The combined base fluency prompt + Russian-specific prompt
+        """
+        base_fluency = super().get_base_prompt()
+        return f"{base_fluency}\n\n---\n\nRUSSIAN-SPECIFIC CHECKS:\n{self._russian_prompt_base}"
 
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate Russian fluency with specialized checks.

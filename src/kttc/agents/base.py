@@ -68,6 +68,23 @@ class BaseAgent(ABC):
         """
         pass
 
+    @abstractmethod
+    def get_base_prompt(self) -> str:
+        """Get the base prompt template used by this agent.
+
+        This method is used by DomainAdapter to enhance prompts with
+        domain-specific information.
+
+        Returns:
+            Base prompt template string
+
+        Example:
+            >>> agent = AccuracyAgent(provider)
+            >>> base_prompt = agent.get_base_prompt()
+            >>> print(base_prompt[:100])  # First 100 characters
+        """
+        pass
+
 
 class AgentError(Exception):
     """Base exception for agent-related errors."""

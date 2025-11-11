@@ -71,6 +71,14 @@ class FluencyAgent(BaseAgent):
         """Get error category this agent checks."""
         return "fluency"
 
+    def get_base_prompt(self) -> str:
+        """Get the base prompt template for fluency evaluation.
+
+        Returns:
+            The raw prompt template string
+        """
+        return self._prompt_template.template
+
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate translation fluency and return found errors.
 

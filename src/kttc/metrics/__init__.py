@@ -17,8 +17,10 @@
 This module provides integration with state-of-the-art neural metrics:
 - COMET (reference-based quality estimation)
 - CometKiwi (reference-free quality estimation)
+- XCOMET (error span detection, WMT 2024 champion)
 """
 
-from .neural import NeuralMetrics, NeuralMetricsResult
+from .neural import ErrorSpan, NeuralMetrics, NeuralMetricsResult
+from .visualization import ErrorSpanVisualizer
 
-__all__ = ["NeuralMetrics", "NeuralMetricsResult"]
+__all__ = ["NeuralMetrics", "NeuralMetricsResult", "ErrorSpan", "ErrorSpanVisualizer"]

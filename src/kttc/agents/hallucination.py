@@ -84,6 +84,38 @@ class HallucinationAgent(BaseAgent):
         """Error category for this agent."""
         return "accuracy"
 
+    def get_base_prompt(self) -> str:
+        """Get the base prompt for hallucination detection.
+
+        Returns:
+            Combined prompt for all hallucination checks
+        """
+        return """You are an expert at detecting hallucinations and factual consistency issues in translations.
+
+Your task: Check for the following issues:
+
+1. **Entity Preservation**
+   - Extract all named entities from source (names, numbers, dates, locations, organizations)
+   - Check if all entities are correctly preserved in translation
+   - Detect missing entities or fabricated ones
+
+2. **Factual Consistency**
+   - Compare source and translation for semantic consistency
+   - Identify information additions not present in source
+   - Detect omissions of important information
+
+3. **Length Ratio Analysis**
+   - Check if translation length is reasonable (0.4-2.0x source length)
+   - Suspicious additions or omissions
+
+Rules:
+- Be strict on factual accuracy
+- Focus on hallucinations and fabrications
+- Critical severity for factual errors
+- Provide specific evidence for each error
+
+Output JSON format with errors array."""
+
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate translation for hallucinations.
 

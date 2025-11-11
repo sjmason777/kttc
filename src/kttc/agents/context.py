@@ -80,6 +80,44 @@ class ContextAgent(BaseAgent):
         """Error category for this agent."""
         return "context"
 
+    def get_base_prompt(self) -> str:
+        """Get the base prompt for context-aware evaluation.
+
+        Returns:
+            Base prompt for document-level consistency checking
+        """
+        return """You are an expert at evaluating document-level consistency in translations.
+
+Your task: Check for context-related issues:
+
+1. **Cross-Reference Preservation**
+   - Check if references to sections, figures, tables are preserved
+   - Examples: "Section 3", "Figure 2", "Table 5"
+   - Verify numbering consistency
+
+2. **Term Consistency**
+   - Track terminology usage across segments
+   - Same source term should have same translation
+   - Flag inconsistent translations of key terms
+
+3. **Coherence Across Segments**
+   - Check if segments flow naturally together
+   - Verify pronoun references are clear
+   - Check if context from previous segments is maintained
+
+4. **Document Structure**
+   - Preserve formatting cues
+   - Maintain hierarchical structure
+   - Keep list/enumeration consistency
+
+Rules:
+- Focus on multi-segment consistency
+- Flag contradictions or inconsistencies
+- Consider document-wide terminology
+- Check if references make sense in context
+
+Output JSON format with errors array."""
+
     def set_document_context(self, full_document: str) -> None:
         """Set full document context for RAG.
 

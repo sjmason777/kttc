@@ -410,10 +410,9 @@ class TestGigaChatWithOrchestrator:
         has_errors = len(report.errors) > 0
         has_low_score = report.mqm_score < 90.0
 
-        assert has_errors or has_low_score, (
-            f"Information loss not detected! "
-            f"MQM: {report.mqm_score}, Errors: {len(report.errors)}"
-        )
+        assert (
+            has_errors or has_low_score
+        ), f"Information loss not detected! MQM: {report.mqm_score}, Errors: {len(report.errors)}"
 
         print("\n✓ Multiple errors:")
         print(f"  MQM Score: {report.mqm_score:.2f}")

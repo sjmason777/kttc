@@ -441,49 +441,62 @@ def create_app() -> FastAPI:
         orchestrator = app_state["orchestrator"]
 
         if orchestrator is None:
-            raise HTTPException(status_code=503, detail="Orchestrator not initialized")
+            raise HTTPException(status_code=503, detail="Service temporarily unavailable")
 
-        # Create translation task (note: reference not supported in TranslationTask)
-        task = TranslationTask(
-            source_text=request.source_text,
-            translation=request.translation,
-            source_lang=request.source_lang,
-            target_lang=request.target_lang,
-            context=request.context,
-        )
+        try:
+            # Create translation task (note: reference not supported in TranslationTask)
+            task = TranslationTask(
+                source_text=request.source_text,
+                translation=request.translation,
+                source_lang=request.source_lang,
+                target_lang=request.target_lang,
+                context=request.context,
+            )
 
-        # Evaluate
-        start_time = time.time()
-        report = await orchestrator.evaluate(task)
-        processing_time = time.time() - start_time
+            # Evaluate
+            start_time = time.time()
+            report = await orchestrator.evaluate(task)
+            processing_time = time.time() - start_time
 
-        # Update stats
-        app_state["stats"]["total_evaluations"] += 1
-        app_state["stats"]["total_mqm_score"] += report.mqm_score
+            # Update stats
+            app_state["stats"]["total_evaluations"] += 1
+            app_state["stats"]["total_mqm_score"] += report.mqm_score
 
-        # Prepare response
-        errors_by_severity = {"critical": 0, "major": 0, "minor": 0}
-        for error in report.errors:
-            errors_by_severity[error.severity.value] += 1
+            # Prepare response
+            errors_by_severity = {"critical": 0, "major": 0, "minor": 0}
+            for error in report.errors:
+                errors_by_severity[error.severity.value] += 1
 
-        return EvaluateResponse(
-            mqm_score=report.mqm_score,
-            status="pass" if report.mqm_score >= 85 else "fail",
-            errors_count=len(report.errors),
-            errors_by_severity=errors_by_severity,
-            errors=[
-                {
-                    "category": e.category,
-                    "subcategory": e.subcategory,
-                    "severity": e.severity.value,
-                    "description": e.description,
-                    "suggestion": e.suggestion,
-                    "location": e.location,
-                }
-                for e in report.errors
-            ],
-            processing_time=processing_time,
-        )
+            return EvaluateResponse(
+                mqm_score=report.mqm_score,
+                status="pass" if report.mqm_score >= 85 else "fail",
+                errors_count=len(report.errors),
+                errors_by_severity=errors_by_severity,
+                errors=[
+                    {
+                        "category": e.category,
+                        "subcategory": e.subcategory,
+                        "severity": e.severity.value,
+                        "description": e.description,
+                        "suggestion": e.suggestion,
+                        "location": e.location,
+                    }
+                    for e in report.errors
+                ],
+                processing_time=processing_time,
+            )
+        except Exception:
+            # Log the full error server-side for debugging
+            logger.error(
+                "Translation evaluation failed: %s",
+                request.model_dump(),
+                exc_info=True,
+            )
+            # Return generic error without exposing internal details
+            raise HTTPException(
+                status_code=500,
+                detail="Translation evaluation failed. Please check your input and try again.",
+            ) from None
 
     @app.post("/api/batch-evaluate")
     async def batch_evaluate(request: BatchEvaluateRequest) -> JSONResponse:
@@ -494,8 +507,20 @@ def create_app() -> FastAPI:
             try:
                 result = await evaluate(task_request)
                 results.append({"status": "success", "result": result.model_dump()})
-            except Exception as e:
-                results.append({"status": "error", "error": str(e)})
+            except Exception:
+                # Log the full error server-side for debugging
+                logger.error(
+                    "Batch evaluation failed for task: %s",
+                    task_request.model_dump(),
+                    exc_info=True,
+                )
+                # Return generic error message without sensitive details
+                results.append(
+                    {
+                        "status": "error",
+                        "error": "Translation evaluation failed. Please check your input and try again.",
+                    }
+                )
 
         return JSONResponse(content={"results": results, "total": len(results)})
 
@@ -534,15 +559,23 @@ def create_app() -> FastAPI:
     return app
 
 
-def run_server(host: str = "0.0.0.0", port: int = 8000, reload: bool = False) -> None:
+def run_server(host: str = "127.0.0.1", port: int = 8000, reload: bool = False) -> None:
     """Run WebUI server.
 
     Args:
-        host: Host to bind to
+        host: Host to bind to (default: 127.0.0.1 for security).
+              Use 0.0.0.0 to bind to all interfaces (not recommended for production).
         port: Port to listen on
         reload: Enable auto-reload for development
     """
     import uvicorn
+
+    # Security warning if binding to all interfaces
+    if host == "0.0.0.0":  # nosec B104  # Intentional check with user warning
+        logger.warning(
+            "⚠️  Binding to 0.0.0.0 exposes the server to all network interfaces. "
+            "Use 127.0.0.1 for local-only access."
+        )
 
     logger.info(f"Starting KTTC WebUI on http://{host}:{port}")
 

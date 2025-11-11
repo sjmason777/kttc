@@ -186,8 +186,37 @@ jobs:
 
           echo "📊 Benchmark history updated"
 
-      - name: Compare with baseline (optional)
+      - name: Generate benchmark statistics
         if: inputs.compare-baseline == 'true' || inputs.compare-baseline == true
         run: |
-          echo "🔄 Baseline comparison not yet implemented"
-          # TODO: Add comparison with Google Translate, DeepL, etc.
+          echo "📊 Generating benchmark statistics..."
+
+          # Calculate statistics from benchmark results
+          python3.11 -c "
+          import json
+          from pathlib import Path
+
+          results_dir = Path('benchmark_results')
+          if results_dir.exists():
+              json_files = list(results_dir.glob('*.json'))
+              print(f'Found {len(json_files)} benchmark result files')
+
+              if json_files:
+                  # Load latest result
+                  latest = sorted(json_files)[-1]
+                  with open(latest) as f:
+                      data = json.load(f)
+
+                  print('\n📈 Latest Benchmark Statistics:')
+                  for result in data.get('results', []):
+                      print(f\"Dataset: {result['dataset_name']}\")
+                      print(f\"MQM Score: {result['avg_mqm_score']:.2f} ± {result['std_mqm_score']:.2f}\")
+                      print(f\"Sample Size: {result['sample_size']}\")
+                      if result.get('avg_comet_score'):
+                          print(f\"COMET Score: {result['avg_comet_score']:.3f}\")
+                      print()
+          else:
+              print('No benchmark results found')
+          "
+
+          echo "✅ Statistics generation completed"
