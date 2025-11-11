@@ -24,24 +24,34 @@ classifiers = [
 ]
 
 dependencies = [
+    # Core CLI dependencies (lightweight, fast install)
     "typer>=0.20.0",
     "rich>=14.2.0",
     "pydantic>=2.12.4",
     "pydantic-settings>=2.11.0",
     "aiohttp>=3.13.2",
-    "unbabel-comet>=2.2.7",
-    "sentence-transformers>=5.1.2",
-    "sacrebleu>=2.5.1",
     "openai>=2.7.1",
     "anthropic>=0.72.0",
     "aiosqlite>=0.21.0",
     "orjson>=3.11.4",
-    "fastapi>=0.121.1",  # For WebUI server
-    "uvicorn>=0.38.0",  # For WebUI server
-    "websockets>=15.0.1",  # For WebUI real-time updates
 ]
 
 [project.optional-dependencies]
+# Metrics (HEAVY - ML models, slow install)
+metrics = [
+    "unbabel-comet>=2.2.7",  # ~2GB models
+    "sentence-transformers>=5.1.2",  # ~500MB models
+    "sacrebleu>=2.5.1",
+]
+
+# Web UI
+webui = [
+    "fastapi>=0.121.1",
+    "uvicorn>=0.38.0",
+    "websockets>=15.0.1",
+]
+
+# Development tools (NO heavy ML dependencies - lightweight for CI/CD)
 dev = [
     "pytest>=9.0.0",
     "pytest-cov>=7.0.0",
@@ -51,15 +61,28 @@ dev = [
     "ruff>=0.14.4",
     "mypy>=1.18.2",
     "pre-commit>=4.4.0",
-    "datasets>=4.4.1",  # For WMT/FLORES benchmarking
-    "numpy>=2.3.4",  # For statistical analysis in benchmarks
-    "types-requests>=2.32.4",  # Type stubs
-    "vulture>=2.14",  # Dead code detection
-    "bandit>=1.8.6",  # Security vulnerability scanning
-    "radon>=6.0.1",  # Complexity metrics
-    "lizard>=1.19.0",  # Code metrics and complexity
-    "safety>=3.7.0",  # Dependency vulnerability checking
-    "unimport>=1.3.0",  # Unused import detection
+    "types-requests>=2.32.4",
+]
+
+# Benchmarking (includes metrics + datasets)
+benchmark = [
+    "unbabel-comet>=2.2.7",
+    "sentence-transformers>=5.1.2",
+    "sacrebleu>=2.5.1",
+    "datasets>=4.4.1",
+    "numpy>=2.3.4",
+]
+
+# Complete installation (everything)
+all = [
+    "unbabel-comet>=2.2.7",
+    "sentence-transformers>=5.1.2",
+    "sacrebleu>=2.5.1",
+    "fastapi>=0.121.1",
+    "uvicorn>=0.38.0",
+    "websockets>=15.0.1",
+    "datasets>=4.4.1",
+    "numpy>=2.3.4",
 ]
 
 [project.scripts]
@@ -114,6 +137,7 @@ addopts = [
 markers = [
     "benchmark: mark test as performance benchmark",
     "slow: mark test as slow-running",
+    "metrics: mark test as requiring heavy ML metrics dependencies",
 ]
 
 # Coverage configuration

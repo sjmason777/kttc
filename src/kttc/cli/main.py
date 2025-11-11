@@ -26,23 +26,34 @@ from pathlib import Path
 from typing import Any
 
 import typer
-from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.table import Table
 
 from kttc import __version__
 from kttc.agents import AgentOrchestrator
+from kttc.cli.commands.benchmark import run_benchmark
+from kttc.cli.commands.compare import run_compare
+from kttc.cli.ui import (
+    console,
+    print_header,
+    print_info,
+    print_qa_report,
+    print_startup_info,
+    print_translation_preview,
+    print_warning,
+)
 from kttc.core import QAReport, TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 from kttc.utils.config import get_settings
 
-# Create main app and console
+# Create main app
 app = typer.Typer(
     name="kttc",
-    help="Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality",
+    help="KTTC - Knowledge Translation Transmutation Core\n\nTransforming translations into gold-standard quality through autonomous multi-agent AI systems.",
     add_completion=True,
+    rich_markup_mode="rich",
+    no_args_is_help=True,
 )
-console = Console()
 
 
 def version_callback(value: bool) -> None:
@@ -98,6 +109,9 @@ def check(
         help="Correction level: light (critical/major) or full (all errors)",
     ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
+    demo: bool = typer.Option(
+        False, "--demo", help="Demo mode (no API calls, simulated responses)"
+    ),
 ) -> None:
     """
     Check translation quality.
@@ -128,11 +142,15 @@ def check(
                 auto_correct,
                 correction_level,
                 verbose,
+                demo,
             )
         )
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
         raise typer.Exit(code=130)
+    except typer.Exit:
+        # Re-raise Exit without catching it (clean exit)
+        raise
     except Exception as e:
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
@@ -215,24 +233,46 @@ async def _check_async(
     auto_correct: bool,
     correction_level: str,
     verbose: bool,
+    demo: bool = False,
 ) -> None:
     """Async implementation of check command."""
     from kttc.core.correction import AutoCorrector
+    from kttc.utils.dependencies import has_benchmark, has_metrics, has_webui
 
     # Load settings
     settings = get_settings()
 
     # Display header
-    console.print("\n[bold]KTTC - Translation Quality Check[/bold]\n")
-    console.print(f"Source file:      [cyan]{source}[/cyan]")
-    console.print(f"Translation file: [cyan]{translation}[/cyan]")
-    console.print(f"Languages:        [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
-    console.print(f"Threshold:        [cyan]{threshold}[/cyan]")
+    print_header(
+        "✓ Translation Quality Check", "Evaluating translation quality with multi-agent AI system"
+    )
+
+    # Show available extensions status (always, regardless of demo mode)
+    # Check if any extensions are missing
+    missing_any = not has_metrics() or not has_benchmark() or not has_webui()
+
+    if missing_any:
+        from kttc.cli.ui import print_available_extensions
+
+        print_available_extensions()
+        console.print(
+            "[dim]You can continue without extensions, but some features will be limited.[/dim]"
+        )
+        console.print()
+
+    # Prepare configuration info
+    config_info = {
+        "Source File": source,
+        "Translation File": translation,
+        "Languages": f"{source_lang} → {target_lang}",
+        "Quality Threshold": f"{threshold}",
+    }
     if auto_select_model:
-        console.print("Model selection:  [cyan]automatic (intelligent)[/cyan]")
+        config_info["Model Selection"] = "Automatic (intelligent)"
     if auto_correct:
-        console.print(f"Auto-correct:     [cyan]enabled ({correction_level})[/cyan]")
-    console.print()
+        config_info["Auto-Correct"] = f"Enabled ({correction_level})"
+
+    print_startup_info(config_info)
 
     # Load files
     try:
@@ -251,13 +291,18 @@ async def _check_async(
     # Setup LLM provider with intelligent model selection
     try:
         llm_provider = _setup_llm_provider(
-            provider, settings, verbose, task=task, auto_select_model=auto_select_model
+            provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
         )
     except Exception as e:
         raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
 
+    # Show translation preview if verbose
+    if verbose:
+        print_translation_preview(source_text, translation_text)
+
     # Run evaluation
-    console.print("[yellow]⏳ Running QA agents...[/yellow]")
+    print_info("Running multi-agent QA system...")
+    console.print()
     try:
         orchestrator = AgentOrchestrator(
             llm_provider,
@@ -269,8 +314,21 @@ async def _check_async(
     except Exception as e:
         raise RuntimeError(f"Evaluation failed: {e}") from e
 
-    # Display results
-    _display_report(report, format, verbose)
+    # Display results with beautiful UI
+    console.print()
+
+    # Check if MQM score is suspiciously low (might indicate missing metrics)
+    if not demo and report.mqm_score == 0.0 and len(report.errors) > 0:
+        from kttc.utils.dependencies import has_metrics
+
+        if not has_metrics():
+            console.print()
+            print_warning(
+                "MQM score is 0.00 - neural metrics (COMET) not available. See installation info above."
+            )
+            console.print()
+
+    print_qa_report(report, verbose=verbose)
 
     # Auto-correct if requested and errors found
     if auto_correct and len(report.errors) > 0:
@@ -321,6 +379,8 @@ async def _check_async(
 
     # Exit with appropriate code
     if report.status == "fail":
+        console.print()
+        print_info(f"Translation quality below threshold ({threshold}). Exiting with error code.")
         raise typer.Exit(code=1)
 
 
@@ -377,15 +437,17 @@ def _setup_llm_provider(
     verbose: bool,
     task: TranslationTask | None = None,
     auto_select_model: bool = False,
+    demo: bool = False,
 ) -> BaseLLMProvider:
     """Setup and configure LLM provider with optional intelligent model selection.
 
     Args:
-        provider: Provider name (openai/anthropic) or None for default
+        provider: Provider name (openai/anthropic/gigachat/demo) or None for default
         settings: Application settings
         verbose: Whether to show verbose output
         task: Optional translation task for intelligent model selection
         auto_select_model: Whether to use ModelSelector for optimal model
+        demo: Whether to use demo mode (no API calls)
 
     Returns:
         Configured LLM provider instance
@@ -394,10 +456,19 @@ def _setup_llm_provider(
         ValueError: If provider is unknown
         RuntimeError: If provider setup fails
     """
+    from kttc.cli.demo import DemoLLMProvider
+    from kttc.llm import GigaChatProvider
     from kttc.llm.model_selector import ModelSelector
 
+    # Use demo provider if demo mode enabled
+    if demo:
+        if verbose:
+            console.print(
+                "[yellow]🎭 Demo mode: Using simulated responses (no API calls)[/yellow]\n"
+            )
+        return DemoLLMProvider(model="demo-model")
+
     provider_name = provider or settings.default_llm_provider
-    api_key = settings.get_llm_provider_key(provider_name)
 
     # Intelligent model selection if enabled and task provided
     model = settings.default_model
@@ -414,13 +485,26 @@ def _setup_llm_provider(
         if verbose:
             console.print(f"[dim]🤖 Auto-selected model: {model}[/dim]")
 
+    # Setup provider based on type
     llm_provider: BaseLLMProvider
     if provider_name == "openai":
+        api_key = settings.get_llm_provider_key(provider_name)
         llm_provider = OpenAIProvider(api_key=api_key, model=model)
     elif provider_name == "anthropic":
+        api_key = settings.get_llm_provider_key(provider_name)
         llm_provider = AnthropicProvider(api_key=api_key, model=model)
+    elif provider_name == "gigachat":
+        # GigaChat uses client_id + client_secret instead of API key
+        credentials = settings.get_llm_provider_credentials(provider_name)
+        llm_provider = GigaChatProvider(
+            client_id=credentials["client_id"],
+            client_secret=credentials["client_secret"],
+            model=model,
+        )
     else:
-        raise ValueError(f"Unknown provider: {provider_name}")
+        raise ValueError(
+            f"Unknown provider: {provider_name}. Supported: openai, anthropic, gigachat"
+        )
 
     if verbose:
         console.print(f"[dim]Using {provider_name} provider with model {model}[/dim]\n")
@@ -1168,6 +1252,111 @@ def _generate_batch_html_report(data: dict[str, Any]) -> str:
     html_parts.extend(["    </div>", "</body>", "</html>"])
 
     return "\n".join(html_parts)
+
+
+@app.command()
+def benchmark(
+    source: str = typer.Option(..., "--source", "-s", help="Source text file path"),
+    reference: str | None = typer.Option(
+        None, "--reference", "-r", help="Reference translation file (for COMET scoring)"
+    ),
+    source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
+    target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'ru')"),
+    providers: str = typer.Option(
+        "gigachat,openai,anthropic",
+        "--providers",
+        "-p",
+        help="Comma-separated list of providers to benchmark",
+    ),
+    threshold: float = typer.Option(95.0, "--threshold", help="Quality threshold for evaluation"),
+    output: str | None = typer.Option(
+        None, "--output", "-o", help="Output file path for results (JSON)"
+    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
+) -> None:
+    """
+    Benchmark multiple LLM providers.
+
+    Compare translation quality and performance across different LLM providers.
+    Generates translations and evaluates them using MQM and COMET metrics.
+
+    Example:
+        kttc benchmark --source text.txt --source-lang en --target-lang ru \\
+                      --providers gigachat,openai,anthropic --reference ref.txt
+    """
+    try:
+        provider_list = [p.strip() for p in providers.split(",")]
+        asyncio.run(
+            run_benchmark(
+                source=source,
+                reference=reference,
+                source_lang=source_lang,
+                target_lang=target_lang,
+                providers=provider_list,
+                threshold=threshold,
+                output=output,
+                verbose=verbose,
+            )
+        )
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
+        raise typer.Exit(code=130)
+    except Exception as e:
+        console.print(f"\n[red]✗ Error: {e}[/red]")
+        if verbose:
+            console.print_exception()
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def compare(
+    source: str = typer.Option(..., "--source", "-s", help="Source text file path"),
+    translations: list[str] = typer.Option(
+        ..., "--translation", "-t", help="Translation file paths (can be specified multiple times)"
+    ),
+    reference: str | None = typer.Option(
+        None, "--reference", "-r", help="Reference translation file (for COMET scoring)"
+    ),
+    source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
+    target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'ru')"),
+    threshold: float = typer.Option(95.0, "--threshold", help="Quality threshold for evaluation"),
+    provider: str | None = typer.Option(
+        None, "--provider", help="LLM provider for evaluation (openai or anthropic)"
+    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Show detailed error information"),
+) -> None:
+    """
+    Compare multiple translations side by side.
+
+    Evaluate and compare multiple translation candidates to determine
+    which one has the best quality using MQM and COMET metrics.
+
+    Example:
+        kttc compare --source text.txt --translation trans1.txt --translation trans2.txt \\
+                    --translation trans3.txt --source-lang en --target-lang ru \\
+                    --reference gold.txt --verbose
+    """
+    try:
+        asyncio.run(
+            run_compare(
+                source=source,
+                translations=translations,
+                source_lang=source_lang,
+                target_lang=target_lang,
+                reference=reference,
+                threshold=threshold,
+                provider=provider,
+                verbose=verbose,
+            )
+        )
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
+        raise typer.Exit(code=130)
+    except Exception as e:
+        console.print(f"\n[red]✗ Error: {e}[/red]")
+        if verbose:
+            console.print_exception()
+        raise typer.Exit(code=1)
 
 
 def run() -> None:

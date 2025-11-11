@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class ArenaSystem(BaseModel):
     """Translation system in arena.
 
-    Represents a system (KTTC configuration, Google Translate, DeepL, etc.)
+    Represents a system (KTTC configuration, etc.)
     with its ELO rating and battle history.
     """
 

@@ -1,0 +1,355 @@
+# Copyright 2025 KTTC AI (https://github.com/kttc-ai)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Compare command for comparing multiple translations."""
+
+from __future__ import annotations
+
+from pathlib import Path
+from typing import Any
+
+import typer
+from rich.table import Table
+
+from kttc.agents import AgentOrchestrator
+from kttc.cli.ui import (
+    console,
+    create_progress,
+    print_error,
+    print_header,
+    print_info,
+    print_startup_info,
+    print_success,
+    print_warning,
+)
+from kttc.core import TranslationTask
+from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
+from kttc.metrics.neural import NeuralMetrics
+from kttc.utils.config import get_settings
+
+
+async def evaluate_translation(
+    source_text: str,
+    translation: str,
+    translation_name: str,
+    source_lang: str,
+    target_lang: str,
+    provider: BaseLLMProvider,
+    threshold: float,
+    reference: str | None = None,
+) -> dict[str, Any]:
+    """Evaluate a single translation.
+
+    Args:
+        source_text: Source text
+        translation: Translation to evaluate
+        translation_name: Name/label for this translation
+        source_lang: Source language code
+        target_lang: Target language code
+        provider: LLM provider for evaluation
+        threshold: Quality threshold
+        reference: Optional reference translation for COMET
+
+    Returns:
+        Evaluation results dictionary
+    """
+    # Create task
+    task = TranslationTask(
+        source_text=source_text,
+        translation=translation,
+        source_lang=source_lang,
+        target_lang=target_lang,
+    )
+
+    # Evaluate with agents
+    orchestrator = AgentOrchestrator(provider, quality_threshold=threshold)
+    report = await orchestrator.evaluate(task)
+
+    # Calculate COMET if reference provided
+    comet_score = None
+    if reference:
+        try:
+            metrics = NeuralMetrics()
+            await metrics.initialize()
+            comet_result = await metrics.evaluate_with_reference(
+                source=source_text,
+                translation=translation,
+                reference=reference,
+            )
+            comet_score = comet_result.comet_score
+        except Exception:
+            # COMET failed, continue without it
+            pass
+
+    return {
+        "name": translation_name,
+        "translation": translation,
+        "mqm_score": report.mqm_score,
+        "comet_score": comet_score,
+        "status": report.status,
+        "error_count": len(report.errors),
+        "critical_errors": report.critical_error_count,
+        "major_errors": report.major_error_count,
+        "minor_errors": report.minor_error_count,
+        "errors": report.errors,
+    }
+
+
+async def run_compare(
+    source: str,
+    translations: list[str],
+    source_lang: str,
+    target_lang: str,
+    reference: str | None,
+    threshold: float,
+    provider: str | None,
+    verbose: bool,
+) -> None:
+    """Compare multiple translations side by side.
+
+    Args:
+        source: Source text file path
+        translations: List of translation file paths
+        source_lang: Source language code
+        target_lang: Target language code
+        reference: Optional reference translation file path
+        threshold: Quality threshold
+        provider: LLM provider name
+        verbose: Verbose output
+    """
+    from kttc.utils.dependencies import has_metrics
+
+    settings = get_settings()
+
+    # Print header
+    print_header(
+        "🔍 KTTC Translation Comparison",
+        "Compare multiple translations side by side",
+    )
+
+    # Warn if reference provided but no metrics
+    if reference and not has_metrics():
+        console.print()
+        print_warning("Reference translation provided, but COMET metrics not available")
+        console.print()
+        console.print("[dim]For COMET scoring, install metrics:[/dim]")
+        console.print("  pip install 'kttc[metrics]'", style="cyan", markup=False)
+        console.print()
+        console.print("[dim]Proceeding with MQM-only comparison...[/dim]")
+        console.print()
+
+    # Load source text
+    source_path = Path(source)
+    if not source_path.exists():
+        print_error(f"Source file not found: {source}")
+        raise typer.Exit(code=1)
+
+    source_text = source_path.read_text(encoding="utf-8").strip()
+
+    # Load reference if provided
+    reference_text = None
+    if reference:
+        reference_path = Path(reference)
+        if not reference_path.exists():
+            print_error(f"Reference file not found: {reference}")
+            raise typer.Exit(code=1)
+        reference_text = reference_path.read_text(encoding="utf-8").strip()
+
+    # Load all translations
+    translation_data = []
+    for i, trans_file in enumerate(translations):
+        trans_path = Path(trans_file)
+        if not trans_path.exists():
+            print_error(f"Translation file not found: {trans_file}")
+            continue
+
+        trans_text = trans_path.read_text(encoding="utf-8").strip()
+        translation_data.append(
+            {
+                "name": trans_path.stem,
+                "path": trans_file,
+                "text": trans_text,
+            }
+        )
+
+    if not translation_data:
+        print_error("No valid translation files found")
+        raise typer.Exit(code=1)
+
+    # Display configuration
+    config_info = {
+        "Source Language": source_lang,
+        "Target Language": target_lang,
+        "Translations": str(len(translation_data)),
+        "Quality Threshold": f"{threshold}",
+        "Source Length": f"{len(source_text)} chars",
+    }
+    if reference_text:
+        config_info["Reference Provided"] = "Yes (COMET scoring enabled)"
+
+    print_startup_info(config_info)
+
+    # Setup LLM provider
+    try:
+        provider_name = provider or settings.default_llm_provider
+        api_key = settings.get_llm_provider_key(provider_name)
+
+        if provider_name == "openai":
+            llm_provider: BaseLLMProvider = OpenAIProvider(
+                api_key=api_key, model=settings.default_model
+            )
+        elif provider_name == "anthropic":
+            llm_provider = AnthropicProvider(api_key=api_key, model=settings.default_model)
+        else:
+            print_error(f"Unknown provider: {provider_name}")
+            raise typer.Exit(code=1)
+
+        print_info(f"Using {provider_name} for evaluation")
+        console.print()
+
+    except Exception as e:
+        print_error(f"Failed to setup LLM provider: {e}")
+        raise typer.Exit(code=1)
+
+    # Evaluate all translations
+    results = []
+    with create_progress() as progress:
+        task_id = progress.add_task("Evaluating translations...", total=len(translation_data))
+
+        for trans_data in translation_data:
+            progress.update(task_id, description=f"Evaluating {trans_data['name']}...")
+
+            result = await evaluate_translation(
+                source_text=source_text,
+                translation=trans_data["text"],
+                translation_name=trans_data["name"],
+                source_lang=source_lang,
+                target_lang=target_lang,
+                provider=llm_provider,
+                threshold=threshold,
+                reference=reference_text,
+            )
+
+            results.append(result)
+
+            # Show result
+            status_icon = "✓" if result["status"] == "pass" else "✗"
+            status_color = "green" if result["status"] == "pass" else "red"
+            comet_str = f"COMET {result['comet_score']:.2f}, " if result["comet_score"] else ""
+            progress.console.print(
+                f"  [{status_color}]{status_icon}[/{status_color}] "
+                f"{trans_data['name']}: {comet_str}MQM {result['mqm_score']:.2f}"
+            )
+
+            progress.advance(task_id)
+
+    console.print()
+
+    # Display comparison table
+    _display_comparison_results(results, reference_text is not None, verbose)
+
+    # Show best translation
+    best = max(results, key=lambda r: r["mqm_score"])
+    console.print()
+    print_success(f"Best translation: {best['name']} (MQM: {best['mqm_score']:.2f})")
+
+
+def _display_comparison_results(
+    results: list[dict[str, Any]], has_comet: bool, verbose: bool
+) -> None:
+    """Display comparison results in a table.
+
+    Args:
+        results: List of evaluation results
+        has_comet: Whether COMET scores are available
+        verbose: Show detailed error information
+    """
+    # Main comparison table
+    table = Table(
+        title="Translation Comparison Results",
+        show_header=True,
+        header_style="bold cyan",
+        title_style="bold",
+    )
+
+    table.add_column("Translation", style="cyan", no_wrap=True)
+    if has_comet:
+        table.add_column("COMET", justify="right")
+    table.add_column("MQM Score", justify="right")
+    table.add_column("Errors", justify="center")
+    table.add_column("Status", justify="center")
+
+    for result in results:
+        # Color-code MQM score
+        mqm_score = result["mqm_score"]
+        if mqm_score >= 95:
+            mqm_color = "green"
+        elif mqm_score >= 85:
+            mqm_color = "yellow"
+        else:
+            mqm_color = "red"
+
+        # Color-code status
+        if result["status"] == "pass":
+            status_text = "[green]✓ PASS[/green]"
+        else:
+            status_text = "[red]✗ FAIL[/red]"
+
+        # Error breakdown
+        error_info = f"{result['error_count']} ({result['critical_errors']}C/{result['major_errors']}M/{result['minor_errors']}m)"
+
+        row = [result["name"]]
+        if has_comet:
+            comet_score = result.get("comet_score")
+            row.append(f"{comet_score:.2f}" if comet_score is not None else "N/A")
+        row.extend(
+            [
+                f"[{mqm_color}]{mqm_score:.2f}[/{mqm_color}]",
+                error_info,
+                status_text,
+            ]
+        )
+
+        table.add_row(*row)
+
+    console.print(table)
+
+    # Show detailed errors if verbose
+    if verbose:
+        console.print()
+        for result in results:
+            if result["errors"]:
+                console.print(f"\n[bold cyan]{result['name']} - Errors:[/bold cyan]")
+                error_table = Table(show_header=True, header_style="bold")
+                error_table.add_column("Category", style="cyan")
+                error_table.add_column("Severity")
+                error_table.add_column("Description", max_width=60)
+
+                for error in result["errors"]:
+                    severity_color = (
+                        "red"
+                        if error.severity.value == "critical"
+                        else "yellow" if error.severity.value == "major" else "dim"
+                    )
+                    error_table.add_row(
+                        error.category,
+                        f"[{severity_color}]{error.severity.value}[/{severity_color}]",
+                        (
+                            error.description[:60] + "..."
+                            if len(error.description) > 60
+                            else error.description
+                        ),
+                    )
+
+                console.print(error_table)

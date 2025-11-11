@@ -6,7 +6,6 @@ to validate KTTC performance against benchmarks.
 Supports:
 - WMT 2023-2025 datasets
 - FLORES-200 multilingual benchmarks
-- Comparison with baseline systems (Google Translate, DeepL)
 - Statistical analysis and reporting
 """
 

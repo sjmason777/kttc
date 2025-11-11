@@ -58,7 +58,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --cov=kttc --cov-report=xml --cov-report=term-missing -v
+          pytest --cov=kttc --cov-report=xml --cov-report=term-missing -v -m "not metrics" --ignore=tests/integration/ --ignore=tests/benchmarks/
 
       - name: Upload coverage to Codecov
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
