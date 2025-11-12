@@ -381,7 +381,7 @@ def download_model_with_progress(
         original_tqdm = tqdm.auto.tqdm
 
         # Temporarily replace tqdm with our custom class
-        tqdm.auto.tqdm = RichProgressTqdm  # type: ignore
+        tqdm.auto.tqdm = RichProgressTqdm  # type: ignore[assignment]
 
         try:
             from huggingface_hub import HfFolder, snapshot_download
