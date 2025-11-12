@@ -341,3 +341,105 @@ def require_benchmark(command: str) -> None:
         command: Name of the command requiring benchmark features
     """
     ensure_dependency_group("benchmark", command, required=True)
+
+
+def models_are_downloaded() -> bool:
+    """Check if ALL neural quality models are downloaded and valid.
+
+    Returns:
+        True if ALL models are cached locally AND have valid checkpoints, False otherwise
+    """
+    from pathlib import Path
+
+    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+
+    # All required COMET models with their HuggingFace repo names
+    required_models = [
+        "Unbabel/wmt22-comet-da",
+        "Unbabel/wmt23-cometkiwi-da-xxl",
+        "Unbabel/XCOMET-XL",
+    ]
+
+    if not cache_dir.exists():
+        return False
+
+    # Check that ALL models exist and are valid (have checkpoint files)
+    for model_name in required_models:
+        model_dir_name = f"models--{model_name.replace('/', '--')}"
+        model_path = cache_dir / model_dir_name
+
+        if not model_path.exists():
+            return False
+
+        # Check if checkpoint file exists (validates model is complete)
+        checkpoint_path = model_path / "checkpoints" / "model.ckpt"
+        if not checkpoint_path.exists():
+            # Try snapshots directory structure (newer HF format)
+            snapshots_dir = model_path / "snapshots"
+            if snapshots_dir.exists():
+                # Check if any snapshot has the checkpoint
+                found_checkpoint = False
+                for snapshot in snapshots_dir.iterdir():
+                    if snapshot.is_dir():
+                        ckpt = snapshot / "checkpoints" / "model.ckpt"
+                        if ckpt.exists():
+                            found_checkpoint = True
+                            break
+                if not found_checkpoint:
+                    return False
+            else:
+                return False
+
+    # All models exist and are valid
+    return True
+
+
+def get_models_status() -> list[tuple[str, str, str, str]]:
+    """Get detailed status of all neural models.
+
+    Returns:
+        List of tuples: (display_name, size, status_text, status_color)
+        Example: [("COMET-22", "1.3 GB", "✓ Downloaded", "green"), ...]
+    """
+    from pathlib import Path
+
+    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+
+    required_models = [
+        ("Unbabel/wmt22-comet-da", "COMET-22", "1.3 GB"),
+        ("Unbabel/wmt23-cometkiwi-da-xxl", "CometKiwi", "900 MB"),
+        ("Unbabel/XCOMET-XL", "XCOMET-XL", "800 MB"),
+    ]
+
+    models_status = []
+
+    for model_name, display_name, size in required_models:
+        model_dir_name = f"models--{model_name.replace('/', '--')}"
+        model_path = cache_dir / model_dir_name
+
+        if not model_path.exists():
+            models_status.append((display_name, size, "○ Not downloaded", "yellow"))
+        else:
+            # Check if checkpoint exists
+            checkpoint_path = model_path / "checkpoints" / "model.ckpt"
+            has_checkpoint = False
+
+            if checkpoint_path.exists():
+                has_checkpoint = True
+            else:
+                # Try snapshots directory structure (newer HF format)
+                snapshots_dir = model_path / "snapshots"
+                if snapshots_dir.exists():
+                    for snapshot in snapshots_dir.iterdir():
+                        if snapshot.is_dir():
+                            ckpt = snapshot / "checkpoints" / "model.ckpt"
+                            if ckpt.exists():
+                                has_checkpoint = True
+                                break
+
+            if has_checkpoint:
+                models_status.append((display_name, size, "✓ Downloaded", "green"))
+            else:
+                models_status.append((display_name, size, "⚠ Incomplete", "yellow"))
+
+    return models_status

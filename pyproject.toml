@@ -24,7 +24,7 @@ classifiers = [
 ]
 
 dependencies = [
-    # Core CLI dependencies (lightweight, fast install)
+    # Core CLI dependencies (lightweight, ~50MB)
     "typer>=0.20.0",
     "rich>=14.2.0",
     "pydantic>=2.12.4",
@@ -34,24 +34,32 @@ dependencies = [
     "anthropic>=0.72.0",
     "aiosqlite>=0.21.0",
     "orjson>=3.11.4",
-]
-
-[project.optional-dependencies]
-# Metrics (HEAVY - ML models, slow install)
-metrics = [
-    "unbabel-comet>=2.2.7",  # ~2GB models
-    "sentence-transformers>=5.1.2",  # ~500MB models
-    "sacrebleu>=2.5.1",
-]
-
-# Web UI
-webui = [
     "fastapi>=0.121.1",
     "uvicorn>=0.38.0",
     "websockets>=15.0.1",
+    "sacrebleu>=2.5.1",
+    "mtdata>=0.4.3",
 ]
 
-# Development tools (NO heavy ML dependencies - lightweight for CI/CD)
+[project.optional-dependencies]
+# Neural metrics - heavy dependencies (~2GB with PyTorch)
+# Required for production use: pip install kttc[neural]
+neural = [
+    "unbabel-comet>=2.2.7",
+    "sentence-transformers>=5.1.2",
+    "torch>=2.0.0",  # Explicit for clarity
+]
+
+# Full installation (includes neural metrics)
+# Use for local development: pip install -e ".[full]"
+full = [
+    "unbabel-comet>=2.2.7",
+    "sentence-transformers>=5.1.2",
+    "torch>=2.0.0",
+]
+
+# Development tools (excludes neural to keep CI fast)
+# Use for testing: pip install -e ".[dev]"
 dev = [
     "pytest>=9.0.0",
     "pytest-cov>=7.0.0",
@@ -62,27 +70,6 @@ dev = [
     "mypy>=1.18.2",
     "pre-commit>=4.4.0",
     "types-requests>=2.32.4",
-]
-
-# Benchmarking (includes metrics + datasets)
-benchmark = [
-    "unbabel-comet>=2.2.7",
-    "sentence-transformers>=5.1.2",
-    "sacrebleu>=2.5.1",
-    "datasets>=4.4.1",
-    "numpy>=2.3.4",
-]
-
-# Complete installation (everything)
-all = [
-    "unbabel-comet>=2.2.7",
-    "sentence-transformers>=5.1.2",
-    "sacrebleu>=2.5.1",
-    "fastapi>=0.121.1",
-    "uvicorn>=0.38.0",
-    "websockets>=15.0.1",
-    "datasets>=4.4.1",
-    "numpy>=2.3.4",
 ]
 
 [project.scripts]

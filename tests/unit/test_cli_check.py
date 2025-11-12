@@ -21,6 +21,13 @@ from kttc.core import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
 runner = CliRunner()
 
 
+@pytest.fixture(autouse=True)
+def mock_models_available():
+    """Automatically mock models as available for all tests in this module."""
+    with patch("kttc.utils.dependencies.models_are_downloaded", return_value=True):
+        yield
+
+
 @pytest.mark.unit
 class TestCheckCommand:
     """Tests for the check command implementation."""

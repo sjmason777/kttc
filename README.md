@@ -32,22 +32,85 @@
 ## Installation
 
 ```bash
-# Install from PyPI (coming soon)
+# Quick install (core features, ~50MB)
 pip install kttc
+
+# With neural metrics (includes PyTorch, ~2GB)
+pip install kttc[neural]
+
+# Full install for development
+pip install kttc[full,dev]
 
 # Or install from source
 git clone https://github.com/kttc-ai/kttc.git
 cd kttc
-pip install -e ".[dev]"
+pip install -e ".[full,dev]"
 ```
 
-## Basic Usage
+**Note**: Neural metrics (COMET, XCOMET) require ~3GB of models to be downloaded on first use via `kttc load`.
+
+## Quick Start
+
+### 1. Install KTTC
+```bash
+# Install with neural metrics support
+pip install kttc[neural]
+```
+
+### 2. Download Neural Models
+
+Neural metrics require downloading models from HuggingFace (~3GB total):
 
 ```bash
-# Set your API key
+kttc load
+```
+
+#### HuggingFace Authentication (Required for CometKiwi & XCOMET)
+
+Some models are gated and require accepting license agreements:
+
+**Quick Setup (2 minutes):**
+
+1. **Create HuggingFace account**: https://huggingface.co/join
+
+2. **Accept model licenses** (click "Agree and access repository"):
+   - CometKiwi: https://huggingface.co/Unbabel/wmt23-cometkiwi-da-xxl
+   - XCOMET-XL: https://huggingface.co/Unbabel/XCOMET-XL
+
+3. **Create access token**: https://huggingface.co/settings/tokens
+   - Click "New token" → Name: `kttc-models` → Type: **Read** → Generate
+
+4. **Login to CLI**:
+   ```bash
+   huggingface-cli login
+   # Paste your token when prompted
+   ```
+
+5. **Download models**:
+   ```bash
+   kttc load
+   ```
+
+**Alternative: Environment Variable**
+```bash
+export HUGGING_FACE_HUB_TOKEN=hf_your_token_here
+kttc load
+```
+
+> **Note:** COMET-22 downloads without authentication. CometKiwi and XCOMET require the steps above.
+
+### 3. Set API Key
+```bash
+# Set your OpenAI API key
 export KTTC_OPENAI_API_KEY="sk-..."
 
-# Check translation quality
+# Or use Anthropic
+export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
+```
+
+### 4. Check Translation Quality
+```bash
+# Basic quality check
 kttc check \
   --source source.txt \
   --translation translation.txt \
@@ -56,27 +119,27 @@ kttc check \
   --threshold 95
 
 # Output:
+# ✓ Neural models ready
 # ✅ MQM Score: 96.5 (PASS)
 # ⚠️  2 minor issues found
+```
 
-# NEW: Auto-correct detected errors
+## Advanced Usage
+
+### Auto-Correct Detected Errors
+```bash
 kttc check \
   --source source.txt \
   --translation translation.txt \
   --source-lang en \
   --target-lang ru \
   --auto-correct \
-  --correction-level light
+  --correction-level light  # or 'full'
+```
 
-# NEW: Translate with automatic quality assurance (TEaR loop)
-kttc translate \
-  --text "Hello world" \
-  --source-lang en \
-  --target-lang es \
-  --threshold 95 \
-  --max-iterations 3
-
-# NEW: Intelligent model selection
+### Intelligent Model Selection
+```bash
+# Automatically select best model for language pair
 kttc check \
   --source source.txt \
   --translation translation.txt \
@@ -84,6 +147,26 @@ kttc check \
   --target-lang ru \
   --auto-select-model \
   --verbose
+```
+
+### Compare Multiple Translations
+```bash
+kttc compare \
+  --source source.txt \
+  --translation trans1.txt trans2.txt trans3.txt \
+  --source-lang en \
+  --target-lang ru \
+  --reference gold.txt
+```
+
+### Benchmark LLM Providers
+```bash
+kttc benchmark \
+  --source text.txt \
+  --source-lang en \
+  --target-lang ru \
+  --providers gigachat,openai,anthropic \
+  --reference ref.txt
 ```
 
 ## Python API
@@ -122,12 +205,56 @@ asyncio.run(check_quality())
 
 ## Available Commands
 
-- `kttc check` - Check translation quality for a single file
-- `kttc translate` - Translate text with automatic quality checking (coming soon)
-- `kttc batch` - Batch process multiple translation files
-- `kttc report` - Generate formatted reports (Markdown/HTML)
+- `kttc load` - Download neural quality models (required on first use)
+- `kttc check` - Check translation quality with multi-agent QA
+- `kttc compare` - Compare multiple translations side by side
+- `kttc benchmark` - Benchmark multiple LLM providers
+- `kttc translate` - Translate with automatic QA (coming soon)
+- `kttc batch` - Batch process multiple files (coming soon)
+- `kttc report` - Generate formatted reports (coming soon)
 
 Run `kttc <command> --help` for detailed options.
+
+### Command Reference
+
+**kttc load**
+```bash
+kttc load  # Downloads ~3GB of neural models (COMET, CometKiwi, XCOMET)
+
+# Models downloaded:
+# - COMET-22 (wmt22-comet-da): 1.3GB - Reference-based quality estimation
+# - CometKiwi (wmt23-cometkiwi-da-xxl): 900MB - Reference-free estimation (requires auth)
+# - XCOMET-XL: 800MB - Explainable metric with error spans (requires auth)
+
+# First time setup requires HuggingFace authentication (see Quick Start section)
+```
+
+**kttc check**
+```bash
+kttc check --source <file> --translation <file> --source-lang <code> --target-lang <code> [OPTIONS]
+  --threshold FLOAT        Minimum MQM score (default: 95.0)
+  --output PATH            Save report to file (JSON/Markdown)
+  --format [text|json|markdown]
+  --provider [openai|anthropic]
+  --auto-select-model      Use optimal model for language pair
+  --auto-correct           Fix detected errors automatically
+  --correction-level [light|full]
+  --verbose                Show detailed output
+```
+
+**kttc compare**
+```bash
+kttc compare --source <file> --translation <file1> <file2> ... --source-lang <code> --target-lang <code>
+  --reference PATH         Gold standard reference
+  --verbose                Show detailed comparison
+```
+
+**kttc benchmark**
+```bash
+kttc benchmark --source <file> --source-lang <code> --target-lang <code> --providers <list>
+  --reference PATH         Reference for quality evaluation
+  --output PATH            Save benchmark results
+```
 
 ---
 
@@ -512,6 +639,59 @@ Found a bug or have a feature request?
 - Check our [issue tracker](https://github.com/kttc-ai/kttc/issues)
 - Use issue templates for bugs and features
 - Provide detailed reproduction steps
+
+## Troubleshooting
+
+### Model Download Issues
+
+**Problem:** `⚠ Models downloaded but validation failed: checkpoint not found`
+
+**Solution:** Some models require HuggingFace authentication:
+1. Accept licenses at https://huggingface.co/Unbabel/wmt23-cometkiwi-da-xxl and https://huggingface.co/Unbabel/XCOMET-XL
+2. Create token at https://huggingface.co/settings/tokens (type: Read)
+3. Run `huggingface-cli login` and paste token
+4. Delete incomplete downloads: `rm -rf ~/.cache/huggingface/hub/models--Unbabel--wmt23-cometkiwi-da-xxl ~/.cache/huggingface/hub/models--Unbabel--XCOMET-XL`
+5. Re-download: `kttc load`
+
+**Problem:** `HuggingFace Authentication Required`
+
+**Solution:** Follow the authentication steps in the Quick Start section above.
+
+**Problem:** Models download but show `⚠ Skipping validation`
+
+**Solution:** Authentication was missing during download. Delete partial downloads and re-download after authenticating:
+```bash
+# Remove partial downloads
+rm -rf ~/.cache/huggingface/hub/models--Unbabel--wmt23-cometkiwi-da-xxl
+rm -rf ~/.cache/huggingface/hub/models--Unbabel--XCOMET-XL
+
+# Re-download with authentication
+kttc load
+```
+
+### GPU/Memory Issues
+
+**Problem:** `CUDA out of memory`
+
+**Solution:** XCOMET-XL requires ~8GB GPU memory. Use CPU mode or smaller models:
+```python
+# Use CPU
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
+# Or use smaller models in code
+metrics = NeuralMetrics(use_xcomet=False)  # Disable XCOMET
+```
+
+### API Key Issues
+
+**Problem:** `OpenAI API key not found`
+
+**Solution:** Set environment variable:
+```bash
+export KTTC_OPENAI_API_KEY="sk-..."
+# Or add to ~/.bashrc or ~/.zshrc
+```
 
 ## Security
 

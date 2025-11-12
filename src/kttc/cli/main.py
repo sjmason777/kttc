@@ -33,6 +33,7 @@ from kttc import __version__
 from kttc.agents import AgentOrchestrator
 from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare
+from kttc.cli.commands.load import run_load
 from kttc.cli.ui import (
     console,
     print_header,
@@ -126,6 +127,12 @@ def check(
                    --source-lang en --target-lang es --threshold 95 \\
                    --auto-correct --correction-level light
     """
+    # Check models with loader
+    from kttc.cli.ui import check_models_with_loader
+
+    if not check_models_with_loader():
+        raise typer.Exit(code=1)
+
     # Run async function
     try:
         asyncio.run(
@@ -237,7 +244,7 @@ async def _check_async(
 ) -> None:
     """Async implementation of check command."""
     from kttc.core.correction import AutoCorrector
-    from kttc.utils.dependencies import has_benchmark, has_metrics, has_webui
+    from kttc.utils.dependencies import has_metrics
 
     # Load settings
     settings = get_settings()
@@ -246,19 +253,6 @@ async def _check_async(
     print_header(
         "✓ Translation Quality Check", "Evaluating translation quality with multi-agent AI system"
     )
-
-    # Show available extensions status (always, regardless of demo mode)
-    # Check if any extensions are missing
-    missing_any = not has_metrics() or not has_benchmark() or not has_webui()
-
-    if missing_any:
-        from kttc.cli.ui import print_available_extensions
-
-        print_available_extensions()
-        console.print(
-            "[dim]You can continue without extensions, but some features will be limited.[/dim]"
-        )
-        console.print()
 
     # Prepare configuration info
     config_info = {
@@ -1284,6 +1278,12 @@ def benchmark(
         kttc benchmark --source text.txt --source-lang en --target-lang ru \\
                       --providers gigachat,openai,anthropic --reference ref.txt
     """
+    # Check models with loader
+    from kttc.cli.ui import check_models_with_loader
+
+    if not check_models_with_loader():
+        raise typer.Exit(code=1)
+
     try:
         provider_list = [p.strip() for p in providers.split(",")]
         asyncio.run(
@@ -1336,6 +1336,12 @@ def compare(
                     --translation trans3.txt --source-lang en --target-lang ru \\
                     --reference gold.txt --verbose
     """
+    # Check models with loader
+    from kttc.cli.ui import check_models_with_loader
+
+    if not check_models_with_loader():
+        raise typer.Exit(code=1)
+
     try:
         asyncio.run(
             run_compare(
@@ -1356,6 +1362,28 @@ def compare(
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def load() -> None:
+    """
+    Download neural quality models for metrics and benchmarks.
+
+    Downloads COMET, CometKiwi, and XCOMET models (~3GB total).
+    Models are cached locally for offline use after first download.
+
+    This is required before using 'check', 'compare', or 'benchmark' commands.
+
+    Example:
+        kttc load
+    """
+    try:
+        run_load()
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
+        raise typer.Exit(code=130)
+    except Exception:
         raise typer.Exit(code=1)
 
 

@@ -326,98 +326,95 @@ def print_translation_preview(source: str, translation: str, max_length: int = 1
 
 
 def print_available_extensions() -> None:
-    """Print information about all available KTTC extensions and their installation status.
+    """Print information about KTTC neural models download requirement.
 
-    Shows a comprehensive table with:
-    - Extension name
-    - Current status (installed/not installed)
-    - Download size
-    - Features provided
-    - Installation command
+    Shows instructions to download neural quality models before using
+    metrics commands. Exits CLI to prevent running without models.
     """
-    from kttc.utils.dependencies import has_benchmark, has_metrics, has_webui
+    from rich.panel import Panel
 
     console.print()
-    console.print("[bold cyan]📦 Available KTTC Extensions[/bold cyan]")
+    console.print(
+        Panel(
+            "[bold red]❌ Neural Models Not Found[/bold red]\n\n"
+            "KTTC requires neural quality models to function.\n\n"
+            "[bold cyan]Download models first:[/bold cyan]\n"
+            "  kttc load\n\n"
+            "This will download ~3GB of models:\n"
+            "• COMET-22 (~1.3GB)\n"
+            "• CometKiwi (~900MB)\n"
+            "• XCOMET-XL (~800MB)\n\n"
+            "[dim]Models will be cached in ~/.cache/huggingface/\n"
+            "After download, they work offline.[/dim]",
+            title="Setup Required",
+            border_style="red",
+        )
+    )
     console.print()
 
-    # Create extensions table
-    table = Table(show_header=True, header_style="bold cyan", box=None, padding=(0, 2))
-    table.add_column("Extension", style="bold")
-    table.add_column("Status", justify="center")
-    table.add_column("Size", justify="right")
-    table.add_column("Features")
 
-    # Check each extension
-    metrics_installed = has_metrics()
-    benchmark_installed = has_benchmark()
-    webui_installed = has_webui()
+def check_models_with_loader() -> bool:
+    """Check if neural models are downloaded, show loader and error if needed.
 
-    # Metrics extension
-    metrics_status = (
-        "[green]✓ Installed[/green]" if metrics_installed else "[yellow]○ Not installed[/yellow]"
-    )
-    table.add_row(
-        "metrics",
-        metrics_status,
-        "~2.5 GB",
-        "COMET, XCOMET, neural quality scoring",
-    )
+    Shows a spinner while checking models. If models are not found, displays
+    error message with status of each model and returns False. If models are ready,
+    shows success and returns True.
 
-    # Benchmark extension
-    benchmark_status = (
-        "[green]✓ Installed[/green]" if benchmark_installed else "[yellow]○ Not installed[/yellow]"
-    )
-    table.add_row(
-        "benchmark",
-        benchmark_status,
-        "~2.5 GB",
-        "Provider comparison, WMT datasets, benchmarking",
-    )
+    Returns:
+        True if models are ready, False if missing (should exit)
+    """
 
-    # WebUI extension
-    webui_status = (
-        "[green]✓ Installed[/green]" if webui_installed else "[yellow]○ Not installed[/yellow]"
-    )
-    table.add_row(
-        "webui",
-        webui_status,
-        "~50 MB",
-        "Web interface, API server, real-time UI",
-    )
+    from rich.panel import Panel
+    from rich.progress import Progress, SpinnerColumn, TextColumn
+    from rich.table import Table
 
-    console.print(table)
-    console.print()
+    from kttc.utils.dependencies import models_are_downloaded
 
-    # Show installation commands for missing extensions
-    missing = []
-    if not metrics_installed:
-        missing.append("metrics")
-    if not benchmark_installed:
-        missing.append("benchmark")
-    if not webui_installed:
-        missing.append("webui")
+    # Show spinner while checking
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+        transient=True,  # Remove spinner after completion
+    ) as progress:
+        progress.add_task(description="Checking neural models...", total=None)
+        models_ready = models_are_downloaded()
 
-    if missing:
-        console.print("[bold]Installation Commands:[/bold]")
+    # If models not found - show detailed status and return False
+    if not models_ready:
+        from kttc.utils.dependencies import get_models_status
+
+        # Get status of each model
+        models_status = get_models_status()
+
+        # Create status table
         console.print()
+        status_table = Table(show_header=True, header_style="bold cyan", box=None)
+        status_table.add_column("Model", style="bold")
+        status_table.add_column("Size", justify="right")
+        status_table.add_column("Status", justify="center")
 
-        for ext in missing:
-            console.print(f"  [dim]# Install {ext}[/dim]")
-            console.print(f"  pip install 'kttc[{ext}]'", style="cyan", markup=False)
-            console.print()
+        for name, size, status, color in models_status:
+            status_table.add_row(name, size, f"[{color}]{status}[/{color}]")
 
-        # Show combined install command if multiple missing
-        if len(missing) > 1:
-            combined = ",".join(missing)
-            console.print("  [dim]# Install all missing extensions at once[/dim]")
-            console.print(f"  pip install 'kttc[{combined}]'", style="cyan", markup=False)
-            console.print()
+        console.print(status_table)
+        console.print()
 
         console.print(
-            "[dim]Note: First install may take 5-10 minutes due to large model downloads.[/dim]"
+            Panel(
+                "[bold red]❌ Neural Models Not Ready[/bold red]\n\n"
+                "KTTC requires ALL neural quality models to be downloaded.\n\n"
+                "[bold cyan]Download missing models:[/bold cyan]\n"
+                "  kttc load\n\n"
+                "[dim]Models will be cached in ~/.cache/huggingface/\n"
+                "After download, they work offline.[/dim]",
+                title="Setup Required",
+                border_style="red",
+            )
         )
         console.print()
-    else:
-        console.print("[green]✓ All extensions are installed![/green]")
-        console.print()
+        return False
+
+    # Models are ready - show brief success message
+    console.print("[dim]✓ Neural models ready[/dim]")
+    return True
