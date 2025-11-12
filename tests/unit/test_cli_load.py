@@ -9,7 +9,7 @@ Tests the complete implementation of model downloading, verification, and status
 """
 
 from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
 
 import pytest
 from typer.testing import CliRunner
@@ -294,7 +294,11 @@ class TestLoadCommand:
 
     def test_load_command_all_models_present(self) -> None:
         """Test load command when all models already downloaded."""
-        with patch("huggingface_hub.HfFolder.get_token", return_value="fake-token"):
+        # Mock huggingface_hub module
+        mock_hf = Mock()
+        mock_hf.HfFolder.get_token.return_value = "fake-token"
+
+        with patch.dict("sys.modules", {"huggingface_hub": mock_hf}):
             with patch("kttc.cli.commands.load.verify_models") as mock_verify:
                 mock_verify.return_value = (["COMET-22", "CometKiwi", "XCOMET-XL"], [])
 
@@ -321,7 +325,14 @@ class TestLoadCommand:
 
     def test_download_model_with_progress_success(self, tmp_path: Path) -> None:
         """Test download_model_with_progress completes successfully."""
-        with patch("huggingface_hub.snapshot_download") as mock_download:
+        # Mock huggingface_hub module
+        mock_hf = Mock()
+        mock_download = Mock()
+        mock_hf.snapshot_download = mock_download
+        mock_hf.HfFolder = Mock()
+        mock_hf.HfFolder.get_token = Mock(return_value=None)
+
+        with patch.dict("sys.modules", {"huggingface_hub": mock_hf}):
             with patch("pathlib.Path.home", return_value=tmp_path):
                 success, message = download_model_with_progress(
                     "Unbabel/wmt22-comet-da", "COMET-22", 1.3
@@ -333,7 +344,13 @@ class TestLoadCommand:
 
     def test_download_model_with_progress_error(self, tmp_path: Path) -> None:
         """Test download_model_with_progress handles download errors."""
-        with patch("huggingface_hub.snapshot_download", side_effect=Exception("Download failed")):
+        # Mock huggingface_hub module with error
+        mock_hf = Mock()
+        mock_hf.snapshot_download = Mock(side_effect=Exception("Download failed"))
+        mock_hf.HfFolder = Mock()
+        mock_hf.HfFolder.get_token = Mock(return_value=None)
+
+        with patch.dict("sys.modules", {"huggingface_hub": mock_hf}):
             with patch("pathlib.Path.home", return_value=tmp_path):
                 success, message = download_model_with_progress(
                     "Unbabel/wmt22-comet-da", "COMET-22", 1.3
@@ -344,23 +361,30 @@ class TestLoadCommand:
 
     def test_download_models_with_missing_models(self) -> None:
         """Test download_models downloads missing models."""
-        with patch("huggingface_hub.HfFolder.get_token", return_value="fake-token"):
+        # Mock huggingface_hub and comet modules
+        mock_hf = Mock()
+        mock_hf.HfFolder = Mock()
+        mock_hf.HfFolder.get_token = Mock(return_value="fake-token")
+
+        mock_comet = Mock()
+        mock_comet.load_from_checkpoint = Mock()
+
+        with patch.dict("sys.modules", {"huggingface_hub": mock_hf, "comet": mock_comet}):
             with patch("kttc.cli.commands.load.verify_models") as mock_verify:
                 with patch("kttc.cli.commands.load.download_model_with_progress") as mock_download:
-                    with patch("comet.load_from_checkpoint"):
-                        # First call: some missing, second call: all downloaded
-                        mock_verify.side_effect = [
-                            (["COMET-22"], ["CometKiwi", "XCOMET-XL"]),
-                            (["COMET-22", "CometKiwi", "XCOMET-XL"], []),
-                        ]
+                    # First call: some missing, second call: all downloaded
+                    mock_verify.side_effect = [
+                        (["COMET-22"], ["CometKiwi", "XCOMET-XL"]),
+                        (["COMET-22", "CometKiwi", "XCOMET-XL"], []),
+                    ]
 
-                        mock_download.return_value = (True, "✓ Downloaded")
+                    mock_download.return_value = (True, "✓ Downloaded")
 
-                        # Should not raise exception
-                        download_models()
+                    # Should not raise exception
+                    download_models()
 
-                        # Should have tried to download 2 models
-                        assert mock_download.call_count == 2
+                    # Should have tried to download 2 models
+                    assert mock_download.call_count == 2
 
     def test_download_models_import_error(self) -> None:
         """Test download_models handles missing dependencies gracefully."""

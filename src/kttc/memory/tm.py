@@ -261,7 +261,7 @@ class TranslationMemory:
                 (source, source_lang, target_lang),
             )
             row = cursor.fetchone()
-            return row["id"] if row else 0
+            return int(row["id"]) if row else 0
 
     async def search_similar(
         self,

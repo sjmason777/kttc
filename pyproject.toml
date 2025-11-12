@@ -108,7 +108,7 @@ files = ["src/kttc"]
 
 # Ignore missing imports for optional dependencies without type stubs
 [[tool.mypy.overrides]]
-module = ["huggingface_hub", "huggingface_hub.*", "sentence_transformers", "sentence_transformers.*"]
+module = ["huggingface_hub", "huggingface_hub.*", "sentence_transformers", "sentence_transformers.*", "comet", "comet.*"]
 ignore_missing_imports = true
 
 # Pytest configuration

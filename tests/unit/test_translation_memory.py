@@ -7,6 +7,7 @@ import pytest
 
 from kttc.memory.tm import TMSegment, TranslationMemory
 
+# Mark all tests in this module as async
 pytestmark = pytest.mark.asyncio
 
 

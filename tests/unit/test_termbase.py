@@ -356,6 +356,7 @@ class TestTerminologyBase:
         # Should NOT be a violation (case-insensitive match)
         assert len(violations) == 0
 
+    @pytest.mark.asyncio(False)  # Override module-level asyncio marker
     def test_extract_terms_basic(self, termbase):
         """Test extracting terms from text."""
         text = "The API uses HTTP protocol for REST communication."

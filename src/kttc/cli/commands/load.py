@@ -376,12 +376,12 @@ def download_model_with_progress(
     try:
         # Monkey-patch tqdm.auto.tqdm to use our Rich progress bars
         # This is necessary because HuggingFace doesn't pass tqdm_class to individual file downloads
-        import tqdm.auto  # type: ignore[import-untyped]
+        import tqdm.auto
 
         original_tqdm = tqdm.auto.tqdm
 
         # Temporarily replace tqdm with our custom class
-        tqdm.auto.tqdm = RichProgressTqdm
+        tqdm.auto.tqdm = RichProgressTqdm  # type: ignore
 
         try:
             from huggingface_hub import HfFolder, snapshot_download

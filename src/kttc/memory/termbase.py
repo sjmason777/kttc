@@ -252,7 +252,7 @@ class TerminologyBase:
                 (source_term, source_lang, target_lang, domain, domain),
             )
             row = cursor.fetchone()
-            return row["id"] if row else 0
+            return int(row["id"]) if row else 0
 
     async def lookup_term(
         self,
