@@ -232,7 +232,7 @@ class TestTranslationArena:
         arena.export_report(report_file)
 
         assert report_file.exists()
-        content = report_file.read_text()
+        content = report_file.read_text(encoding="utf-8")
         assert "Translation Arena Report" in content
         assert "System A" in content
         assert "System B" in content
