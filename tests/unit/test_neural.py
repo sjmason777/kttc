@@ -130,10 +130,14 @@ class TestNeuralMetrics:
             from unittest.mock import MagicMock
 
             mock_comet_module = MagicMock()
-            mock_download = MagicMock(side_effect=["/path/comet", "/path/kiwi"])
+            # Add XCOMET path since use_xcomet=True by default
+            mock_download = MagicMock(side_effect=["/path/comet", "/path/kiwi", "/path/xcomet"])
             mock_comet_model = Mock()
             mock_kiwi_model = Mock()
-            mock_load = MagicMock(side_effect=[mock_comet_model, mock_kiwi_model])
+            mock_xcomet_model = Mock()
+            mock_load = MagicMock(
+                side_effect=[mock_comet_model, mock_kiwi_model, mock_xcomet_model]
+            )
 
             mock_comet_module.download_model = mock_download
             mock_comet_module.load_from_checkpoint = mock_load
@@ -144,7 +148,8 @@ class TestNeuralMetrics:
                 assert metrics._initialized is True
                 assert metrics.comet_model is mock_comet_model
                 assert metrics.kiwi_model is mock_kiwi_model
-                assert mock_download.call_count == 2
+                assert metrics.xcomet_model is mock_xcomet_model
+                assert mock_download.call_count == 3  # COMET + CometKiwi + XCOMET
 
     async def test_initialize_already_initialized(self, metrics):
         """Test initialize when already initialized."""

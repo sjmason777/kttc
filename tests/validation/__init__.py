@@ -9,7 +9,7 @@ Provides validation tools for:
 
 from __future__ import annotations
 
-from tests.validation.error_detection_accuracy import (
+from validation.error_detection_accuracy import (
     ErrorDetectionAccuracyTest,
     ValidationMetrics,
 )

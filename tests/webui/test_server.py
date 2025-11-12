@@ -731,7 +731,7 @@ class TestRunServer:
 
             mock_uvicorn_run.assert_called_once_with(
                 "kttc.webui.server:create_app",
-                host="0.0.0.0",
+                host="127.0.0.1",  # Default is 127.0.0.1 for security
                 port=8000,
                 reload=False,
                 factory=True,

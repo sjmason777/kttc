@@ -3,14 +3,18 @@
 These tests verify that WMT benchmark integration works correctly.
 """
 
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
+# Add parent directory to path to allow imports from benchmarks module
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from benchmarks.wmt_benchmark import BenchmarkResult, WMTBenchmark
 from kttc.core.models import QAReport, TranslationTask
-from tests.benchmarks.wmt_benchmark import BenchmarkResult, WMTBenchmark
 
 
 @pytest.fixture
@@ -262,7 +266,7 @@ class TestWMTBenchmark:
 @pytest.mark.slow
 async def test_quick_benchmark_function(mock_orchestrator):
     """Test quick_benchmark convenience function."""
-    from tests.benchmarks.wmt_benchmark import quick_benchmark
+    from benchmarks.wmt_benchmark import quick_benchmark
 
     mock_dataset = [{"sentence_eng_Latn": "Test", "sentence_spa_Latn": "Prueba"}]
 

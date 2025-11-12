@@ -2,11 +2,15 @@
 
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 import pytest
 
-from tests.benchmarks.translation_arena import ArenaSystem, TranslationArena
+# Add parent directory to path to allow imports from tests.benchmarks
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from benchmarks.translation_arena import ArenaSystem, TranslationArena
 
 
 class TestArenaSystem:

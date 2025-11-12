@@ -3,14 +3,18 @@
 These tests verify that the error detection accuracy validation system works correctly.
 """
 
+import sys
 import tempfile
 from pathlib import Path
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 
+# Add parent directory to path to allow imports from validation module
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
-from tests.validation.error_detection_accuracy import (
+from validation.error_detection_accuracy import (
     ErrorDetectionAccuracyTest,
     ErrorMatch,
     GoldStandardDataset,
