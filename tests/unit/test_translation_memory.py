@@ -47,6 +47,7 @@ class TestTMSegment:
         assert segment.usage_count == 0
 
 
+@pytest.mark.metrics
 class TestTranslationMemory:
     """Tests for TranslationMemory class."""
 

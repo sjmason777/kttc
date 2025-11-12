@@ -87,6 +87,7 @@ class TestNeuralMetricsResultCompositeScore:
         assert pytest.approx(composite, abs=0.01) == 0.55
 
 
+@pytest.mark.metrics
 class TestNeuralMetricsInitialization:
     """Test NeuralMetrics initialization and error handling."""
 
@@ -558,6 +559,7 @@ class TestNeuralMetricsEvaluateOrchestration:
         assert result.quality_estimate == "high"
 
 
+@pytest.mark.metrics
 class TestNeuralMetricsCleanup:
     """Test cleanup method."""
 
