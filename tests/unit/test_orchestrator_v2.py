@@ -66,7 +66,6 @@ class TestEnhancedAgentOrchestrator:
 
         report = await orchestrator.evaluate(
             translation_task,
-            use_neural_metrics=False,
             use_translation_memory=False,
             use_terminology_base=False,
         )
@@ -89,59 +88,12 @@ class TestEnhancedAgentOrchestrator:
 
         report = await orchestrator.evaluate(
             translation_task,
-            use_neural_metrics=False,
             use_translation_memory=False,
             use_terminology_base=False,
         )
 
         assert len(report.errors) > 0
         assert report.mqm_score < 100
-
-    async def test_evaluate_with_neural_metrics(self, orchestrator, translation_task, mock_llm):
-        """Test evaluation with neural metrics."""
-        mock_llm.complete.return_value = '{"errors": []}'
-
-        # Mock neural metrics
-        mock_neural = Mock()
-        mock_neural.evaluate = AsyncMock()
-        mock_neural.evaluate.return_value = Mock(
-            comet_score=0.85,
-            kiwi_score=0.80,
-            quality_estimate="high",
-        )
-        orchestrator.neural_metrics = mock_neural
-
-        report = await orchestrator.evaluate(
-            translation_task,
-            use_neural_metrics=True,
-            use_translation_memory=False,
-            use_terminology_base=False,
-        )
-
-        assert report.comet_score == 0.85
-        assert report.kiwi_score == 0.80
-        assert report.neural_quality_estimate == "high"
-        assert report.composite_score is not None
-
-    async def test_evaluate_neural_metrics_failure(self, orchestrator, translation_task, mock_llm):
-        """Test handling of neural metrics failure."""
-        mock_llm.complete.return_value = '{"errors": []}'
-
-        # Mock neural metrics that raises exception
-        mock_neural = Mock()
-        mock_neural.evaluate = AsyncMock(side_effect=Exception("Neural metrics failed"))
-        orchestrator.neural_metrics = mock_neural
-
-        report = await orchestrator.evaluate(
-            translation_task,
-            use_neural_metrics=True,
-            use_translation_memory=False,
-            use_terminology_base=False,
-        )
-
-        # Should still return a report, with neural scores as None
-        assert report.comet_score is None
-        assert report.kiwi_score is None
 
     async def test_evaluate_with_terminology_base(self, orchestrator, translation_task, mock_llm):
         """Test evaluation with terminology base validation."""
@@ -162,7 +114,6 @@ class TestEnhancedAgentOrchestrator:
 
         report = await orchestrator.evaluate(
             translation_task,
-            use_neural_metrics=False,
             use_translation_memory=False,
             use_terminology_base=True,
         )
@@ -184,7 +135,6 @@ class TestEnhancedAgentOrchestrator:
 
         report = await orchestrator.evaluate(
             translation_task,
-            use_neural_metrics=False,
             use_translation_memory=True,
             use_terminology_base=False,
         )
@@ -205,7 +155,6 @@ class TestEnhancedAgentOrchestrator:
         # Should not raise exception
         report = await orchestrator.evaluate(
             translation_task,
-            use_neural_metrics=False,
             use_translation_memory=True,
             use_terminology_base=False,
         )
@@ -301,32 +250,3 @@ class TestEnhancedAgentOrchestrator:
         orchestrator.add_segment_to_context("Hello", "Hola")
         orchestrator.clear_context()
         # Should not raise exception
-
-    def test_calculate_composite_score_all_metrics(self, orchestrator):
-        """Test composite score with all metrics available."""
-        score = orchestrator._calculate_composite_score(
-            mqm_score=90.0,
-            comet_score=0.85,  # 85%
-            kiwi_score=0.80,  # 80%
-        )
-        # Weighted: 40% * 90 + 30% * 85 + 30% * 80 = 36 + 25.5 + 24 = 85.5
-        assert score == pytest.approx(85.5, abs=0.1)
-
-    def test_calculate_composite_score_mqm_only(self, orchestrator):
-        """Test composite score with MQM only."""
-        score = orchestrator._calculate_composite_score(
-            mqm_score=90.0,
-            comet_score=None,
-            kiwi_score=None,
-        )
-        assert score == 90.0
-
-    def test_calculate_composite_score_mqm_and_comet(self, orchestrator):
-        """Test composite score with MQM and COMET."""
-        score = orchestrator._calculate_composite_score(
-            mqm_score=90.0,
-            comet_score=0.80,
-            kiwi_score=None,
-        )
-        # Weighted: (40% * 90 + 30% * 80) / 70% = (36 + 24) / 0.7 = 85.71
-        assert score == pytest.approx(85.71, abs=0.1)

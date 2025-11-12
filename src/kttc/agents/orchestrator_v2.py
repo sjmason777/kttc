@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Enhanced Agent Orchestrator with neural metrics and memory support.
+"""Enhanced Agent Orchestrator with memory support.
 
 Coordinates multiple QA agents with support for:
-- Neural metrics (COMET, CometKiwi)
 - Translation Memory integration
 - Terminology Base validation
 - Hallucination detection
@@ -41,22 +40,18 @@ logger = logging.getLogger(__name__)
 
 
 class EnhancedAgentOrchestrator:
-    """Enhanced orchestrator with neural metrics and memory support.
+    """Enhanced orchestrator with memory support.
 
     Coordinates all QA agents and integrates:
-    - Neural quality metrics (COMET, CometKiwi)
     - Translation Memory for context
     - Terminology Base for validation
     - Hallucination detection
     - Document-level context awareness
 
     Example:
-        >>> from kttc.metrics import NeuralMetrics
         >>> from kttc.memory import TranslationMemory, TerminologyBase
         >>>
         >>> # Initialize components
-        >>> neural_metrics = NeuralMetrics()
-        >>> await neural_metrics.initialize()
         >>> tm = TranslationMemory()
         >>> await tm.initialize()
         >>> termbase = TerminologyBase()
@@ -65,14 +60,13 @@ class EnhancedAgentOrchestrator:
         >>> # Create orchestrator
         >>> orchestrator = EnhancedAgentOrchestrator(
         ...     llm_provider=provider,
-        ...     neural_metrics=neural_metrics,
         ...     translation_memory=tm,
         ...     terminology_base=termbase
         ... )
         >>>
         >>> # Evaluate translation
         >>> report = await orchestrator.evaluate(task)
-        >>> print(f"MQM: {report.mqm_score}, COMET: {report.comet_score}")
+        >>> print(f"MQM: {report.mqm_score}")
     """
 
     def __init__(
@@ -81,7 +75,6 @@ class EnhancedAgentOrchestrator:
         quality_threshold: float = 95.0,
         agent_temperature: float = 0.1,
         agent_max_tokens: int = 2000,
-        neural_metrics: Any = None,  # NeuralMetrics instance
         translation_memory: Any = None,  # TranslationMemory instance
         terminology_base: Any = None,  # TerminologyBase instance
         enable_hallucination_detection: bool = True,
@@ -94,7 +87,6 @@ class EnhancedAgentOrchestrator:
             quality_threshold: Minimum MQM score to pass (default: 95.0)
             agent_temperature: Temperature for all agents (default: 0.1)
             agent_max_tokens: Max tokens for agent responses (default: 2000)
-            neural_metrics: NeuralMetrics instance (optional)
             translation_memory: TranslationMemory instance (optional)
             terminology_base: TerminologyBase instance (optional)
             enable_hallucination_detection: Enable hallucination agent (default: True)
@@ -130,7 +122,6 @@ class EnhancedAgentOrchestrator:
         # Components
         self.scorer = MQMScorer()
         self.quality_threshold = quality_threshold
-        self.neural_metrics = neural_metrics
         self.translation_memory = translation_memory
         self.terminology_base = terminology_base
 
@@ -139,8 +130,6 @@ class EnhancedAgentOrchestrator:
     async def evaluate(
         self,
         task: TranslationTask,
-        reference: str | None = None,
-        use_neural_metrics: bool = True,
         use_translation_memory: bool = True,
         use_terminology_base: bool = True,
     ) -> QAReport:
@@ -148,8 +137,6 @@ class EnhancedAgentOrchestrator:
 
         Args:
             task: Translation task to evaluate
-            reference: Optional reference translation for COMET
-            use_neural_metrics: Whether to compute neural metrics (default: True)
             use_translation_memory: Whether to check TM (default: True)
             use_terminology_base: Whether to validate against termbase (default: True)
 
@@ -204,30 +191,6 @@ class EnhancedAgentOrchestrator:
             word_count = len(task.source_text.split())
             mqm_score = self.scorer.calculate_score(all_errors, word_count)
 
-            # Neural metrics
-            comet_score = None
-            kiwi_score = None
-            neural_quality_estimate = None
-
-            if use_neural_metrics and self.neural_metrics is not None:
-                logger.info("Computing neural metrics...")
-                try:
-                    neural_result = await self.neural_metrics.evaluate(
-                        source=task.source_text,
-                        translation=task.translation,
-                        reference=reference,
-                    )
-
-                    comet_score = neural_result.comet_score
-                    kiwi_score = neural_result.kiwi_score
-                    neural_quality_estimate = neural_result.quality_estimate
-
-                except Exception as e:
-                    logger.warning(f"Neural metrics computation failed: {e}")
-
-            # Composite score (MQM + neural metrics)
-            composite_score = self._calculate_composite_score(mqm_score, comet_score, kiwi_score)
-
             # Translation Memory (for future reference)
             if use_translation_memory and self.translation_memory is not None:
                 # If quality is high, add to TM
@@ -252,10 +215,6 @@ class EnhancedAgentOrchestrator:
             return QAReport(
                 task=task,
                 mqm_score=mqm_score,
-                comet_score=comet_score,
-                kiwi_score=kiwi_score,
-                neural_quality_estimate=neural_quality_estimate,
-                composite_score=composite_score,
                 errors=all_errors,
                 status=status,
             )
@@ -264,49 +223,6 @@ class EnhancedAgentOrchestrator:
             raise AgentEvaluationError(f"Enhanced orchestrator evaluation failed: {e}") from e
         except Exception as e:
             raise AgentEvaluationError(f"Unexpected error in orchestrator: {e}") from e
-
-    def _calculate_composite_score(
-        self,
-        mqm_score: float,
-        comet_score: float | None,
-        kiwi_score: float | None,
-    ) -> float:
-        """Calculate weighted composite score.
-
-        Combines MQM (40%), COMET (30%), and CometKiwi (30%).
-
-        Args:
-            mqm_score: MQM score (0-100)
-            comet_score: COMET score (0-1) or None
-            kiwi_score: CometKiwi score (0-1) or None
-
-        Returns:
-            Composite score (0-100)
-        """
-        weights = {
-            "mqm": 0.40,
-            "comet": 0.30,
-            "kiwi": 0.30,
-        }
-
-        score = 0.0
-        total_weight = 0.0
-
-        # MQM (always present)
-        score += weights["mqm"] * mqm_score
-        total_weight += weights["mqm"]
-
-        # COMET (if available)
-        if comet_score is not None:
-            score += weights["comet"] * (comet_score * 100)  # Convert to 0-100
-            total_weight += weights["comet"]
-
-        # CometKiwi (if available)
-        if kiwi_score is not None:
-            score += weights["kiwi"] * (kiwi_score * 100)  # Convert to 0-100
-            total_weight += weights["kiwi"]
-
-        return score / total_weight if total_weight > 0 else mqm_score
 
     async def get_tm_suggestions(
         self, source: str, source_lang: str, target_lang: str, limit: int = 3

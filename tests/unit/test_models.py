@@ -196,12 +196,10 @@ class TestQAReport:
         report = QAReport(
             task=sample_translation_task,
             mqm_score=85.0,
-            comet_score=0.75,
             errors=sample_error_annotations,
             status="fail",
         )
         assert len(report.errors) == 3
-        assert report.comet_score == 0.75
 
     def test_error_count_property(self, sample_qa_report_fail: Any) -> None:
         """Test error count property."""

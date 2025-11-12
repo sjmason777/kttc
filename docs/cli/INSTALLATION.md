@@ -40,55 +40,6 @@ pip install kttc[all]
 
 ---
 
-## Installation Options
-
-### By Feature
-
-Install only what you need:
-
-#### 1. Metrics (COMET, BLEU, etc.)
-
-```bash
-pip install kttc[metrics]
-```
-
-**Use when:** You need neural metrics like COMET
-**Size:** ~2.5GB
-**Time:** ~5-10 minutes (first time downloads models)
-
-#### 2. Web UI
-
-```bash
-pip install kttc[webui]
-```
-
-**Use when:** You want web-based interface
-**Size:** ~10MB
-**Time:** ~30 seconds
-
-#### 3. Benchmarking
-
-```bash
-pip install kttc[benchmark]
-```
-
-**Use when:** Comparing LLM providers
-**Size:** ~2.5GB (includes metrics + datasets)
-**Time:** ~5-10 minutes
-
-#### 4. Development
-
-```bash
-pip install kttc[dev]
-```
-
-**Use when:** Contributing to KTTC
-**Includes:** pytest, mypy, black, ruff, etc.
-**Size:** ~100MB
-**Time:** ~1 minute
-
----
-
 ## Smart Dependency Management
 
 ### Auto-Install on First Use
@@ -125,20 +76,6 @@ $ kttc benchmark --source text.txt ...
 
 ✓ Successfully installed benchmark dependencies!
 ```
-
-### Graceful Degradation
-
-Commands work without ML models using LLM-based alternatives:
-
-```bash
-# Without COMET: Uses LLM-based quality estimation
-kttc check --source src.txt --translation tgt.txt ...
-
-# With COMET: Uses neural metrics
-kttc check --source src.txt --translation tgt.txt ... --use-comet
-```
-
----
 
 ## Installation Speed Optimization
 

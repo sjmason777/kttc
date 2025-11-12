@@ -334,31 +334,6 @@ class TestStrictModelValidation:
         with pytest.raises(ValidationError):
             QAReport(task=task, mqm_score=1000.0, errors=[], status="pass")
 
-    def test_qa_report_comet_score_boundaries(self) -> None:
-        """Test COMET score at exact boundaries."""
-        task = TranslationTask(
-            source_text="test",
-            translation="test",
-            source_lang="en",
-            target_lang="es",
-        )
-
-        # Valid: 0.0
-        report = QAReport(task=task, mqm_score=50.0, comet_score=0.0, errors=[], status="fail")
-        assert report.comet_score == 0.0
-
-        # Valid: 1.0
-        report = QAReport(task=task, mqm_score=100.0, comet_score=1.0, errors=[], status="pass")
-        assert report.comet_score == 1.0
-
-        # Invalid: above 1.0
-        with pytest.raises(ValidationError):
-            QAReport(task=task, mqm_score=100.0, comet_score=1.01, errors=[], status="pass")
-
-        # Invalid: below 0.0
-        with pytest.raises(ValidationError):
-            QAReport(task=task, mqm_score=50.0, comet_score=-0.01, errors=[], status="fail")
-
     def test_qa_report_invalid_status_values(self) -> None:
         """Test that only 'pass' or 'fail' are accepted for status."""
         task = TranslationTask(
@@ -495,7 +470,6 @@ class TestStrictModelValidation:
         original = QAReport(
             task=task,
             mqm_score=92.5,
-            comet_score=0.85,
             errors=[error],
             status="pass",
             agent_details={"agent1": {"score": 95}},
@@ -510,7 +484,6 @@ class TestStrictModelValidation:
 
         # Verify all fields match
         assert restored.mqm_score == original.mqm_score
-        assert restored.comet_score == original.comet_score
         assert restored.status == original.status
         assert len(restored.errors) == len(original.errors)
         assert restored.errors[0].severity == original.errors[0].severity

@@ -31,11 +31,9 @@ from kttc.cli.ui import (
     print_info,
     print_startup_info,
     print_success,
-    print_warning,
 )
 from kttc.core import TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
-from kttc.metrics.neural import NeuralMetrics
 from kttc.utils.config import get_settings
 
 
@@ -47,7 +45,6 @@ async def evaluate_translation(
     target_lang: str,
     provider: BaseLLMProvider,
     threshold: float,
-    reference: str | None = None,
 ) -> dict[str, Any]:
     """Evaluate a single translation.
 
@@ -59,7 +56,6 @@ async def evaluate_translation(
         target_lang: Target language code
         provider: LLM provider for evaluation
         threshold: Quality threshold
-        reference: Optional reference translation for COMET
 
     Returns:
         Evaluation results dictionary
@@ -76,27 +72,10 @@ async def evaluate_translation(
     orchestrator = AgentOrchestrator(provider, quality_threshold=threshold)
     report = await orchestrator.evaluate(task)
 
-    # Calculate COMET if reference provided
-    comet_score = None
-    if reference:
-        try:
-            metrics = NeuralMetrics()
-            await metrics.initialize()
-            comet_result = await metrics.evaluate_with_reference(
-                source=source_text,
-                translation=translation,
-                reference=reference,
-            )
-            comet_score = comet_result.comet_score
-        except Exception:
-            # COMET failed, continue without it
-            pass
-
     return {
         "name": translation_name,
         "translation": translation,
         "mqm_score": report.mqm_score,
-        "comet_score": comet_score,
         "status": report.status,
         "error_count": len(report.errors),
         "critical_errors": report.critical_error_count,
@@ -111,7 +90,6 @@ async def run_compare(
     translations: list[str],
     source_lang: str,
     target_lang: str,
-    reference: str | None,
     threshold: float,
     provider: str | None,
     verbose: bool,
@@ -123,13 +101,10 @@ async def run_compare(
         translations: List of translation file paths
         source_lang: Source language code
         target_lang: Target language code
-        reference: Optional reference translation file path
         threshold: Quality threshold
         provider: LLM provider name
         verbose: Verbose output
     """
-    from kttc.utils.dependencies import has_metrics
-
     settings = get_settings()
 
     # Print header
@@ -138,17 +113,6 @@ async def run_compare(
         "Compare multiple translations side by side",
     )
 
-    # Warn if reference provided but no metrics
-    if reference and not has_metrics():
-        console.print()
-        print_warning("Reference translation provided, but COMET metrics not available")
-        console.print()
-        console.print("[dim]For COMET scoring, install metrics:[/dim]")
-        console.print("  pip install 'kttc[metrics]'", style="cyan", markup=False)
-        console.print()
-        console.print("[dim]Proceeding with MQM-only comparison...[/dim]")
-        console.print()
-
     # Load source text
     source_path = Path(source)
     if not source_path.exists():
@@ -156,15 +120,6 @@ async def run_compare(
         raise typer.Exit(code=1)
 
     source_text = source_path.read_text(encoding="utf-8").strip()
-
-    # Load reference if provided
-    reference_text = None
-    if reference:
-        reference_path = Path(reference)
-        if not reference_path.exists():
-            print_error(f"Reference file not found: {reference}")
-            raise typer.Exit(code=1)
-        reference_text = reference_path.read_text(encoding="utf-8").strip()
 
     # Load all translations
     translation_data = []
@@ -195,8 +150,6 @@ async def run_compare(
         "Quality Threshold": f"{threshold}",
         "Source Length": f"{len(source_text)} chars",
     }
-    if reference_text:
-        config_info["Reference Provided"] = "Yes (COMET scoring enabled)"
 
     print_startup_info(config_info)
 
@@ -238,7 +191,6 @@ async def run_compare(
                 target_lang=target_lang,
                 provider=llm_provider,
                 threshold=threshold,
-                reference=reference_text,
             )
 
             results.append(result)
@@ -246,10 +198,12 @@ async def run_compare(
             # Show result
             status_icon = "✓" if result["status"] == "pass" else "✗"
             status_color = "green" if result["status"] == "pass" else "red"
-            comet_str = f"COMET {result['comet_score']:.2f}, " if result["comet_score"] else ""
+            errors = (
+                f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+            )
             progress.console.print(
                 f"  [{status_color}]{status_icon}[/{status_color}] "
-                f"{trans_data['name']}: {comet_str}MQM {result['mqm_score']:.2f}"
+                f"{trans_data['name']}: MQM {result['mqm_score']:.2f}, Errors: {errors}"
             )
 
             progress.advance(task_id)
@@ -257,7 +211,7 @@ async def run_compare(
     console.print()
 
     # Display comparison table
-    _display_comparison_results(results, reference_text is not None, verbose)
+    _display_comparison_results(results, verbose)
 
     # Show best translation
     best = max(results, key=lambda r: r["mqm_score"])
@@ -265,14 +219,11 @@ async def run_compare(
     print_success(f"Best translation: {best['name']} (MQM: {best['mqm_score']:.2f})")
 
 
-def _display_comparison_results(
-    results: list[dict[str, Any]], has_comet: bool, verbose: bool
-) -> None:
+def _display_comparison_results(results: list[dict[str, Any]], verbose: bool) -> None:
     """Display comparison results in a table.
 
     Args:
         results: List of evaluation results
-        has_comet: Whether COMET scores are available
         verbose: Show detailed error information
     """
     # Main comparison table
@@ -284,8 +235,6 @@ def _display_comparison_results(
     )
 
     table.add_column("Translation", style="cyan", no_wrap=True)
-    if has_comet:
-        table.add_column("COMET", justify="right")
     table.add_column("MQM Score", justify="right")
     table.add_column("Errors", justify="center")
     table.add_column("Status", justify="center")
@@ -309,19 +258,12 @@ def _display_comparison_results(
         # Error breakdown
         error_info = f"{result['error_count']} ({result['critical_errors']}C/{result['major_errors']}M/{result['minor_errors']}m)"
 
-        row = [result["name"]]
-        if has_comet:
-            comet_score = result.get("comet_score")
-            row.append(f"{comet_score:.2f}" if comet_score is not None else "N/A")
-        row.extend(
-            [
-                f"[{mqm_color}]{mqm_score:.2f}[/{mqm_color}]",
-                error_info,
-                status_text,
-            ]
+        table.add_row(
+            result["name"],
+            f"[{mqm_color}]{mqm_score:.2f}[/{mqm_color}]",
+            error_info,
+            status_text,
         )
-
-        table.add_row(*row)
 
     console.print(table)
 

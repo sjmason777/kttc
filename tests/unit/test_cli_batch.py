@@ -149,7 +149,6 @@ class TestBatchCommand:
             mqm_score=98.0,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -217,7 +216,6 @@ class TestBatchCommand:
             mqm_score=98.0,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         fail_report = QAReport(
@@ -238,7 +236,6 @@ class TestBatchCommand:
                 )
             ],
             status="fail",
-            comet_score=None,
         )
 
         call_count = {"count": 0}
@@ -354,7 +351,6 @@ class TestBatchCommand:
             mqm_score=98.0,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -415,7 +411,6 @@ class TestBatchCommand:
             mqm_score=98.0,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -481,7 +476,6 @@ class TestBatchCommand:
             mqm_score=98.0,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         call_count = {"count": 0}

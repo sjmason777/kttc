@@ -12,15 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Neural metrics module for translation quality evaluation.
+"""Quality metrics for translation evaluation.
 
-This module provides integration with state-of-the-art neural metrics:
-- COMET (reference-based quality estimation)
-- CometKiwi (reference-free quality estimation)
-- XCOMET (error span detection, WMT 2024 champion)
+Provides classical metrics (BLEU, TER, METEOR) and semantic similarity.
 """
 
-from .neural import ErrorSpan, NeuralMetrics, NeuralMetricsResult
-from .visualization import ErrorSpanVisualizer
+from __future__ import annotations
 
-__all__ = ["NeuralMetrics", "NeuralMetricsResult", "ErrorSpan", "ErrorSpanVisualizer"]
+__all__ = []

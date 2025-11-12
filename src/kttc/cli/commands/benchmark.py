@@ -38,14 +38,13 @@ from kttc.cli.ui import (
 from kttc.core import TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, GigaChatProvider, OpenAIProvider
 from kttc.utils.config import get_settings
-from kttc.utils.dependencies import has_metrics, require_benchmark
+from kttc.utils.dependencies import require_benchmark
 
 
 async def benchmark_provider(
     provider: BaseLLMProvider,
     provider_name: str,
     source_text: str,
-    reference: str,
     source_lang: str,
     target_lang: str,
     threshold: float,
@@ -56,7 +55,6 @@ async def benchmark_provider(
         provider: LLM provider instance
         provider_name: Name of the provider
         source_text: Source text
-        reference: Reference translation (for COMET)
         source_lang: Source language code
         target_lang: Target language code
         threshold: Quality threshold
@@ -89,31 +87,12 @@ Translation:"""
         orchestrator = AgentOrchestrator(provider, quality_threshold=threshold)
         report = await orchestrator.evaluate(task)
 
-        # Calculate COMET score if reference provided AND metrics available
-        comet_score = 0.0
-        if reference and has_metrics():
-            try:
-                from kttc.metrics.neural import NeuralMetrics
-
-                metrics = NeuralMetrics()
-                await metrics.initialize()
-                comet_result = await metrics.evaluate_with_reference(
-                    source=source_text,
-                    translation=translation,
-                    reference=reference,
-                )
-                comet_score = comet_result.comet_score if comet_result.comet_score else 0.0
-            except Exception:
-                # COMET calculation failed, continue with 0.0
-                pass
-
         duration = time.time() - start_time
 
         return {
             "name": provider_name,
             "status": report.status,
             "mqm_score": report.mqm_score,
-            "comet_score": comet_score,
             "error_count": len(report.errors),
             "critical_errors": report.critical_error_count,
             "major_errors": report.major_error_count,
@@ -129,7 +108,6 @@ Translation:"""
             "name": provider_name,
             "status": "error",
             "mqm_score": 0.0,
-            "comet_score": 0.0,
             "error_count": 0,
             "critical_errors": 0,
             "major_errors": 0,
@@ -143,7 +121,6 @@ Translation:"""
 
 async def run_benchmark(
     source: str,
-    reference: str | None,
     source_lang: str,
     target_lang: str,
     providers: list[str],
@@ -155,7 +132,6 @@ async def run_benchmark(
 
     Args:
         source: Source text file path
-        reference: Reference translation file path (optional)
         source_lang: Source language code
         target_lang: Target language code
         providers: List of provider names to benchmark
@@ -164,7 +140,7 @@ async def run_benchmark(
         verbose: Verbose output
     """
     from kttc.cli.ui import print_available_extensions
-    from kttc.utils.dependencies import has_benchmark, has_metrics, has_webui
+    from kttc.utils.dependencies import has_benchmark, has_webui
 
     settings = get_settings()
 
@@ -175,11 +151,11 @@ async def run_benchmark(
     )
 
     # Show available extensions status
-    missing_any = not has_metrics() or not has_benchmark() or not has_webui()
+    missing_any = not has_benchmark() or not has_webui()
 
     if missing_any:
         print_available_extensions()
-        console.print("[dim]You can continue, but benchmark features require extensions.[/dim]")
+        console.print("[dim]You can continue, but some features require extensions.[/dim]")
         console.print()
 
     # Check if benchmark dependencies are installed (will exit if not)
@@ -193,15 +169,6 @@ async def run_benchmark(
 
     source_text = source_path.read_text(encoding="utf-8").strip()
 
-    # Load reference if provided
-    reference_text = None
-    if reference:
-        reference_path = Path(reference)
-        if not reference_path.exists():
-            print_error(f"Reference file not found: {reference}")
-            raise typer.Exit(code=1)
-        reference_text = reference_path.read_text(encoding="utf-8").strip()
-
     # Display configuration
     config_info = {
         "Source Language": source_lang,
@@ -210,8 +177,6 @@ async def run_benchmark(
         "Quality Threshold": f"{threshold}",
         "Source Length": f"{len(source_text)} chars",
     }
-    if reference_text:
-        config_info["Reference Provided"] = "Yes (COMET scoring enabled)"
 
     print_startup_info(config_info)
 
@@ -270,7 +235,6 @@ async def run_benchmark(
                 provider=provider,
                 provider_name=provider_name,
                 source_text=source_text,
-                reference=reference_text or "",
                 source_lang=source_lang,
                 target_lang=target_lang,
                 threshold=threshold,
@@ -282,10 +246,13 @@ async def run_benchmark(
             if result["success"]:
                 status_icon = "✓" if result["status"] == "pass" else "✗"
                 status_color = "green" if result["status"] == "pass" else "red"
+                errors = (
+                    f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+                )
                 progress.console.print(
                     f"  [{status_color}]{status_icon}[/{status_color}] "
                     f"{provider_name}: MQM {result['mqm_score']:.2f}, "
-                    f"COMET {result['comet_score']:.2f} "
+                    f"Errors: {errors} "
                     f"({result['duration']:.2f}s)"
                 )
             else:
@@ -304,16 +271,20 @@ async def run_benchmark(
     # Calculate and display summary
     successful_results = [r for r in results if r["success"]]
     if successful_results:
-        avg_comet = sum(r["comet_score"] for r in successful_results) / len(successful_results)
         avg_mqm = sum(r["mqm_score"] for r in successful_results) / len(successful_results)
+        avg_duration = sum(r["duration"] for r in successful_results) / len(successful_results)
         best_provider = max(successful_results, key=lambda r: r["mqm_score"])
+        fastest_provider = min(successful_results, key=lambda r: r["duration"])
+        pass_count = sum(1 for r in successful_results if r["status"] == "pass")
 
         summary = {
             "total_providers": len(results),
             "test_sentences": 1,
-            "avg_comet": avg_comet,
             "avg_mqm": avg_mqm,
+            "avg_duration": avg_duration,
             "best_provider": best_provider["name"],
+            "fastest_provider": fastest_provider["name"],
+            "pass_rate": f"{pass_count}/{len(successful_results)}",
         }
 
         print_benchmark_summary(summary)
@@ -333,7 +304,6 @@ async def run_benchmark(
             "target_lang": target_lang,
             "threshold": threshold,
             "source_text": source_text,
-            "reference_text": reference_text,
             "results": results,
         }
         output_path.write_text(

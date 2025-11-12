@@ -45,7 +45,6 @@ DependencyGroup = Literal["metrics", "webui", "benchmark"]
 
 DEPENDENCY_GROUPS: dict[DependencyGroup, dict[str, str]] = {
     "metrics": {
-        "unbabel-comet": "COMET metric for translation quality (~2GB models)",
         "sentence-transformers": "Sentence embeddings for semantic similarity (~500MB)",
         "sacrebleu": "BLEU and other classical metrics (lightweight)",
     },
@@ -55,7 +54,6 @@ DEPENDENCY_GROUPS: dict[DependencyGroup, dict[str, str]] = {
         "websockets": "WebSocket support for real-time updates",
     },
     "benchmark": {
-        "unbabel-comet": "COMET metric (~2GB models)",
         "sentence-transformers": "Sentence embeddings (~500MB)",
         "sacrebleu": "Classical metrics (lightweight)",
         "datasets": "Hugging Face datasets for benchmarking",
@@ -298,12 +296,6 @@ def show_optimization_tips() -> None:
 # Convenience functions for specific features
 
 
-def has_metrics() -> bool:
-    """Check if metrics dependencies are available."""
-    all_installed, _ = check_dependency_group("metrics")
-    return all_installed
-
-
 def has_webui() -> bool:
     """Check if webui dependencies are available."""
     all_installed, _ = check_dependency_group("webui")
@@ -314,15 +306,6 @@ def has_benchmark() -> bool:
     """Check if benchmark dependencies are available."""
     all_installed, _ = check_dependency_group("benchmark")
     return all_installed
-
-
-def require_metrics(command: str) -> None:
-    """Ensure metrics dependencies are installed or exit.
-
-    Args:
-        command: Name of the command requiring metrics
-    """
-    ensure_dependency_group("metrics", command, required=True)
 
 
 def require_webui(command: str) -> None:
@@ -341,105 +324,3 @@ def require_benchmark(command: str) -> None:
         command: Name of the command requiring benchmark features
     """
     ensure_dependency_group("benchmark", command, required=True)
-
-
-def models_are_downloaded() -> bool:
-    """Check if ALL neural quality models are downloaded and valid.
-
-    Returns:
-        True if ALL models are cached locally AND have valid checkpoints, False otherwise
-    """
-    from pathlib import Path
-
-    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
-
-    # All required COMET models with their HuggingFace repo names
-    required_models = [
-        "Unbabel/wmt22-comet-da",
-        "Unbabel/wmt23-cometkiwi-da-xxl",
-        "Unbabel/XCOMET-XL",
-    ]
-
-    if not cache_dir.exists():
-        return False
-
-    # Check that ALL models exist and are valid (have checkpoint files)
-    for model_name in required_models:
-        model_dir_name = f"models--{model_name.replace('/', '--')}"
-        model_path = cache_dir / model_dir_name
-
-        if not model_path.exists():
-            return False
-
-        # Check if checkpoint file exists (validates model is complete)
-        checkpoint_path = model_path / "checkpoints" / "model.ckpt"
-        if not checkpoint_path.exists():
-            # Try snapshots directory structure (newer HF format)
-            snapshots_dir = model_path / "snapshots"
-            if snapshots_dir.exists():
-                # Check if any snapshot has the checkpoint
-                found_checkpoint = False
-                for snapshot in snapshots_dir.iterdir():
-                    if snapshot.is_dir():
-                        ckpt = snapshot / "checkpoints" / "model.ckpt"
-                        if ckpt.exists():
-                            found_checkpoint = True
-                            break
-                if not found_checkpoint:
-                    return False
-            else:
-                return False
-
-    # All models exist and are valid
-    return True
-
-
-def get_models_status() -> list[tuple[str, str, str, str]]:
-    """Get detailed status of all neural models.
-
-    Returns:
-        List of tuples: (display_name, size, status_text, status_color)
-        Example: [("COMET-22", "1.3 GB", "✓ Downloaded", "green"), ...]
-    """
-    from pathlib import Path
-
-    cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
-
-    required_models = [
-        ("Unbabel/wmt22-comet-da", "COMET-22", "1.3 GB"),
-        ("Unbabel/wmt23-cometkiwi-da-xxl", "CometKiwi", "900 MB"),
-        ("Unbabel/XCOMET-XL", "XCOMET-XL", "800 MB"),
-    ]
-
-    models_status = []
-
-    for model_name, display_name, size in required_models:
-        model_dir_name = f"models--{model_name.replace('/', '--')}"
-        model_path = cache_dir / model_dir_name
-
-        if not model_path.exists():
-            models_status.append((display_name, size, "○ Not downloaded", "yellow"))
-        else:
-            # Check if checkpoint exists
-            checkpoint_path = model_path / "checkpoints" / "model.ckpt"
-            has_checkpoint = False
-
-            if checkpoint_path.exists():
-                has_checkpoint = True
-            else:
-                # Try snapshots directory structure (newer HF format)
-                snapshots_dir = model_path / "snapshots"
-                if snapshots_dir.exists():
-                    for snapshot in snapshots_dir.iterdir():
-                        if snapshot.is_dir():
-                            ckpt = snapshot / "checkpoints" / "model.ckpt"
-                            if ckpt.exists():
-                                has_checkpoint = True
-                                break
-
-            if has_checkpoint:
-                models_status.append((display_name, size, "✓ Downloaded", "green"))
-            else:
-                models_status.append((display_name, size, "⚠ Incomplete", "yellow"))
-
-    return models_status

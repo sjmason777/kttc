@@ -21,13 +21,6 @@ from kttc.core import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
 runner = CliRunner()
 
 
-@pytest.fixture(autouse=True)
-def mock_models_available():
-    """Automatically mock models as available for all tests in this module."""
-    with patch("kttc.utils.dependencies.models_are_downloaded", return_value=True):
-        yield
-
-
 @pytest.mark.unit
 class TestCheckCommand:
     """Tests for the check command implementation."""
@@ -247,7 +240,6 @@ class TestCheckCommand:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -310,7 +302,6 @@ class TestCheckCommand:
             mqm_score=85.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -374,7 +365,6 @@ class TestCheckCommand:
             mqm_score=98.0,
             errors=[error],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -431,7 +421,6 @@ class TestCheckCommand:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -503,7 +492,6 @@ class TestCheckCommand:
             mqm_score=90.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -567,7 +555,6 @@ class TestCheckCommand:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         with patch("kttc.cli.main.AgentOrchestrator") as mock_orchestrator_class:
@@ -697,7 +684,6 @@ class TestDisplayReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         # Should not raise any exceptions
@@ -723,7 +709,6 @@ class TestDisplayReport:
             mqm_score=80.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         # Should not raise any exceptions
@@ -765,7 +750,6 @@ class TestDisplayReport:
             mqm_score=85.0,
             errors=errors,
             status="fail",
-            comet_score=None,
         )
 
         # Should not raise any exceptions
@@ -791,7 +775,6 @@ class TestDisplayReport:
             mqm_score=90.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         # Should not raise any exceptions
@@ -816,7 +799,6 @@ class TestSaveReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         _save_report(report, str(output), "json")
@@ -840,7 +822,6 @@ class TestSaveReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         _save_report(report, str(output), "text")  # Format is text, but .json extension
@@ -871,7 +852,6 @@ class TestSaveReport:
             mqm_score=90.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         _save_report(report, str(output), "markdown")
@@ -895,7 +875,6 @@ class TestSaveReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         _save_report(report, str(output), "text")  # Format is text, but .md extension
@@ -918,7 +897,6 @@ class TestSaveReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         _save_report(report, str(output), "text")
@@ -945,7 +923,6 @@ class TestGenerateMarkdownReport:
             mqm_score=98.5,
             errors=[],
             status="pass",
-            comet_score=None,
         )
 
         markdown = _generate_markdown_report(report)
@@ -975,7 +952,6 @@ class TestGenerateMarkdownReport:
             mqm_score=80.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         markdown = _generate_markdown_report(report)
@@ -1007,7 +983,6 @@ class TestGenerateMarkdownReport:
             mqm_score=90.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         markdown = _generate_markdown_report(report)
@@ -1036,7 +1011,6 @@ class TestGenerateMarkdownReport:
             mqm_score=90.0,
             errors=[error],
             status="fail",
-            comet_score=None,
         )
 
         markdown = _generate_markdown_report(report)
@@ -1083,7 +1057,6 @@ class TestGenerateMarkdownReport:
             mqm_score=85.0,
             errors=errors,
             status="fail",
-            comet_score=None,
         )
 
         markdown = _generate_markdown_report(report)

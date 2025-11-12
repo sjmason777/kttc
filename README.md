@@ -16,9 +16,8 @@
 ---
 
 ## Key Features
-- **Multi-agent QA** - 3+ specialized agents (Accuracy, Fluency, Terminology) + Language-specific agents
-- **XCOMET Integration** - WMT 2024 champion metric with error span detection (0.72 correlation)
-- **Neural Metrics** - COMET (0.85-0.90 correlation), CometKiwi, composite scoring
+- **Multi-agent QA** - 5 specialized agents (Accuracy, Fluency, Terminology, Hallucination, Context)
+- **MQM Scoring** - Industry-standard quality metrics (WMT benchmarks)
 - **Intelligent Model Selection** - Automatic optimal model selection per language pair
 - **Auto-Correction** - AI-powered post-editing (40% faster, 60% cost reduction)
 - **TEaR Loop** - Translate-Estimate-Refine for iterative quality improvement
@@ -35,8 +34,8 @@
 # Quick install (core features, ~50MB)
 pip install kttc
 
-# With neural metrics (includes PyTorch, ~2GB)
-pip install kttc[neural]
+# With optional metrics (sentence embeddings)
+pip install kttc[metrics]
 
 # Full install for development
 pip install kttc[full,dev]
@@ -47,59 +46,33 @@ cd kttc
 pip install -e ".[full,dev]"
 ```
 
-**Note**: Neural metrics (COMET, XCOMET) require ~3GB of models to be downloaded on first use via `kttc load`.
+### Core Metrics (No Download Required) ✅
+
+**KTTC's default system provides production-ready quality assessment:**
+
+| Metric | Description | How It Works |
+|--------|-------------|--------------|
+| **MQM Score** | Industry standard (WMT benchmarks) | Multi-agent QA finds errors, weighted by category/severity |
+| **Multi-Agent QA** | 5 specialized AI agents | Uses your LLM API (GigaChat/OpenAI/Claude) |
+| **Error Detection** | Finds mistranslations, omissions, fluency issues | AccuracyAgent, FluencyAgent, TerminologyAgent, HallucinationAgent, ContextAgent |
+| **Auto-Correction** | Fixes detected errors automatically | LLM-powered post-editing |
+| **Translation Memory** | Reuses similar translations | TM database with fuzzy matching |
+| **Terminology Base** | Validates domain terms | Custom glossary support |
+
+**Quality Levels:**
+- 95-100: Excellent (production-ready)
+- 90-94: Good (minor fixes needed)
+- 80-89: Acceptable (revision needed)
+- <80: Poor (significant rework)
 
 ## Quick Start
 
 ### 1. Install KTTC
 ```bash
-# Install with neural metrics support
-pip install kttc[neural]
+pip install kttc
 ```
 
-### 2. Download Neural Models
-
-Neural metrics require downloading models from HuggingFace (~3GB total):
-
-```bash
-kttc load
-```
-
-#### HuggingFace Authentication (Required for CometKiwi & XCOMET)
-
-Some models are gated and require accepting license agreements:
-
-**Quick Setup (2 minutes):**
-
-1. **Create HuggingFace account**: https://huggingface.co/join
-
-2. **Accept model licenses** (click "Agree and access repository"):
-   - CometKiwi: https://huggingface.co/Unbabel/wmt23-cometkiwi-da-xxl
-   - XCOMET-XL: https://huggingface.co/Unbabel/XCOMET-XL
-
-3. **Create access token**: https://huggingface.co/settings/tokens
-   - Click "New token" → Name: `kttc-models` → Type: **Read** → Generate
-
-4. **Login to CLI**:
-   ```bash
-   huggingface-cli login
-   # Paste your token when prompted
-   ```
-
-5. **Download models**:
-   ```bash
-   kttc load
-   ```
-
-**Alternative: Environment Variable**
-```bash
-export HUGGING_FACE_HUB_TOKEN=hf_your_token_here
-kttc load
-```
-
-> **Note:** COMET-22 downloads without authentication. CometKiwi and XCOMET require the steps above.
-
-### 3. Set API Key
+### 2. Set API Key
 ```bash
 # Set your OpenAI API key
 export KTTC_OPENAI_API_KEY="sk-..."
@@ -108,7 +81,7 @@ export KTTC_OPENAI_API_KEY="sk-..."
 export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
 ```
 
-### 4. Check Translation Quality
+### 3. Check Translation Quality
 ```bash
 # Basic quality check
 kttc check \
@@ -119,10 +92,13 @@ kttc check \
   --threshold 95
 
 # Output:
-# ✓ Neural models ready
-# ✅ MQM Score: 96.5 (PASS)
-# ⚠️  2 minor issues found
+# ✅ MQM Score: 96.5 (PASS - Excellent Quality)
+# 📊 5 agents analyzed translation
+# ⚠️  Found 2 minor issues, 0 major, 0 critical
+# ✓ Quality threshold met (≥95.0)
 ```
+
+That's it! KTTC works out of the box with core metrics.
 
 ## Advanced Usage
 
@@ -205,7 +181,6 @@ asyncio.run(check_quality())
 
 ## Available Commands
 
-- `kttc load` - Download neural quality models (required on first use)
 - `kttc check` - Check translation quality with multi-agent QA
 - `kttc compare` - Compare multiple translations side by side
 - `kttc benchmark` - Benchmark multiple LLM providers
@@ -216,18 +191,6 @@ asyncio.run(check_quality())
 Run `kttc <command> --help` for detailed options.
 
 ### Command Reference
-
-**kttc load**
-```bash
-kttc load  # Downloads ~3GB of neural models (COMET, CometKiwi, XCOMET)
-
-# Models downloaded:
-# - COMET-22 (wmt22-comet-da): 1.3GB - Reference-based quality estimation
-# - CometKiwi (wmt23-cometkiwi-da-xxl): 900MB - Reference-free estimation (requires auth)
-# - XCOMET-XL: 800MB - Explainable metric with error spans (requires auth)
-
-# First time setup requires HuggingFace authentication (see Quick Start section)
-```
 
 **kttc check**
 ```bash
@@ -281,84 +244,6 @@ Quality scoring follows the Multidimensional Quality Metrics framework:
   - Critical: 10 points
 
 Formula: `MQM Score = 100 - (total_penalty / word_count * 1000)`
-
-##  Neural Metrics Integration
-
-**Status:** ✅ Implemented
-**Module:** `src/kttc/metrics/neural.py`
-
-State-of-the-art neural quality metrics following WMT 2024-2025 standards:
-- **COMET** (reference-based): XLM-RoBERTa-based metric with 0.85-0.90 correlation to human judgments
-- **CometKiwi** (reference-free): Quality estimation without reference translations
-- **XCOMET** (WMT 2024 champion): 0.72 correlation with fine-grained error span detection
-- **Composite Scoring**: Combines XCOMET (50%), COMET (30%), and CometKiwi (20%) for robust evaluation
-
-### Basic Neural Metrics
-
-```python
-from kttc.metrics import NeuralMetrics
-
-metrics = NeuralMetrics(use_xcomet=True)
-await metrics.initialize()
-
-result = await metrics.evaluate(
-    source="Hello, world!",
-    translation="¡Hola, mundo!",
-    reference="Hola, mundo"  # Optional
-)
-
-print(f"COMET: {result.comet_score:.3f}")
-print(f"CometKiwi: {result.kiwi_score:.3f}")
-print(f"XCOMET: {result.xcomet_score:.3f}")
-print(f"Quality: {result.quality_estimate}")  # high/medium/low
-print(f"Composite: {result.get_composite_score():.3f}")
-```
-
-### XCOMET Error Span Detection
-
-XCOMET provides explainable quality assessment with precise error locations:
-
-```python
-from kttc.metrics import NeuralMetrics, ErrorSpanVisualizer
-
-# Evaluate with XCOMET
-metrics = NeuralMetrics(use_xcomet=True)
-await metrics.initialize()
-
-result = await metrics.evaluate_with_xcomet(
-    source="The contract is null and void",
-    translation="El contrato es nulo y vacío",
-    reference="El contrato es nulo"
-)
-
-# Display error spans
-visualizer = ErrorSpanVisualizer()
-
-# Terminal output with ANSI colors
-print(visualizer.format_terminal(result.translation, result.error_spans))
-
-# Markdown report with emoji indicators
-print(visualizer.format_markdown(result.translation, result.error_spans))
-# Output:
-# **Translation**: El contrato es nulo y vacío
-# **Detected Errors**:
-# 1. 🔴 **CRITICAL** [23:28]: `vacío` (confidence: 0.95)
-
-# HTML output with colored spans
-html = visualizer.format_html(result.translation, result.error_spans)
-
-# Get summary statistics
-summary = visualizer.get_summary(result.error_spans)
-print(f"Total errors: {summary['total']}")
-print(f"Critical: {summary['critical']}, Major: {summary['major']}, Minor: {summary['minor']}")
-```
-
-**XCOMET Features:**
-- **Hallucination Detection**: Identifies fabricated or added content
-- **Error Localization**: Precise character-level error positions
-- **Severity Classification**: Critical (0.9+ confidence), Major (0.7+), Minor (0.5+)
-- **MQM Alignment**: Error categories align with MQM typology
-- **Transparency**: Explainable results vs black-box scores
 
 ## Hallucination Detection
 
@@ -641,47 +526,6 @@ Found a bug or have a feature request?
 - Provide detailed reproduction steps
 
 ## Troubleshooting
-
-### Model Download Issues
-
-**Problem:** `⚠ Models downloaded but validation failed: checkpoint not found`
-
-**Solution:** Some models require HuggingFace authentication:
-1. Accept licenses at https://huggingface.co/Unbabel/wmt23-cometkiwi-da-xxl and https://huggingface.co/Unbabel/XCOMET-XL
-2. Create token at https://huggingface.co/settings/tokens (type: Read)
-3. Run `huggingface-cli login` and paste token
-4. Delete incomplete downloads: `rm -rf ~/.cache/huggingface/hub/models--Unbabel--wmt23-cometkiwi-da-xxl ~/.cache/huggingface/hub/models--Unbabel--XCOMET-XL`
-5. Re-download: `kttc load`
-
-**Problem:** `HuggingFace Authentication Required`
-
-**Solution:** Follow the authentication steps in the Quick Start section above.
-
-**Problem:** Models download but show `⚠ Skipping validation`
-
-**Solution:** Authentication was missing during download. Delete partial downloads and re-download after authenticating:
-```bash
-# Remove partial downloads
-rm -rf ~/.cache/huggingface/hub/models--Unbabel--wmt23-cometkiwi-da-xxl
-rm -rf ~/.cache/huggingface/hub/models--Unbabel--XCOMET-XL
-
-# Re-download with authentication
-kttc load
-```
-
-### GPU/Memory Issues
-
-**Problem:** `CUDA out of memory`
-
-**Solution:** XCOMET-XL requires ~8GB GPU memory. Use CPU mode or smaller models:
-```python
-# Use CPU
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = ""
-
-# Or use smaller models in code
-metrics = NeuralMetrics(use_xcomet=False)  # Disable XCOMET
-```
 
 ### API Key Issues
 

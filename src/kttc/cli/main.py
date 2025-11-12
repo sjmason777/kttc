@@ -33,7 +33,6 @@ from kttc import __version__
 from kttc.agents import AgentOrchestrator
 from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare
-from kttc.cli.commands.load import run_load
 from kttc.cli.ui import (
     console,
     print_header,
@@ -41,7 +40,6 @@ from kttc.cli.ui import (
     print_qa_report,
     print_startup_info,
     print_translation_preview,
-    print_warning,
 )
 from kttc.core import QAReport, TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
@@ -244,7 +242,6 @@ async def _check_async(
 ) -> None:
     """Async implementation of check command."""
     from kttc.core.correction import AutoCorrector
-    from kttc.utils.dependencies import has_metrics
 
     # Load settings
     settings = get_settings()
@@ -310,17 +307,6 @@ async def _check_async(
 
     # Display results with beautiful UI
     console.print()
-
-    # Check if MQM score is suspiciously low (might indicate missing metrics)
-    if not demo and report.mqm_score == 0.0 and len(report.errors) > 0:
-        from kttc.utils.dependencies import has_metrics
-
-        if not has_metrics():
-            console.print()
-            print_warning(
-                "MQM score is 0.00 - neural metrics (COMET) not available. See installation info above."
-            )
-            console.print()
 
     print_qa_report(report, verbose=verbose)
 
@@ -1251,9 +1237,6 @@ def _generate_batch_html_report(data: dict[str, Any]) -> str:
 @app.command()
 def benchmark(
     source: str = typer.Option(..., "--source", "-s", help="Source text file path"),
-    reference: str | None = typer.Option(
-        None, "--reference", "-r", help="Reference translation file (for COMET scoring)"
-    ),
     source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
     target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'ru')"),
     providers: str = typer.Option(
@@ -1272,11 +1255,11 @@ def benchmark(
     Benchmark multiple LLM providers.
 
     Compare translation quality and performance across different LLM providers.
-    Generates translations and evaluates them using MQM and COMET metrics.
+    Generates translations and evaluates them using MQM metrics.
 
     Example:
         kttc benchmark --source text.txt --source-lang en --target-lang ru \\
-                      --providers gigachat,openai,anthropic --reference ref.txt
+                      --providers gigachat,openai,anthropic
     """
     # Check models with loader
     from kttc.cli.ui import check_models_with_loader
@@ -1289,7 +1272,6 @@ def benchmark(
         asyncio.run(
             run_benchmark(
                 source=source,
-                reference=reference,
                 source_lang=source_lang,
                 target_lang=target_lang,
                 providers=provider_list,
@@ -1314,9 +1296,6 @@ def compare(
     translations: list[str] = typer.Option(
         ..., "--translation", "-t", help="Translation file paths (can be specified multiple times)"
     ),
-    reference: str | None = typer.Option(
-        None, "--reference", "-r", help="Reference translation file (for COMET scoring)"
-    ),
     source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
     target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'ru')"),
     threshold: float = typer.Option(95.0, "--threshold", help="Quality threshold for evaluation"),
@@ -1329,12 +1308,11 @@ def compare(
     Compare multiple translations side by side.
 
     Evaluate and compare multiple translation candidates to determine
-    which one has the best quality using MQM and COMET metrics.
+    which one has the best quality using MQM metrics.
 
     Example:
         kttc compare --source text.txt --translation trans1.txt --translation trans2.txt \\
-                    --translation trans3.txt --source-lang en --target-lang ru \\
-                    --reference gold.txt --verbose
+                    --translation trans3.txt --source-lang en --target-lang ru --verbose
     """
     # Check models with loader
     from kttc.cli.ui import check_models_with_loader
@@ -1349,7 +1327,6 @@ def compare(
                 translations=translations,
                 source_lang=source_lang,
                 target_lang=target_lang,
-                reference=reference,
                 threshold=threshold,
                 provider=provider,
                 verbose=verbose,
@@ -1362,28 +1339,6 @@ def compare(
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
-        raise typer.Exit(code=1)
-
-
-@app.command()
-def load() -> None:
-    """
-    Download neural quality models for metrics and benchmarks.
-
-    Downloads COMET, CometKiwi, and XCOMET models (~3GB total).
-    Models are cached locally for offline use after first download.
-
-    This is required before using 'check', 'compare', or 'benchmark' commands.
-
-    Example:
-        kttc load
-    """
-    try:
-        run_load()
-    except KeyboardInterrupt:
-        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
-    except Exception:
         raise typer.Exit(code=1)
 
 

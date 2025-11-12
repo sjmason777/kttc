@@ -42,24 +42,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# Neural metrics - heavy dependencies (~2GB with PyTorch)
-# Required for production use: pip install kttc[neural]
-neural = [
-    "unbabel-comet>=2.2.7",
+# Metrics - optional semantic similarity tools
+metrics = [
     "sentence-transformers>=5.1.2",
-    "torch>=2.0.0",  # Explicit for clarity
 ]
 
-# Full installation (includes neural metrics)
-# Use for local development: pip install -e ".[full]"
-full = [
-    "unbabel-comet>=2.2.7",
-    "sentence-transformers>=5.1.2",
-    "torch>=2.0.0",
-]
-
-# Development tools (excludes neural to keep CI fast)
-# Use for testing: pip install -e ".[dev]"
+# Development tools
 dev = [
     "pytest>=9.0.0",
     "pytest-cov>=7.0.0",

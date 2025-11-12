@@ -188,7 +188,6 @@ def print_comparison_table(comparisons: list[dict[str, Any]]) -> None:
     )
 
     table.add_column("Provider", style="cyan", no_wrap=True)
-    table.add_column("COMET Score", justify="right")
     table.add_column("MQM Score", justify="right")
     table.add_column("Errors", justify="center")
     table.add_column("Status", justify="center")
@@ -211,11 +210,13 @@ def print_comparison_table(comparisons: list[dict[str, Any]]) -> None:
         else:
             mqm_color = "red"
 
+        # Format error breakdown (C/M/m = Critical/Major/minor)
+        error_str = f"{comp.get('critical_errors', 0)}/{comp.get('major_errors', 0)}/{comp.get('minor_errors', 0)}"
+
         table.add_row(
             comp.get("name", "Unknown"),
-            f"{comp.get('comet_score', 0.0):.2f}",
             Text(f"{mqm_score:.2f}", style=mqm_color),
-            str(comp.get("error_count", 0)),
+            error_str,
             status_text,
             f"{comp.get('duration', 0.0):.2f}s",
         )
@@ -236,9 +237,11 @@ def print_benchmark_summary(results: dict[str, Any]) -> None:
 
     stats_table.add_row("Total Providers:", str(results.get("total_providers", 0)))
     stats_table.add_row("Test Sentences:", str(results.get("test_sentences", 0)))
-    stats_table.add_row("Average COMET:", f"{results.get('avg_comet', 0.0):.2f}")
     stats_table.add_row("Average MQM:", f"{results.get('avg_mqm', 0.0):.2f}")
+    stats_table.add_row("Average Duration:", f"{results.get('avg_duration', 0.0):.2f}s")
     stats_table.add_row("Best Provider:", results.get("best_provider", "N/A"))
+    stats_table.add_row("Fastest Provider:", results.get("fastest_provider", "N/A"))
+    stats_table.add_row("Pass Rate:", results.get("pass_rate", "0/0"))
 
     panel = Panel(
         stats_table,
@@ -325,96 +328,26 @@ def print_translation_preview(source: str, translation: str, max_length: int = 1
     console.print()
 
 
-def print_available_extensions() -> None:
-    """Print information about KTTC neural models download requirement.
-
-    Shows instructions to download neural quality models before using
-    metrics commands. Exits CLI to prevent running without models.
-    """
-    from rich.panel import Panel
-
-    console.print()
-    console.print(
-        Panel(
-            "[bold red]❌ Neural Models Not Found[/bold red]\n\n"
-            "KTTC requires neural quality models to function.\n\n"
-            "[bold cyan]Download models first:[/bold cyan]\n"
-            "  kttc load\n\n"
-            "This will download ~3GB of models:\n"
-            "• COMET-22 (~1.3GB)\n"
-            "• CometKiwi (~900MB)\n"
-            "• XCOMET-XL (~800MB)\n\n"
-            "[dim]Models will be cached in ~/.cache/huggingface/\n"
-            "After download, they work offline.[/dim]",
-            title="Setup Required",
-            border_style="red",
-        )
-    )
-    console.print()
-
-
 def check_models_with_loader() -> bool:
     """Check if neural models are downloaded, show loader and error if needed.
 
-    Shows a spinner while checking models. If models are not found, displays
-    error message with status of each model and returns False. If models are ready,
-    shows success and returns True.
+    Neural models are no longer required. This function always returns True
+    for backward compatibility.
 
     Returns:
-        True if models are ready, False if missing (should exit)
+        Always True
     """
-
-    from rich.panel import Panel
-    from rich.progress import Progress, SpinnerColumn, TextColumn
-    from rich.table import Table
-
-    from kttc.utils.dependencies import models_are_downloaded
-
-    # Show spinner while checking
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        console=console,
-        transient=True,  # Remove spinner after completion
-    ) as progress:
-        progress.add_task(description="Checking neural models...", total=None)
-        models_ready = models_are_downloaded()
-
-    # If models not found - show detailed status and return False
-    if not models_ready:
-        from kttc.utils.dependencies import get_models_status
-
-        # Get status of each model
-        models_status = get_models_status()
-
-        # Create status table
-        console.print()
-        status_table = Table(show_header=True, header_style="bold cyan", box=None)
-        status_table.add_column("Model", style="bold")
-        status_table.add_column("Size", justify="right")
-        status_table.add_column("Status", justify="center")
-
-        for name, size, status, color in models_status:
-            status_table.add_row(name, size, f"[{color}]{status}[/{color}]")
-
-        console.print(status_table)
-        console.print()
-
-        console.print(
-            Panel(
-                "[bold red]❌ Neural Models Not Ready[/bold red]\n\n"
-                "KTTC requires ALL neural quality models to be downloaded.\n\n"
-                "[bold cyan]Download missing models:[/bold cyan]\n"
-                "  kttc load\n\n"
-                "[dim]Models will be cached in ~/.cache/huggingface/\n"
-                "After download, they work offline.[/dim]",
-                title="Setup Required",
-                border_style="red",
-            )
-        )
-        console.print()
-        return False
-
-    # Models are ready - show brief success message
-    console.print("[dim]✓ Neural models ready[/dim]")
     return True
+
+
+def print_available_extensions() -> None:
+    """Print information about available extensions.
+
+    Shows which optional dependencies are installed.
+    """
+    from kttc.utils.dependencies import has_benchmark, has_webui
+
+    console.print("[bold]Available Extensions:[/bold]")
+    console.print(f"  • Benchmark: {'✓' if has_benchmark() else '✗'}")
+    console.print(f"  • WebUI: {'✓' if has_webui() else '✗'}")
+    console.print()
