@@ -7,8 +7,6 @@ import pytest
 
 from kttc.memory.termbase import TermEntry, TerminologyBase, TermViolation
 
-pytestmark = pytest.mark.asyncio
-
 
 class TestTermEntry:
     """Tests for TermEntry model."""
@@ -29,6 +27,7 @@ class TestTermEntry:
         assert entry.domain == "technical"
 
 
+@pytest.mark.asyncio
 class TestTerminologyBase:
     """Tests for TerminologyBase class."""
 

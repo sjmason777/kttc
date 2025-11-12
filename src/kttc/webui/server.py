@@ -22,6 +22,8 @@ from __future__ import annotations
 import logging
 import os
 import time
+from collections.abc import AsyncGenerator
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, TypedDict
 
@@ -101,6 +103,39 @@ app_state: AppState = {
 }
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    """Lifespan context manager for startup and shutdown events."""
+    # Startup
+    logger.info("Initializing KTTC orchestrator...")
+
+    # Get API key from environment
+    api_key = os.getenv("KTTC_OPENAI_API_KEY", "")
+    if not api_key:
+        logger.warning("KTTC_OPENAI_API_KEY not set. WebUI will not work properly.")
+        api_key = "dummy-key-for-testing"
+
+    # Initialize LLM provider
+    llm = OpenAIProvider(api_key=api_key, model="gpt-4")
+
+    # Create orchestrator
+    app_state["orchestrator"] = AgentOrchestrator(llm)
+    app_state["stats"]["start_time"] = time.time()
+
+    logger.info("✅ KTTC WebUI server ready")
+
+    yield
+
+    # Shutdown
+    logger.info("Shutting down KTTC WebUI server...")
+
+    # Close WebSocket connections
+    for ws in app_state["active_websockets"]:
+        await ws.close()
+
+    app_state["active_websockets"].clear()
+
+
 def create_app() -> FastAPI:
     """Create FastAPI application.
 
@@ -113,6 +148,7 @@ def create_app() -> FastAPI:
         version="0.1.0",
         docs_url="/api/docs",
         redoc_url="/api/redoc",
+        lifespan=lifespan,
     )
 
     # CORS middleware
@@ -128,38 +164,6 @@ def create_app() -> FastAPI:
     static_dir = Path(__file__).parent / "static"
     if static_dir.exists():
         app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
-
-    # Initialize orchestrator on startup
-    @app.on_event("startup")
-    async def startup_event() -> None:
-        """Initialize KTTC orchestrator on server startup."""
-        logger.info("Initializing KTTC orchestrator...")
-
-        # Get API key from environment
-        api_key = os.getenv("KTTC_OPENAI_API_KEY", "")
-        if not api_key:
-            logger.warning("KTTC_OPENAI_API_KEY not set. WebUI will not work properly.")
-            api_key = "dummy-key-for-testing"
-
-        # Initialize LLM provider
-        llm = OpenAIProvider(api_key=api_key, model="gpt-4")
-
-        # Create orchestrator
-        app_state["orchestrator"] = AgentOrchestrator(llm)
-        app_state["stats"]["start_time"] = time.time()
-
-        logger.info("✅ KTTC WebUI server ready")
-
-    @app.on_event("shutdown")
-    async def shutdown_event() -> None:
-        """Cleanup on server shutdown."""
-        logger.info("Shutting down KTTC WebUI server...")
-
-        # Close WebSocket connections
-        for ws in app_state["active_websockets"]:
-            await ws.close()
-
-        app_state["active_websockets"].clear()
 
     # Routes
     @app.get("/", response_class=HTMLResponse)

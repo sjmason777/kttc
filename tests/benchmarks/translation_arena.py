@@ -369,5 +369,5 @@ class TranslationArena:
             report += f"  - Judge: {battle.judge}\n"
             report += f"  - Date: {battle.timestamp.strftime('%Y-%m-%d %H:%M')}\n\n"
 
-        Path(output_file).write_text(report)
+        Path(output_file).write_text(report, encoding="utf-8")
         logger.info(f"Arena report exported to {output_file}")

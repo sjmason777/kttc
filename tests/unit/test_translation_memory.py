@@ -7,9 +7,6 @@ import pytest
 
 from kttc.memory.tm import TMSegment, TranslationMemory
 
-# Mark all tests in this module as async
-pytestmark = pytest.mark.asyncio
-
 
 class TestTMSegment:
     """Tests for TMSegment model."""
@@ -47,6 +44,7 @@ class TestTMSegment:
         assert segment.usage_count == 0
 
 
+@pytest.mark.asyncio
 @pytest.mark.metrics
 class TestTranslationMemory:
     """Tests for TranslationMemory class."""
