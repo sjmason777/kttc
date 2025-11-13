@@ -159,6 +159,60 @@ def get_nlp_insights(task: Any, helper: Any) -> dict[str, Any] | None:
         return None
 
 
+def print_nlp_insights(task: Any, helper: Any) -> None:
+    """Display NLP analysis insights for a translation task.
+
+    Args:
+        task: Translation task with translation text
+        helper: Language helper with NLP capabilities
+
+    This function displays linguistic analysis such as:
+    - Word count
+    - Verb aspects (for languages like Russian)
+    - Case agreement (for languages with case systems)
+    - Named entities
+    """
+    insights = get_nlp_insights(task, helper)
+    if not insights:
+        return
+
+    # Create insights table
+    table = Table(show_header=False, box=None, padding=(0, 2))
+    table.add_column(style="bold cyan", width=20)
+    table.add_column()
+
+    table.add_row("Word Count:", str(insights.get("word_count", 0)))
+
+    # Show good indicators
+    for indicator in insights.get("good_indicators", []):
+        # Extract metric name and value from indicator string
+        if ":" in indicator:
+            metric, value = indicator.split(":", 1)
+            table.add_row(metric + ":", value.strip())
+
+    # Show issues if any
+    if insights.get("issues"):
+        console.print()
+        console.print("[bold yellow]Linguistic Issues Found:[/bold yellow]")
+        for issue in insights["issues"]:
+            severity = issue.get("severity", "minor")
+            severity_color = (
+                "red" if severity == "critical" else "yellow" if severity == "major" else "dim"
+            )
+            console.print(
+                f"  [{severity_color}]• {issue.get('description', 'Unknown issue')}[/{severity_color}]"
+            )
+
+    console.print()
+    panel = Panel(
+        table,
+        title="NLP Insights",
+        border_style="cyan",
+        padding=(1, 2),
+    )
+    console.print(panel)
+
+
 def print_qa_report(
     report: QAReport,
     nlp_insights: dict[str, Any] | None = None,
