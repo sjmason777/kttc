@@ -24,6 +24,7 @@ Agents evaluate different quality dimensions following the MQM framework:
 - WeightedConsensus: Weighted consensus mechanism for multi-agent evaluation
 - DomainProfile: Domain-specific agent configurations
 - DomainDetector: Automatic domain detection for adaptive agent selection
+- DynamicAgentSelector: Budget-aware agent selection for cost optimization
 """
 
 from .accuracy import AccuracyAgent
@@ -37,6 +38,7 @@ from .domain_profiles import (
     get_domain_profile,
     list_available_domains,
 )
+from .dynamic_selector import DynamicAgentSelector
 from .fluency import FluencyAgent
 from .hallucination import HallucinationAgent
 from .orchestrator import AgentOrchestrator
@@ -57,6 +59,7 @@ __all__ = [
     "DOMAIN_PROFILES",
     "get_domain_profile",
     "list_available_domains",
+    "DynamicAgentSelector",
     "ErrorParser",
     "AgentError",
     "AgentEvaluationError",

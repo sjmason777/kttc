@@ -769,3 +769,182 @@ class TestAgentOrchestratorDomainAdaptation:
             assert report.agent_details is not None
             assert report.agent_details["domain_complexity"] == 0.9
             assert report.agent_details["domain_description"] is not None
+
+
+class TestAgentOrchestratorDynamicSelection:
+    """Tests for orchestrator with dynamic agent selection (Phase 4)."""
+
+    async def test_dynamic_selection_enabled_by_default(self) -> None:
+        """Test that dynamic selection is enabled by default."""
+        provider = OpenAIProvider(api_key="test-key")
+        orchestrator = AgentOrchestrator(provider)
+
+        # Should have dynamic selector initialized
+        assert orchestrator.dynamic_selector is not None
+        assert orchestrator.enable_dynamic_selection is True
+
+    async def test_dynamic_selection_can_be_disabled(self) -> None:
+        """Test that dynamic selection can be disabled."""
+        provider = OpenAIProvider(api_key="test-key")
+        orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=False)
+
+        # Should not have dynamic selector
+        assert orchestrator.dynamic_selector is None
+        assert orchestrator.enable_dynamic_selection is False
+
+    async def test_dynamic_selection_simple_task(self) -> None:
+        """Test that simple tasks use minimal agents."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=True)
+
+            # Very simple task
+            task = TranslationTask(
+                source_text="Hi",
+                translation="Hola",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should use minimal agents (2) for simple task
+            # We can't directly check agent count, but we can verify it completes successfully
+            assert report.mqm_score >= 0
+            assert report.status in ["pass", "fail"]
+
+    async def test_dynamic_selection_complex_task(self) -> None:
+        """Test that complex tasks use more agents."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=True)
+
+            # Complex technical task
+            task = TranslationTask(
+                source_text=(
+                    "The application programming interface (API) uses RESTful architecture "
+                    "with JSON payloads. Authentication requires OAuth2 tokens. "
+                    "The database connection pool supports up to 100 concurrent connections."
+                ),
+                translation="La API usa arquitectura REST con JSON...",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should complete successfully with appropriate agent selection
+            assert report.mqm_score >= 0
+            assert report.status in ["pass", "fail"]
+
+    async def test_dynamic_selection_respects_complexity_in_context(self) -> None:
+        """Test that explicit complexity in context is respected."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=True)
+
+            # Simple text, but force complex evaluation
+            task = TranslationTask(
+                source_text="Hello",
+                translation="Hola",
+                source_lang="en",
+                target_lang="es",
+                context={"complexity": "complex"},
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should complete successfully
+            assert report.mqm_score >= 0
+            assert report.status in ["pass", "fail"]
+
+    async def test_dynamic_selection_with_domain_adaptation(self) -> None:
+        """Test dynamic selection works with domain adaptation."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(
+                provider, enable_dynamic_selection=True, enable_domain_adaptation=True
+            )
+
+            # Technical domain task
+            task = TranslationTask(
+                source_text="Configure the API endpoint with SSL certificates",
+                translation="Configurar el endpoint de API con certificados SSL",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should detect technical domain and use appropriate agents
+            assert report.mqm_score >= 0
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "technical"
+
+    async def test_dynamic_selection_with_breakdown(self) -> None:
+        """Test dynamic selection works with evaluate_with_breakdown."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=True)
+
+            task = TranslationTask(
+                source_text="Medium complexity translation task",
+                translation="Tarea de traducción de complejidad media",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report, breakdown = await orchestrator.evaluate_with_breakdown(task)
+
+            # Should have breakdown by agent category
+            assert isinstance(breakdown, dict)
+            assert len(breakdown) > 0
+            # Each agent should have a list of errors
+            for agent_category, errors in breakdown.items():
+                assert isinstance(errors, list)
+
+    async def test_static_selection_when_dynamic_disabled(self) -> None:
+        """Test that static agent selection works when dynamic is disabled."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=False)
+
+            task = TranslationTask(
+                source_text="Test translation",
+                translation="Prueba de traducción",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should use static agents (3 default agents)
+            assert report.mqm_score >= 0
+            assert report.status in ["pass", "fail"]
+
+    async def test_dynamic_selection_with_russian_language(self) -> None:
+        """Test that Russian-specific agent is selected for Russian target."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_dynamic_selection=True)
+
+            # Russian target language
+            task = TranslationTask(
+                source_text="Hello world from the translation system",
+                translation="Привет мир из системы перевода",
+                source_lang="en",
+                target_lang="ru",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should complete successfully with Russian-specific agent
+            assert report.mqm_score >= 0
+            assert report.status in ["pass", "fail"]

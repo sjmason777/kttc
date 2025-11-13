@@ -83,6 +83,7 @@ class AgentOrchestrator:
         use_weighted_consensus: bool = True,
         agent_weights: dict[str, float] | None = None,
         enable_domain_adaptation: bool = True,
+        enable_dynamic_selection: bool = True,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -94,14 +95,16 @@ class AgentOrchestrator:
             use_weighted_consensus: Enable weighted consensus mode (default: True)
             agent_weights: Custom agent trust weights (overrides defaults if provided)
             enable_domain_adaptation: Enable domain-adaptive agent selection (default: True)
+            enable_dynamic_selection: Enable dynamic agent selection for cost optimization (default: True)
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
         self.agent_max_tokens = agent_max_tokens
         self.use_weighted_consensus = use_weighted_consensus
         self.enable_domain_adaptation = enable_domain_adaptation
+        self.enable_dynamic_selection = enable_dynamic_selection
 
-        # Core agents (always enabled)
+        # Core agents (used when dynamic selection is disabled)
         self.agents: list[BaseAgent] = [
             AccuracyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
             FluencyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
@@ -117,6 +120,19 @@ class AgentOrchestrator:
 
         # Initialize domain detector for adaptive agent selection
         self.domain_detector = DomainDetector() if enable_domain_adaptation else None
+
+        # Initialize dynamic agent selector for cost optimization (Phase 4)
+        from .dynamic_selector import DynamicAgentSelector
+
+        self.dynamic_selector = (
+            DynamicAgentSelector(
+                llm_provider,
+                agent_temperature=agent_temperature,
+                agent_max_tokens=agent_max_tokens,
+            )
+            if enable_dynamic_selection
+            else None
+        )
 
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
         """Get language-specific agents based on target language.
@@ -222,11 +238,17 @@ class AgentOrchestrator:
                     f"Domain detection: {detected_domain} " f"(confidence: {domain_confidence:.2f})"
                 )
 
-            # Get language-specific agents
-            language_agents = self._get_language_specific_agents(task)
-
-            # Combine core agents with language-specific agents
-            all_agents = self.agents + language_agents
+            # Select agents: dynamic (Phase 4) or static
+            if self.dynamic_selector:
+                # Dynamic agent selection based on complexity and domain
+                complexity = task.context.get("complexity", "auto") if task.context else "auto"
+                all_agents = self.dynamic_selector.select_agents(
+                    task, complexity=complexity, domain_profile=domain_profile
+                )
+            else:
+                # Static agent selection (original behavior)
+                language_agents = self._get_language_specific_agents(task)
+                all_agents = self.agents + language_agents
 
             # Run all agents in parallel using asyncio.gather
             results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
@@ -353,11 +375,17 @@ class AgentOrchestrator:
                     task.source_text, detected_domain
                 )
 
-            # Get language-specific agents
-            language_agents = self._get_language_specific_agents(task)
-
-            # Combine core agents with language-specific agents
-            all_agents = self.agents + language_agents
+            # Select agents: dynamic (Phase 4) or static
+            if self.dynamic_selector:
+                # Dynamic agent selection based on complexity and domain
+                complexity = task.context.get("complexity", "auto") if task.context else "auto"
+                all_agents = self.dynamic_selector.select_agents(
+                    task, complexity=complexity, domain_profile=domain_profile
+                )
+            else:
+                # Static agent selection (original behavior)
+                language_agents = self._get_language_specific_agents(task)
+                all_agents = self.agents + language_agents
 
             # Run all agents in parallel
             results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
