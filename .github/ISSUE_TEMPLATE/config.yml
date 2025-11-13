@@ -3,9 +3,6 @@ contact_links:
   - name: Question or Discussion
     url: https://github.com/kttc-ai/kttc/discussions
     about: Ask questions and discuss ideas with the community
-  - name: Documentation
-    url: https://github.com/kttc-ai/docs
-    about: View the full documentation
   - name: Security Issue
     url: https://github.com/kttc-ai/kttc/blob/main/SECURITY.md
     about: Report a security vulnerability (private)

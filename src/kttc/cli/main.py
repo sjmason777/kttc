@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +38,7 @@ from kttc.cli.ui import (
     console,
     print_header,
     print_info,
+    print_nlp_insights,
     print_qa_report,
     print_startup_info,
     print_translation_preview,
@@ -243,6 +245,16 @@ async def _check_async(
     """Async implementation of check command."""
     from kttc.core.correction import AutoCorrector
 
+    # Configure logging based on verbose flag
+    if verbose:
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(message)s",  # Simple format for CLI output
+            force=True,  # Override any existing configuration
+        )
+    else:
+        logging.basicConfig(level=logging.WARNING, force=True)
+
     # Load settings
     settings = get_settings()
 
@@ -307,6 +319,13 @@ async def _check_async(
 
     # Display results with beautiful UI
     console.print()
+
+    # Show NLP insights if available
+    from kttc.helpers import get_helper_for_language
+
+    helper = get_helper_for_language(task.target_lang)
+    if helper and helper.is_available():
+        print_nlp_insights(task, helper)
 
     print_qa_report(report, verbose=verbose)
 

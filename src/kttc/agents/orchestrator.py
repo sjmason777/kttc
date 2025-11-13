@@ -36,9 +36,11 @@ Example:
 """
 
 import asyncio
+import logging
 
 from kttc.core import ErrorAnnotation, QAReport, TranslationTask
 from kttc.core.mqm import MQMScorer
+from kttc.helpers import get_helper_for_language
 from kttc.llm import BaseLLMProvider
 
 from .accuracy import AccuracyAgent
@@ -46,6 +48,8 @@ from .base import AgentEvaluationError, BaseAgent
 from .fluency import FluencyAgent
 from .fluency_russian import RussianFluencyAgent
 from .terminology import TerminologyAgent
+
+logger = logging.getLogger(__name__)
 
 
 class AgentOrchestrator:
@@ -101,6 +105,8 @@ class AgentOrchestrator:
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
         """Get language-specific agents based on target language.
 
+        Automatically creates appropriate agents with NLP helpers when available.
+
         Args:
             task: Translation task with target language info
 
@@ -109,19 +115,41 @@ class AgentOrchestrator:
         """
         language_agents: list[BaseAgent] = []
 
-        # Russian-specific fluency agent
+        # Russian-specific fluency agent with NLP helper
         if task.target_lang == "ru":
+            # Try to get Russian NLP helper
+            from kttc.helpers.russian import RussianLanguageHelper
+
+            helper = get_helper_for_language("ru")
+
+            # Cast to RussianLanguageHelper or None
+            russian_helper: RussianLanguageHelper | None = None
+            if isinstance(helper, RussianLanguageHelper):
+                russian_helper = helper
+
+            if russian_helper and russian_helper.is_available():
+                logger.info(
+                    "Using RussianFluencyAgent with MAWO NLP helper (mawo-pymorphy3 + mawo-razdel)"
+                )
+            else:
+                logger.info("Using RussianFluencyAgent in LLM-only mode (MAWO NLP not available)")
+
             language_agents.append(
                 RussianFluencyAgent(
                     self.llm_provider,
                     temperature=self.agent_temperature,
                     max_tokens=self.agent_max_tokens,
+                    helper=russian_helper,  # Pass properly typed helper
                 )
             )
 
         # Future: Add more language-specific agents here
-        # if task.target_lang == "zh":
-        #     language_agents.append(ChineseFluencyAgent(...))
+        # elif task.target_lang == "zh":
+        #     helper = get_helper_for_language("zh")
+        #     language_agents.append(ChineseFluencyAgent(..., helper=helper))
+        # elif task.target_lang == "en":
+        #     helper = get_helper_for_language("en")
+        #     language_agents.append(EnglishFluencyAgent(..., helper=helper))
 
         return language_agents
 

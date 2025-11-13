@@ -59,8 +59,36 @@ class DemoLLMProvider(BaseLLMProvider):
         # Parse prompt to determine which agent is calling
         prompt_lower = prompt.lower()
 
-        # Accuracy agent response
-        if "accuracy" in prompt_lower or "meaning" in prompt_lower or "omission" in prompt_lower:
+        # Russian-specific fluency agent (expects JSON)
+        if "russian-specific" in prompt_lower or (
+            "russian" in prompt_lower and "output only valid json" in prompt_lower
+        ):
+            return """{
+  "errors": [
+    {
+      "subcategory": "case_agreement",
+      "severity": "minor",
+      "location": [15, 35],
+      "description": "Case agreement issue: adjective-noun agreement incorrect",
+      "suggestion": "Correct case agreement"
+    }
+  ]
+}"""
+
+        # Hallucination/Entity preservation agent (expects JSON)
+        elif "entity preservation" in prompt_lower or "hallucination" in prompt_lower:
+            return """{
+  "errors": []
+}"""
+
+        # Context/Coherence agent (expects JSON)
+        elif "coherence" in prompt_lower:
+            return """{
+  "errors": []
+}"""
+
+        # Accuracy agent response (expects ERROR_START format)
+        elif "accuracy" in prompt_lower or "meaning" in prompt_lower or "omission" in prompt_lower:
             return """**Errors Found:**
 
 1. **Minor Mistranslation** (Line 1)
@@ -84,7 +112,7 @@ Translation captures the main meaning but has 2 minor accuracy issues affecting 
 
 **MQM Deductions:** -3.5 points"""
 
-        # Fluency agent response
+        # Fluency agent response (expects ERROR_START format)
         elif "fluency" in prompt_lower or "grammar" in prompt_lower or "spelling" in prompt_lower:
             return """**Errors Found:**
 
@@ -100,7 +128,7 @@ Text is mostly fluent with natural Russian phrasing. One minor grammatical order
 
 **MQM Deductions:** -1.5 points"""
 
-        # Terminology agent response
+        # Terminology agent response (expects ERROR_START format)
         elif (
             "terminology" in prompt_lower or "domain" in prompt_lower or "technical" in prompt_lower
         ):

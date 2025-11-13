@@ -222,5 +222,4 @@ pip install unbabel-comet sentence-transformers
 ## Further Reading
 
 - [KTTC Documentation](https://github.com/kttc-ai/kttc)
-- [API Reference](https://github.com/kttc-ai/docs)
 - [Contributing Guide](https://github.com/kttc-ai/kttc/blob/main/CONTRIBUTING.md)

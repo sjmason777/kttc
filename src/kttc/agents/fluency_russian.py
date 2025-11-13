@@ -21,17 +21,24 @@ Specialized fluency checking for Russian language with support for:
 - Particle usage (же, ли, бы)
 - Register/formality checking
 
+Uses hybrid approach:
+- MAWO NLP helper (mawo-pymorphy3 + mawo-razdel) for deterministic grammar checks
+- LLM for semantic and complex linguistic analysis
+- Parallel execution for optimal performance
+
 Based on Russian Language Translation Quality 2025 research.
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import re
 from typing import Any, cast
 
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
+from kttc.helpers.russian import RussianLanguageHelper
 from kttc.llm import BaseLLMProvider
 
 from .fluency import FluencyAgent
@@ -72,6 +79,7 @@ class RussianFluencyAgent(FluencyAgent):
         llm_provider: BaseLLMProvider,
         temperature: float = 0.1,
         max_tokens: int = 2000,
+        helper: RussianLanguageHelper | None = None,
     ):
         """Initialize Russian fluency agent.
 
@@ -79,64 +87,21 @@ class RussianFluencyAgent(FluencyAgent):
             llm_provider: LLM provider for evaluations
             temperature: Sampling temperature
             max_tokens: Maximum tokens in response
+            helper: Optional Russian language helper for NLP checks (auto-creates if None)
         """
         super().__init__(llm_provider, temperature, max_tokens)
-        # Store Russian-specific prompt template
-        self._russian_prompt_base = """You are a native Russian speaker and linguistic expert.
+        # Store Russian-specific prompt template (same as in _check_russian_specifics)
+        self._russian_prompt_base = (
+            """Russian-specific linguistic validation for professional translation quality."""
+        )
 
-Your task: Identify Russian-specific linguistic errors in the translation.
+        # Initialize NLP helper (or use provided one)
+        self.helper = helper if helper is not None else RussianLanguageHelper()
 
-## TRANSLATION (Russian):
-{translation}
-
-## RUSSIAN-SPECIFIC CHECKS:
-
-1. **Case Agreement (Падежное согласование)**
-   - Check noun-adjective agreement
-   - Check numeral-noun agreement
-   - Check pronoun-noun agreement
-
-2. **Verb Aspect (Вид глагола)**
-   - Perfective (совершенный): completed action
-   - Imperfective (несовершенный): ongoing/repeated action
-   - Check if aspect matches context
-
-3. **Word Order**
-   - Russian has flexible word order but some orders sound more natural
-   - Check if word order is natural for native speakers
-
-4. **Particle Usage**
-   - Particles: же, ли, бы, ведь, вот, etc.
-   - Check if particles are used correctly
-
-5. **Register Consistency**
-   - Formal (вы, Вы) vs informal (ты)
-   - Check consistency throughout text
-
-6. **Diminutives (Уменьшительно-ласкательные)**
-   - Check if diminutives are appropriate for context
-   - Overuse can sound childish
-
-Output JSON format:
-{{
-  "errors": [
-    {{
-      "subcategory": "case_agreement|aspect_usage|word_order|particle_usage|register|diminutive",
-      "severity": "critical|major|minor",
-      "location": [start_char, end_char],
-      "description": "Specific Russian linguistic issue",
-      "suggestion": "Corrected version in Russian"
-    }}
-  ]
-}}
-
-Rules:
-- Be strict - native Russians should find text natural
-- Focus ONLY on Russian-specific issues
-- If no Russian-specific errors, return empty errors array
-- Provide character positions (0-indexed)
-
-Output only valid JSON, no explanation."""
+        if self.helper.is_available():
+            logger.info("RussianFluencyAgent using MAWO NLP helper for enhanced checks")
+        else:
+            logger.info("RussianFluencyAgent running without MAWO NLP (LLM-only mode)")
 
     def get_base_prompt(self) -> str:
         """Get the combined base prompt for Russian fluency evaluation.
@@ -148,7 +113,13 @@ Output only valid JSON, no explanation."""
         return f"{base_fluency}\n\n---\n\nRUSSIAN-SPECIFIC CHECKS:\n{self._russian_prompt_base}"
 
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Evaluate Russian fluency with specialized checks.
+        """Evaluate Russian fluency with hybrid NLP + LLM approach.
+
+        Uses parallel execution:
+        1. NLP helper performs deterministic grammar checks
+        2. LLM performs semantic and complex linguistic analysis
+        3. NLP verifies LLM results (anti-hallucination)
+        4. Merge unique errors from both sources
 
         Args:
             task: Translation task (target_lang must be 'ru')
@@ -159,24 +130,209 @@ Output only valid JSON, no explanation."""
         Raises:
             AgentEvaluationError: If evaluation fails
         """
-        # Run standard fluency checks first
+        if task.target_lang != "ru":
+            # Fallback to base fluency checks for non-Russian
+            return await super().evaluate(task)
+
+        # Run base fluency checks (parallel with Russian-specific)
         base_errors = await super().evaluate(task)
 
-        # Add Russian-specific checks if target language is Russian
-        if task.target_lang == "ru":
-            try:
-                russian_errors = await self._check_russian_specifics(task)
-                base_errors.extend(russian_errors)
-                logger.info(
-                    f"RussianFluencyAgent found {len(russian_errors)} Russian-specific issues"
-                )
-            except Exception as e:
-                logger.warning(f"Russian-specific checks failed: {e}")
+        # Run NLP, LLM, and entity checks in parallel
+        try:
+            results = await asyncio.gather(
+                self._nlp_check(task),  # Fast, deterministic
+                self._llm_check(task),  # Slow, semantic
+                self._entity_check(task),  # NER-based entity preservation
+                return_exceptions=True,
+            )
 
-        return base_errors
+            # Handle exceptions and ensure proper typing
+            nlp_result, llm_result, entity_result = results
+
+            # Convert results to list[ErrorAnnotation], handling exceptions
+            if isinstance(nlp_result, Exception):
+                logger.warning(f"NLP check failed: {nlp_result}")
+                nlp_errors: list[ErrorAnnotation] = []
+            else:
+                nlp_errors = cast(list[ErrorAnnotation], nlp_result)
+
+            if isinstance(llm_result, Exception):
+                logger.warning(f"LLM check failed: {llm_result}")
+                llm_errors: list[ErrorAnnotation] = []
+            else:
+                llm_errors = cast(list[ErrorAnnotation], llm_result)
+
+            if isinstance(entity_result, Exception):
+                logger.warning(f"Entity check failed: {entity_result}")
+                entity_errors: list[ErrorAnnotation] = []
+            else:
+                entity_errors = cast(list[ErrorAnnotation], entity_result)
+
+            # Verify LLM results with NLP (anti-hallucination)
+            verified_llm = self._verify_llm_errors(llm_errors, task.translation)
+
+            # Remove duplicates (NLP errors already caught by LLM)
+            unique_nlp = self._remove_duplicates(nlp_errors, verified_llm)
+
+            # Merge all unique errors
+            all_errors = base_errors + unique_nlp + verified_llm + entity_errors
+
+            logger.info(
+                f"RussianFluencyAgent: "
+                f"base={len(base_errors)}, "
+                f"nlp={len(unique_nlp)}, "
+                f"llm={len(verified_llm)}, "
+                f"entity={len(entity_errors)} "
+                f"(total={len(all_errors)})"
+            )
+
+            return all_errors
+
+        except Exception as e:
+            logger.error(f"Russian fluency evaluation failed: {e}")
+            # Fallback to base errors
+            return base_errors
+
+    async def _nlp_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform NLP-based grammar checks.
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by NLP
+        """
+        if not self.helper or not self.helper.is_available():
+            logger.debug("NLP helper not available, skipping NLP checks")
+            return []
+
+        try:
+            errors = self.helper.check_grammar(task.translation)
+            logger.debug(f"NLP found {len(errors)} grammar errors")
+            return errors
+        except Exception as e:
+            logger.error(f"NLP check failed: {e}")
+            return []
+
+    async def _llm_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform LLM-based Russian-specific checks.
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by LLM
+        """
+        try:
+            errors = await self._check_russian_specifics(task)
+            logger.debug(f"LLM found {len(errors)} Russian-specific errors")
+            return errors
+        except Exception as e:
+            logger.error(f"LLM check failed: {e}")
+            return []
+
+    async def _entity_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform NER-based entity preservation checks.
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors for missing/mismatched entities
+        """
+        if not self.helper or not self.helper.is_available():
+            logger.debug("Helper not available, skipping entity checks")
+            return []
+
+        try:
+            errors = self.helper.check_entity_preservation(task.source_text, task.translation)
+            logger.debug(f"Entity check found {len(errors)} preservation issues")
+            return errors
+        except Exception as e:
+            logger.error(f"Entity check failed: {e}")
+            return []
+
+    def _verify_llm_errors(
+        self, llm_errors: list[ErrorAnnotation], text: str
+    ) -> list[ErrorAnnotation]:
+        """Verify LLM errors to filter out hallucinations.
+
+        Args:
+            llm_errors: Errors reported by LLM
+            text: Translation text
+
+        Returns:
+            Verified errors (hallucinations filtered out)
+        """
+        if not self.helper or not self.helper.is_available():
+            # Without NLP, can't verify - return all
+            return llm_errors
+
+        verified = []
+        for error in llm_errors:
+            # Verify position is valid
+            if not self.helper.verify_error_position(error, text):
+                logger.warning(f"Filtered LLM hallucination: invalid position {error.location}")
+                continue
+
+            verified.append(error)
+
+        filtered_count = len(llm_errors) - len(verified)
+        if filtered_count > 0:
+            logger.info(f"Filtered out {filtered_count} LLM hallucinations")
+
+        return verified
+
+    def _remove_duplicates(
+        self, nlp_errors: list[ErrorAnnotation], llm_errors: list[ErrorAnnotation]
+    ) -> list[ErrorAnnotation]:
+        """Remove NLP errors that overlap with LLM errors.
+
+        Args:
+            nlp_errors: Errors from NLP
+            llm_errors: Errors from LLM
+
+        Returns:
+            NLP errors that don't overlap with LLM
+        """
+        unique = []
+
+        for nlp_error in nlp_errors:
+            # Check if this NLP error overlaps with any LLM error
+            overlaps = False
+            for llm_error in llm_errors:
+                if self._errors_overlap(nlp_error, llm_error):
+                    overlaps = True
+                    break
+
+            if not overlaps:
+                unique.append(nlp_error)
+
+        duplicates = len(nlp_errors) - len(unique)
+        if duplicates > 0:
+            logger.debug(f"Removed {duplicates} duplicate NLP errors")
+
+        return unique
+
+    @staticmethod
+    def _errors_overlap(error1: ErrorAnnotation, error2: ErrorAnnotation) -> bool:
+        """Check if two errors overlap in location.
+
+        Args:
+            error1: First error
+            error2: Second error
+
+        Returns:
+            True if errors overlap, False otherwise
+        """
+        start1, end1 = error1.location
+        start2, end2 = error2.location
+
+        # Check for any overlap
+        return not (end1 <= start2 or end2 <= start1)
 
     async def _check_russian_specifics(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform Russian-specific fluency checks.
+        """Perform Russian-specific fluency checks with morphological context.
 
         Args:
             task: Translation task
@@ -184,66 +340,121 @@ Output only valid JSON, no explanation."""
         Returns:
             List of Russian-specific errors
         """
-        prompt = f"""You are a native Russian speaker and linguistic expert.
+        # Get morphological enrichment data if helper is available
+        morphology_section = ""
+        if self.helper and self.helper.is_available():
+            enrichment = self.helper.get_enrichment_data(task.translation)
 
-Your task: Identify Russian-specific linguistic errors in the translation.
+            if enrichment.get("has_morphology"):
+                morphology_section = "\n## MORPHOLOGICAL ANALYSIS (for context):\n"
 
+                # Add verb aspect information
+                if enrichment.get("verb_aspects"):
+                    morphology_section += "\n**Verbs in translation:**\n"
+                    for verb, info in enrichment["verb_aspects"].items():
+                        morphology_section += f"- '{verb}': {info['aspect_name']} aspect\n"
+
+                # Add adjective-noun pair information
+                if enrichment.get("adjective_noun_pairs"):
+                    morphology_section += "\n**Adjective-Noun pairs:**\n"
+                    for pair in enrichment["adjective_noun_pairs"]:
+                        adj = pair["adjective"]
+                        noun = pair["noun"]
+                        status = (
+                            "✓ agreement OK"
+                            if pair["agreement"] == "correct"
+                            else "⚠ CHECK agreement"
+                        )
+                        morphology_section += (
+                            f"- '{adj['word']}' ({adj['gender']}, {adj['case']}) + "
+                            f"'{noun['word']}' ({noun['gender']}, {noun['case']}) - {status}\n"
+                        )
+
+                morphology_section += (
+                    "\nUse this morphological context to make informed decisions.\n"
+                )
+
+        prompt = f"""You are a native Russian speaker and professional translator.
+
+Your task: Identify ONLY clear Russian-specific linguistic errors in the translation.
+
+## SOURCE TEXT (English):
+{task.source_text}
+{morphology_section}
 ## TRANSLATION (Russian):
 {task.translation}
 
-## RUSSIAN-SPECIFIC CHECKS:
+## IMPORTANT GUIDELINES:
 
-1. **Case Agreement (Падежное согласование)**
-   - Check noun-adjective agreement
-   - Check numeral-noun agreement
-   - Check pronoun-noun agreement
+**What IS an error:**
+- Clear grammatical mistakes (case agreement violations)
+- Obvious aspectual mistakes that change meaning
+- Unnatural constructions that no native speaker would use
+- Incorrect particle usage that affects meaning
 
-2. **Verb Aspect (Вид глагола)**
-   - Perfective (совершенный): completed action
-   - Imperfective (несовершенный): ongoing/repeated action
-   - Check if aspect matches context
+**What is NOT an error:**
+- Stylistic preferences (multiple correct word orders exist)
+- Direct translations that are grammatically correct
+- Natural Russian that differs from your personal preference
+- Minor stylistic variations
 
-3. **Word Order**
-   - Russian has flexible word order but some orders sound more natural
-   - Check if word order is natural for native speakers
+## CHECKS TO PERFORM:
 
-4. **Particle Usage**
-   - Particles: же, ли, бы, ведь, вот, etc.
-   - Check if particles are used correctly
+1. **Case Agreement (Падежное согласование)** - ONLY flag clear violations
+   - Noun-adjective gender/case mismatch
+   - Numeral-noun agreement errors
 
-5. **Register Consistency**
-   - Formal (вы, Вы) vs informal (ты)
-   - Check consistency throughout text
+2. **Verb Aspect (Вид глагола)** - Consider source text context
+   - Check if aspect matches the source tense/context
+   - Perfective for completed/single actions
+   - Imperfective for ongoing/repeated actions
+   - Remember: both aspects may be acceptable depending on interpretation
 
-6. **Diminutives (Уменьшительно-ласкательные)**
-   - Check if diminutives are appropriate for context
-   - Overuse can sound childish
+3. **Register Consistency** - ONLY if clearly inconsistent
+   - Mixing formal (вы) and informal (ты) inappropriately
+
+4. **Particle Usage** - ONLY clear mistakes
+   - Incorrect particle that changes/breaks meaning
 
 Output JSON format:
 {{
   "errors": [
     {{
-      "subcategory": "case_agreement|aspect_usage|word_order|particle_usage|register|diminutive",
+      "subcategory": "case_agreement|aspect_usage|particle_usage|register",
       "severity": "critical|major|minor",
       "location": [start_char, end_char],
-      "description": "Specific Russian linguistic issue",
+      "description": "Specific Russian linguistic issue with the exact word/phrase you found",
       "suggestion": "Corrected version in Russian"
     }}
   ]
 }}
 
 Rules:
-- Be strict - native Russians should find text natural
-- Focus ONLY on Russian-specific issues
-- If no Russian-specific errors, return empty errors array
-- Provide character positions (0-indexed)
+- CONSERVATIVE: Only report clear, unambiguous errors
+- VERIFY: Ensure the word/phrase you mention actually exists in the text at the specified position
+- CONTEXT: Consider the source text when evaluating aspect and tense
+- If the translation is natural and grammatically correct, return empty errors array
+- Provide accurate character positions (0-indexed, use Python string slicing logic)
 
 Output only valid JSON, no explanation."""
 
         try:
+            # Log the prompt being sent
+            logger.info("=" * 80)
+            logger.info("RussianFluencyAgent - Sending prompt to LLM:")
+            logger.info("=" * 80)
+            logger.info(prompt)
+            logger.info("=" * 80)
+
             response = await self.llm_provider.complete(
                 prompt, temperature=self.temperature, max_tokens=self.max_tokens
             )
+
+            # Log the response received
+            logger.info("RussianFluencyAgent - Received response from LLM:")
+            logger.info("=" * 80)
+            logger.info(response)
+            logger.info("=" * 80)
 
             # Parse response
             response_data = self._parse_json_response(response)

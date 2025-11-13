@@ -69,11 +69,86 @@ def print_startup_info(info: dict[str, str]) -> None:
     panel = Panel(
         "\n".join(lines),
         title="KTTC Configuration",
-        border_style="blue",
+        border_style="cyan",
         padding=(1, 2),
     )
     console.print(panel)
     console.print()
+
+
+def print_nlp_insights(task: Any, helper: Any) -> None:
+    """Print NLP analysis insights for languages with NLP support.
+
+    Args:
+        task: Translation task
+        helper: Language helper with NLP capabilities
+    """
+    if not helper or not helper.is_available():
+        return
+
+    try:
+        # Get enrichment data
+        enrichment = helper.get_enrichment_data(task.translation)
+        if not enrichment.get("has_morphology"):
+            return
+
+        # Create insights table
+        insights_table = Table(show_header=False, box=None, padding=(0, 2))
+        insights_table.add_column(style="bold cyan", width=20)
+        insights_table.add_column()
+
+        # Word count
+        word_count = enrichment.get("word_count", 0)
+        insights_table.add_row("Words Analyzed:", str(word_count))
+
+        # Verb aspects
+        verb_aspects = enrichment.get("verb_aspects", {})
+        if verb_aspects:
+            perf_count = sum(1 for v in verb_aspects.values() if v.get("aspect") == "perf")
+            imperf_count = sum(1 for v in verb_aspects.values() if v.get("aspect") == "impf")
+            insights_table.add_row(
+                "Verb Aspects:",
+                f"{len(verb_aspects)} verbs ({perf_count} perfective, {imperf_count} imperfective)",
+            )
+
+        # Adjective-noun pairs
+        adj_noun_pairs = enrichment.get("adjective_noun_pairs", [])
+        if adj_noun_pairs:
+            correct_count = sum(1 for p in adj_noun_pairs if p.get("agreement") == "correct")
+            insights_table.add_row(
+                "Case Agreement:", f"{len(adj_noun_pairs)} pairs checked ({correct_count} correct)"
+            )
+
+        # Extract entities if available
+        entities = []
+        if hasattr(helper, "extract_entities"):
+            try:
+                entities = helper.extract_entities(task.translation)
+            except Exception:
+                pass
+
+        if entities:
+            entity_types: dict[str, int] = {}
+            for e in entities:
+                entity_types[e.get("type", "UNKNOWN")] = (
+                    entity_types.get(e.get("type", "UNKNOWN"), 0) + 1
+                )
+            entity_summary = ", ".join(f"{count} {type_}" for type_, count in entity_types.items())
+            insights_table.add_row("Named Entities:", f"{len(entities)} found ({entity_summary})")
+
+        # Display in panel
+        panel = Panel(
+            insights_table,
+            title="NLP Analysis",
+            border_style="cyan",
+            padding=(1, 2),
+        )
+        console.print(panel)
+        console.print()
+
+    except Exception as e:
+        # Silently skip if NLP insights fail
+        pass
 
 
 def print_qa_report(report: QAReport, verbose: bool = False) -> None:
@@ -119,7 +194,7 @@ def print_qa_report(report: QAReport, verbose: bool = False) -> None:
     # Display in a panel
     panel = Panel(
         results_table,
-        title="📊 Quality Assessment Report",
+        title="Quality Assessment Report",
         border_style="cyan",
         padding=(1, 2),
     )
@@ -142,7 +217,7 @@ def print_error_details(errors: list[Any]) -> None:
     table.add_column("Subcategory", style="dim")
     table.add_column("Severity", no_wrap=True)
     table.add_column("Location", justify="center", no_wrap=True)
-    table.add_column("Description", max_width=50)
+    table.add_column("Description")  # Removed max_width to show full text
 
     for error in errors:
         # Color-code severity
@@ -158,10 +233,8 @@ def print_error_details(errors: list[Any]) -> None:
         # Format location
         location = f"{error.location[0]}-{error.location[1]}"
 
-        # Truncate description if too long
+        # Use full description without truncation
         description = error.description
-        if len(description) > 50:
-            description = description[:47] + "..."
 
         table.add_row(
             error.category,
@@ -245,7 +318,7 @@ def print_benchmark_summary(results: dict[str, Any]) -> None:
 
     panel = Panel(
         stats_table,
-        title="📊 Benchmark Summary",
+        title="Benchmark Summary",
         border_style="green",
         padding=(1, 2),
     )
