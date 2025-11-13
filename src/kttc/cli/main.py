@@ -36,9 +36,10 @@ from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare
 from kttc.cli.ui import (
     console,
+    create_step_progress,
+    get_nlp_insights,
     print_header,
     print_info,
-    print_nlp_insights,
     print_qa_report,
     print_startup_info,
     print_translation_preview,
@@ -303,31 +304,58 @@ async def _check_async(
     if verbose:
         print_translation_preview(source_text, translation_text)
 
-    # Run evaluation
-    print_info("Running multi-agent QA system...")
-    console.print()
-    try:
-        orchestrator = AgentOrchestrator(
-            llm_provider,
-            quality_threshold=threshold,
-            agent_temperature=settings.default_temperature,
-            agent_max_tokens=settings.default_max_tokens,
-        )
-        report = await orchestrator.evaluate(task)
-    except Exception as e:
-        raise RuntimeError(f"Evaluation failed: {e}") from e
+    # Run evaluation with step-by-step progress
+    nlp_insights = None
+    api_errors = []
 
-    # Display results with beautiful UI
-    console.print()
-
-    # Show NLP insights if available
+    # Step 1: NLP Analysis (if available)
     from kttc.helpers import get_helper_for_language
 
     helper = get_helper_for_language(task.target_lang)
     if helper and helper.is_available():
-        print_nlp_insights(task, helper)
+        with create_step_progress() as progress:
+            progress.add_task("[cyan]Step 1/3: Analyzing linguistic features...[/cyan]", total=None)
+            try:
+                nlp_insights = get_nlp_insights(task, helper)
+            except Exception as e:
+                if verbose:
+                    api_errors.append(f"NLP analysis failed: {str(e)}")
+        console.print("[green]✓[/green] Step 1/3: Linguistic analysis complete")
+    else:
+        console.print(
+            "[dim]⊘ Step 1/3: Linguistic analysis (not available for this language)[/dim]"
+        )
 
-    print_qa_report(report, verbose=verbose)
+    # Step 2: Quality Evaluation
+    with create_step_progress() as progress:
+        progress.add_task(
+            "[cyan]Step 2/3: Running multi-agent quality assessment...[/cyan]", total=None
+        )
+        try:
+            orchestrator = AgentOrchestrator(
+                llm_provider,
+                quality_threshold=threshold,
+                agent_temperature=settings.default_temperature,
+                agent_max_tokens=settings.default_max_tokens,
+            )
+            report = await orchestrator.evaluate(task)
+        except Exception as e:
+            console.print("[red]✗[/red] Step 2/3: Quality assessment failed")
+            api_errors.append(f"Quality assessment failed: {str(e)}")
+            raise RuntimeError(f"Evaluation failed: {e}") from e
+    console.print("[green]✓[/green] Step 2/3: Quality assessment complete")
+
+    # Step 3: Finalizing results
+    console.print("[green]✓[/green] Step 3/3: Report ready")
+    console.print()
+
+    # Display unified results
+    print_qa_report(
+        report,
+        nlp_insights=nlp_insights,
+        verbose=verbose,
+        api_errors=api_errors if api_errors else None,
+    )
 
     # Auto-correct if requested and errors found
     if auto_correct and len(report.errors) > 0:
@@ -595,13 +623,19 @@ async def _batch_async(
     settings = get_settings()
 
     # Display header
-    console.print("\n[bold]KTTC - Batch Translation Quality Check[/bold]\n")
-    console.print(f"Source directory:      [cyan]{source_dir}[/cyan]")
-    console.print(f"Translation directory: [cyan]{translation_dir}[/cyan]")
-    console.print(f"Languages:             [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
-    console.print(f"Threshold:             [cyan]{threshold}[/cyan]")
-    console.print(f"Parallel workers:      [cyan]{parallel}[/cyan]")
-    console.print()
+    print_header(
+        "Batch Translation Quality Check", "Process multiple translation files in parallel"
+    )
+
+    # Display configuration
+    config_info = {
+        "Source Directory": source_dir,
+        "Translation Directory": translation_dir,
+        "Languages": f"{source_lang} → {target_lang}",
+        "Quality Threshold": f"{threshold}",
+        "Parallel Workers": f"{parallel}",
+    }
+    print_startup_info(config_info)
 
     # Scan directories
     try:
@@ -885,11 +919,18 @@ async def _translate_async(
     settings = get_settings()
 
     # Display header
-    console.print("\n[bold]KTTC - AI Translation with Quality Assurance[/bold]\n")
-    console.print(f"Languages:        [cyan]{source_lang}[/cyan] → [cyan]{target_lang}[/cyan]")
-    console.print(f"Quality threshold: [cyan]{threshold}[/cyan]")
-    console.print(f"Max iterations:   [cyan]{max_iterations}[/cyan]")
-    console.print()
+    print_header(
+        "AI Translation with Quality Assurance",
+        "Generate high-quality translations using TEaR (Translate-Estimate-Refine) loop",
+    )
+
+    # Configuration info
+    config_info = {
+        "Languages": f"{source_lang} → {target_lang}",
+        "Quality Threshold": f"{threshold}",
+        "Max Iterations": f"{max_iterations}",
+    }
+    print_startup_info(config_info)
 
     # Load text (from file if starts with @)
     if text.startswith("@"):
@@ -909,9 +950,10 @@ async def _translate_async(
         raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
 
     # Step 1: Generate initial translation
-    console.print("[yellow]⏳ Generating initial translation...[/yellow]")
-    try:
-        translation_prompt = f"""Translate the following text from {source_lang} to {target_lang}.
+    with create_step_progress() as progress:
+        progress.add_task("[cyan]Generating initial translation...[/cyan]", total=None)
+        try:
+            translation_prompt = f"""Translate the following text from {source_lang} to {target_lang}.
 Provide only the translation without any explanation.
 
 Text to translate:
@@ -919,21 +961,21 @@ Text to translate:
 
 Translation:"""
 
-        initial_translation = await llm_provider.complete(
-            translation_prompt,
-            temperature=settings.default_temperature,
-            max_tokens=settings.default_max_tokens,
-        )
+            initial_translation = await llm_provider.complete(
+                translation_prompt,
+                temperature=settings.default_temperature,
+                max_tokens=settings.default_max_tokens,
+            )
+        except Exception as e:
+            raise RuntimeError(f"Failed to generate translation: {e}") from e
 
-        console.print("[green]✓ Initial translation generated[/green]")
-        if verbose:
-            console.print(f"\n[dim]Translation: {initial_translation[:200]}...[/dim]\n")
-
-    except Exception as e:
-        raise RuntimeError(f"Failed to generate translation: {e}") from e
+    console.print("[green]✓[/green] Initial translation generated")
+    if verbose:
+        console.print(f"[dim]   Preview: {initial_translation[:100]}...[/dim]")
+    console.print()
 
     # Step 2: Iterative refinement (TEaR loop)
-    console.print("\n[yellow]⏳ Running TEaR (Translate-Estimate-Refine) loop...[/yellow]\n")
+    console.print("[cyan]Running TEaR (Translate-Estimate-Refine) loop...[/cyan]")
     try:
         # Create initial task
         task = TranslationTask(

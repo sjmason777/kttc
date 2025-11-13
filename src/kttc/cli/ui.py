@@ -35,24 +35,19 @@ console = Console()
 
 
 def print_header(title: str, subtitle: str | None = None) -> None:
-    """Print a beautiful header with title and optional subtitle.
+    """Print a minimal header with title and optional subtitle.
 
     Args:
         title: Main title text
         subtitle: Optional subtitle text
+
+    Best practice: Keep headers minimal and scannable (clig.dev).
+    Use bold for structure, avoid large panels that waste vertical space.
     """
     console.print()
+    console.print(f"[bold cyan]{title}[/bold cyan]")
     if subtitle:
-        header_text = f"[bold]{title}[/bold]\n[dim]{subtitle}[/dim]"
-    else:
-        header_text = f"[bold]{title}[/bold]"
-
-    panel = Panel(
-        header_text,
-        border_style="cyan",
-        padding=(1, 2),
-    )
-    console.print(panel)
+        console.print(f"[dim]{subtitle}[/dim]")
     console.print()
 
 
@@ -76,50 +71,69 @@ def print_startup_info(info: dict[str, str]) -> None:
     console.print()
 
 
-def print_nlp_insights(task: Any, helper: Any) -> None:
-    """Print NLP analysis insights for languages with NLP support.
+def get_nlp_insights(task: Any, helper: Any) -> dict[str, Any] | None:
+    """Collect NLP analysis insights for languages with NLP support.
 
     Args:
         task: Translation task
         helper: Language helper with NLP capabilities
+
+    Returns:
+        Dictionary with NLP insights data, or None if not available
     """
     if not helper or not helper.is_available():
-        return
+        return None
 
     try:
         # Get enrichment data
         enrichment = helper.get_enrichment_data(task.translation)
         if not enrichment.get("has_morphology"):
-            return
+            return None
 
-        # Create insights table
-        insights_table = Table(show_header=False, box=None, padding=(0, 2))
-        insights_table.add_column(style="bold cyan", width=20)
-        insights_table.add_column()
-
-        # Word count
-        word_count = enrichment.get("word_count", 0)
-        insights_table.add_row("Words Analyzed:", str(word_count))
+        insights = {
+            "word_count": enrichment.get("word_count", 0),
+            "issues": [],
+            "good_indicators": [],
+        }
 
         # Verb aspects
         verb_aspects = enrichment.get("verb_aspects", {})
         if verb_aspects:
-            perf_count = sum(1 for v in verb_aspects.values() if v.get("aspect") == "perf")
-            imperf_count = sum(1 for v in verb_aspects.values() if v.get("aspect") == "impf")
-            insights_table.add_row(
-                "Verb Aspects:",
-                f"{len(verb_aspects)} verbs ({perf_count} perfective, {imperf_count} imperfective)",
-            )
+            insights["good_indicators"].append(f"Verb aspects: {len(verb_aspects)} verbs analyzed")
 
-        # Adjective-noun pairs
+        # Adjective-noun pairs - check for issues
         adj_noun_pairs = enrichment.get("adjective_noun_pairs", [])
         if adj_noun_pairs:
             correct_count = sum(1 for p in adj_noun_pairs if p.get("agreement") == "correct")
-            insights_table.add_row(
-                "Case Agreement:", f"{len(adj_noun_pairs)} pairs checked ({correct_count} correct)"
-            )
+            incorrect_count = len(adj_noun_pairs) - correct_count
 
-        # Extract entities if available
+            if incorrect_count > 0:
+                # Found case agreement issues
+                for pair in adj_noun_pairs:
+                    if pair.get("agreement") != "correct":
+                        pair_text = pair.get("text", "")
+                        adj = pair.get("adjective", {}).get("text", "")
+                        noun = pair.get("noun", {}).get("text", "")
+
+                        description = f"Case mismatch: '{adj}' and '{noun}'"
+                        if pair_text and pair_text != "unknown":
+                            description = f"Case agreement issue in '{pair_text}'"
+
+                        insights["issues"].append(
+                            {
+                                "category": "Linguistic",
+                                "subcategory": "Case Agreement",
+                                "severity": "minor",
+                                "description": description,
+                                "location": pair.get("location", [0, 0]),
+                            }
+                        )
+            else:
+                insights["good_indicators"].append(
+                    f"Case agreement: {len(adj_noun_pairs)} pairs verified"
+                )
+
+        # Extract entities
         entities = []
         if hasattr(helper, "extract_entities"):
             try:
@@ -134,32 +148,37 @@ def print_nlp_insights(task: Any, helper: Any) -> None:
                     entity_types.get(e.get("type", "UNKNOWN"), 0) + 1
                 )
             entity_summary = ", ".join(f"{count} {type_}" for type_, count in entity_types.items())
-            insights_table.add_row("Named Entities:", f"{len(entities)} found ({entity_summary})")
+            insights["good_indicators"].append(
+                f"Named entities: {len(entities)} found ({entity_summary})"
+            )
 
-        # Display in panel
-        panel = Panel(
-            insights_table,
-            title="NLP Analysis",
-            border_style="cyan",
-            padding=(1, 2),
-        )
-        console.print(panel)
-        console.print()
+        return insights
 
-    except Exception as e:
+    except Exception:
         # Silently skip if NLP insights fail
-        pass
+        return None
 
 
-def print_qa_report(report: QAReport, verbose: bool = False) -> None:
-    """Print QA report with beautiful formatting.
+def print_qa_report(
+    report: QAReport,
+    nlp_insights: dict[str, Any] | None = None,
+    verbose: bool = False,
+    api_errors: list[str] | None = None,
+) -> None:
+    """Print QA report with NLP insights and errors in unified format.
 
     Args:
         report: QA report to display
+        nlp_insights: Optional NLP analysis insights
         verbose: Whether to show detailed error information
+        api_errors: Optional list of API error messages
+
+    Best practice: Consolidate all information in one place with high
+    signal-to-noise ratio (clig.dev). Show brief good indicators,
+    detailed bad indicators.
     """
     # Status badge with appropriate styling
-    if report.status == "pass":
+    if report.status == "pass" and not api_errors:
         status_text = Text("✓ PASS", style="bold green")
     else:
         status_text = Text("✗ FAIL", style="bold red")
@@ -172,26 +191,47 @@ def print_qa_report(report: QAReport, verbose: bool = False) -> None:
     else:
         score_color = "red"
 
+    # Count total issues (QA errors + NLP issues + API errors)
+    nlp_issue_count = len(nlp_insights["issues"]) if nlp_insights else 0
+    api_error_count = len(api_errors) if api_errors else 0
+    total_issues = len(report.errors) + nlp_issue_count + api_error_count
+
     # Create main results table
     results_table = Table(show_header=False, box=None, padding=(0, 2))
-    results_table.add_column(style="bold")
+    results_table.add_column(style="bold", width=18)
     results_table.add_column()
 
     results_table.add_row("Status:", status_text)
     results_table.add_row(
         "MQM Score:", Text(f"{report.mqm_score:.2f}/100", style=f"bold {score_color}")
     )
-    results_table.add_row("Errors Found:", str(len(report.errors)))
+    results_table.add_row("Total Issues:", str(total_issues))
 
-    if report.errors:
-        error_breakdown = (
-            f"Critical: {report.critical_error_count} | "
-            f"Major: {report.major_error_count} | "
-            f"Minor: {report.minor_error_count}"
-        )
-        results_table.add_row("Error Breakdown:", error_breakdown)
+    # Error breakdown
+    if total_issues > 0:
+        breakdown_parts = []
+        if report.critical_error_count > 0:
+            breakdown_parts.append(f"Critical: {report.critical_error_count}")
+        if report.major_error_count > 0:
+            breakdown_parts.append(f"Major: {report.major_error_count}")
+        if report.minor_error_count > 0:
+            breakdown_parts.append(f"Minor: {report.minor_error_count}")
+        if nlp_issue_count > 0:
+            breakdown_parts.append(f"Linguistic: {nlp_issue_count}")
+        if api_error_count > 0:
+            breakdown_parts.append(f"System: {api_error_count}")
 
-    # Display in a panel
+        results_table.add_row("Issue Breakdown:", " | ".join(breakdown_parts))
+
+    # Show NLP good indicators briefly
+    if nlp_insights and nlp_insights.get("good_indicators"):
+        console.print()
+        console.print("[dim]Linguistic checks passed:[/dim]")
+        for indicator in nlp_insights["good_indicators"]:
+            console.print(f"  [dim]✓ {indicator}[/dim]")
+
+    console.print()
+    # Display results panel
     panel = Panel(
         results_table,
         title="Quality Assessment Report",
@@ -200,51 +240,113 @@ def print_qa_report(report: QAReport, verbose: bool = False) -> None:
     )
     console.print(panel)
 
-    # Show detailed errors if verbose
-    if verbose and report.errors:
+    # Combine all errors/issues for unified display
+    all_issues = []
+
+    # Add API errors first (system errors)
+    if api_errors:
+        for api_error in api_errors:
+            all_issues.append(
+                {
+                    "category": "System Error",
+                    "subcategory": "API",
+                    "severity": "critical",
+                    "location": [0, 0],
+                    "description": api_error,
+                }
+            )
+
+    # Add QA report errors
+    for error in report.errors:
+        all_issues.append(
+            {
+                "category": error.category,
+                "subcategory": error.subcategory,
+                "severity": error.severity.value,
+                "location": error.location,
+                "description": error.description,
+            }
+        )
+
+    # Add NLP issues
+    if nlp_insights and nlp_insights.get("issues"):
+        all_issues.extend(nlp_insights["issues"])
+
+    # Show detailed errors if any exist (verbose or non-verbose)
+    if all_issues:
         console.print()
-        print_error_details(report.errors)
+        _print_unified_error_table(all_issues, verbose)
+
+
+def _print_unified_error_table(issues: list[dict[str, Any]], verbose: bool) -> None:
+    """Print unified error table with all issues (QA errors, NLP, API).
+
+    Args:
+        issues: List of issue dictionaries with category, severity, description, etc.
+        verbose: Whether to show full descriptions
+    """
+    table = Table(title="Issues Found", show_header=True, header_style="bold cyan")
+    table.add_column("Category", style="cyan", no_wrap=True)
+    table.add_column("Subcategory", style="dim", no_wrap=True)
+    table.add_column("Severity", no_wrap=True)
+    table.add_column("Location", justify="center", no_wrap=True, width=10)
+    table.add_column("Description", max_width=60 if not verbose else None)
+
+    for issue in issues:
+        # Color-code severity
+        severity = issue.get("severity", "minor")
+        if severity == "critical":
+            severity_color = "red"
+        elif severity == "major":
+            severity_color = "yellow"
+        else:
+            severity_color = "dim"
+
+        severity_text = Text(severity.upper(), style=f"bold {severity_color}")
+
+        # Format location
+        location = issue.get("location", [0, 0])
+        if isinstance(location, list) and len(location) >= 2:
+            location_str = f"{location[0]}-{location[1]}"
+        else:
+            location_str = "N/A"
+
+        # Format description
+        description = issue.get("description", "")
+        if not verbose and len(description) > 60:
+            description = description[:57] + "..."
+
+        table.add_row(
+            issue.get("category", "Unknown"),
+            issue.get("subcategory", ""),
+            severity_text,
+            location_str,
+            description,
+        )
+
+    console.print(table)
 
 
 def print_error_details(errors: list[Any]) -> None:
     """Print detailed error information in a table.
 
+    DEPRECATED: Use _print_unified_error_table instead.
+
     Args:
         errors: List of error objects to display
     """
-    table = Table(title="Error Details", show_header=True, header_style="bold cyan")
-    table.add_column("Category", style="cyan", no_wrap=True)
-    table.add_column("Subcategory", style="dim")
-    table.add_column("Severity", no_wrap=True)
-    table.add_column("Location", justify="center", no_wrap=True)
-    table.add_column("Description")  # Removed max_width to show full text
-
+    issues = []
     for error in errors:
-        # Color-code severity
-        if error.severity.value == "critical":
-            severity_color = "red"
-        elif error.severity.value == "major":
-            severity_color = "yellow"
-        else:
-            severity_color = "dim"
-
-        severity_text = Text(error.severity.value.upper(), style=f"bold {severity_color}")
-
-        # Format location
-        location = f"{error.location[0]}-{error.location[1]}"
-
-        # Use full description without truncation
-        description = error.description
-
-        table.add_row(
-            error.category,
-            error.subcategory,
-            severity_text,
-            location,
-            description,
+        issues.append(
+            {
+                "category": error.category,
+                "subcategory": error.subcategory,
+                "severity": error.severity.value,
+                "location": error.location,
+                "description": error.description,
+            }
         )
-
-    console.print(table)
+    _print_unified_error_table(issues, verbose=True)
 
 
 def print_comparison_table(comparisons: list[dict[str, Any]]) -> None:
@@ -338,6 +440,23 @@ def create_progress() -> Progress:
         TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
         TimeElapsedColumn(),
         console=console,
+    )
+
+
+def create_step_progress() -> Progress:
+    """Create a minimal progress spinner for multi-step operations.
+
+    Returns:
+        Configured Progress instance with spinner and text only
+
+    Best practice: For sequential tasks, show spinner with step description
+    that updates as each step completes (Evil Martians CLI UX guide).
+    """
+    return Progress(
+        SpinnerColumn(spinner_name="dots"),
+        TextColumn("{task.description}"),
+        console=console,
+        transient=True,  # Remove spinner when complete
     )
 
 
