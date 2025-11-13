@@ -261,6 +261,30 @@ def print_qa_report(
     )
     results_table.add_row("Total Issues:", str(total_issues))
 
+    # Show confidence metrics if available (from weighted consensus)
+    if report.confidence is not None:
+        # Color-code confidence
+        if report.confidence >= 0.8:
+            conf_color = "green"
+        elif report.confidence >= 0.6:
+            conf_color = "yellow"
+        else:
+            conf_color = "red"
+
+        results_table.add_row(
+            "Confidence:",
+            Text(f"{report.confidence:.2f}", style=f"bold {conf_color}")
+            + " "
+            + Text(
+                f"({'high' if report.confidence >= 0.8 else 'medium' if report.confidence >= 0.6 else 'low'})",
+                style="dim",
+            ),
+        )
+
+    if report.agent_agreement is not None:
+        agreement_pct = report.agent_agreement * 100
+        results_table.add_row("Agent Agreement:", Text(f"{agreement_pct:.0f}%", style="dim"))
+
     # Error breakdown
     if total_issues > 0:
         breakdown_parts = []
@@ -276,6 +300,29 @@ def print_qa_report(
             breakdown_parts.append(f"System: {api_error_count}")
 
         results_table.add_row("Issue Breakdown:", " | ".join(breakdown_parts))
+
+    # Show agent scores in verbose mode (weighted consensus)
+    if verbose and report.agent_scores:
+        console.print()
+        console.print("[bold]Per-Agent Scores:[/bold]")
+        agent_score_table = Table(show_header=True, box=None, padding=(0, 2))
+        agent_score_table.add_column("Agent", style="cyan")
+        agent_score_table.add_column("MQM Score", justify="right")
+
+        for agent_name, score in sorted(report.agent_scores.items()):
+            # Color-code agent score
+            if score >= 95:
+                score_style = "green"
+            elif score >= 85:
+                score_style = "yellow"
+            else:
+                score_style = "red"
+
+            agent_score_table.add_row(
+                agent_name.replace("_", " ").title(), Text(f"{score:.2f}", style=score_style)
+            )
+
+        console.print(agent_score_table)
 
     # Show NLP good indicators briefly
     if nlp_insights and nlp_insights.get("good_indicators"):
@@ -293,6 +340,14 @@ def print_qa_report(
         padding=(1, 2),
     )
     console.print(panel)
+
+    # Warning for low confidence (suggest human review)
+    if report.confidence is not None and report.confidence < 0.7:
+        console.print()
+        console.print(
+            "[bold yellow]⚠ Warning:[/bold yellow] Low confidence detected. "
+            "Agents disagree on quality assessment. Human review recommended."
+        )
 
     # Combine all errors/issues for unified display
     all_issues = []

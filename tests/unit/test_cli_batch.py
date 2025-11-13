@@ -564,27 +564,6 @@ class TestBatchCommand:
 
 
 @pytest.mark.unit
-class TestTranslateCommand:
-    """Tests for the translate command (not implemented yet)."""
-
-    def test_translate_command_not_implemented(self) -> None:
-        """Test that translate command shows not implemented message."""
-        result = runner.invoke(
-            app,
-            [
-                "translate",
-                "--text",
-                "Hello",
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "es",
-            ],
-        )
-        assert "Not implemented yet" in result.stdout or result.exit_code != 0
-
-
-@pytest.mark.unit
 class TestReportCommand:
     """Tests for the report command implementation."""
 

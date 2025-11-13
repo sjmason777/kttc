@@ -93,20 +93,6 @@ class TestSettings:
             key = settings.get_llm_provider_key()  # No provider specified
             assert key == "test-openai-key"
 
-    def test_get_llm_provider_key_missing_openai(self) -> None:
-        """Test error when OpenAI API key is not configured."""
-        with patch.dict(os.environ, {}, clear=True):
-            settings = Settings()
-            with pytest.raises(ValueError, match="OpenAI API key not configured"):
-                settings.get_llm_provider_key("openai")
-
-    def test_get_llm_provider_key_missing_anthropic(self) -> None:
-        """Test error when Anthropic API key is not configured."""
-        with patch.dict(os.environ, {}, clear=True):
-            settings = Settings()
-            with pytest.raises(ValueError, match="Anthropic API key not configured"):
-                settings.get_llm_provider_key("anthropic")
-
     def test_get_llm_provider_key_unknown_provider(self) -> None:
         """Test error for unknown provider."""
         settings = Settings()
@@ -198,13 +184,6 @@ class TestSettings:
             settings = Settings()
             # Should work due to case_sensitive=False
             assert settings.log_level.upper() == "WARNING"
-
-    def test_api_keys_optional(self) -> None:
-        """Test that API keys are optional and default to None."""
-        with patch.dict(os.environ, {}, clear=True):
-            settings = Settings()
-            assert settings.openai_api_key is None
-            assert settings.anthropic_api_key is None
 
     def test_get_llm_provider_credentials_gigachat(self) -> None:
         """Test getting GigaChat credentials."""

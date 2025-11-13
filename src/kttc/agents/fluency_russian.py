@@ -439,22 +439,22 @@ Rules:
 Output only valid JSON, no explanation."""
 
         try:
-            # Log the prompt being sent
-            logger.info("=" * 80)
-            logger.info("RussianFluencyAgent - Sending prompt to LLM:")
-            logger.info("=" * 80)
-            logger.info(prompt)
-            logger.info("=" * 80)
+            # Log metadata only (not the actual content for security)
+            logger.info("RussianFluencyAgent - Sending prompt to LLM")
+            logger.debug(
+                f"Prompt metadata: length={len(prompt)} chars, "
+                f"has_morphology={len(morphology_section) > 0}, "
+                f"source_length={len(task.source_text)} chars, "
+                f"translation_length={len(task.translation)} chars"
+            )
 
             response = await self.llm_provider.complete(
                 prompt, temperature=self.temperature, max_tokens=self.max_tokens
             )
 
-            # Log the response received
-            logger.info("RussianFluencyAgent - Received response from LLM:")
-            logger.info("=" * 80)
-            logger.info(response)
-            logger.info("=" * 80)
+            # Log metadata only (not the actual response for security)
+            logger.info("RussianFluencyAgent - Received response from LLM")
+            logger.debug(f"Response metadata: length={len(response)} chars")
 
             # Parse response
             response_data = self._parse_json_response(response)

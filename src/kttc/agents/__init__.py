@@ -21,10 +21,12 @@ Agents evaluate different quality dimensions following the MQM framework:
 - HallucinationAgent: Detects hallucinated content and factual errors
 - ContextAgent: Checks document-level consistency and coherence
 - AgentOrchestrator: Coordinates multiple agents in parallel
+- WeightedConsensus: Weighted consensus mechanism for multi-agent evaluation
 """
 
 from .accuracy import AccuracyAgent
 from .base import AgentError, AgentEvaluationError, AgentParsingError, BaseAgent
+from .consensus import WeightedConsensus
 from .context import ContextAgent
 from .fluency import FluencyAgent
 from .hallucination import HallucinationAgent
@@ -40,6 +42,7 @@ __all__ = [
     "HallucinationAgent",
     "ContextAgent",
     "AgentOrchestrator",
+    "WeightedConsensus",
     "ErrorParser",
     "AgentError",
     "AgentEvaluationError",

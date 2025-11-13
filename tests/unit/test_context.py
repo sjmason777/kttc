@@ -8,8 +8,6 @@ from kttc.agents.base import AgentEvaluationError, AgentParsingError
 from kttc.agents.context import ContextAgent
 from kttc.core import TranslationTask
 
-pytestmark = pytest.mark.asyncio
-
 
 @pytest.fixture
 def mock_llm():
@@ -73,6 +71,7 @@ class TestContextAgent:
         assert agent.document_context is None
         assert agent.document_segments == []
 
+    @pytest.mark.asyncio
     async def test_evaluate_basic(self, agent, translation_task, mock_llm):
         """Test basic evaluation."""
         mock_llm.complete.return_value = '{"errors": []}'
@@ -81,6 +80,7 @@ class TestContextAgent:
 
         assert isinstance(errors, list)
 
+    @pytest.mark.asyncio
     async def test_evaluate_with_cross_reference_preserved(self, agent, mock_llm):
         """Test evaluation with preserved cross-reference."""
         task = TranslationTask(
@@ -97,6 +97,7 @@ class TestContextAgent:
         cross_ref_errors = [e for e in errors if e.subcategory == "cross_reference_missing"]
         assert len(cross_ref_errors) == 0
 
+    @pytest.mark.asyncio
     async def test_evaluate_with_missing_cross_reference(self, agent, mock_llm):
         """Test evaluation with missing cross-reference."""
         task = TranslationTask(
@@ -113,6 +114,7 @@ class TestContextAgent:
         cross_ref_errors = [e for e in errors if e.subcategory == "cross_reference_missing"]
         assert len(cross_ref_errors) > 0
 
+    @pytest.mark.asyncio
     async def test_evaluate_with_document_segments(self, agent, mock_llm):
         """Test evaluation with document context."""
         agent.add_segment("First segment", "Primer segmento")
@@ -132,6 +134,7 @@ class TestContextAgent:
         # Should call LLM for coherence check
         assert mock_llm.complete.called
 
+    @pytest.mark.asyncio
     async def test_evaluate_exception_handling(self, agent, translation_task, mock_llm):
         """Test evaluation with exception from cross-reference check."""
         # Make _extract_references raise exception to test outer exception handler
@@ -272,6 +275,7 @@ class TestContextAgent:
         with pytest.raises(AgentParsingError):
             agent._parse_json_response(response)
 
+    @pytest.mark.asyncio
     async def test_check_coherence_with_llm_response(self, agent, mock_llm):
         """Test coherence checking with LLM response."""
         agent.add_segment("Context text", "Texto contexto")
@@ -295,6 +299,7 @@ class TestContextAgent:
         assert errors[0].category == "context"
         assert errors[0].subcategory == "coherence_issue"
 
+    @pytest.mark.asyncio
     async def test_check_coherence_no_context(self, agent, mock_llm):
         """Test coherence checking without context."""
         task = TranslationTask(
@@ -310,6 +315,7 @@ class TestContextAgent:
         assert errors == []
         assert not mock_llm.complete.called
 
+    @pytest.mark.asyncio
     async def test_check_coherence_llm_failure(self, agent, mock_llm):
         """Test coherence checking when LLM fails."""
         agent.add_segment("Context", "Contexto")
@@ -328,6 +334,7 @@ class TestContextAgent:
         # Should return empty list on error
         assert errors == []
 
+    @pytest.mark.asyncio
     async def test_check_term_consistency_no_segments(self, agent):
         """Test term consistency without segments."""
         task = TranslationTask(
@@ -341,6 +348,7 @@ class TestContextAgent:
 
         assert errors == []
 
+    @pytest.mark.asyncio
     async def test_check_term_consistency_inconsistent(self, agent):
         """Test detection of inconsistent term usage."""
         agent.add_segment("Use API first", "Usar API primero")

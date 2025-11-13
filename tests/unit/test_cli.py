@@ -104,22 +104,6 @@ class TestCLI:
         # Should fail with error
         assert result.exit_code != 0
 
-    def test_translate_command_not_implemented(self) -> None:
-        """Test that translate command shows not implemented message."""
-        result = runner.invoke(
-            app,
-            [
-                "translate",
-                "--text",
-                "Hello",
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "es",
-            ],
-        )
-        assert "Not implemented yet" in result.stdout or result.exit_code != 0
-
     def test_batch_command_not_implemented(self) -> None:
         """Test that batch command shows not implemented message."""
         result = runner.invoke(

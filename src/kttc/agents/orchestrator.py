@@ -45,6 +45,7 @@ from kttc.llm import BaseLLMProvider
 
 from .accuracy import AccuracyAgent
 from .base import AgentEvaluationError, BaseAgent
+from .consensus import WeightedConsensus
 from .fluency import FluencyAgent
 from .fluency_russian import RussianFluencyAgent
 from .terminology import TerminologyAgent
@@ -78,6 +79,8 @@ class AgentOrchestrator:
         quality_threshold: float = 95.0,
         agent_temperature: float = 0.1,
         agent_max_tokens: int = 2000,
+        use_weighted_consensus: bool = True,
+        agent_weights: dict[str, float] | None = None,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -86,10 +89,13 @@ class AgentOrchestrator:
             quality_threshold: Minimum MQM score to pass (default: 95.0)
             agent_temperature: Temperature setting for all agents (default: 0.1)
             agent_max_tokens: Max tokens for agent responses (default: 2000)
+            use_weighted_consensus: Enable weighted consensus mode (default: True)
+            agent_weights: Custom agent trust weights (overrides defaults if provided)
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
         self.agent_max_tokens = agent_max_tokens
+        self.use_weighted_consensus = use_weighted_consensus
 
         # Core agents (always enabled)
         self.agents: list[BaseAgent] = [
@@ -101,6 +107,9 @@ class AgentOrchestrator:
         ]
         self.scorer = MQMScorer()
         self.quality_threshold = quality_threshold
+
+        # Initialize weighted consensus system
+        self.consensus = WeightedConsensus(agent_weights=agent_weights, mqm_scorer=self.scorer)
 
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
         """Get language-specific agents based on target language.
@@ -160,11 +169,16 @@ class AgentOrchestrator:
         aggregates their error findings, calculates MQM score, and generates a
         comprehensive quality report.
 
+        When weighted consensus is enabled, also calculates:
+        - Confidence level based on agent agreement
+        - Individual agent scores
+        - Agreement metrics
+
         Args:
             task: Translation task to evaluate
 
         Returns:
-            QAReport with aggregated errors and MQM score
+            QAReport with aggregated errors, MQM score, and optional consensus metrics
 
         Raises:
             AgentEvaluationError: If agent evaluation fails
@@ -179,6 +193,8 @@ class AgentOrchestrator:
             >>> report = await orchestrator.evaluate(task)
             >>> print(f"Found {len(report.errors)} errors")
             >>> print(f"MQM Score: {report.mqm_score}")
+            >>> if report.confidence:
+            ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
             # Get language-specific agents
@@ -190,23 +206,60 @@ class AgentOrchestrator:
             # Run all agents in parallel using asyncio.gather
             results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
 
-            # Flatten error lists from all agents
+            # Build agent results dictionary (agent category -> errors)
+            agent_results: dict[str, list[ErrorAnnotation]] = {}
             all_errors: list[ErrorAnnotation] = []
-            for agent_errors in results:
+
+            for agent, agent_errors in zip(all_agents, results):
+                category = agent.category
+                agent_results[category] = agent_errors
                 all_errors.extend(agent_errors)
 
             # Calculate word count for MQM scoring
             word_count = len(task.source_text.split())
 
-            # Calculate MQM score based on aggregated errors
-            mqm_score = self.scorer.calculate_score(all_errors, word_count)
+            # Calculate MQM score and consensus metrics
+            if self.use_weighted_consensus and len(agent_results) > 0:
+                # Use weighted consensus calculation
+                consensus_data = self.consensus.calculate_weighted_score(agent_results, word_count)
+
+                mqm_score = consensus_data["weighted_mqm_score"]
+                confidence = consensus_data["confidence"]
+                agent_agreement = consensus_data["agent_agreement"]
+                agent_scores = consensus_data["agent_scores"]
+                consensus_metadata = {
+                    "agent_weights_used": consensus_data["agent_weights_used"],
+                    "total_weight": consensus_data["total_weight"],
+                    **consensus_data["metadata"],
+                }
+
+                logger.info(
+                    f"Weighted consensus: MQM={mqm_score:.2f}, "
+                    f"confidence={confidence:.2f}, "
+                    f"agreement={agent_agreement:.2f}"
+                )
+            else:
+                # Use traditional simple aggregation
+                mqm_score = self.scorer.calculate_score(all_errors, word_count)
+                confidence = None
+                agent_agreement = None
+                agent_scores = None
+                consensus_metadata = None
 
             # Determine pass/fail status
             status = "pass" if mqm_score >= self.quality_threshold else "fail"
 
             # Build comprehensive quality report
             return QAReport(
-                task=task, mqm_score=mqm_score, errors=all_errors, status=status, comet_score=None
+                task=task,
+                mqm_score=mqm_score,
+                errors=all_errors,
+                status=status,
+                comet_score=None,
+                confidence=confidence,
+                agent_agreement=agent_agreement,
+                agent_scores=agent_scores,
+                consensus_metadata=consensus_metadata,
             )
 
         except AgentEvaluationError as e:
@@ -222,6 +275,8 @@ class AgentOrchestrator:
         Similar to evaluate() but also returns a dictionary mapping agent categories
         to their specific errors for detailed analysis.
 
+        When weighted consensus is enabled, also calculates confidence and agreement metrics.
+
         Args:
             task: Translation task to evaluate
 
@@ -233,30 +288,67 @@ class AgentOrchestrator:
             >>> print(f"Accuracy errors: {len(breakdown['accuracy'])}")
             >>> print(f"Fluency errors: {len(breakdown['fluency'])}")
             >>> print(f"Terminology errors: {len(breakdown['terminology'])}")
+            >>> if report.confidence:
+            ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
+            # Get language-specific agents
+            language_agents = self._get_language_specific_agents(task)
+
+            # Combine core agents with language-specific agents
+            all_agents = self.agents + language_agents
+
             # Run all agents in parallel
-            results = await asyncio.gather(*[agent.evaluate(task) for agent in self.agents])
+            results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
 
             # Build breakdown by agent category
             breakdown: dict[str, list[ErrorAnnotation]] = {}
             all_errors: list[ErrorAnnotation] = []
 
-            for agent, agent_errors in zip(self.agents, results):
+            for agent, agent_errors in zip(all_agents, results):
                 category = agent.category
                 breakdown[category] = agent_errors
                 all_errors.extend(agent_errors)
 
-            # Calculate MQM score
+            # Calculate word count
             word_count = len(task.source_text.split())
-            mqm_score = self.scorer.calculate_score(all_errors, word_count)
+
+            # Calculate MQM score and consensus metrics
+            if self.use_weighted_consensus and len(breakdown) > 0:
+                # Use weighted consensus
+                consensus_data = self.consensus.calculate_weighted_score(breakdown, word_count)
+
+                mqm_score = consensus_data["weighted_mqm_score"]
+                confidence = consensus_data["confidence"]
+                agent_agreement = consensus_data["agent_agreement"]
+                agent_scores = consensus_data["agent_scores"]
+                consensus_metadata = {
+                    "agent_weights_used": consensus_data["agent_weights_used"],
+                    "total_weight": consensus_data["total_weight"],
+                    **consensus_data["metadata"],
+                }
+            else:
+                # Use traditional aggregation
+                mqm_score = self.scorer.calculate_score(all_errors, word_count)
+                confidence = None
+                agent_agreement = None
+                agent_scores = None
+                consensus_metadata = None
 
             # Determine status
             status = "pass" if mqm_score >= self.quality_threshold else "fail"
 
             # Build report
             report = QAReport(
-                task=task, mqm_score=mqm_score, errors=all_errors, status=status, comet_score=None
+                task=task,
+                mqm_score=mqm_score,
+                errors=all_errors,
+                status=status,
+                comet_score=None,
+                confidence=confidence,
+                agent_agreement=agent_agreement,
+                agent_scores=agent_scores,
+                consensus_metadata=consensus_metadata,
             )
 
             return report, breakdown

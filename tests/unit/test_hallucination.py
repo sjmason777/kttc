@@ -8,8 +8,6 @@ from kttc.agents.base import AgentEvaluationError, AgentParsingError
 from kttc.agents.hallucination import HallucinationAgent
 from kttc.core import ErrorSeverity, TranslationTask
 
-pytestmark = pytest.mark.asyncio
-
 
 @pytest.fixture
 def mock_llm():
@@ -53,6 +51,7 @@ class TestHallucinationAgent:
         assert agent.temperature == 0.3
         assert agent.max_tokens == 3000
 
+    @pytest.mark.asyncio
     async def test_evaluate_basic(self, agent, translation_task, mock_llm):
         """Test basic evaluation without errors."""
         mock_llm.complete.return_value = '{"errors": []}'
@@ -62,6 +61,7 @@ class TestHallucinationAgent:
         assert isinstance(errors, list)
         assert len(errors) >= 0  # May have length ratio errors
 
+    @pytest.mark.asyncio
     async def test_evaluate_with_entity_errors(self, agent, mock_llm):
         """Test evaluation detecting entity errors."""
         task = TranslationTask(
@@ -88,6 +88,7 @@ class TestHallucinationAgent:
         assert len(entity_errors) > 0
         assert entity_errors[0].severity == ErrorSeverity.CRITICAL
 
+    @pytest.mark.asyncio
     async def test_evaluate_exception_handling(self, agent, translation_task, mock_llm):
         """Test evaluation with exception."""
         # Make evaluate raise exception by breaking the length ratio check
@@ -96,6 +97,7 @@ class TestHallucinationAgent:
         with pytest.raises(AgentEvaluationError):
             await agent.evaluate(translation_task)
 
+    @pytest.mark.asyncio
     async def test_check_entity_preservation_basic(self, agent, mock_llm):
         """Test entity preservation checking."""
         task = TranslationTask(
@@ -110,6 +112,7 @@ class TestHallucinationAgent:
         errors = await agent._check_entity_preservation(task)
         assert isinstance(errors, list)
 
+    @pytest.mark.asyncio
     async def test_check_entity_preservation_with_errors(self, agent, mock_llm):
         """Test entity preservation detecting missing entities."""
         task = TranslationTask(
@@ -144,6 +147,7 @@ class TestHallucinationAgent:
         assert all(e.category == "accuracy" for e in errors)
         assert all(e.severity == ErrorSeverity.CRITICAL for e in errors)
 
+    @pytest.mark.asyncio
     async def test_check_entity_preservation_exception_handling(self, agent, mock_llm):
         """Test entity preservation with LLM failure."""
         task = TranslationTask(
@@ -237,6 +241,7 @@ class TestHallucinationAgent:
         # At boundary, should not trigger (ratio == LENGTH_RATIO_MAX)
         assert len(errors) == 0
 
+    @pytest.mark.asyncio
     async def test_check_factual_consistency_basic(self, agent, mock_llm):
         """Test factual consistency checking."""
         task = TranslationTask(
@@ -251,6 +256,7 @@ class TestHallucinationAgent:
         errors = await agent._check_factual_consistency(task)
         assert isinstance(errors, list)
 
+    @pytest.mark.asyncio
     async def test_check_factual_consistency_with_errors(self, agent, mock_llm):
         """Test factual consistency detecting hallucinations."""
         task = TranslationTask(
@@ -277,6 +283,7 @@ class TestHallucinationAgent:
         assert errors[0].subcategory == "hallucination_addition"
         assert errors[0].severity == ErrorSeverity.MAJOR
 
+    @pytest.mark.asyncio
     async def test_check_factual_consistency_exception_handling(self, agent, mock_llm):
         """Test factual consistency with LLM failure."""
         task = TranslationTask(
@@ -378,6 +385,7 @@ class TestHallucinationAgent:
         with pytest.raises(AgentParsingError):
             agent._parse_json_response(response)
 
+    @pytest.mark.asyncio
     async def test_full_evaluation_flow(self, agent, mock_llm):
         """Test complete evaluation flow with all checks."""
         task = TranslationTask(
@@ -396,6 +404,7 @@ class TestHallucinationAgent:
         assert mock_llm.complete.call_count == 2
         assert isinstance(errors, list)
 
+    @pytest.mark.asyncio
     async def test_full_evaluation_with_multiple_error_types(self, agent, mock_llm):
         """Test evaluation detecting multiple error types."""
         task = TranslationTask(
