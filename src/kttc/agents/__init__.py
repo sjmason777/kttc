@@ -22,12 +22,21 @@ Agents evaluate different quality dimensions following the MQM framework:
 - ContextAgent: Checks document-level consistency and coherence
 - AgentOrchestrator: Coordinates multiple agents in parallel
 - WeightedConsensus: Weighted consensus mechanism for multi-agent evaluation
+- DomainProfile: Domain-specific agent configurations
+- DomainDetector: Automatic domain detection for adaptive agent selection
 """
 
 from .accuracy import AccuracyAgent
 from .base import AgentError, AgentEvaluationError, AgentParsingError, BaseAgent
 from .consensus import WeightedConsensus
 from .context import ContextAgent
+from .domain_profiles import (
+    DOMAIN_PROFILES,
+    DomainDetector,
+    DomainProfile,
+    get_domain_profile,
+    list_available_domains,
+)
 from .fluency import FluencyAgent
 from .hallucination import HallucinationAgent
 from .orchestrator import AgentOrchestrator
@@ -43,6 +52,11 @@ __all__ = [
     "ContextAgent",
     "AgentOrchestrator",
     "WeightedConsensus",
+    "DomainProfile",
+    "DomainDetector",
+    "DOMAIN_PROFILES",
+    "get_domain_profile",
+    "list_available_domains",
     "ErrorParser",
     "AgentError",
     "AgentEvaluationError",

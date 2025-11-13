@@ -285,6 +285,34 @@ def print_qa_report(
         agreement_pct = report.agent_agreement * 100
         results_table.add_row("Agent Agreement:", Text(f"{agreement_pct:.0f}%", style="dim"))
 
+    # Show domain detection if available (Phase 3: Domain-Adaptive Selection)
+    if report.agent_details and "detected_domain" in report.agent_details:
+        domain = report.agent_details["detected_domain"]
+        domain_confidence = report.agent_details.get("domain_confidence", 0.0)
+
+        # Format domain name (capitalize first letter)
+        domain_display = domain.replace("_", " ").title()
+
+        # Color-code domain confidence
+        if domain_confidence >= 0.75:
+            domain_conf_color = "green"
+        elif domain_confidence >= 0.5:
+            domain_conf_color = "yellow"
+        else:
+            domain_conf_color = "dim"
+
+        # Create domain display text
+        domain_text = Text(domain_display, style="bold cyan")
+        if domain_confidence > 0.5:
+            domain_text += Text(f" ({domain_confidence:.0%} confidence)", style=domain_conf_color)
+
+        results_table.add_row("Domain:", domain_text)
+
+        # Show domain-specific threshold in verbose mode
+        if verbose and "quality_threshold_used" in report.agent_details:
+            threshold = report.agent_details["quality_threshold_used"]
+            results_table.add_row("Domain Threshold:", Text(f"{threshold:.1f}", style="dim"))
+
     # Error breakdown
     if total_issues > 0:
         breakdown_parts = []

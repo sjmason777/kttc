@@ -46,6 +46,7 @@ from kttc.llm import BaseLLMProvider
 from .accuracy import AccuracyAgent
 from .base import AgentEvaluationError, BaseAgent
 from .consensus import WeightedConsensus
+from .domain_profiles import DomainDetector, get_domain_profile
 from .fluency import FluencyAgent
 from .fluency_russian import RussianFluencyAgent
 from .terminology import TerminologyAgent
@@ -81,6 +82,7 @@ class AgentOrchestrator:
         agent_max_tokens: int = 2000,
         use_weighted_consensus: bool = True,
         agent_weights: dict[str, float] | None = None,
+        enable_domain_adaptation: bool = True,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -91,11 +93,13 @@ class AgentOrchestrator:
             agent_max_tokens: Max tokens for agent responses (default: 2000)
             use_weighted_consensus: Enable weighted consensus mode (default: True)
             agent_weights: Custom agent trust weights (overrides defaults if provided)
+            enable_domain_adaptation: Enable domain-adaptive agent selection (default: True)
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
         self.agent_max_tokens = agent_max_tokens
         self.use_weighted_consensus = use_weighted_consensus
+        self.enable_domain_adaptation = enable_domain_adaptation
 
         # Core agents (always enabled)
         self.agents: list[BaseAgent] = [
@@ -110,6 +114,9 @@ class AgentOrchestrator:
 
         # Initialize weighted consensus system
         self.consensus = WeightedConsensus(agent_weights=agent_weights, mqm_scorer=self.scorer)
+
+        # Initialize domain detector for adaptive agent selection
+        self.domain_detector = DomainDetector() if enable_domain_adaptation else None
 
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
         """Get language-specific agents based on target language.
@@ -197,6 +204,24 @@ class AgentOrchestrator:
             ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
+            # Domain-adaptive agent selection (Phase 3)
+            detected_domain = None
+            domain_profile = None
+            domain_confidence = None
+
+            if self.enable_domain_adaptation and self.domain_detector:
+                detected_domain = self.domain_detector.detect_domain(
+                    task.source_text, task.target_lang, task.context
+                )
+                domain_profile = get_domain_profile(detected_domain)
+                domain_confidence = self.domain_detector.get_domain_confidence(
+                    task.source_text, detected_domain
+                )
+
+                logger.info(
+                    f"Domain detection: {detected_domain} " f"(confidence: {domain_confidence:.2f})"
+                )
+
             # Get language-specific agents
             language_agents = self._get_language_specific_agents(task)
 
@@ -218,10 +243,15 @@ class AgentOrchestrator:
             # Calculate word count for MQM scoring
             word_count = len(task.source_text.split())
 
+            # Use domain-specific weights if available
+            domain_weights = domain_profile.agent_weights if domain_profile else None
+
             # Calculate MQM score and consensus metrics
             if self.use_weighted_consensus and len(agent_results) > 0:
-                # Use weighted consensus calculation
-                consensus_data = self.consensus.calculate_weighted_score(agent_results, word_count)
+                # Use weighted consensus calculation with domain-specific weights
+                consensus_data = self.consensus.calculate_weighted_score(
+                    agent_results, word_count, agent_weights_override=domain_weights
+                )
 
                 mqm_score = consensus_data["weighted_mqm_score"]
                 confidence = consensus_data["confidence"]
@@ -246,8 +276,24 @@ class AgentOrchestrator:
                 agent_scores = None
                 consensus_metadata = None
 
+            # Use domain-specific threshold if available
+            quality_threshold = (
+                domain_profile.quality_threshold if domain_profile else self.quality_threshold
+            )
+
             # Determine pass/fail status
-            status = "pass" if mqm_score >= self.quality_threshold else "fail"
+            status = "pass" if mqm_score >= quality_threshold else "fail"
+
+            # Build domain information for report
+            domain_details = None
+            if detected_domain and domain_profile:
+                domain_details = {
+                    "detected_domain": detected_domain,
+                    "domain_confidence": domain_confidence,
+                    "domain_complexity": domain_profile.complexity,
+                    "quality_threshold_used": quality_threshold,
+                    "domain_description": domain_profile.description,
+                }
 
             # Build comprehensive quality report
             return QAReport(
@@ -260,6 +306,7 @@ class AgentOrchestrator:
                 agent_agreement=agent_agreement,
                 agent_scores=agent_scores,
                 consensus_metadata=consensus_metadata,
+                agent_details=domain_details,  # Add domain info
             )
 
         except AgentEvaluationError as e:
@@ -292,6 +339,20 @@ class AgentOrchestrator:
             ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
+            # Domain-adaptive agent selection (Phase 3)
+            detected_domain = None
+            domain_profile = None
+            domain_confidence = None
+
+            if self.enable_domain_adaptation and self.domain_detector:
+                detected_domain = self.domain_detector.detect_domain(
+                    task.source_text, task.target_lang, task.context
+                )
+                domain_profile = get_domain_profile(detected_domain)
+                domain_confidence = self.domain_detector.get_domain_confidence(
+                    task.source_text, detected_domain
+                )
+
             # Get language-specific agents
             language_agents = self._get_language_specific_agents(task)
 
@@ -313,10 +374,15 @@ class AgentOrchestrator:
             # Calculate word count
             word_count = len(task.source_text.split())
 
+            # Use domain-specific weights if available
+            domain_weights = domain_profile.agent_weights if domain_profile else None
+
             # Calculate MQM score and consensus metrics
             if self.use_weighted_consensus and len(breakdown) > 0:
-                # Use weighted consensus
-                consensus_data = self.consensus.calculate_weighted_score(breakdown, word_count)
+                # Use weighted consensus with domain-specific weights
+                consensus_data = self.consensus.calculate_weighted_score(
+                    breakdown, word_count, agent_weights_override=domain_weights
+                )
 
                 mqm_score = consensus_data["weighted_mqm_score"]
                 confidence = consensus_data["confidence"]
@@ -335,8 +401,24 @@ class AgentOrchestrator:
                 agent_scores = None
                 consensus_metadata = None
 
+            # Use domain-specific threshold if available
+            quality_threshold = (
+                domain_profile.quality_threshold if domain_profile else self.quality_threshold
+            )
+
             # Determine status
-            status = "pass" if mqm_score >= self.quality_threshold else "fail"
+            status = "pass" if mqm_score >= quality_threshold else "fail"
+
+            # Build domain information for report
+            domain_details = None
+            if detected_domain and domain_profile:
+                domain_details = {
+                    "detected_domain": detected_domain,
+                    "domain_confidence": domain_confidence,
+                    "domain_complexity": domain_profile.complexity,
+                    "quality_threshold_used": quality_threshold,
+                    "domain_description": domain_profile.description,
+                }
 
             # Build report
             report = QAReport(
@@ -349,6 +431,7 @@ class AgentOrchestrator:
                 agent_agreement=agent_agreement,
                 agent_scores=agent_scores,
                 consensus_metadata=consensus_metadata,
+                agent_details=domain_details,  # Add domain info
             )
 
             return report, breakdown

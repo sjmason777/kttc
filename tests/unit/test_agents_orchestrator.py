@@ -532,3 +532,240 @@ ERROR_END
                     AgentEvaluationError, match="Unexpected error in orchestrator breakdown"
                 ):
                     await orchestrator.evaluate_with_breakdown(task)
+
+
+class TestAgentOrchestratorDomainAdaptation:
+    """Tests for domain-adaptive agent selection in AgentOrchestrator."""
+
+    async def test_domain_detection_enabled(self) -> None:
+        """Test that domain detection is enabled by default."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            task = TranslationTask(
+                source_text="The API endpoint accepts POST requests",
+                translation="La API acepta solicitudes POST",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should have domain details in agent_details
+            assert report.agent_details is not None
+            assert "detected_domain" in report.agent_details
+            assert report.agent_details["detected_domain"] == "technical"
+            assert "domain_confidence" in report.agent_details
+            assert "domain_complexity" in report.agent_details
+            assert "quality_threshold_used" in report.agent_details
+
+    async def test_domain_detection_disabled(self) -> None:
+        """Test that domain detection can be disabled."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=False)
+
+            task = TranslationTask(
+                source_text="The API endpoint accepts POST requests",
+                translation="La API acepta solicitudes POST",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should not have domain details
+            assert report.agent_details is None
+
+    async def test_technical_domain_higher_threshold(self) -> None:
+        """Test that technical domain uses higher quality threshold."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(
+                provider, enable_domain_adaptation=True, quality_threshold=95.0
+            )
+
+            task = TranslationTask(
+                source_text="The API endpoint uses REST protocol",
+                translation="La API usa protocolo REST",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Technical domain should use 97.0 threshold, not 95.0
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "technical"
+            assert report.agent_details["quality_threshold_used"] == 97.0
+
+    async def test_medical_domain_highest_threshold(self) -> None:
+        """Test that medical domain uses highest quality threshold."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            task = TranslationTask(
+                source_text="The patient exhibits symptoms of fever and requires medication",
+                translation="El paciente presenta síntomas de fiebre",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Medical domain should use 98.0 threshold
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "medical"
+            assert report.agent_details["quality_threshold_used"] == 98.0
+
+    async def test_marketing_domain_lower_threshold(self) -> None:
+        """Test that marketing domain uses lower quality threshold."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            task = TranslationTask(
+                source_text="Buy now and get exclusive discount on our premium product",
+                translation="Compre ahora y obtenga descuento exclusivo",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Marketing domain should use 93.0 threshold
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "marketing"
+            assert report.agent_details["quality_threshold_used"] == 93.0
+
+    async def test_general_domain_default_threshold(self) -> None:
+        """Test that general domain uses default threshold."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(
+                provider, enable_domain_adaptation=True, quality_threshold=95.0
+            )
+
+            task = TranslationTask(
+                source_text="The weather is nice today",
+                translation="El clima está agradable hoy",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # General domain should use default 95.0 threshold
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "general"
+            assert report.agent_details["quality_threshold_used"] == 95.0
+
+    async def test_domain_specific_weights_applied(self) -> None:
+        """Test that domain-specific agent weights are applied."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        # Return no errors for all agents
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(
+                provider, enable_domain_adaptation=True, use_weighted_consensus=True
+            )
+
+            task = TranslationTask(
+                source_text="The API endpoint uses authentication protocol",
+                translation="La API usa protocolo de autenticación",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Technical domain detected
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "technical"
+
+            # Should have consensus metadata with agent weights used
+            assert report.consensus_metadata is not None
+            assert "agent_weights_used" in report.consensus_metadata
+
+            # Technical domain prioritizes accuracy and terminology
+            weights_used = report.consensus_metadata["agent_weights_used"]
+            assert weights_used["accuracy"] == 1.0
+            assert weights_used["terminology"] == 0.95
+
+    async def test_domain_detection_with_breakdown(self) -> None:
+        """Test domain detection works with evaluate_with_breakdown."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            task = TranslationTask(
+                source_text="Configure the database server parameters",
+                translation="Configurar los parámetros del servidor",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report, breakdown = await orchestrator.evaluate_with_breakdown(task)
+
+            # Should detect technical domain
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "technical"
+            assert report.agent_details["quality_threshold_used"] == 97.0
+
+            # Breakdown should contain all agent categories
+            assert "accuracy" in breakdown
+            assert "fluency" in breakdown
+            assert "terminology" in breakdown
+
+    async def test_explicit_domain_in_context(self) -> None:
+        """Test that explicit domain in context is respected."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            # Random text, but explicitly specify medical domain
+            task = TranslationTask(
+                source_text="Some random text",
+                translation="Algún texto aleatorio",
+                source_lang="en",
+                target_lang="es",
+                context={"domain": "medical"},
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Should respect explicit domain
+            assert report.agent_details is not None
+            assert report.agent_details["detected_domain"] == "medical"
+            assert report.agent_details["quality_threshold_used"] == 98.0
+
+    async def test_domain_complexity_in_report(self) -> None:
+        """Test that domain complexity is included in report."""
+        provider = OpenAIProvider(api_key="test-key")
+
+        with patch.object(provider, "complete", new=AsyncMock(return_value="No errors found")):
+            orchestrator = AgentOrchestrator(provider, enable_domain_adaptation=True)
+
+            task = TranslationTask(
+                source_text="The patient requires treatment for diagnosis",
+                translation="El paciente requiere tratamiento",
+                source_lang="en",
+                target_lang="es",
+            )
+
+            report = await orchestrator.evaluate(task)
+
+            # Medical domain has high complexity (0.9)
+            assert report.agent_details is not None
+            assert report.agent_details["domain_complexity"] == 0.9
+            assert report.agent_details["domain_description"] is not None

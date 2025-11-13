@@ -94,6 +94,7 @@ class WeightedConsensus:
         self,
         agent_results: dict[str, list[ErrorAnnotation]],
         word_count: int,
+        agent_weights_override: dict[str, float] | None = None,
     ) -> dict[str, Any]:
         """Calculate weighted MQM score from multiple agent results.
 
@@ -103,6 +104,7 @@ class WeightedConsensus:
         Args:
             agent_results: Dictionary mapping agent category to its errors
             word_count: Number of words in source text
+            agent_weights_override: Optional domain-specific weights to override defaults
 
         Returns:
             Dictionary containing:
@@ -133,6 +135,9 @@ class WeightedConsensus:
         if not agent_results:
             raise ValueError("agent_results cannot be empty")
 
+        # Use domain-specific weights if provided, otherwise use configured weights
+        active_weights = agent_weights_override if agent_weights_override else self.agent_weights
+
         # Calculate individual MQM scores for each agent
         agent_scores: dict[str, float] = {}
         agent_weights_used: dict[str, float] = {}
@@ -143,7 +148,7 @@ class WeightedConsensus:
             agent_scores[agent_id] = agent_mqm
 
             # Get agent weight (default to 1.0 for unknown agents)
-            agent_weights_used[agent_id] = self.agent_weights.get(agent_id, 1.0)
+            agent_weights_used[agent_id] = active_weights.get(agent_id, 1.0)
 
         # Calculate weighted average MQM score
         weighted_sum = 0.0
