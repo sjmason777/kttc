@@ -1,4 +1,4 @@
-**Other languages:** [English](SECURITY.md) · [Русский](SECURITY.ru.md) · **中文**
+[English](SECURITY.md) · [Русский](SECURITY.ru.md) · **中文**
 
 # 安全策略
 

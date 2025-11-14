@@ -1,4 +1,4 @@
-**Other languages:** **English** · [Русский](CONTRIBUTING.ru.md) · [中文](CONTRIBUTING.zh.md)
+**English** · [Русский](CONTRIBUTING.ru.md) · [中文](CONTRIBUTING.zh.md)
 
 # Contributing to KTTC
 

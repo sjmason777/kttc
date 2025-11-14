@@ -1,4 +1,4 @@
-**Other languages:** [English](CONTRIBUTING.md) · **Русский** · [中文](CONTRIBUTING.zh.md)
+[English](CONTRIBUTING.md) · **Русский** · [中文](CONTRIBUTING.zh.md)
 
 # Участие в разработке KTTC
 

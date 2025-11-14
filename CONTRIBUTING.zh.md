@@ -1,4 +1,4 @@
-**Other languages:** [English](CONTRIBUTING.md) · [Русский](CONTRIBUTING.ru.md) · **中文**
+[English](CONTRIBUTING.md) · [Русский](CONTRIBUTING.ru.md) · **中文**
 
 # 为 KTTC 贡献代码
 

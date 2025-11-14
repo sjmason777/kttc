@@ -1,4 +1,4 @@
-**Other languages:** **English** · [Русский](CODE_OF_CONDUCT.ru.md) · [中文](CODE_OF_CONDUCT.zh.md)
+**English** · [Русский](CODE_OF_CONDUCT.ru.md) · [中文](CODE_OF_CONDUCT.zh.md)
 
 # Contributor Covenant Code of Conduct
 

@@ -5,6 +5,7 @@ Focus: Fast, isolated tests with mocked dependencies.
 """
 
 import json
+import re
 from pathlib import Path
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -16,6 +17,15 @@ from kttc.core.models import QAReport
 
 # Create CLI runner
 runner = CliRunner()
+
+
+def strip_ansi(text: str) -> str:
+    """Strip ANSI escape codes from text.
+
+    Typer with Rich adds ANSI color codes to CLI output,
+    which breaks simple string matching in tests.
+    """
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
 
 @pytest.mark.unit
@@ -63,9 +73,10 @@ class TestCheckCommand:
 
         # Assert
         assert result.exit_code == 0
-        assert "translation quality" in result.stdout.lower()
-        assert "SOURCE" in result.stdout
-        assert "--threshold" in result.stdout
+        output = strip_ansi(result.stdout)
+        assert "translation quality" in output.lower()
+        assert "SOURCE" in output
+        assert "--threshold" in output
 
     def test_check_missing_required_args(self) -> None:
         """Test check fails without required arguments."""
@@ -243,10 +254,11 @@ class TestTranslateCommand:
 
         # Assert
         assert result.exit_code == 0
-        assert "Translate text" in result.stdout
-        assert "--text" in result.stdout
-        assert "--source-lang" in result.stdout
-        assert "--target-lang" in result.stdout
+        output = strip_ansi(result.stdout)
+        assert "Translate text" in output
+        assert "--text" in output
+        assert "--source-lang" in output
+        assert "--target-lang" in output
 
     def test_translate_missing_required_args(self) -> None:
         """Test translate fails without required arguments."""

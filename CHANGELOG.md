@@ -39,6 +39,10 @@
   - Skip reporting errors with empty adjective/noun data
   - Cleaner CLI output without "Case mismatch: '' and ''" noise
 
+- **Tests**: Fixed CLI test assertions with ANSI escape codes
+  - Added `strip_ansi()` helper to handle Rich-formatted output
+  - Fixed `test_check_help` and `test_translate_help` test failures
+
 ### CLI Improvements
 
 - Intelligent command-line interface with auto-detection

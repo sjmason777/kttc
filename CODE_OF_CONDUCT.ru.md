@@ -1,4 +1,4 @@
-**Other languages:** [English](CODE_OF_CONDUCT.md) · **Русский** · [中文](CODE_OF_CONDUCT.zh.md)
+[English](CODE_OF_CONDUCT.md) · **Русский** · [中文](CODE_OF_CONDUCT.zh.md)
 
 # Кодекс поведения для участников проекта
 

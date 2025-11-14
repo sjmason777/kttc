@@ -1,4 +1,4 @@
-**Other languages:** [English](README.md) · [Русский](README.ru.md) · **中文**
+[English](README.md) · [Русский](README.ru.md) · **中文**
 
 # KTTC - Knowledge Translation Transmutation Core
 

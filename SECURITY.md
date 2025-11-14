@@ -1,4 +1,4 @@
-**Other languages:** **English** · [Русский](SECURITY.ru.md) · [中文](SECURITY.zh.md)
+**English** · [Русский](SECURITY.ru.md) · [中文](SECURITY.zh.md)
 
 # Security Policy
 
