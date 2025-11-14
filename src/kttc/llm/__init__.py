@@ -26,6 +26,7 @@ from .base import (
     LLMRateLimitError,
     LLMTimeoutError,
 )
+from .complexity_router import ComplexityEstimator, ComplexityRouter, ComplexityScore
 from .gigachat_provider import GigaChatProvider
 from .openai_provider import OpenAIProvider
 from .prompts import PromptTemplate, PromptTemplateError
@@ -43,4 +44,7 @@ __all__ = [
     "LLMAuthenticationError",
     "LLMRateLimitError",
     "LLMTimeoutError",
+    "ComplexityEstimator",
+    "ComplexityRouter",
+    "ComplexityScore",
 ]

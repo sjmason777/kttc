@@ -1,0 +1,10 @@
+{"source": "Hello, world!", "translation": "¡Hola, mundo!", "source_lang": "en", "target_lang": "es", "domain": "general"}
+{"source": "The API endpoint returns JSON data", "translation": "El punto final de la API devuelve datos JSON", "source_lang": "en", "target_lang": "es", "domain": "technical"}
+{"source": "Docker containers provide isolated environments", "translation": "Los contenedores Docker proporcionan entornos aislados", "source_lang": "en", "target_lang": "es", "domain": "technical"}
+{"source": "The patient experienced adverse events during the trial", "translation": "El paciente experimentó eventos adversos durante el ensayo", "source_lang": "en", "target_lang": "es", "domain": "medical"}
+{"source": "Please review the contract terms carefully", "translation": "Por favor revise los términos del contrato cuidadosamente", "source_lang": "en", "target_lang": "es", "domain": "legal"}
+{"source": "Good morning, how are you?", "translation": "Доброе утро, как дела?", "source_lang": "en", "target_lang": "ru", "domain": "general"}
+{"source": "The database query was optimized", "translation": "Запрос к базе данных был оптимизирован", "source_lang": "en", "target_lang": "ru", "domain": "technical"}
+{"source": "Machine learning algorithms improve over time", "translation": "Алгоритмы машинного обучения улучшаются со временем", "source_lang": "en", "target_lang": "ru", "domain": "technical"}
+{"source": "The medication should be taken twice daily", "translation": "Лекарство следует принимать два раза в день", "source_lang": "en", "target_lang": "ru", "domain": "medical"}
+{"source": "The defendant pleaded not guilty", "translation": "Подсудимый заявил о своей невиновности", "source_lang": "en", "target_lang": "ru", "domain": "legal"}

@@ -23,6 +23,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import warnings
 from pathlib import Path
 from typing import Any
 
@@ -34,6 +35,8 @@ from kttc import __version__
 from kttc.agents import AgentOrchestrator
 from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare
+from kttc.cli.commands.glossary import glossary_app
+from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter
 from kttc.cli.ui import (
     console,
     create_step_progress,
@@ -44,9 +47,13 @@ from kttc.cli.ui import (
     print_startup_info,
     print_translation_preview,
 )
-from kttc.core import QAReport, TranslationTask
+from kttc.core import BatchFileParser, BatchGrouper, QAReport, TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 from kttc.utils.config import get_settings
+
+# Suppress warnings from external dependencies
+warnings.filterwarnings("ignore", category=UserWarning, module="jieba._compat")
+warnings.filterwarnings("ignore", category=FutureWarning, module="torch.cuda")
 
 # Create main app
 app = typer.Typer(
@@ -56,6 +63,9 @@ app = typer.Typer(
     rich_markup_mode="rich",
     no_args_is_help=True,
 )
+
+# Add glossary subcommands
+app.add_typer(glossary_app, name="glossary")
 
 
 def version_callback(value: bool) -> None:
@@ -87,8 +97,8 @@ def main(
 
 @app.command()
 def check(
-    source: str = typer.Option(..., "--source", "-s", help="Source text file path"),
-    translation: str = typer.Option(..., "--translation", "-t", help="Translation file path"),
+    source: str = typer.Argument(..., help="Source text file path"),
+    translation: str = typer.Argument(..., help="Translation file path"),
     source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
     target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'es')"),
     threshold: float = typer.Option(95.0, "--threshold", help="Minimum MQM score to pass (0-100)"),
@@ -110,6 +120,24 @@ def check(
         "--correction-level",
         help="Correction level: light (critical/major) or full (all errors)",
     ),
+    smart_routing: bool = typer.Option(
+        False, "--smart-routing", help="Enable complexity-based smart routing to optimize costs"
+    ),
+    show_routing_info: bool = typer.Option(
+        False, "--show-routing-info", help="Display routing decision and complexity score"
+    ),
+    simple_threshold: float = typer.Option(
+        0.3, "--simple-threshold", help="Complexity threshold for simple texts (0.0-1.0)"
+    ),
+    complex_threshold: float = typer.Option(
+        0.7, "--complex-threshold", help="Complexity threshold for complex texts (0.0-1.0)"
+    ),
+    glossary: str | None = typer.Option(
+        None,
+        "--glossary",
+        "-g",
+        help="Glossaries to use (comma-separated, e.g., 'base,medical')",
+    ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
     demo: bool = typer.Option(
         False, "--demo", help="Demo mode (no API calls, simulated responses)"
@@ -124,7 +152,7 @@ def check(
     Optionally can auto-correct detected errors using AI post-editing.
 
     Example:
-        kttc check --source source.txt --translation trans.txt \\
+        kttc check source.txt trans.txt \\
                    --source-lang en --target-lang es --threshold 95 \\
                    --auto-correct --correction-level light
     """
@@ -149,6 +177,11 @@ def check(
                 auto_select_model,
                 auto_correct,
                 correction_level,
+                smart_routing,
+                show_routing_info,
+                simple_threshold,
+                complex_threshold,
+                glossary,
                 verbose,
                 demo,
             )
@@ -240,11 +273,18 @@ async def _check_async(
     auto_select_model: bool,
     auto_correct: bool,
     correction_level: str,
+    smart_routing: bool,
+    show_routing_info: bool,
+    simple_threshold: float,
+    complex_threshold: float,
+    glossary: str | None,
     verbose: bool,
     demo: bool = False,
 ) -> None:
     """Async implementation of check command."""
+    from kttc.core import GlossaryManager
     from kttc.core.correction import AutoCorrector
+    from kttc.llm import ComplexityRouter
 
     # Configure logging based on verbose flag
     if verbose:
@@ -292,8 +332,71 @@ async def _check_async(
     except Exception as e:
         raise RuntimeError(f"Failed to create translation task: {e}") from e
 
+    # Load glossaries if specified
+    if glossary:
+        try:
+            manager = GlossaryManager()
+            glossary_names = [g.strip() for g in glossary.split(",")]
+            manager.load_multiple(glossary_names)
+
+            # Find relevant terms in source text
+            terms = manager.find_in_text(source_text, source_lang, target_lang)
+
+            # Add glossary terms to task context
+            task.context = task.context or {}
+            task.context["glossary_terms"] = [
+                {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
+                for t in terms
+            ]
+
+            if verbose:
+                console.print(
+                    f"[dim]Loaded {len(glossary_names)} glossaries, found {len(terms)} relevant terms[/dim]"
+                )
+        except Exception as e:
+            console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]")
+
+    # Smart routing: select model based on complexity
+    selected_model = None
+    complexity_score = None
+
+    if smart_routing:
+        try:
+            router = ComplexityRouter()
+            # Note: ComplexityRouter doesn't have configurable thresholds yet,
+            # but the parameters are accepted for future use
+            selected_model, complexity_score = router.route(
+                source_text,
+                source_lang,
+                target_lang,
+                domain=task.context.get("domain") if task.context else None,
+            )
+
+            if show_routing_info:
+                console.print("[dim]─ Complexity Analysis ─[/dim]")
+                console.print(f"[dim]Overall: {complexity_score.overall:.2f}[/dim]")
+                console.print(
+                    f"[dim]  Sentence length: {complexity_score.sentence_length:.2f}[/dim]"
+                )
+                console.print(f"[dim]  Rare words: {complexity_score.rare_words:.2f}[/dim]")
+                console.print(f"[dim]  Syntactic: {complexity_score.syntactic:.2f}[/dim]")
+                console.print(
+                    f"[dim]  Domain-specific: {complexity_score.domain_specific:.2f}[/dim]"
+                )
+                console.print(f"[dim]Selected model: {selected_model}[/dim]\n")
+        except Exception as e:
+            console.print(f"[yellow]⚠ Warning: Smart routing failed, using default: {e}[/yellow]")
+
     # Setup LLM provider with intelligent model selection
     try:
+        # If smart routing selected a model, override provider selection
+        if smart_routing and selected_model:
+            # Map model to provider
+            if "gpt" in selected_model.lower():
+                provider = "openai"
+            elif "claude" in selected_model.lower():
+                provider = "anthropic"
+
         llm_provider = _setup_llm_provider(
             provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
         )
@@ -607,6 +710,253 @@ async def _process_batch_files(
     return results
 
 
+async def _batch_from_file_async(
+    file_path: str,
+    threshold: float,
+    output: str,
+    parallel: int,
+    batch_size: int | None,
+    provider: str | None,
+    smart_routing: bool,
+    show_cost_savings: bool,
+    show_progress: bool,
+    glossary: str | None,
+    verbose: bool,
+    demo: bool = False,
+) -> None:
+    """Async implementation of batch command for file-based input.
+
+    Args:
+        file_path: Path to batch file (CSV, JSON, or JSONL)
+        threshold: Quality threshold for pass/fail
+        output: Output report file path
+        parallel: Number of parallel workers
+        batch_size: Optional batch size for grouping
+        provider: LLM provider name
+        smart_routing: Enable complexity-based routing
+        show_cost_savings: Display cost savings
+        show_progress: Show progress bar
+        glossary: Comma-separated glossary names
+        verbose: Verbose output flag
+        demo: Demo mode flag
+    """
+    from kttc.core import GlossaryManager
+
+    # Load settings
+    settings = get_settings()
+
+    # Display header
+    print_header(
+        "Batch Translation Quality Check (File Mode)",
+        "Process translations from CSV/JSON/JSONL file",
+    )
+
+    # Parse batch file
+    try:
+        file_path_obj = Path(file_path)
+        if not file_path_obj.exists():
+            raise FileNotFoundError(f"Batch file not found: {file_path}")
+
+        console.print(f"[cyan]Parsing batch file:[/cyan] {file_path}")
+        translations = BatchFileParser.parse(file_path_obj)
+        console.print(f"[green]✓[/green] Loaded [cyan]{len(translations)}[/cyan] translations\n")
+
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse batch file: {e}") from e
+
+    # Group by language pair (for display)
+    groups = BatchGrouper.group_by_language_pair(translations)
+    console.print("[bold]Language Pairs:[/bold]")
+    for (src, tgt), group_translations in groups.items():
+        console.print(f"  • {src} → {tgt}: [cyan]{len(group_translations)}[/cyan] translations")
+    console.print()
+
+    # Load glossaries if specified
+    glossary_manager = None
+    if glossary:
+        try:
+            glossary_manager = GlossaryManager()
+            glossary_names = [g.strip() for g in glossary.split(",")]
+            glossary_manager.load_multiple(glossary_names)
+            console.print(f"[green]✓[/green] Loaded {len(glossary_names)} glossaries\n")
+        except Exception as e:
+            console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]\n")
+            glossary_manager = None
+
+    # Apply glossary terms to translations
+    if glossary_manager:
+        for trans in translations:
+            terms = glossary_manager.find_in_text(
+                trans.source_text, trans.source_lang, trans.target_lang
+            )
+            if terms:
+                trans.context = trans.context or {}
+                trans.context["glossary_terms"] = [
+                    {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
+                    for t in terms
+                ]
+
+    # Initialize smart routing if enabled (for future use)
+    # Note: Smart routing stats tracking not yet implemented
+    if smart_routing:
+        console.print("[cyan]Smart routing enabled[/cyan] - complexity-based model selection\n")
+
+    # Display configuration
+    config_info = {
+        "Input File": file_path,
+        "Total Translations": f"{len(translations)}",
+        "Language Pairs": f"{len(groups)}",
+        "Quality Threshold": f"{threshold}",
+        "Parallel Workers": f"{parallel}",
+    }
+    if batch_size:
+        config_info["Batch Size"] = f"{batch_size}"
+    if smart_routing:
+        config_info["Smart Routing"] = "Enabled"
+    if glossary:
+        config_info["Glossaries"] = glossary
+    print_startup_info(config_info)
+
+    # Setup LLM provider
+    try:
+        llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
+    except Exception as e:
+        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
+
+    # Create orchestrator
+    orchestrator = AgentOrchestrator(
+        llm_provider,
+        quality_threshold=threshold,
+        agent_temperature=settings.default_temperature,
+        agent_max_tokens=settings.default_max_tokens,
+    )
+
+    # Process translations in parallel
+    console.print("[yellow]⏳ Processing translations...[/yellow]\n")
+    results = await _process_batch_translations(
+        translations, orchestrator, parallel, verbose, show_progress=show_progress
+    )
+
+    # Generate aggregated report
+    console.print()
+    _display_batch_summary(results, threshold)
+
+    # Save detailed report
+    _save_batch_report(results, output, threshold)
+    console.print(f"\n[dim]Detailed report saved to: {output}[/dim]")
+
+    # Exit with appropriate code
+    failed_count = sum(1 for _, report in results if report.status == "fail")
+    if failed_count > 0:
+        raise typer.Exit(code=1)
+
+
+async def _process_batch_translations(
+    translations: list[Any],
+    orchestrator: AgentOrchestrator,
+    parallel: int,
+    verbose: bool = False,
+    show_progress: bool = False,
+) -> list[tuple[str, QAReport]]:
+    """Process batch translations in parallel.
+
+    Args:
+        translations: List of BatchTranslation objects
+        orchestrator: Agent orchestrator for evaluation
+        parallel: Number of parallel workers
+        verbose: Verbose output flag
+        show_progress: Show progress bar
+
+    Returns:
+        List of (identifier, report) tuples
+    """
+    from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+
+    results: list[tuple[str, QAReport]] = []
+    semaphore = asyncio.Semaphore(parallel)
+
+    # Create progress bar if requested
+    progress = None
+    task_id = None
+    if show_progress:
+        progress = Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TextColumn("•"),
+            TextColumn("{task.completed}/{task.total} translations"),
+            TimeElapsedColumn(),
+            console=console,
+        )
+        task_id = progress.add_task("[cyan]Processing translations...", total=len(translations))
+
+    async def process_translation(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
+        """Process a single translation."""
+        async with semaphore:
+            # Convert to TranslationTask
+            task = batch_translation.to_task()
+
+            # Evaluate
+            report = await orchestrator.evaluate(task)
+
+            # Update progress
+            if progress and task_id is not None:
+                progress.update(task_id, advance=1)
+
+            # Create identifier
+            identifier = f"#{idx+1}"
+            if batch_translation.metadata:
+                if "file" in batch_translation.metadata:
+                    identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx+1}"
+
+            return identifier, report
+
+    # Process all translations with progress tracking
+    if show_progress and progress:
+        with progress:
+            tasks = [process_translation(idx, t) for idx, t in enumerate(translations)]
+            for coro in asyncio.as_completed(tasks):
+                try:
+                    identifier, report = await coro
+                    results.append((identifier, report))
+                    status_icon = "✓" if report.status == "pass" else "✗"
+                    status_color = "green" if report.status == "pass" else "red"
+                    if not verbose:
+                        # Show concise status with progress bar
+                        progress.console.print(
+                            f"  [{status_color}]{status_icon}[/{status_color}] "
+                            f"{identifier}: {report.mqm_score:.2f}"
+                        )
+                except Exception as e:
+                    progress.console.print(f"  [red]✗ Error processing translation: {e}[/red]")
+                    if verbose:
+                        import traceback
+
+                        traceback.print_exc()
+    else:
+        # No progress bar - simple processing
+        tasks = [process_translation(idx, t) for idx, t in enumerate(translations)]
+        for coro in asyncio.as_completed(tasks):
+            try:
+                identifier, report = await coro
+                results.append((identifier, report))
+                status_icon = "✓" if report.status == "pass" else "✗"
+                status_color = "green" if report.status == "pass" else "red"
+                console.print(
+                    f"  [{status_color}]{status_icon}[/{status_color}] "
+                    f"{identifier}: {report.mqm_score:.2f}"
+                )
+            except Exception as e:
+                console.print(f"  [red]✗ Error processing translation: {e}[/red]")
+                if verbose:
+                    import traceback
+
+                    traceback.print_exc()
+
+    return results
+
+
 async def _batch_async(
     source_dir: str,
     translation_dir: str,
@@ -617,6 +967,7 @@ async def _batch_async(
     parallel: int,
     provider: str | None,
     verbose: bool,
+    demo: bool = False,
 ) -> None:
     """Async implementation of batch command."""
     # Load settings
@@ -646,7 +997,7 @@ async def _batch_async(
 
     # Setup LLM provider
     try:
-        llm_provider = _setup_llm_provider(provider, settings, verbose)
+        llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
     except Exception as e:
         raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
 
@@ -807,50 +1158,15 @@ def _save_report(report: QAReport, output: str, format: str) -> None:
         data = report.model_dump(mode="json")
         output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
     elif format == "markdown" or output.endswith(".md"):
-        # Save as Markdown
-        md_content = _generate_markdown_report(report)
-        output_path.write_text(md_content, encoding="utf-8")
+        # Save as Markdown using the new formatter
+        MarkdownFormatter.format_report(report, output_path)
+    elif format == "html" or output.endswith(".html"):
+        # Save as HTML using the new formatter
+        HTMLFormatter.format_report(report, output_path)
     else:
         # Default to JSON
         data = report.model_dump(mode="json")
         output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-
-
-def _generate_markdown_report(report: QAReport) -> str:
-    """Generate Markdown report from QA report."""
-    lines = [
-        "# Translation Quality Report",
-        "",
-        f"**Status:** {'✓ PASS' if report.status == 'pass' else '✗ FAIL'}",
-        f"**MQM Score:** {report.mqm_score:.2f}/100",
-        f"**Errors Found:** {len(report.errors)}",
-        "",
-        "## Summary",
-        "",
-        f"- Critical Errors: {report.critical_error_count}",
-        f"- Major Errors: {report.major_error_count}",
-        f"- Minor Errors: {report.minor_error_count}",
-        "",
-    ]
-
-    if report.errors:
-        lines.extend(
-            [
-                "## Error Details",
-                "",
-                "| Category | Subcategory | Severity | Location | Description |",
-                "|----------|-------------|----------|----------|-------------|",
-            ]
-        )
-
-        for error in report.errors:
-            desc = error.description.replace("|", "\\|")[:80]
-            lines.append(
-                f"| {error.category} | {error.subcategory} | {error.severity.value} | "
-                f"{error.location[0]}-{error.location[1]} | {desc} |"
-            )
-
-    return "\n".join(lines)
 
 
 @app.command()
@@ -1038,44 +1354,128 @@ Translation:"""
 
 @app.command()
 def batch(
-    source_dir: str = typer.Option(..., "--source-dir", help="Directory with source files"),
-    translation_dir: str = typer.Option(
-        ..., "--translation-dir", help="Directory with translation files"
+    # File-based mode
+    file: str | None = typer.Option(None, "--file", "-f", help="Batch file (CSV, JSON, or JSONL)"),
+    # Directory-based mode
+    source_dir: str | None = typer.Option(None, "--source-dir", help="Directory with source files"),
+    translation_dir: str | None = typer.Option(
+        None, "--translation-dir", help="Directory with translation files"
     ),
-    source_lang: str = typer.Option(..., "--source-lang", help="Source language code"),
-    target_lang: str = typer.Option(..., "--target-lang", help="Target language code"),
+    source_lang: str | None = typer.Option(
+        None, "--source-lang", help="Source language code (for directory mode)"
+    ),
+    target_lang: str | None = typer.Option(
+        None, "--target-lang", help="Target language code (for directory mode)"
+    ),
+    # Common options
     threshold: float = typer.Option(95.0, "--threshold", help="Minimum MQM score to pass"),
     output: str = typer.Option("report.json", "--output", "-o", help="Output report file path"),
     parallel: int = typer.Option(4, "--parallel", help="Number of parallel workers"),
+    batch_size: int | None = typer.Option(
+        None, "--batch-size", help="Batch size for grouping (file mode only)"
+    ),
     provider: str | None = typer.Option(
         None, "--provider", help="LLM provider (openai or anthropic)"
     ),
+    smart_routing: bool = typer.Option(
+        False, "--smart-routing", help="Enable complexity-based smart routing to optimize costs"
+    ),
+    show_cost_savings: bool = typer.Option(
+        False, "--show-cost-savings", help="Display estimated cost savings from smart routing"
+    ),
+    show_progress: bool = typer.Option(
+        True, "--show-progress/--no-progress", help="Show progress bar during batch processing"
+    ),
+    glossary: str | None = typer.Option(
+        None,
+        "--glossary",
+        "-g",
+        help="Glossaries to use (comma-separated, e.g., 'base,medical')",
+    ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
+    demo: bool = typer.Option(
+        False, "--demo", help="Demo mode (no API calls, simulated responses)"
+    ),
 ) -> None:
     """
-    Batch process multiple translation files.
+    Batch process multiple translations.
 
-    Evaluates multiple translations in parallel and generates
-    aggregated quality report.
+    Supports two modes:
 
-    Example:
+    1. FILE MODE - Process translations from CSV/JSON/JSONL file:
+        kttc batch --file translations.csv --output report.json
+
+    2. DIRECTORY MODE - Process translation files from directories:
+        kttc batch --source-dir ./source --translation-dir ./translations \\
+                   --source-lang en --target-lang es
+
+    Supported file formats:
+    - CSV: source,translation,source_lang,target_lang,domain
+    - JSON: Array of translation objects
+    - JSONL: One JSON object per line
+
+    Examples:
+        # Process CSV file
+        kttc batch --file examples/batch/translations.csv
+
+        # Process JSON with custom batch size
+        kttc batch --file translations.json --batch-size 50
+
+        # Directory mode (original behavior)
         kttc batch --source-dir ./source --translation-dir ./translations \\
                    --source-lang en --target-lang es
     """
     try:
-        asyncio.run(
-            _batch_async(
-                source_dir,
-                translation_dir,
-                source_lang,
-                target_lang,
-                threshold,
-                output,
-                parallel,
-                provider,
-                verbose,
+        # Determine mode
+        if file:
+            # FILE MODE
+            asyncio.run(
+                _batch_from_file_async(
+                    file,
+                    threshold,
+                    output,
+                    parallel,
+                    batch_size,
+                    provider,
+                    smart_routing,
+                    show_cost_savings,
+                    show_progress,
+                    glossary,
+                    verbose,
+                    demo,
+                )
             )
-        )
+        elif source_dir and translation_dir:
+            # DIRECTORY MODE
+            if not source_lang or not target_lang:
+                console.print(
+                    "[red]Error: --source-lang and --target-lang required for directory mode[/red]"
+                )
+                raise typer.Exit(code=1)
+
+            asyncio.run(
+                _batch_async(
+                    source_dir,
+                    translation_dir,
+                    source_lang,
+                    target_lang,
+                    threshold,
+                    output,
+                    parallel,
+                    provider,
+                    verbose,
+                    demo,
+                )
+            )
+        else:
+            # Error - must specify either file or directories
+            console.print(
+                "[red]Error: Must specify either:[/red]\n"
+                "  1. --file <path> for file-based batch processing, OR\n"
+                "  2. --source-dir and --translation-dir for directory-based processing"
+            )
+            raise typer.Exit(code=1)
+
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
         raise typer.Exit(code=130)

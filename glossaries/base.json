@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "name": "Base Terminology",
+    "version": "1.0.0",
+    "domain": "general",
+    "description": "Common programming and technical terms across all projects",
+    "created_by": "KTTC AI",
+    "created_at": "2025-11-14T00:00:00Z"
+  },
+  "entries": [
+    {
+      "source": "API",
+      "target": "API",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "Application Programming Interface",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Keep as-is, do not translate to 'АПИ'",
+      "status": "approved"
+    },
+    {
+      "source": "Docker",
+      "target": "Docker",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "Container platform",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Brand name - keep original",
+      "status": "approved"
+    },
+    {
+      "source": "JSON",
+      "target": "JSON",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "JavaScript Object Notation",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "status": "approved"
+    },
+    {
+      "source": "HTTP",
+      "target": "HTTP",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "status": "approved"
+    },
+    {
+      "source": "REST",
+      "target": "REST",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "Representational State Transfer",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "status": "approved"
+    },
+    {
+      "source": "endpoint",
+      "target": "эндпоинт",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "API endpoint",
+      "case_sensitive": false,
+      "do_not_translate": false,
+      "notes": "Accepted transliteration in Russian technical community",
+      "status": "approved"
+    },
+    {
+      "source": "pipeline",
+      "target": "конвейер",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "devops",
+      "definition": "CI/CD pipeline",
+      "case_sensitive": false,
+      "do_not_translate": false,
+      "status": "approved"
+    },
+    {
+      "source": "repository",
+      "target": "репозиторий",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "do_not_translate": false,
+      "status": "approved"
+    },
+    {
+      "source": "framework",
+      "target": "фреймворк",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "do_not_translate": false,
+      "status": "approved"
+    },
+    {
+      "source": "container",
+      "target": "контейнер",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "devops",
+      "case_sensitive": false,
+      "do_not_translate": false,
+      "status": "approved"
+    }
+  ]
+}

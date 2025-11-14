@@ -70,6 +70,9 @@ class ErrorAnnotation(BaseModel):
     )
     description: str = Field(..., description="Human-readable explanation of the error")
     suggestion: str | None = Field(default=None, description="Suggested fix or improvement")
+    confidence: float | None = Field(
+        default=None, description="Confidence in suggestion (0.0-1.0)", ge=0.0, le=1.0
+    )
 
     model_config = ConfigDict(
         json_schema_extra={

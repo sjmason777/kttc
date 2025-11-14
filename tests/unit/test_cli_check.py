@@ -15,7 +15,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from typer.testing import CliRunner
 
-from kttc.cli.main import _display_report, _generate_markdown_report, _save_report, app
+from kttc.cli.formatters import MarkdownFormatter
+from kttc.cli.main import _display_report, _save_report, app
 from kttc.core import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
 
 runner = CliRunner()
@@ -909,7 +910,7 @@ class TestSaveReport:
 
 @pytest.mark.unit
 class TestGenerateMarkdownReport:
-    """Tests for _generate_markdown_report function."""
+    """Tests for MarkdownFormatter.format_report function."""
 
     def test_generate_markdown_report_pass(self) -> None:
         """Test generating Markdown for passing report."""
@@ -925,12 +926,12 @@ class TestGenerateMarkdownReport:
             status="pass",
         )
 
-        markdown = _generate_markdown_report(report)
+        markdown = MarkdownFormatter.format_report(report)
 
         assert "# Translation Quality Report" in markdown
-        assert "✓ PASS" in markdown
+        assert "✅ PASS" in markdown
         assert "98.50" in markdown
-        assert "**Errors Found:** 0" in markdown
+        assert "- **Status**: ✅ PASS" in markdown
 
     def test_generate_markdown_report_fail(self) -> None:
         """Test generating Markdown for failing report."""
@@ -954,14 +955,14 @@ class TestGenerateMarkdownReport:
             status="fail",
         )
 
-        markdown = _generate_markdown_report(report)
+        markdown = MarkdownFormatter.format_report(report)
 
         assert "# Translation Quality Report" in markdown
-        assert "✗ FAIL" in markdown
+        assert "❌ FAIL" in markdown
         assert "80.00" in markdown
-        assert "**Errors Found:** 1" in markdown
+        assert "## Issues Found (1)" in markdown
         assert "| accuracy |" in markdown
-        assert "| critical |" in markdown
+        assert "| CRITICAL |" in markdown
 
     def test_generate_markdown_report_escapes_pipes(self) -> None:
         """Test that pipe characters in descriptions are escaped."""
@@ -985,14 +986,14 @@ class TestGenerateMarkdownReport:
             status="fail",
         )
 
-        markdown = _generate_markdown_report(report)
+        markdown = MarkdownFormatter.format_report(report)
 
         # Pipe should be escaped
         assert "\\|" in markdown
         assert "Error with \\| pipe character" in markdown
 
-    def test_generate_markdown_report_truncates_long_descriptions(self) -> None:
-        """Test that long descriptions are truncated."""
+    def test_generate_markdown_report_with_long_descriptions(self) -> None:
+        """Test that long descriptions are handled properly."""
         error = ErrorAnnotation(
             category="accuracy",
             subcategory="mistranslation",
@@ -1013,13 +1014,11 @@ class TestGenerateMarkdownReport:
             status="fail",
         )
 
-        markdown = _generate_markdown_report(report)
+        markdown = MarkdownFormatter.format_report(report)
 
-        # Description should be truncated to 80 characters max
-        lines = markdown.split("\n")
-        error_line = [line for line in lines if "accuracy" in line and "|" in line][0]
-        # Should not contain the full 100 A's
-        assert len(error_line) < 200  # Reasonable line length
+        # Verify the long description is in the markdown
+        assert "A" * 50 in markdown  # At least part of the description should be there
+        assert "| accuracy |" in markdown
 
     def test_generate_markdown_report_multiple_errors(self) -> None:
         """Test generating Markdown with multiple errors."""
@@ -1059,10 +1058,9 @@ class TestGenerateMarkdownReport:
             status="fail",
         )
 
-        markdown = _generate_markdown_report(report)
+        markdown = MarkdownFormatter.format_report(report)
 
-        assert "**Errors Found:** 3" in markdown
-        assert "- Critical Errors: 1" in markdown
-        assert "- Major Errors: 1" in markdown
-        assert "- Minor Errors: 1" in markdown
-        assert "## Error Details" in markdown
+        assert "## Issues Found (3)" in markdown
+        assert "| accuracy |" in markdown
+        assert "| fluency |" in markdown
+        assert "| terminology |" in markdown

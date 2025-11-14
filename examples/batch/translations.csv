@@ -1,0 +1,11 @@
+source,translation,source_lang,target_lang,domain
+"Hello, world!","¡Hola, mundo!",en,es,general
+The API endpoint returns JSON data,El punto final de la API devuelve datos JSON,en,es,technical
+Docker containers provide isolated environments,Los contenedores Docker proporcionan entornos aislados,en,es,technical
+The patient experienced adverse events during the trial,El paciente experimentó eventos adversos durante el ensayo,en,es,medical
+Please review the contract terms carefully,Por favor revise los términos del contrato cuidadosamente,en,es,legal
+"Good morning, how are you?","Доброе утро, как дела?",en,ru,general
+The database query was optimized,Запрос к базе данных был оптимизирован,en,ru,technical
+Machine learning algorithms improve over time,Алгоритмы машинного обучения улучшаются со временем,en,ru,technical
+The medication should be taken twice daily,Лекарство следует принимать два раза в день,en,ru,medical
+The defendant pleaded not guilty,Подсудимый заявил о своей невиновности,en,ru,legal

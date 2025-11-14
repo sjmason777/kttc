@@ -12,24 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Core business logic and data models."""
+"""Output formatters for translation quality reports."""
 
-from kttc.core.batch_processor import BatchFileParser, BatchGrouper, BatchTranslation
-from kttc.core.glossary import Glossary, GlossaryManager, GlossaryMetadata, TermEntry
-from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
-from kttc.core.mqm import MQMScorer
+from .html import HTMLFormatter
+from .markdown import MarkdownFormatter
 
-__all__ = [
-    "BatchFileParser",
-    "BatchGrouper",
-    "BatchTranslation",
-    "ErrorAnnotation",
-    "ErrorSeverity",
-    "Glossary",
-    "GlossaryManager",
-    "GlossaryMetadata",
-    "MQMScorer",
-    "QAReport",
-    "TermEntry",
-    "TranslationTask",
-]
+__all__ = ["HTMLFormatter", "MarkdownFormatter"]

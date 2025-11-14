@@ -89,9 +89,7 @@ export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
 ### 3. Check Translation Quality
 ```bash
 # Basic quality check
-kttc check \
-  --source source.txt \
-  --translation translation.txt \
+kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang es \
   --threshold 95
@@ -109,35 +107,77 @@ That's it! KTTC works out of the box with core metrics.
 
 ### Auto-Correct Detected Errors
 ```bash
-kttc check \
-  --source source.txt \
-  --translation translation.txt \
+kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang ru \
   --auto-correct \
   --correction-level light  # or 'full'
 ```
 
+### Smart Routing (Complexity-Based Model Selection)
+```bash
+# Automatically route to optimal model based on text complexity
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --smart-routing \
+  --show-routing-info  # Show complexity analysis
+```
+
+### Glossary Support
+```bash
+# Use custom glossaries for terminology validation
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --glossary base,medical  # Comma-separated glossary names
+```
+
 ### Intelligent Model Selection
 ```bash
 # Automatically select best model for language pair
-kttc check \
-  --source source.txt \
-  --translation translation.txt \
+kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang ru \
   --auto-select-model \
   --verbose
 ```
 
+### Batch Processing
+```bash
+# Process multiple translations from CSV/JSON/JSONL
+kttc batch --file translations.csv \
+  --show-progress \
+  --smart-routing \
+  --output report.json
+
+# Process from directories
+kttc batch \
+  --source-dir ./source \
+  --translation-dir ./translations \
+  --source-lang en \
+  --target-lang es \
+  --output report.json
+```
+
+### Demo Mode (No API Calls)
+```bash
+# Test CLI without API calls - uses simulated responses
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --demo
+```
+
 ### Compare Multiple Translations
 ```bash
 kttc compare \
   --source source.txt \
-  --translation trans1.txt trans2.txt trans3.txt \
+  --translation trans1.txt \
+  --translation trans2.txt \
+  --translation trans3.txt \
   --source-lang en \
-  --target-lang ru \
-  --reference gold.txt
+  --target-lang ru
 ```
 
 ### Benchmark LLM Providers
@@ -146,8 +186,7 @@ kttc benchmark \
   --source text.txt \
   --source-lang en \
   --target-lang ru \
-  --providers gigachat,openai,anthropic \
-  --reference ref.txt
+  --providers gigachat,openai,anthropic
 ```
 
 ## Python API
@@ -187,11 +226,12 @@ asyncio.run(check_quality())
 ## Available Commands
 
 - `kttc check` - Check translation quality with multi-agent QA
+- `kttc batch` - Batch process multiple translations (CSV/JSON/JSONL or directories)
 - `kttc compare` - Compare multiple translations side by side
 - `kttc benchmark` - Benchmark multiple LLM providers
-- `kttc translate` - Translate with automatic QA (coming soon)
-- `kttc batch` - Batch process multiple files (coming soon)
-- `kttc report` - Generate formatted reports (coming soon)
+- `kttc translate` - Translate with automatic QA and iterative refinement
+- `kttc report` - Generate formatted reports from QA results
+- `kttc glossary` - Manage terminology glossaries
 
 Run `kttc <command> --help` for detailed options.
 
@@ -199,29 +239,80 @@ Run `kttc <command> --help` for detailed options.
 
 **kttc check**
 ```bash
-kttc check --source <file> --translation <file> --source-lang <code> --target-lang <code> [OPTIONS]
-  --threshold FLOAT        Minimum MQM score (default: 95.0)
-  --output PATH            Save report to file (JSON/Markdown)
-  --format [text|json|markdown]
-  --provider [openai|anthropic]
-  --auto-select-model      Use optimal model for language pair
-  --auto-correct           Fix detected errors automatically
+kttc check <source> <translation> --source-lang <code> --target-lang <code> [OPTIONS]
+  --threshold FLOAT              Minimum MQM score (default: 95.0)
+  --output PATH                  Save report to file (JSON/Markdown/HTML)
+  --format [text|json|markdown|html]
+  --provider [openai|anthropic|gigachat]
+  --auto-select-model            Use optimal model for language pair
+  --auto-correct                 Fix detected errors automatically
   --correction-level [light|full]
-  --verbose                Show detailed output
+  --smart-routing                Enable complexity-based model routing
+  --show-routing-info            Display complexity analysis
+  --glossary TEXT                Glossaries to use (comma-separated)
+  --demo                         Demo mode (no API calls, simulated responses)
+  --verbose                      Show detailed output
+```
+
+**kttc batch**
+```bash
+# File mode (CSV/JSON/JSONL)
+kttc batch --file <path> [OPTIONS]
+  --threshold FLOAT              Minimum MQM score (default: 95.0)
+  --output PATH                  Output report path (default: report.json)
+  --parallel INT                 Number of parallel workers (default: 4)
+  --batch-size INT               Batch size for grouping
+  --smart-routing                Enable complexity-based routing
+  --show-progress / --no-progress  Show progress bar (default: show)
+  --glossary TEXT                Glossaries to use
+  --demo                         Demo mode
+
+# Directory mode
+kttc batch --source-dir <path> --translation-dir <path> \
+           --source-lang <code> --target-lang <code> [OPTIONS]
 ```
 
 **kttc compare**
 ```bash
-kttc compare --source <file> --translation <file1> <file2> ... --source-lang <code> --target-lang <code>
-  --reference PATH         Gold standard reference
+kttc compare --source <file> --translation <file1> --translation <file2> ... \
+             --source-lang <code> --target-lang <code> [OPTIONS]
+  --threshold FLOAT        Quality threshold
+  --provider TEXT          LLM provider
   --verbose                Show detailed comparison
 ```
 
 **kttc benchmark**
 ```bash
-kttc benchmark --source <file> --source-lang <code> --target-lang <code> --providers <list>
-  --reference PATH         Reference for quality evaluation
+kttc benchmark --source <file> --source-lang <code> --target-lang <code> \
+               --providers <list> [OPTIONS]
+  --threshold FLOAT        Quality threshold
   --output PATH            Save benchmark results
+  --verbose                Show detailed output
+```
+
+**kttc translate**
+```bash
+kttc translate --text <text> --source-lang <code> --target-lang <code> [OPTIONS]
+  --threshold FLOAT        Quality threshold for refinement
+  --max-iterations INT     Maximum refinement iterations (default: 3)
+  --output PATH            Save translation to file
+  --provider TEXT          LLM provider
+  --verbose                Show detailed output
+```
+
+**kttc glossary**
+```bash
+# List available glossaries
+kttc glossary list
+
+# Show glossary details
+kttc glossary show <name>
+
+# Add glossary entry
+kttc glossary add <name> --source <text> --target <text> --lang-pair <src>-<tgt>
+
+# Import from file
+kttc glossary import <name> --file <path> --format [csv|json|tbx]
 ```
 
 ---
@@ -697,4 +788,25 @@ If you use KTTC in your research, please cite:
 }
 ```
 
-**Last Updated:** November 11, 2025
+---
+
+## Recent Updates
+
+### v0.1.0 (November 2025)
+
+**CLI Improvements:**
+- ✅ Simplified `check` command - now uses positional arguments instead of `--source`/`--translation` flags
+- ✅ Smart routing - complexity-based automatic model selection with `--smart-routing`
+- ✅ Glossary support - terminology validation with `--glossary`
+- ✅ Batch processing - fully implemented for CSV/JSON/JSONL files and directories
+- ✅ Progress tracking - `--show-progress` for batch operations
+- ✅ Demo mode - test CLI without API calls using `--demo`
+- ✅ Clean output - suppressed external dependency warnings
+
+**Backend Features:**
+- ✅ Complexity router for intelligent model selection
+- ✅ Glossary manager for terminology consistency
+- ✅ Batch file parser (CSV/JSON/JSONL)
+- ✅ Enhanced formatters (HTML/Markdown reports)
+
+**Last Updated:** November 14, 2025

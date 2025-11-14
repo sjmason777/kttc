@@ -14,7 +14,13 @@
 
 """Entry point for python -m kttc."""
 
-from kttc.cli.main import run
+# Suppress warnings from external dependencies before any imports
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning, module="jieba")
+warnings.filterwarnings("ignore", category=FutureWarning, module="torch")
+
+from kttc.cli.main import run  # noqa: E402
 
 if __name__ == "__main__":
     run()

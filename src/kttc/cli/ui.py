@@ -415,12 +415,15 @@ def print_qa_report(
         _print_unified_error_table(all_issues, verbose)
 
 
-def _print_unified_error_table(issues: list[dict[str, Any]], verbose: bool) -> None:
+def _print_unified_error_table(
+    issues: list[dict[str, Any]], verbose: bool, show_suggestions: bool = False
+) -> None:
     """Print unified error table with all issues (QA errors, NLP, API).
 
     Args:
         issues: List of issue dictionaries with category, severity, description, etc.
         verbose: Whether to show full descriptions
+        show_suggestions: Whether to show suggestion column
     """
     table = Table(title="Issues Found", show_header=True, header_style="bold cyan")
     table.add_column("Category", style="cyan", no_wrap=True)
@@ -428,6 +431,9 @@ def _print_unified_error_table(issues: list[dict[str, Any]], verbose: bool) -> N
     table.add_column("Severity", no_wrap=True)
     table.add_column("Location", justify="center", no_wrap=True, width=10)
     table.add_column("Description", max_width=60 if not verbose else None)
+
+    if show_suggestions:
+        table.add_column("Suggestion", max_width=50 if not verbose else None, style="green")
 
     for issue in issues:
         # Color-code severity
@@ -453,13 +459,30 @@ def _print_unified_error_table(issues: list[dict[str, Any]], verbose: bool) -> N
         if not verbose and len(description) > 60:
             description = description[:57] + "..."
 
-        table.add_row(
+        # Build row data
+        row_data = [
             issue.get("category", "Unknown"),
             issue.get("subcategory", ""),
             severity_text,
             location_str,
             description,
-        )
+        ]
+
+        # Add suggestion if enabled
+        if show_suggestions:
+            suggestion = issue.get("suggestion", "")
+            if suggestion:
+                # Format suggestion
+                if not verbose and len(suggestion) > 50:
+                    suggestion = suggestion[:47] + "..."
+                confidence = issue.get("confidence")
+                if confidence is not None:
+                    suggestion = f"{suggestion} ({confidence:.0%})"
+                row_data.append(suggestion)
+            else:
+                row_data.append("[dim]-[/dim]")
+
+        table.add_row(*row_data)
 
     console.print(table)
 

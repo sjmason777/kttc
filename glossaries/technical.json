@@ -1,0 +1,131 @@
+{
+  "metadata": {
+    "name": "Technical Terminology",
+    "version": "1.0.0",
+    "domain": "technical",
+    "description": "Software development and DevOps terminology",
+    "created_by": "KTTC AI",
+    "created_at": "2025-11-14T00:00:00Z"
+  },
+  "entries": [
+    {
+      "source": "machine learning",
+      "target": "машинное обучение",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "AI/ML domain",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "neural network",
+      "target": "нейронная сеть",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "database",
+      "target": "база данных",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "query",
+      "target": "запрос",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "definition": "Database query",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "optimization",
+      "target": "оптимизация",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "algorithm",
+      "target": "алгоритм",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "deployment",
+      "target": "развёртывание",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "devops",
+      "case_sensitive": false,
+      "notes": "Preferred over 'деплой'",
+      "status": "approved"
+    },
+    {
+      "source": "microservice",
+      "target": "микросервис",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": false,
+      "status": "approved"
+    },
+    {
+      "source": "kubernetes",
+      "target": "Kubernetes",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "devops",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Product name",
+      "status": "approved"
+    },
+    {
+      "source": "Git",
+      "target": "Git",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "devops",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Version control system name",
+      "status": "approved"
+    },
+    {
+      "source": "Python",
+      "target": "Python",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Programming language name",
+      "status": "approved"
+    },
+    {
+      "source": "JavaScript",
+      "target": "JavaScript",
+      "source_lang": "en",
+      "target_lang": "ru",
+      "domain": "technical",
+      "case_sensitive": true,
+      "do_not_translate": true,
+      "notes": "Programming language name",
+      "status": "approved"
+    }
+  ]
+}
