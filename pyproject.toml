@@ -116,7 +116,12 @@ python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true
-files = ["src/kttc"]
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+show_error_codes = true
+cache_fine_grained = true
+files = ["src/kttc", "scripts"]
 
 # Ignore missing imports for optional dependencies without type stubs
 [[tool.mypy.overrides]]
