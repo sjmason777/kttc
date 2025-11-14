@@ -1,3 +1,5 @@
+**Other languages:** **English** · [Русский](CONTRIBUTING.ru.md) · [中文](CONTRIBUTING.zh.md)
+
 # Contributing to KTTC
 
 Thank you for your interest in contributing to KTTC (Knowledge Translation Transmutation Core)! We welcome contributions from the community.
@@ -179,7 +181,7 @@ If the pre-commit hook fails, fix the issues before committing:
 # Fix formatting
 python3.11 -m black src/ tests/ examples/
 
-# Fix linting issues  
+# Fix linting issues
 python3.11 -m ruff check --fix src/ tests/ examples/
 
 # Check types

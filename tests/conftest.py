@@ -1,162 +1,219 @@
-"""Pytest configuration and shared fixtures.
+"""Shared pytest fixtures for KTTC tests.
 
-This module provides common fixtures and configuration for all tests.
+Provides mock LLM providers, test data, and common utilities.
 """
 
-import os
+from collections.abc import AsyncGenerator
 from pathlib import Path
+from typing import Any
 
 import pytest
+from typer.testing import CliRunner
 
-from kttc.core import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
+from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
+from kttc.llm.base import BaseLLMProvider
 
-# Load .env file BEFORE test modules are imported (for @skip_if_no_gigachat decorators)
-_env_file = Path(__file__).parent.parent / ".env"
-if _env_file.exists():
-    with open(_env_file) as _f:
-        for _line in _f:
-            _line = _line.strip()
-            if _line and not _line.startswith("#") and "=" in _line:
-                _key, _value = _line.split("=", 1)
-                os.environ.setdefault(_key.strip(), _value.strip())
+# ============================================================================
+# Mock LLM Provider Fixtures
+# ============================================================================
 
-# Configure anyio to use only asyncio backend (not trio)
-pytest_plugins = ("anyio",)
+
+class MockLLMProvider(BaseLLMProvider):
+    """Mock LLM provider for testing without real API calls."""
+
+    def __init__(self, response: str = '{"errors": []}', **kwargs: Any):
+        """Initialize mock provider.
+
+        Args:
+            response: Default JSON response to return
+            **kwargs: Additional arguments for customization
+        """
+        self.response = response
+        self.call_count = 0
+        self.last_prompt: str | None = None
+
+    async def complete(
+        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000, **kwargs: Any
+    ) -> str:
+        """Return mock JSON response."""
+        self.call_count += 1
+        self.last_prompt = prompt
+        return self.response
+
+    async def stream(
+        self, prompt: str, temperature: float = 0.7, max_tokens: int = 1000, **kwargs: Any
+    ) -> AsyncGenerator[str, None]:
+        """Mock stream method."""
+        self.call_count += 1
+        self.last_prompt = prompt
+        yield self.response
 
 
 @pytest.fixture
-def anyio_backend() -> str:
-    """Configure anyio to use asyncio backend only."""
-    return "asyncio"
+def mock_llm() -> MockLLMProvider:
+    """Provide a basic mock LLM that returns no errors."""
+    return MockLLMProvider(response='{"errors": []}')
+
+
+@pytest.fixture
+def mock_llm_with_errors() -> MockLLMProvider:
+    """Provide a mock LLM that returns translation errors in correct format."""
+    error_response = """ERROR_START
+CATEGORY: accuracy
+SUBCATEGORY: mistranslation
+SEVERITY: major
+LOCATION: 0-5
+DESCRIPTION: Test error description
+SUGGESTION: Test suggestion
+ERROR_END"""
+    return MockLLMProvider(response=error_response)
+
+
+@pytest.fixture
+def mock_openai_provider(monkeypatch: pytest.MonkeyPatch) -> MockLLMProvider:
+    """Mock OpenAI provider for testing."""
+    mock_provider = MockLLMProvider()
+
+    def mock_init(self: Any, api_key: str | None = None) -> None:
+        self.api_key = api_key or "test-key"
+        self.call_count = 0
+
+    monkeypatch.setattr("kttc.llm.openai_provider.OpenAIProvider.__init__", mock_init)
+    return mock_provider
+
+
+@pytest.fixture
+def mock_anthropic_provider(monkeypatch: pytest.MonkeyPatch) -> MockLLMProvider:
+    """Mock Anthropic provider for testing."""
+    mock_provider = MockLLMProvider()
+
+    def mock_init(self: Any, api_key: str | None = None) -> None:
+        self.api_key = api_key or "test-key"
+        self.call_count = 0
+
+    monkeypatch.setattr("kttc.llm.anthropic_provider.AnthropicProvider.__init__", mock_init)
+    return mock_provider
+
+
+# ============================================================================
+# Test Data Fixtures
+# ============================================================================
 
 
 @pytest.fixture
 def sample_translation_task() -> TranslationTask:
-    """Sample translation task for testing.
-
-    Returns:
-        Simple English to Spanish translation task
-    """
+    """Provide a sample translation task for testing."""
     return TranslationTask(
-        source_text="Hello, world!",
-        translation="Hola, mundo!",
+        source_text="Hello world",
+        translation="Hola mundo",
         source_lang="en",
         target_lang="es",
     )
 
 
 @pytest.fixture
-def sample_translation_task_with_context() -> TranslationTask:
-    """Sample translation task with context metadata.
-
-    Returns:
-        Translation task with domain context
-    """
-    return TranslationTask(
-        source_text="The patient presented with acute symptoms.",
-        translation="El paciente presentó síntomas agudos.",
-        source_lang="en",
-        target_lang="es",
-        context={
-            "domain": "medical",
-            "style": "formal",
-        },
-    )
-
-
-@pytest.fixture
-def sample_error_annotation() -> ErrorAnnotation:
-    """Sample error annotation for testing.
-
-    Returns:
-        Major accuracy error with suggestion
-    """
+def sample_translation_error() -> ErrorAnnotation:
+    """Provide a sample translation error for testing."""
     return ErrorAnnotation(
         category="accuracy",
         subcategory="mistranslation",
         severity=ErrorSeverity.MAJOR,
         location=(0, 5),
         description="Incorrect translation of 'hello'",
-        suggestion="Use 'hola' instead of 'ola'",
+        suggestion="Use 'hola' instead",
     )
 
 
 @pytest.fixture
-def sample_error_annotations() -> list[ErrorAnnotation]:
-    """Multiple error annotations for testing.
-
-    Returns:
-        List of errors with different severities
-    """
-    return [
-        ErrorAnnotation(
-            category="accuracy",
-            subcategory="mistranslation",
-            severity=ErrorSeverity.CRITICAL,
-            location=(0, 5),
-            description="Critical mistranslation",
-            suggestion="Fix meaning",
-        ),
-        ErrorAnnotation(
-            category="fluency",
-            subcategory="grammar",
-            severity=ErrorSeverity.MAJOR,
-            location=(10, 15),
-            description="Grammar error",
-            suggestion="Fix verb conjugation",
-        ),
-        ErrorAnnotation(
-            category="terminology",
-            subcategory="inconsistency",
-            severity=ErrorSeverity.MINOR,
-            location=(20, 25),
-            description="Inconsistent term usage",
-            suggestion="Use glossary term",
-        ),
-    ]
-
-
-@pytest.fixture
-def sample_qa_report_pass(
-    sample_translation_task: TranslationTask,
+def sample_qa_report(
+    sample_translation_task: TranslationTask, sample_translation_error: ErrorAnnotation
 ) -> QAReport:
-    """Sample QA report with passing score.
-
-    Returns:
-        Report with high MQM score and no errors
-    """
+    """Provide a sample QA report for testing."""
     return QAReport(
         task=sample_translation_task,
-        mqm_score=98.5,
-        comet_score=0.95,
-        errors=[],
+        mqm_score=85.0,
+        errors=[sample_translation_error],
         status="pass",
     )
 
 
+# ============================================================================
+# Temporary File Fixtures
+# ============================================================================
+
+
 @pytest.fixture
-def sample_qa_report_fail(
-    sample_translation_task: TranslationTask,
-    sample_error_annotations: list[ErrorAnnotation],
-) -> QAReport:
-    """Sample QA report with failing score.
+def temp_text_files(tmp_path: Path) -> tuple[Path, Path]:
+    """Create temporary source and translation files.
 
     Returns:
-        Report with low MQM score and multiple errors
+        Tuple of (source_file, translation_file) paths
     """
-    return QAReport(
-        task=sample_translation_task,
-        mqm_score=82.3,
-        comet_score=0.65,
-        errors=sample_error_annotations,
-        status="fail",
+    source = tmp_path / "source.txt"
+    translation = tmp_path / "translation.txt"
+
+    source.write_text("Hello world\nHow are you?", encoding="utf-8")
+    translation.write_text("Hola mundo\n¿Cómo estás?", encoding="utf-8")
+
+    return source, translation
+
+
+# ============================================================================
+# CLI Fixtures
+# ============================================================================
+
+
+@pytest.fixture
+def cli_runner() -> CliRunner:
+    """Provide Typer CLI test runner."""
+    return CliRunner()
+
+
+# ============================================================================
+# Pytest Configuration Hooks
+# ============================================================================
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    """Configure pytest environment."""
+    # Register custom markers (defined in pytest.ini)
+    pass
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    """Modify test collection to auto-mark tests based on location."""
+    for item in items:
+        # Auto-mark based on test file location
+        if "unit" in str(item.fspath):
+            item.add_marker(pytest.mark.unit)
+        elif "integration" in str(item.fspath):
+            item.add_marker(pytest.mark.integration)
+        elif "e2e" in str(item.fspath):
+            item.add_marker(pytest.mark.e2e)
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    """Add custom command line options."""
+    parser.addoption(
+        "--run-e2e",
+        action="store_true",
+        default=False,
+        help="Run E2E tests (requires real API keys)",
+    )
+    parser.addoption(
+        "--run-slow",
+        action="store_true",
+        default=False,
+        help="Run slow tests",
     )
 
 
-# Pytest configuration
-def pytest_configure(config: pytest.Config) -> None:
-    """Configure pytest markers."""
-    config.addinivalue_line("markers", "unit: mark test as unit test")
-    config.addinivalue_line("markers", "integration: mark test as integration test")
-    config.addinivalue_line("markers", "e2e: mark test as end-to-end test")
-    config.addinivalue_line("markers", "slow: mark test as slow running")
+def pytest_runtest_setup(item: pytest.Item) -> None:
+    """Skip tests based on markers and command line options."""
+    # Skip E2E tests unless --run-e2e is specified
+    if "e2e" in item.keywords and not item.config.getoption("--run-e2e"):
+        pytest.skip("E2E tests skipped (use --run-e2e to run)")
+
+    # Skip slow tests unless --run-slow is specified
+    if "slow" in item.keywords and not item.config.getoption("--run-slow"):
+        pytest.skip("Slow tests skipped (use --run-slow to run)")

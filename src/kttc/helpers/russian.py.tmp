@@ -1,0 +1,23 @@
+                        # Case 3: No PREP (direct ADJ + NOUN) - match noun's case/gender/number
+                        else:
+                            # Find first NOUN parse and match its case/gender/number
+                            target_noun = next_parses[0]
+                            best_adj = None
+                            # Try exact match (case + gender + number)
+                            for p in parses:
+                                if (
+                                    p.tag.POS == "ADJF"
+                                    and p.tag.case == target_noun.tag.case
+                                    and p.tag.gender == target_noun.tag.gender
+                                    and p.tag.number == target_noun.tag.number
+                                ):
+                                    best_adj = p
+                                    break
+                            # Fallback to case-only match
+                            if not best_adj:
+                                for p in parses:
+                                    if p.tag.POS == "ADJF" and p.tag.case == target_noun.tag.case:
+                                        best_adj = p
+                                        break
+                            if best_adj:
+                                parsed = best_adj

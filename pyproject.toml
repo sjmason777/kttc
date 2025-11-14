@@ -156,6 +156,11 @@ markers = [
     "slow: mark test as slow-running",
     "metrics: mark test as requiring heavy ML metrics dependencies",
 ]
+filterwarnings = [
+    "ignore::UserWarning:jieba._compat",
+    "ignore::FutureWarning:torch.cuda",
+    "ignore::pytest.PytestCollectionWarning",
+]
 
 # Coverage configuration
 [tool.coverage.run]

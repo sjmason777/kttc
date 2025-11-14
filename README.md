@@ -1,3 +1,5 @@
+**Other languages:** **English** · [Русский](README.ru.md) · [中文](README.zh.md)
+
 # KTTC - Knowledge Translation Transmutation Core
 
 [![CI](https://github.com/kttc-ai/kttc/workflows/CI/badge.svg)](https://github.com/kttc-ai/kttc/actions)
@@ -149,9 +151,12 @@ Following the [Diátaxis](https://diataxis.fr/) framework:
 
 ### Translations
 
-- 🇺🇸 **[English](docs/en/README.md)** (primary)
-- 🇷🇺 **[Russian](docs/ru/README.md)** (in progress)
-- 🇨🇳 **[Chinese](docs/zh/README.md)** (in progress)
+**Languages:** 🇺🇸 [English](docs/en/) (primary) · 🇷🇺 [Русский](README.ru.md) · 🇨🇳 [中文](README.zh.md)
+
+Full documentation available in:
+- 🇺🇸 **[English](docs/en/README.md)** - Complete (primary source)
+- 🇷🇺 **[Русский](docs/ru/README.md)** - In progress
+- 🇨🇳 **[中文](docs/zh/README.md)** - In progress
 
 ---
 

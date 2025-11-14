@@ -625,6 +625,9 @@ async def _check_async(
     if smart_routing:
         try:
             router = ComplexityRouter()
+            # Get available providers to ensure smart routing only selects from configured providers
+            available_providers = _get_available_providers(settings)
+
             # Note: ComplexityRouter doesn't have configurable thresholds yet,
             # but the parameters are accepted for future use
             selected_model, complexity_score = router.route(
@@ -632,6 +635,7 @@ async def _check_async(
                 source_lang,
                 target_lang,
                 domain=task.context.get("domain") if task.context else None,
+                available_providers=available_providers,
             )
 
             if show_routing_info:
@@ -651,13 +655,16 @@ async def _check_async(
 
     # Setup LLM provider with intelligent model selection
     try:
-        # If smart routing selected a model, override provider selection
-        if smart_routing and selected_model:
+        # If smart routing selected a model AND user didn't explicitly specify provider
+        # then map model to provider. Otherwise respect user's choice.
+        if smart_routing and selected_model and provider is None:
             # Map model to provider
-            if "gpt" in selected_model.lower():
+            if "gpt" in selected_model.lower() and "yandex" not in selected_model.lower():
                 provider = "openai"
             elif "claude" in selected_model.lower():
                 provider = "anthropic"
+            elif "yandex" in selected_model.lower():
+                provider = "yandex"
 
         llm_provider = _setup_llm_provider(
             provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
@@ -823,6 +830,48 @@ def _scan_batch_directories(
     return file_pairs
 
 
+def _get_available_providers(settings: Any) -> list[str]:
+    """Get list of available providers (those with configured API keys).
+
+    Args:
+        settings: Application settings
+
+    Returns:
+        List of available provider names
+    """
+    available = []
+
+    # Check OpenAI
+    try:
+        settings.get_llm_provider_key("openai")
+        available.append("openai")
+    except (ValueError, AttributeError):
+        pass
+
+    # Check Anthropic
+    try:
+        settings.get_llm_provider_key("anthropic")
+        available.append("anthropic")
+    except (ValueError, AttributeError):
+        pass
+
+    # Check GigaChat
+    try:
+        settings.get_llm_provider_credentials("gigachat")
+        available.append("gigachat")
+    except (ValueError, AttributeError):
+        pass
+
+    # Check Yandex
+    try:
+        settings.get_llm_provider_credentials("yandex")
+        available.append("yandex")
+    except (ValueError, AttributeError):
+        pass
+
+    return available
+
+
 def _setup_llm_provider(
     provider: str | None,
     settings: Any,
@@ -860,7 +909,24 @@ def _setup_llm_provider(
             )
         return DemoLLMProvider(model="demo-model")
 
-    provider_name = provider or settings.default_llm_provider
+    # If no provider specified, select from available providers
+    if provider is None:
+        available_providers = _get_available_providers(settings)
+        if not available_providers:
+            raise RuntimeError(
+                "No LLM providers configured. Please set at least one of:\n"
+                "  - KTTC_OPENAI_API_KEY\n"
+                "  - KTTC_ANTHROPIC_API_KEY\n"
+                "  - KTTC_GIGACHAT_CLIENT_ID and KTTC_GIGACHAT_CLIENT_SECRET"
+            )
+        # Use default or first available
+        provider_name = (
+            settings.default_llm_provider
+            if settings.default_llm_provider in available_providers
+            else available_providers[0]
+        )
+    else:
+        provider_name = provider
 
     # Intelligent model selection if enabled and task provided
     model = settings.default_model

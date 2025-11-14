@@ -115,6 +115,10 @@ def get_nlp_insights(task: Any, helper: Any) -> dict[str, Any] | None:
                         adj = pair.get("adjective", {}).get("text", "")
                         noun = pair.get("noun", {}).get("text", "")
 
+                        # Skip if both adj and noun are empty (data quality issue)
+                        if not adj and not noun:
+                            continue
+
                         description = f"Case mismatch: '{adj}' and '{noun}'"
                         if pair_text and pair_text != "unknown":
                             description = f"Case agreement issue in '{pair_text}'"

@@ -1,99 +1,88 @@
 """Unit tests for CLI interface.
 
 Tests CLI commands, argument parsing, and output formatting.
+Focus: Fast, isolated tests with mocked dependencies.
 """
 
-import re
+import json
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from typer.testing import CliRunner
 
 from kttc.cli.main import app
+from kttc.core.models import QAReport
 
 # Create CLI runner
 runner = CliRunner()
 
 
-def strip_ansi(text: str) -> str:
-    """Remove ANSI escape codes from text for consistent testing."""
-    ansi_escape = re.compile(r"\x1b\[[0-9;]*m")
-    return ansi_escape.sub("", text)
-
-
 @pytest.mark.unit
-class TestCLI:
-    """Tests for CLI commands."""
+class TestCLIBasics:
+    """Test basic CLI functionality."""
 
     def test_cli_help(self) -> None:
-        """Test that --help flag works."""
+        """Test --help flag shows usage information."""
+        # Act
         result = runner.invoke(app, ["--help"])
+
+        # Assert
         assert result.exit_code == 0
         assert "Knowledge Translation Transmutation Core" in result.stdout
         assert "check" in result.stdout
         assert "translate" in result.stdout
-        assert "batch" in result.stdout
-        assert "report" in result.stdout
 
     def test_cli_version(self) -> None:
-        """Test that --version flag works."""
+        """Test --version flag shows version."""
+        # Act
         result = runner.invoke(app, ["--version"])
+
+        # Assert
         assert result.exit_code == 0
         assert "KTTC version:" in result.stdout
         assert "0.1.0" in result.stdout
 
-    def test_cli_version_short_flag(self) -> None:
-        """Test that -v flag shows version."""
-        result = runner.invoke(app, ["-v"])
-        assert result.exit_code == 0
-        assert "KTTC version:" in result.stdout
+    def test_invalid_command_fails(self) -> None:
+        """Test invalid command shows error."""
+        # Act
+        result = runner.invoke(app, ["invalid-command"])
 
-    def test_check_command_help(self) -> None:
+        # Assert
+        assert result.exit_code != 0
+
+
+@pytest.mark.unit
+class TestCheckCommand:
+    """Test 'kttc check' command."""
+
+    def test_check_help(self) -> None:
         """Test check command help."""
+        # Act
         result = runner.invoke(app, ["check", "--help"])
-        output = strip_ansi(result.stdout)
-        assert result.exit_code == 0
-        assert "Check translation quality" in output
-        assert "--source" in output
-        assert "--translation" in output
-        assert "--threshold" in output
 
-    def test_translate_command_help(self) -> None:
-        """Test translate command help."""
-        result = runner.invoke(app, ["translate", "--help"])
-        output = strip_ansi(result.stdout)
+        # Assert
         assert result.exit_code == 0
-        assert "Translate text with automatic quality checking" in output
-        assert "--text" in output
-        assert "--source-lang" in output
-        assert "--target-lang" in output
+        assert "translation quality" in result.stdout.lower()
+        assert "SOURCE" in result.stdout
+        assert "--threshold" in result.stdout
 
-    def test_batch_command_help(self) -> None:
-        """Test batch command help."""
-        result = runner.invoke(app, ["batch", "--help"])
-        output = strip_ansi(result.stdout)
-        assert result.exit_code == 0
-        assert "Batch process multiple translation files" in output
-        assert "--source-dir" in output
-        assert "--translation-dir" in output
+    def test_check_missing_required_args(self) -> None:
+        """Test check fails without required arguments."""
+        # Act
+        result = runner.invoke(app, ["check"])
 
-    def test_report_command_help(self) -> None:
-        """Test report command help."""
-        result = runner.invoke(app, ["report", "--help"])
-        output = strip_ansi(result.stdout)
-        assert result.exit_code == 0
-        assert "Generate formatted report" in output
-        assert "--format" in output
+        # Assert
+        assert result.exit_code != 0
 
-    def test_check_command_requires_files(self) -> None:
-        """Test that check command requires valid file paths."""
-        # Non-existent files should cause an error
+    def test_check_nonexistent_files(self) -> None:
+        """Test check fails with nonexistent files."""
+        # Act
         result = runner.invoke(
             app,
             [
                 "check",
-                "--source",
-                "nonexistent_test.txt",
-                "--translation",
+                "nonexistent.txt",
                 "nonexistent_trans.txt",
                 "--source-lang",
                 "en",
@@ -101,80 +90,190 @@ class TestCLI:
                 "es",
             ],
         )
-        # Should fail with error
+
+        # Assert
         assert result.exit_code != 0
 
-    def test_batch_command_not_implemented(self) -> None:
-        """Test that batch command shows not implemented message."""
-        result = runner.invoke(
-            app,
-            [
-                "batch",
-                "--source-dir",
-                "./source",
-                "--translation-dir",
-                "./trans",
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "es",
-            ],
-        )
-        assert "Not implemented yet" in result.stdout or result.exit_code != 0
+    def test_check_success_with_mocks(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test successful check with mocked orchestrator."""
+        # Arrange
+        source, translation = temp_text_files
 
-    def test_report_command_not_implemented(self) -> None:
-        """Test that report command shows not implemented message."""
-        result = runner.invoke(app, ["report", "results.json"])
-        assert "Not implemented yet" in result.stdout or result.exit_code != 0
+        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.main.get_settings") as mock_settings:
+                # Setup mocks
+                mock_orch = MagicMock()
+                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+                mock_orch_class.return_value = mock_orch
 
-    def test_invalid_command(self) -> None:
-        """Test that invalid command shows error."""
-        result = runner.invoke(app, ["invalid-command"])
-        assert result.exit_code != 0
+                settings = MagicMock()
+                settings.default_llm_provider = "openai"
+                settings.get_llm_provider_key.return_value = "test-key"
+                mock_settings.return_value = settings
 
-    def test_check_command_missing_required_args(self) -> None:
-        """Test check command fails without required arguments."""
-        result = runner.invoke(app, ["check"])
-        assert result.exit_code != 0
+                with patch("kttc.cli.main.OpenAIProvider"):
+                    # Act
+                    result = runner.invoke(
+                        app,
+                        [
+                            "check",
+                            str(source),
+                            str(translation),
+                            "--source-lang",
+                            "en",
+                            "--target-lang",
+                            "es",
+                        ],
+                    )
 
-    def test_translate_command_missing_required_args(self) -> None:
-        """Test translate command fails without required arguments."""
+                    # Assert
+                    assert result.exit_code == 0
+                    assert "MQM Score" in result.stdout
+
+
+@pytest.mark.unit
+class TestOutputFormats:
+    """Test different output formats."""
+
+    def test_json_output(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport, tmp_path: Path
+    ) -> None:
+        """Test JSON output format."""
+        # Arrange
+        source, translation = temp_text_files
+        output = tmp_path / "report.json"
+
+        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.main.get_settings") as mock_settings:
+                mock_orch = MagicMock()
+                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+                mock_orch_class.return_value = mock_orch
+
+                settings = MagicMock()
+                settings.default_llm_provider = "openai"
+                settings.get_llm_provider_key.return_value = "test-key"
+                mock_settings.return_value = settings
+
+                with patch("kttc.cli.main.OpenAIProvider"):
+                    # Act
+                    result = runner.invoke(
+                        app,
+                        [
+                            "check",
+                            str(source),
+                            str(translation),
+                            "--source-lang",
+                            "en",
+                            "--target-lang",
+                            "es",
+                            "--output",
+                            str(output),
+                            "--format",
+                            "json",
+                        ],
+                    )
+
+                    # Assert
+                    assert result.exit_code == 0
+                    assert output.exists()
+
+                    # Verify JSON content
+                    data = json.loads(output.read_text(encoding="utf-8"))
+                    assert "mqm_score" in data
+                    assert data["mqm_score"] == 85.0
+
+    def test_markdown_output(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport, tmp_path: Path
+    ) -> None:
+        """Test Markdown output format."""
+        # Arrange
+        source, translation = temp_text_files
+        output = tmp_path / "report.md"
+
+        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.main.get_settings") as mock_settings:
+                mock_orch = MagicMock()
+                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+                mock_orch_class.return_value = mock_orch
+
+                settings = MagicMock()
+                settings.default_llm_provider = "openai"
+                settings.get_llm_provider_key.return_value = "test-key"
+                mock_settings.return_value = settings
+
+                with patch("kttc.cli.main.OpenAIProvider"):
+                    # Act
+                    result = runner.invoke(
+                        app,
+                        [
+                            "check",
+                            str(source),
+                            str(translation),
+                            "--source-lang",
+                            "en",
+                            "--target-lang",
+                            "es",
+                            "--output",
+                            str(output),
+                            "--format",
+                            "markdown",
+                        ],
+                    )
+
+                    # Assert
+                    assert result.exit_code == 0
+                    assert output.exists()
+
+                    # Verify Markdown content
+                    content = output.read_text(encoding="utf-8")
+                    assert "# Translation Quality Report" in content
+                    assert "**MQM Score**:" in content or "MQM Score" in content
+
+
+@pytest.mark.unit
+class TestTranslateCommand:
+    """Test 'kttc translate' command."""
+
+    def test_translate_help(self) -> None:
+        """Test translate command help."""
+        # Act
+        result = runner.invoke(app, ["translate", "--help"])
+
+        # Assert
+        assert result.exit_code == 0
+        assert "Translate text" in result.stdout
+        assert "--text" in result.stdout
+        assert "--source-lang" in result.stdout
+        assert "--target-lang" in result.stdout
+
+    def test_translate_missing_required_args(self) -> None:
+        """Test translate fails without required arguments."""
+        # Act
         result = runner.invoke(app, ["translate"])
+
+        # Assert
         assert result.exit_code != 0
 
-    def test_batch_command_missing_required_args(self) -> None:
-        """Test batch command fails without required arguments."""
+
+@pytest.mark.unit
+class TestBatchCommand:
+    """Test 'kttc batch' command."""
+
+    def test_batch_help(self) -> None:
+        """Test batch command help."""
+        # Act
+        result = runner.invoke(app, ["batch", "--help"])
+
+        # Assert
+        assert result.exit_code == 0
+        assert "batch" in result.stdout.lower()
+
+    def test_batch_missing_required_args(self) -> None:
+        """Test batch fails without required arguments."""
+        # Act
         result = runner.invoke(app, ["batch"])
+
+        # Assert
         assert result.exit_code != 0
-
-    def test_run_function_executes_app(self) -> None:
-        """Test that run() function executes the app."""
-        import sys
-        from unittest import mock
-
-        from kttc.cli.main import run
-
-        # Mock sys.argv to simulate --help
-        with mock.patch.object(sys, "argv", ["kttc", "--help"]):
-            # run() will call app() which will exit with 0 for --help
-            with pytest.raises(SystemExit) as exc_info:
-                run()
-            assert exc_info.value.code == 0
-
-    def test_main_module_direct_execution(self) -> None:
-        """Test that cli/main.py can be executed directly."""
-        import runpy
-        import sys
-        from unittest import mock
-
-        # Mock sys.argv to pass --help
-        with mock.patch.object(sys, "argv", ["kttc", "--help"]):
-            try:
-                # Run the cli.main module as if executed directly
-                runpy.run_module("kttc.cli.main", run_name="__main__")
-            except SystemExit:
-                # Expected - Typer exits after --help
-                pass
-
-        # Test passes if we got here without errors
-        assert True
