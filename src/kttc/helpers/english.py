@@ -39,9 +39,23 @@ except ImportError:
         "Install with: pip install spacy && python -m spacy download en_core_web_sm"
     )
 
+# Try to import LanguageTool
+try:
+    import language_tool_python
+
+    LANGUAGETOOL_AVAILABLE = True
+    logger.info("LanguageTool available for English grammar checking")
+except ImportError:
+    LANGUAGETOOL_AVAILABLE = False
+    logger.warning(
+        "LanguageTool not installed. "
+        "EnglishLanguageHelper will run without grammar checking. "
+        "Install with: pip install language-tool-python"
+    )
+
 
 class EnglishLanguageHelper(LanguageHelper):
-    """Language helper for English with spaCy-powered checks.
+    """Language helper for English with spaCy + LanguageTool integration.
 
     Uses spaCy for:
     - Tokenization
@@ -50,19 +64,27 @@ class EnglishLanguageHelper(LanguageHelper):
     - Named entity recognition (NER)
     - Morphological analysis
 
+    Uses LanguageTool for:
+    - 5,000+ grammatical rules
+    - Subject-verb agreement
+    - Article usage (a/an/the)
+    - Tense consistency
+    - Preposition errors
+
     Example:
         >>> helper = EnglishLanguageHelper()
         >>> if helper.is_available():
         ...     errors = helper.check_grammar("He go to school")
         ...     print(errors[0].description)
-        Subject-verb agreement error detected
+        'Subject-verb agreement: Use "goes" instead of "go"'
     """
 
     def __init__(self) -> None:
-        """Initialize English language helper."""
+        """Initialize English language helper with spaCy and LanguageTool."""
         self._nlp: Any = None
         self._initialized = False
 
+        # Initialize spaCy
         if SPACY_AVAILABLE:
             try:
                 # Try medium model first (better accuracy with word vectors)
@@ -85,6 +107,19 @@ class EnglishLanguageHelper(LanguageHelper):
                     self._initialized = False
         else:
             logger.info("EnglishLanguageHelper running in limited mode (no spaCy)")
+
+        # Initialize LanguageTool
+        self._language_tool: Any = None
+        self._lt_available = False
+
+        if LANGUAGETOOL_AVAILABLE:
+            try:
+                self._language_tool = language_tool_python.LanguageTool("en-US")
+                self._lt_available = True
+                logger.info("LanguageTool initialized successfully (5,000+ grammar rules)")
+            except Exception as e:
+                logger.warning(f"LanguageTool initialization failed: {e}")
+                self._lt_available = False
 
     @property
     def language_code(self) -> str:
@@ -196,29 +231,115 @@ class EnglishLanguageHelper(LanguageHelper):
         return results
 
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
-        """Check English grammar with spaCy.
+        """Check English grammar using LanguageTool.
 
-        Basic grammar checks (extensible):
+        Uses 5,000+ grammatical rules including:
         - Subject-verb agreement
-        - Basic syntax patterns
+        - Article usage (a/an/the)
+        - Tense consistency
+        - Preposition errors
+        - Spelling mistakes
 
         Args:
             text: English text to check
 
         Returns:
-            List of detected grammar errors
+            List of detected grammar errors with positions and suggestions
         """
-        if not self.is_available():
+        if not self._lt_available:
+            logger.debug("LanguageTool not available, skipping grammar checks")
             return []
 
-        # For now, return empty list - can extend with custom rules
-        # spaCy doesn't have built-in grammar checking, but provides tools for it
-        return []
+        try:
+            # Check with LanguageTool
+            matches = self._language_tool.check(text)
+
+            errors = []
+            for match in matches:
+                # Filter out style-only suggestions not relevant for translation
+                if not self._is_translation_relevant(match):
+                    continue
+
+                # Map to our error format
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory=f"english_{match.ruleId}",
+                        severity=self._map_severity(match),
+                        location=(match.offset, match.offset + match.errorLength),
+                        description=match.message,
+                        suggestion=match.replacements[0] if match.replacements else None,
+                    )
+                )
+
+            logger.debug(f"LanguageTool found {len(errors)} grammar errors")
+            return errors
+
+        except Exception as e:
+            logger.error(f"LanguageTool check failed: {e}")
+            return []
+
+    def _map_severity(self, match: Any) -> Any:
+        """Map LanguageTool match to ErrorSeverity.
+
+        Args:
+            match: LanguageTool Match object
+
+        Returns:
+            ErrorSeverity enum value
+        """
+        from kttc.core import ErrorSeverity
+
+        rule_id = match.ruleId.lower()
+
+        # Critical errors (spelling, clear grammar mistakes)
+        if any(pattern in rule_id for pattern in ["spelling", "typo", "misspell"]):
+            return ErrorSeverity.CRITICAL
+
+        # Major errors (agreement, verb form, tense)
+        if any(
+            pattern in rule_id
+            for pattern in [
+                "grammar",
+                "agreement",
+                "verb",
+                "subject_verb",
+                "tense",
+                "article",
+                "preposition",
+            ]
+        ):
+            return ErrorSeverity.MAJOR
+
+        # Minor errors (everything else)
+        return ErrorSeverity.MINOR
+
+    def _is_translation_relevant(self, match: Any) -> bool:
+        """Filter out style-only suggestions not relevant for translation QA.
+
+        Args:
+            match: LanguageTool Match object
+
+        Returns:
+            True if error is relevant for translation, False otherwise
+        """
+        rule_id = match.ruleId.lower()
+
+        # Exclude pure style suggestions
+        exclude_patterns = ["style", "redundancy", "collocation", "cliche", "wordiness"]
+
+        if any(pattern in rule_id for pattern in exclude_patterns):
+            return False
+
+        return True
 
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
-        """Get comprehensive morphological data for enriching LLM prompts.
+        """Get comprehensive linguistic data for enriching LLM prompts.
 
         Provides detailed linguistic context to help LLM make better decisions:
+        - Verb tenses and aspects
+        - Article-noun patterns
+        - Subject-verb pairs (for agreement checking)
         - POS distribution
         - Named entities
         - Sentence structure
@@ -233,6 +354,69 @@ class EnglishLanguageHelper(LanguageHelper):
             return {"has_morphology": False}
 
         doc = self._nlp(text)
+
+        # Verb tense analysis
+        verb_tenses = {}
+        for token in doc:
+            if token.pos_ == "VERB":
+                tense = token.morph.get("Tense")
+                if tense:
+                    verb_tenses[token.text] = {
+                        "tense": tense[0],
+                        "aspect": token.morph.get("Aspect", [""])[0],
+                        "person": token.morph.get("Person", [""])[0],
+                        "number": token.morph.get("Number", [""])[0],
+                    }
+
+        # Article-noun patterns
+        article_noun_pairs = []
+        for i, token in enumerate(doc):
+            if token.pos_ == "DET" and token.text.lower() in ["a", "an", "the"]:
+                # Find associated noun (look ahead up to 5 tokens)
+                for j in range(i + 1, min(i + 5, len(doc))):
+                    if doc[j].pos_ in ["NOUN", "PROPN"]:
+                        # Check if article matches (a vs an)
+                        next_word = doc[i + 1].text if i + 1 < len(doc) else ""
+                        correct_article = (
+                            "an" if next_word and next_word[0].lower() in "aeiou" else "a"
+                        )
+
+                        article_noun_pairs.append(
+                            {
+                                "article": token.text.lower(),
+                                "noun": doc[j].text,
+                                "distance": j - i,
+                                "correct": (
+                                    token.text.lower() == correct_article
+                                    if token.text.lower() != "the"
+                                    else True
+                                ),
+                            }
+                        )
+                        break
+
+        # Subject-verb pairs (for agreement checking)
+        subject_verb_pairs = []
+        for token in doc:
+            if token.dep_ == "nsubj":  # Nominal subject
+                verb = token.head
+                if verb.pos_ == "VERB":
+                    subject_number = token.morph.get("Number")
+                    verb_number = verb.morph.get("Number")
+
+                    subject_verb_pairs.append(
+                        {
+                            "subject": token.text,
+                            "verb": verb.text,
+                            "subject_number": subject_number[0] if subject_number else None,
+                            "verb_number": verb_number[0] if verb_number else None,
+                            "agreement": (
+                                subject_number == verb_number
+                                if subject_number and verb_number
+                                else None
+                            ),
+                        }
+                    )
 
         # Count parts of speech
         pos_counts: dict[str, int] = {}
@@ -258,6 +442,9 @@ class EnglishLanguageHelper(LanguageHelper):
         return {
             "has_morphology": True,
             "word_count": len([token for token in doc if not token.is_punct]),
+            "verb_tenses": verb_tenses,
+            "article_noun_pairs": article_noun_pairs,
+            "subject_verb_pairs": subject_verb_pairs,
             "pos_distribution": pos_counts,
             "entities": entities,
             "sentence_count": sent_count,

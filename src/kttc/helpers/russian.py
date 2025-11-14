@@ -230,6 +230,167 @@ class RussianLanguageHelper(LanguageHelper):
         # Get morphological analysis
         morphs = self.analyze_morphology(text)
 
+        # Russian prepositions and their required cases
+        # Based on standard Russian grammar rules
+        # For ambiguous prepositions, we list one case here and handle multiple
+        # cases in the special handling section below
+        prep_case_map = {
+            # Genitive case (родительный падеж)
+            "без": "gent",  # without
+            "для": "gent",  # for
+            "до": "gent",  # until
+            "из": "gent",  # from
+            "от": "gent",  # from
+            "у": "gent",  # at/near
+            "около": "gent",  # near
+            "вокруг": "gent",  # around
+            # Dative case (дательный падеж)
+            "к": "datv",  # to/towards
+            "по": "datv",  # along/according to
+            # Accusative case (винительный падеж)
+            "через": "accs",  # through
+            "про": "accs",  # about
+            # Instrumental case (творительный падеж)
+            "над": "ablt",  # above
+            "перед": "ablt",  # in front of
+            "между": "ablt",  # between
+            # Prepositional case (предложный падеж)
+            "о": "loct",  # about
+            "об": "loct",  # about
+            "при": "loct",  # at/in the presence of
+            # Ambiguous prepositions (handled specially below):
+            # "в", "на" - accusative (direction) or prepositional (location)
+            "в": "accs",  # in/into (direction) or in (location with loct)
+            "на": "accs",  # on/onto (direction) or on (location with loct)
+            # "с", "со" - genitive (from) or instrumental (with)
+            "с": "gent",  # from (gent) or with (ablt)
+            "со": "gent",  # from (gent) or with (ablt)
+            # "под", "за" - accusative (direction) or instrumental (location)
+            "под": "accs",  # under (direction) or under (location with ablt)
+            "за": "accs",  # behind/for (direction) or behind (location with ablt)
+        }
+
+        # Check preposition + noun agreement
+        for i in range(len(morphs)):
+            curr = morphs[i]
+
+            # Check if current word is preposition
+            # Use heuristic: if word is in our preposition map, treat it as preposition
+            # even if pymorphy3 tagged it differently (e.g., "О" might be tagged as NOUN)
+            prep_lower = curr.word.lower()
+            is_preposition = curr.pos == "PREP" or prep_lower in prep_case_map
+
+            if not is_preposition:
+                continue
+
+            # Find the next noun (skip adjectives)
+            # Be tolerant: pymorphy3 sometimes mislabels adjectives as NOUNs
+            noun_word = None
+            skipped_adjectives = 0
+            for j in range(i + 1, len(morphs)):
+                word = morphs[j]
+                # Check if it's a noun
+                if word.pos == "NOUN":
+                    # If we've already skipped potential adjectives, this is likely the target noun
+                    if skipped_adjectives > 0 or j == i + 1:
+                        noun_word = word
+                        break
+                    # First noun after preposition - could be adjective misclassified
+                    # Check if it has adjective-like properties (gender, case match with next word)
+                    if j + 1 < len(morphs) and morphs[j + 1].pos == "NOUN":
+                        # There's another noun after - this might be adjective
+                        skipped_adjectives += 1
+                        continue
+                    else:
+                        # No noun after - this must be the target noun
+                        noun_word = word
+                        break
+                elif word.pos in ("ADJF", "ADJS"):
+                    # True adjective - skip it
+                    skipped_adjectives += 1
+                    continue
+                else:
+                    # Stop if we encounter something else
+                    break
+
+            if noun_word is None:
+                continue
+
+            # Get required case for this preposition
+            required_case = prep_case_map.get(prep_lower)
+
+            if required_case and noun_word.case:
+                # Special handling for ambiguous prepositions (в, на, с, под, за)
+                # These can take different cases depending on meaning (direction vs location)
+                # For now, accept both common cases for these prepositions
+                if prep_lower in ("в", "на"):
+                    # Accept both accusative (direction) and prepositional (location)
+                    # Also accept nominative for masculine nouns (often homonymous with accusative)
+                    if noun_word.case not in ("accs", "loct", "nomn"):
+                        errors.append(
+                            ErrorAnnotation(
+                                category="fluency",
+                                subcategory="russian_case_agreement",
+                                severity=ErrorSeverity.CRITICAL,
+                                location=(curr.start, noun_word.stop),
+                                description=(
+                                    f"Preposition case violation: '{curr.word}' requires "
+                                    f"accusative or prepositional case, but '{noun_word.word}' "
+                                    f"is in {noun_word.case} case"
+                                ),
+                                suggestion=None,
+                            )
+                        )
+                elif prep_lower in ("с", "со"):
+                    # Accept both genitive (from) and instrumental (with)
+                    if noun_word.case not in ("gent", "ablt"):
+                        errors.append(
+                            ErrorAnnotation(
+                                category="fluency",
+                                subcategory="russian_case_agreement",
+                                severity=ErrorSeverity.CRITICAL,
+                                location=(curr.start, noun_word.stop),
+                                description=(
+                                    f"Preposition case violation: '{curr.word}' requires "
+                                    f"genitive or instrumental case, but '{noun_word.word}' "
+                                    f"is in {noun_word.case} case"
+                                ),
+                                suggestion=None,
+                            )
+                        )
+                elif prep_lower in ("под", "за"):
+                    # Accept both accusative (direction) and instrumental (location)
+                    if noun_word.case not in ("accs", "ablt"):
+                        errors.append(
+                            ErrorAnnotation(
+                                category="fluency",
+                                subcategory="russian_case_agreement",
+                                severity=ErrorSeverity.CRITICAL,
+                                location=(curr.start, noun_word.stop),
+                                description=(
+                                    f"Preposition case violation: '{curr.word}' requires "
+                                    f"accusative or instrumental case, but '{noun_word.word}' "
+                                    f"is in {noun_word.case} case"
+                                ),
+                                suggestion=None,
+                            )
+                        )
+                elif noun_word.case != required_case:
+                    errors.append(
+                        ErrorAnnotation(
+                            category="fluency",
+                            subcategory="russian_case_agreement",
+                            severity=ErrorSeverity.CRITICAL,
+                            location=(curr.start, noun_word.stop),
+                            description=(
+                                f"Preposition case violation: '{curr.word}' requires "
+                                f"{required_case} case, but '{noun_word.word}' is in "
+                                f"{noun_word.case} case"
+                            ),
+                            suggestion=None,
+                        )
+                    )
+
         # Check adjective-noun agreement
         for i in range(len(morphs) - 1):
             curr = morphs[i]
@@ -237,6 +398,33 @@ class RussianLanguageHelper(LanguageHelper):
 
             # Skip if not adjective + noun
             if curr.pos != "ADJF" or next_word.pos != "NOUN":
+                continue
+
+            # Check if there's a numeral before adjective (skip agreement checks in this case)
+            # Russian numerals: два, три, четыре, пять, etc.
+            # After numerals 2-4, nouns are in genitive singular, adjectives in genitive plural
+            # This is a special case in Russian grammar
+            has_numeral_before = False
+            if i > 0:
+                prev_word = morphs[i - 1]
+                # Check if previous word is a numeral (NUMR) or specific numeral words
+                numeral_words = {
+                    "два",
+                    "две",
+                    "три",
+                    "четыре",
+                    "пять",
+                    "шесть",
+                    "семь",
+                    "восемь",
+                    "девять",
+                    "десять",
+                }
+                if prev_word.pos == "NUMR" or prev_word.word.lower() in numeral_words:
+                    has_numeral_before = True
+
+            if has_numeral_before:
+                # Skip agreement checks after numerals
                 continue
 
             # Check gender agreement

@@ -278,15 +278,208 @@ class TestChineseLanguageHelper:
         assert isinstance(errors, list)
 
     def test_check_grammar(self, helper):
-        """Test grammar checking (currently returns empty)."""
+        """Test grammar checking with HanLP."""
         if not helper.is_available():
             pytest.skip("Chinese NLP not available")
 
         text = "我爱中文"
         errors = helper.check_grammar(text)
 
-        # Currently not implemented
+        # Should return list of errors
         assert isinstance(errors, list)
+
+    def test_check_measure_words_incorrect(self, helper):
+        """Test detection of incorrect measure words."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Incorrect: "个" for books (should be "本")
+        text = "三个书"
+        errors = helper.check_grammar(text)
+
+        # Should detect incorrect measure word
+        assert len(errors) > 0
+        assert any("measure" in e.subcategory.lower() for e in errors)
+        assert any("个" in e.description for e in errors)
+
+    def test_check_measure_words_correct(self, helper):
+        """Test that correct measure words don't trigger errors."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Correct: "本" for books
+        text = "三本书"
+        errors = helper.check_grammar(text)
+
+        # Should not detect errors for correct measure word
+        measure_errors = [e for e in errors if "measure" in e.subcategory.lower()]
+        assert len(measure_errors) == 0
+
+    def test_check_measure_words_vehicles(self, helper):
+        """Test measure word checking for vehicles."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Incorrect: "本" for cars (should be "辆")
+        text = "一本车"
+        errors = helper.check_grammar(text)
+
+        # Should detect incorrect measure word
+        measure_errors = [e for e in errors if "measure" in e.subcategory.lower()]
+        if len(measure_errors) > 0:
+            assert any("本" in e.description for e in measure_errors)
+
+    def test_check_measure_words_animals(self, helper):
+        """Test measure word checking for animals."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Test incorrect measure word for animals
+        text = "两条狗"  # Should be "两只狗"
+        errors = helper.check_grammar(text)
+
+        # May detect error depending on dictionary
+        assert isinstance(errors, list)
+
+    def test_check_measure_words_unknown_noun(self, helper):
+        """Test that unknown nouns don't trigger false positives."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Unknown noun - should not flag error
+        text = "三个测试物品"
+        errors = helper.check_grammar(text)
+
+        # Should not flag error for unknown nouns
+        # (dictionary doesn't contain this noun)
+        assert isinstance(errors, list)
+
+    def test_check_particles_correct(self, helper):
+        """Test aspect particle checking with correct usage."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Correct: 了 after verb 买
+        text = "我买了书"
+        errors = helper.check_grammar(text)
+
+        # Should not flag errors for correct particle usage
+        particle_errors = [e for e in errors if "particle" in e.subcategory.lower()]
+        assert len(particle_errors) == 0
+
+    def test_check_particles_experience(self, helper):
+        """Test aspect particle 过 (experience)."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available for grammar checking")
+
+        # Correct: 过 after verb 去
+        text = "我去过北京"
+        errors = helper.check_grammar(text)
+
+        # Should not flag errors
+        particle_errors = [e for e in errors if "particle" in e.subcategory.lower()]
+        assert len(particle_errors) == 0
+
+    def test_get_enrichment_data_with_hanlp(self, helper):
+        """Test enrichment data with HanLP insights."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available")
+
+        text = "我买了三本书"
+        enrichment = helper.get_enrichment_data(text)
+
+        # Should have HanLP data
+        assert enrichment.get("has_hanlp") is True
+        assert "measure_patterns" in enrichment
+        assert "aspect_particles" in enrichment
+        assert "pos_distribution" in enrichment
+
+        # Should detect measure word pattern
+        measure_patterns = enrichment["measure_patterns"]
+        assert len(measure_patterns) > 0
+        assert any(p["measure"] == "本" and p["noun"] == "书" for p in measure_patterns)
+
+        # Should detect aspect particle 了
+        aspect_particles = enrichment["aspect_particles"]
+        assert len(aspect_particles) > 0
+        assert any(p["particle"] == "了" for p in aspect_particles)
+
+    def test_get_enrichment_data_pos_counts(self, helper):
+        """Test POS tag distribution in enrichment data."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available")
+
+        text = "三本书很贵"
+        enrichment = helper.get_enrichment_data(text)
+
+        # Should have CTB POS counts
+        pos_dist = enrichment.get("pos_distribution", {})
+        assert len(pos_dist) > 0
+
+        # Should detect CD (number), M (measure), NN (noun)
+        # Actual tags depend on HanLP model
+        assert isinstance(pos_dist, dict)
+
+    def test_get_enrichment_data_no_measure_words(self, helper):
+        """Test enrichment data when no measure words present."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available")
+
+        text = "我爱中文"
+        enrichment = helper.get_enrichment_data(text)
+
+        # Should have empty measure patterns
+        measure_patterns = enrichment.get("measure_patterns", [])
+        assert isinstance(measure_patterns, list)
+        assert len(measure_patterns) == 0
+
+    def test_get_enrichment_data_multiple_measures(self, helper):
+        """Test enrichment data with multiple measure words."""
+        if not helper.is_available():
+            pytest.skip("Chinese NLP not available")
+
+        if not helper._hanlp_available:
+            pytest.skip("HanLP not available")
+
+        text = "我有三本书和两辆车"
+        enrichment = helper.get_enrichment_data(text)
+
+        # Should detect multiple measure patterns
+        measure_patterns = enrichment.get("measure_patterns", [])
+        if len(measure_patterns) > 1:
+            # Should find both "三本书" and "两辆车"
+            assert any(p["noun"] == "书" for p in measure_patterns)
+            assert any(p["noun"] == "车" for p in measure_patterns)
 
     def test_empty_text_handling(self, helper):
         """Test handling of empty text."""

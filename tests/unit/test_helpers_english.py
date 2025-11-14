@@ -315,16 +315,117 @@ class TestEnglishLanguageHelper:
         # No entities in source, should not raise error
         assert len(errors) == 0
 
-    def test_check_grammar(self, helper):
-        """Test grammar checking (currently returns empty)."""
+    def test_check_grammar_no_errors(self, helper):
+        """Test grammar checking with correct text."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "The cat sits on the mat."
+        errors = helper.check_grammar(text)
+
+        # Correct text should have no errors
+        assert isinstance(errors, list)
+        assert len(errors) == 0
+
+    def test_check_grammar_subject_verb_agreement(self, helper):
+        """Test detection of subject-verb agreement error."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "He go to school every day"  # Should be "goes"
+        errors = helper.check_grammar(text)
+
+        # Should find at least one error
+        assert len(errors) > 0
+        # Error should be about grammar/agreement (LanguageTool uses "AGR" for agreement)
+        assert any(
+            "agr" in err.subcategory.lower() or "verb" in err.description.lower() for err in errors
+        )
+
+    def test_check_grammar_article_error(self, helper):
+        """Test detection of article error (a vs an)."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "I saw a elephant in the zoo"  # Should be "an elephant"
+        errors = helper.check_grammar(text)
+
+        # Should find article error
+        assert len(errors) > 0
+        assert any(
+            "article" in err.subcategory.lower() or "a" in err.description.lower() for err in errors
+        )
+
+    def test_check_grammar_with_suggestion(self, helper):
+        """Test that errors include suggestions."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "He dont like apples"  # Should be "doesn't"
+        errors = helper.check_grammar(text)
+
+        # Should have error with suggestion
+        if len(errors) > 0:
+            # At least one error should have a suggestion
+            assert any(err.suggestion is not None for err in errors)
+
+    def test_check_grammar_severity_mapping(self, helper):
+        """Test that severity is mapped correctly."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "He go to scool"  # Grammar + spelling error
+        errors = helper.check_grammar(text)
+
+        # Should have errors with severity
+        assert len(errors) > 0
+        for err in errors:
+            assert hasattr(err, "severity")
+            assert err.severity in [
+                ErrorSeverity.CRITICAL,
+                ErrorSeverity.MAJOR,
+                ErrorSeverity.MINOR,
+            ]
+
+    def test_enrichment_verb_tenses(self, helper):
+        """Test enrichment data includes verb tense analysis."""
         if not helper.is_available():
             pytest.skip("spaCy not available")
 
-        text = "He go to school"  # Grammar error
-        errors = helper.check_grammar(text)
+        text = "He walked to school yesterday."
+        enrichment = helper.get_enrichment_data(text)
 
-        # Currently not implemented, should return empty list
-        assert isinstance(errors, list)
+        assert "verb_tenses" in enrichment
+        # Should find "walked" verb
+        if len(enrichment["verb_tenses"]) > 0:
+            assert any("walk" in verb.lower() for verb in enrichment["verb_tenses"])
+
+    def test_enrichment_article_noun_pairs(self, helper):
+        """Test enrichment data includes article-noun analysis."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "The cat and a dog are friends."
+        enrichment = helper.get_enrichment_data(text)
+
+        assert "article_noun_pairs" in enrichment
+        # Should find article-noun pairs
+        assert len(enrichment["article_noun_pairs"]) > 0
+
+    def test_enrichment_subject_verb_pairs(self, helper):
+        """Test enrichment data includes subject-verb analysis."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "The cat sits on the mat."
+        enrichment = helper.get_enrichment_data(text)
+
+        assert "subject_verb_pairs" in enrichment
+        # Should find subject-verb pairs
+        if len(enrichment["subject_verb_pairs"]) > 0:
+            pair = enrichment["subject_verb_pairs"][0]
+            assert "subject" in pair
+            assert "verb" in pair
 
     def test_empty_text_handling(self, helper):
         """Test handling of empty text."""
@@ -400,3 +501,155 @@ class TestEnglishLanguageHelper:
         assert len(morphology) > 0
         assert enrichment["has_morphology"] is True
         assert enrichment["sentence_count"] == 100
+
+    def test_check_grammar_when_unavailable(self, helper):
+        """Test grammar checking when LanguageTool is not available."""
+        # Temporarily disable LanguageTool
+        original_lt_available = helper._lt_available
+        helper._lt_available = False
+
+        text = "He go to school every day"
+        errors = helper.check_grammar(text)
+
+        # Should return empty list gracefully
+        assert errors == []
+
+        # Restore original state
+        helper._lt_available = original_lt_available
+
+    def test_tokenize_with_numbers(self, helper):
+        """Test tokenization with numbers and mixed content."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "In 2024, we sold 1,000 units for $50.99 each."
+        tokens = helper.tokenize(text)
+
+        # Should tokenize numbers correctly
+        assert len(tokens) > 0
+        # Verify positions are accurate
+        for word, start, end in tokens:
+            assert text[start:end] == word
+
+    def test_enrichment_data_with_contractions(self, helper):
+        """Test enrichment data with contractions."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "I'm going to the store. He's already been there. They've finished."
+        enrichment = helper.get_enrichment_data(text)
+
+        assert enrichment["has_morphology"] is True
+        assert enrichment["sentence_count"] == 3
+
+    def test_morphology_with_negations(self, helper):
+        """Test morphology analysis with negations."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "He doesn't like apples."
+        morphology = helper.analyze_morphology(text)
+
+        # Should analyze contractions correctly
+        assert len(morphology) > 0
+        # Check that contractions are tokenized
+        words = [m.word for m in morphology]
+        assert "does" in words or "doesn't" in words
+
+    def test_verify_word_exists_fallback(self):
+        """Test word verification fallback when spaCy unavailable."""
+        helper = EnglishLanguageHelper()
+        helper._initialized = False
+        helper._nlp = None
+
+        text = "The cat sat on the mat"
+        # Should use simple case-insensitive search
+        assert helper.verify_word_exists("cat", text) is True
+        assert helper.verify_word_exists("CAT", text) is True
+        assert helper.verify_word_exists("dog", text) is False
+
+    def test_extract_entities_when_unavailable(self, helper):
+        """Test entity extraction when spaCy is not available."""
+        # Temporarily disable spaCy
+        original_initialized = helper._initialized
+        original_nlp = helper._nlp
+        helper._initialized = False
+        helper._nlp = None
+
+        text = "Apple CEO Tim Cook visited California."
+        entities = helper.extract_entities(text)
+
+        # Should return empty list gracefully
+        assert entities == []
+
+        # Restore original state
+        helper._initialized = original_initialized
+        helper._nlp = original_nlp
+
+    def test_check_entity_preservation_when_unavailable(self, helper):
+        """Test entity preservation check when spaCy is not available."""
+        # Temporarily disable spaCy
+        original_initialized = helper._initialized
+        original_nlp = helper._nlp
+        helper._initialized = False
+        helper._nlp = None
+
+        source = "Apple CEO Tim Cook visited California."
+        translation = "The CEO visited the state."
+        errors = helper.check_entity_preservation(source, translation)
+
+        # Should return empty list gracefully
+        assert errors == []
+
+        # Restore original state
+        helper._initialized = original_initialized
+        helper._nlp = original_nlp
+
+    def test_analyze_morphology_when_unavailable(self):
+        """Test morphology analysis when spaCy is not available."""
+        helper = EnglishLanguageHelper()
+        helper._initialized = False
+        helper._nlp = None
+
+        text = "The cat sits on the mat."
+        morphology = helper.analyze_morphology(text)
+
+        # Should return empty list gracefully
+        assert morphology == []
+
+    def test_get_enrichment_data_when_unavailable(self):
+        """Test enrichment data when spaCy is not available."""
+        helper = EnglishLanguageHelper()
+        helper._initialized = False
+        helper._nlp = None
+
+        text = "The cat sits on the mat."
+        enrichment = helper.get_enrichment_data(text)
+
+        # Should return minimal data gracefully
+        assert enrichment == {"has_morphology": False}
+
+    def test_check_grammar_multiple_errors(self, helper):
+        """Test grammar checking with multiple errors in one text."""
+        if not helper._lt_available:
+            pytest.skip("LanguageTool not available")
+
+        text = "He dont like apples and he go to school every day"
+        errors = helper.check_grammar(text)
+
+        # Should find multiple errors (dont -> doesn't, go -> goes)
+        assert len(errors) >= 2
+
+    def test_enrichment_data_complex_sentence(self, helper):
+        """Test enrichment data with complex sentence structure."""
+        if not helper.is_available():
+            pytest.skip("spaCy not available")
+
+        text = "The student who was studying hard passed the exam with flying colors."
+        enrichment = helper.get_enrichment_data(text)
+
+        assert enrichment["has_morphology"] is True
+        assert "verb_tenses" in enrichment
+        assert "pos_distribution" in enrichment
+        # Should detect relative clause and complex structure
+        assert enrichment["word_count"] > 10

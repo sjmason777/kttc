@@ -16,7 +16,10 @@
 
 Agents evaluate different quality dimensions following the MQM framework:
 - AccuracyAgent: Checks translation accuracy (mistranslation, omission, etc.)
-- FluencyAgent: Checks grammar and fluency
+- FluencyAgent: Checks grammar and fluency (base class)
+  - EnglishFluencyAgent: English-specific fluency with LanguageTool integration
+  - ChineseFluencyAgent: Chinese-specific fluency with HanLP integration
+  - RussianFluencyAgent: Russian-specific fluency with MAWO NLP integration
 - TerminologyAgent: Checks terminology consistency
 - HallucinationAgent: Detects hallucinated content and factual errors
 - ContextAgent: Checks document-level consistency and coherence
@@ -40,6 +43,9 @@ from .domain_profiles import (
 )
 from .dynamic_selector import DynamicAgentSelector
 from .fluency import FluencyAgent
+from .fluency_chinese import ChineseFluencyAgent
+from .fluency_english import EnglishFluencyAgent
+from .fluency_russian import RussianFluencyAgent
 from .hallucination import HallucinationAgent
 from .orchestrator import AgentOrchestrator
 from .parser import ErrorParser
@@ -49,6 +55,9 @@ __all__ = [
     "BaseAgent",
     "AccuracyAgent",
     "FluencyAgent",
+    "EnglishFluencyAgent",
+    "ChineseFluencyAgent",
+    "RussianFluencyAgent",
     "TerminologyAgent",
     "HallucinationAgent",
     "ContextAgent",

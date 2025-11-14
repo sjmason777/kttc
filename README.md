@@ -37,6 +37,11 @@ pip install kttc
 # With optional metrics (sentence embeddings)
 pip install kttc[metrics]
 
+# With language-specific enhancements
+pip install kttc[english]      # English grammar checking with LanguageTool
+pip install kttc[chinese]      # Chinese NLP with HanLP
+pip install kttc[all-languages]  # All language helpers
+
 # Full install for development
 pip install kttc[full,dev]
 
@@ -333,6 +338,112 @@ from kttc.agents import RussianFluencyAgent
 
 agent = RussianFluencyAgent(llm_provider)
 errors = await agent.evaluate(russian_task)
+```
+
+## English Language Enhancement
+
+**Status:** ✅ Implemented (Phase 1)
+**Module:** `src/kttc/helpers/english.py`
+
+Enhanced English helper with LanguageTool integration for deterministic grammar checking:
+- **5,000+ Grammar Rules**: Subject-verb agreement, article usage (a/an/the), tense consistency, preposition errors
+- **Spelling Validation**: Catches typos and misspellings
+- **Morphological Analysis**: Verb tenses, article-noun patterns, subject-verb pairs for LLM enrichment
+- **Named Entity Recognition**: Using spaCy for entity extraction and preservation checking
+- **Graceful Degradation**: Works without optional dependencies, with fallback to basic functionality
+
+### Installation
+
+```bash
+# Install with LanguageTool support (requires Java 17.0+)
+pip install kttc[english]
+
+# Download spaCy English model (if not already installed)
+python3 -m spacy download en_core_web_md
+```
+
+### Usage
+
+```python
+from kttc.helpers.english import EnglishLanguageHelper
+
+helper = EnglishLanguageHelper()
+
+# Check grammar with LanguageTool (5,000+ rules)
+text = "He go to school every day"
+errors = helper.check_grammar(text)
+# Returns: ErrorAnnotation with severity MAJOR, suggestion "goes"
+
+# Get enrichment data for LLM prompts
+enrichment = helper.get_enrichment_data(text)
+# Returns: {
+#   "verb_tenses": {"go": {"tense": "Pres", "number": "Sing"}},
+#   "subject_verb_pairs": [{"subject": "He", "verb": "go", "agreement": False}],
+#   "article_noun_pairs": [...],
+#   ...
+# }
+```
+
+## Chinese Language Enhancement
+
+**Status:** ✅ Implemented (Phase 2)
+**Module:** `src/kttc/helpers/chinese.py`
+
+Enhanced Chinese helper with HanLP integration for advanced grammar checking:
+- **Measure Word Validation (量词检查)**: Detects incorrect classifiers using CTB POS patterns (CD + M + NN)
+  - Example: "三个书" → suggests "三本书" (books need "本" not "个")
+  - 15+ common measure words (个/本/只/条/张/辆/位/件/杯/瓶/支/双/把/颗/朵)
+- **Aspect Particle Checking (了/过检查)**: Validates aspect markers follow verbs correctly
+- **High-Accuracy POS Tagging**: ~92-95% accuracy with CTB tagset (vs ~85% for jieba)
+- **Morphological Analysis**: Measure word patterns, aspect particles, POS distribution for LLM enrichment
+- **Named Entity Recognition**: Multi-language NER with jieba + spaCy + HanLP
+- **Graceful Degradation**: Falls back to jieba/spaCy if HanLP not available
+
+### Installation
+
+```bash
+# Install with HanLP support (~300 MB model download)
+pip install kttc[chinese]
+
+# Or install HanLP manually
+pip install hanlp
+
+# The model will be downloaded automatically on first use:
+# OPEN_TOK_POS_NER_SRL_DEP_SDP_CON_ELECTRA_SMALL_ZH (~300 MB)
+```
+
+### Usage
+
+```python
+from kttc.helpers.chinese import ChineseLanguageHelper
+
+helper = ChineseLanguageHelper()
+
+# Check grammar with HanLP (measure words + particles)
+text = "三个书"  # Wrong measure word
+errors = helper.check_grammar(text)
+# Returns: ErrorAnnotation with severity MINOR
+# Description: 'Incorrect measure word: "个" may not be appropriate for "书". Consider using: 本'
+# Suggestion: "本"
+
+# Correct measure word - no errors
+correct_text = "三本书"
+errors = helper.check_grammar(correct_text)
+# Returns: [] (no errors)
+
+# Get enrichment data with HanLP insights
+enrichment = helper.get_enrichment_data("我买了三本书")
+# Returns: {
+#   "has_hanlp": True,
+#   "measure_patterns": [
+#     {"number": "三", "measure": "本", "noun": "书", "pattern": "三本书"}
+#   ],
+#   "aspect_particles": [
+#     {"particle": "了", "verb": "买", "position": 2}
+#   ],
+#   "pos_distribution": {"PN": 1, "VV": 1, "AS": 1, "CD": 1, "M": 1, "NN": 1},
+#   ...
+# }
 ```
 
 ## LLM Model Selection Strategy

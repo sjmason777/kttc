@@ -1,0 +1,384 @@
+{
+  "total": 24,
+  "true_positives": 8,
+  "false_positives": 0,
+  "true_negatives": 13,
+  "false_negatives": 3,
+  "errors_found": [
+    {
+      "case": {
+        "source": "Bonjour le monde",
+        "translation": "Hello world",
+        "expected_errors": 0,
+        "category": "simple"
+      },
+      "errors": [],
+      "execution_time": 4.216016054153442
+    },
+    {
+      "case": {
+        "source": "Comment allez-vous?",
+        "translation": "How are you?",
+        "expected_errors": 0,
+        "category": "simple"
+      },
+      "errors": [],
+      "execution_time": 0.08414006233215332
+    },
+    {
+      "case": {
+        "source": "Le chat dort sur le tapis",
+        "translation": "The cat sleeps on the carpet",
+        "expected_errors": 0,
+        "category": "simple"
+      },
+      "errors": [],
+      "execution_time": 0.035022735595703125
+    },
+    {
+      "case": {
+        "source": "Je vais à l'école",
+        "translation": "I go to school",
+        "expected_errors": 0,
+        "category": "simple"
+      },
+      "errors": [],
+      "execution_time": 0.030694246292114258
+    },
+    {
+      "case": {
+        "source": "Il fait beau aujourd'hui",
+        "translation": "The weather is nice today",
+        "expected_errors": 0,
+        "category": "simple"
+      },
+      "errors": [],
+      "execution_time": 0.02887105941772461
+    },
+    {
+      "case": {
+        "source": "Il va à l'école",
+        "translation": "He go to school",
+        "expected_errors": 1,
+        "category": "grammar_subject_verb",
+        "error_type": "SUBJECT_VERB"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_HE_VERB_AGR",
+          "severity": "MAJOR",
+          "description": "The pronoun ‘He’ is usually used with a third-person or a past tense verb.",
+          "location": [
+            3,
+            5
+          ]
+        }
+      ],
+      "execution_time": 0.0373687744140625
+    },
+    {
+      "case": {
+        "source": "Elle aime lire",
+        "translation": "She like to read",
+        "expected_errors": 1,
+        "category": "grammar_subject_verb",
+        "error_type": "SUBJECT_VERB"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_HE_LIKE",
+          "severity": "MINOR",
+          "description": "The pronoun ‘She’ requires a third-person verb or a past tense. Or did you forget to add a verb?",
+          "location": [
+            4,
+            8
+          ]
+        }
+      ],
+      "execution_time": 0.026721954345703125
+    },
+    {
+      "case": {
+        "source": "Ils jouent au football",
+        "translation": "They plays football",
+        "expected_errors": 1,
+        "category": "grammar_subject_verb",
+        "error_type": "SUBJECT_VERB"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_BASE_FORM",
+          "severity": "MINOR",
+          "description": "Possible agreement error — use the base form here.",
+          "location": [
+            5,
+            10
+          ]
+        }
+      ],
+      "execution_time": 0.02454090118408203
+    },
+    {
+      "case": {
+        "source": "Je vois un éléphant",
+        "translation": "I see a elephant",
+        "expected_errors": 1,
+        "category": "grammar_article",
+        "error_type": "ARTICLE"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_EN_A_VS_AN",
+          "severity": "MINOR",
+          "description": "Use “an” instead of ‘a’ if the following word starts with a vowel sound, e.g. ‘an article’, ‘an hour’.",
+          "location": [
+            6,
+            7
+          ]
+        }
+      ],
+      "execution_time": 0.024788856506347656
+    },
+    {
+      "case": {
+        "source": "C'est une pomme",
+        "translation": "It is an apple",
+        "expected_errors": 0,
+        "category": "grammar_article"
+      },
+      "errors": [],
+      "execution_time": 0.02354884147644043
+    },
+    {
+      "case": {
+        "source": "Il y a un homme",
+        "translation": "There is an man",
+        "expected_errors": 1,
+        "category": "grammar_article",
+        "error_type": "ARTICLE"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_EN_A_VS_AN",
+          "severity": "MINOR",
+          "description": "Use “a” instead of ‘an’ if the following word doesn’t start with a vowel sound, e.g. ‘a sentence’, ‘a university’.",
+          "location": [
+            9,
+            11
+          ]
+        }
+      ],
+      "execution_time": 0.027311086654663086
+    },
+    {
+      "case": {
+        "source": "Le chien est grand",
+        "translation": "The dog is beutiful",
+        "expected_errors": 1,
+        "category": "spelling",
+        "error_type": "SPELLING"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_MORFOLOGIK_RULE_EN_US",
+          "severity": "MINOR",
+          "description": "Possible spelling mistake found.",
+          "location": [
+            11,
+            19
+          ]
+        }
+      ],
+      "execution_time": 0.0815272331237793
+    },
+    {
+      "case": {
+        "source": "Je mange une pomme",
+        "translation": "I eat an aple",
+        "expected_errors": 1,
+        "category": "spelling",
+        "error_type": "SPELLING"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_MORFOLOGIK_RULE_EN_US",
+          "severity": "MINOR",
+          "description": "Possible spelling mistake found.",
+          "location": [
+            9,
+            13
+          ]
+        }
+      ],
+      "execution_time": 0.049501895904541016
+    },
+    {
+      "case": {
+        "source": "Je suis allé à Paris hier",
+        "translation": "I go to Paris yesterday",
+        "expected_errors": 1,
+        "category": "grammar_tense",
+        "error_type": "TENSE"
+      },
+      "errors": [],
+      "execution_time": 0.029119014739990234
+    },
+    {
+      "case": {
+        "source": "Il mangera demain",
+        "translation": "He eats tomorrow",
+        "expected_errors": 1,
+        "category": "grammar_tense",
+        "error_type": "TENSE"
+      },
+      "errors": [],
+      "execution_time": 0.039354801177978516
+    },
+    {
+      "case": {
+        "source": "Il va à l'école avec un ami",
+        "translation": "He go to school with a friend",
+        "expected_errors": 1,
+        "category": "grammar_multiple",
+        "error_type": "SUBJECT_VERB"
+      },
+      "errors": [
+        {
+          "category": "fluency",
+          "subcategory": "english_HE_VERB_AGR",
+          "severity": "MAJOR",
+          "description": "The pronoun ‘He’ is usually used with a third-person or a past tense verb.",
+          "location": [
+            3,
+            5
+          ]
+        }
+      ],
+      "execution_time": 0.05719804763793945
+    },
+    {
+      "case": {
+        "source": "L'algorithme optimise les performances",
+        "translation": "The algorithm optimizes performance",
+        "expected_errors": 0,
+        "category": "technical"
+      },
+      "errors": [],
+      "execution_time": 0.05648493766784668
+    },
+    {
+      "case": {
+        "source": "Le serveur traite les requêtes",
+        "translation": "The server process requests",
+        "expected_errors": 1,
+        "category": "technical",
+        "error_type": "SUBJECT_VERB"
+      },
+      "errors": [],
+      "execution_time": 0.05105876922607422
+    },
+    {
+      "case": {
+        "source": "Achetez maintenant et économisez",
+        "translation": "Buy now and save money",
+        "expected_errors": 0,
+        "category": "marketing"
+      },
+      "errors": [],
+      "execution_time": 0.055084943771362305
+    },
+    {
+      "case": {
+        "source": "Offre limitée dans le temps",
+        "translation": "Limited time offer",
+        "expected_errors": 0,
+        "category": "marketing"
+      },
+      "errors": [],
+      "execution_time": 0.04763007164001465
+    },
+    {
+      "case": {
+        "source": "Quand il pleut, je reste à la maison",
+        "translation": "When it rains, I stay at home",
+        "expected_errors": 0,
+        "category": "complex"
+      },
+      "errors": [],
+      "execution_time": 0.043624162673950195
+    },
+    {
+      "case": {
+        "source": "Si j'avais su, je serais venu",
+        "translation": "If I had known, I would have come",
+        "expected_errors": 0,
+        "category": "complex"
+      },
+      "errors": [],
+      "execution_time": 0.03330707550048828
+    },
+    {
+      "case": {
+        "source": "OK",
+        "translation": "OK",
+        "expected_errors": 0,
+        "category": "edge_case"
+      },
+      "errors": [],
+      "execution_time": 0.02762317657470703
+    },
+    {
+      "case": {
+        "source": "2025",
+        "translation": "2025",
+        "expected_errors": 0,
+        "category": "edge_case"
+      },
+      "errors": [],
+      "execution_time": 0.023383140563964844
+    }
+  ],
+  "execution_times": [
+    4.216016054153442,
+    0.08414006233215332,
+    0.035022735595703125,
+    0.030694246292114258,
+    0.02887105941772461,
+    0.0373687744140625,
+    0.026721954345703125,
+    0.02454090118408203,
+    0.024788856506347656,
+    0.02354884147644043,
+    0.027311086654663086,
+    0.0815272331237793,
+    0.049501895904541016,
+    0.029119014739990234,
+    0.039354801177978516,
+    0.05719804763793945,
+    0.05648493766784668,
+    0.05105876922607422,
+    0.055084943771362305,
+    0.04763007164001465,
+    0.043624162673950195,
+    0.03330707550048828,
+    0.02762317657470703,
+    0.023383140563964844
+  ],
+  "metrics": {
+    "precision": 1.0,
+    "recall": 0.7272727272727273,
+    "f1_score": 0.8421052631578948,
+    "accuracy": 0.875,
+    "false_positive_rate": 0.0,
+    "avg_execution_time": 0.21474674344062805
+  },
+  "decision": "✅ PROCEED - Create EnglishFluencyAgent",
+  "recommendation": "Excellent performance! Proceed with agent creation."
+}
