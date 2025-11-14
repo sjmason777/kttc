@@ -99,6 +99,7 @@ jobs:
 
     permissions:
       contents: write  # IMPORTANT: mandatory for making GitHub Releases
+      id-token: write  # IMPORTANT: mandatory for Sigstore signing
 
     steps:
       - name: Download all the dists
