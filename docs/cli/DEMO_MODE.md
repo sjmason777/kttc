@@ -1,19 +1,26 @@
 # 🎭 KTTC Demo Mode
 
-Test the CLI without spending tokens on API calls.
+Test the **Smart CLI** without spending tokens on API calls!
 
 ---
 
 ## What is Demo Mode?
 
-Demo mode allows you to test KTTC CLI commands without making real API calls to LLM providers. It uses simulated responses that mimic real LLM outputs, so you can:
+Demo mode lets you test KTTC's new **Hybrid Format** without making real API calls. It uses simulated responses that mimic real LLM outputs.
 
-- ✅ Test CLI features and UI
-- ✅ Verify file paths and arguments
-- ✅ See how the output looks
-- ✅ Learn command syntax
-- ✅ **Save money** - No API token usage!
-- ℹ️ **Note:** Extension status is always shown, regardless of demo mode
+### ✅ Perfect for:
+- Testing the **smart auto-detection** features
+- Verifying file paths and arguments
+- Seeing how the beautiful UI looks
+- Learning the new simplified syntax
+- **Saving money** - Zero API token usage!
+- Testing smart defaults (routing, glossary, auto-format)
+
+### 🎯 New in Hybrid Format:
+- Auto-detects mode (single/compare/batch)
+- Smart routing enabled by default
+- Auto-glossary detection
+- Auto-format from file extension
 
 ---
 
@@ -23,11 +30,11 @@ Add the `--demo` flag to any `kttc check` command:
 
 ```bash
 kttc check \
-  --demo \
-  --source examples/cli/source_en.txt \
-  --translation examples/cli/translation_ru_good.txt \
+  examples/cli/source_en.txt \
+  examples/cli/translation_ru_good.txt \
   --source-lang en \
   --target-lang ru \
+  --demo \
   --verbose
 ```
 
@@ -48,48 +55,64 @@ kttc check \
 
 ## Use Cases
 
-### 1. Testing CLI Installation
+### 1. Test Auto-Detection (New!)
 
 ```bash
-# Quick test that everything works
-kttc check --demo \
-  --source examples/cli/source_en.txt \
-  --translation examples/cli/translation_ru_good.txt \
-  --source-lang en --target-lang ru
-```
-
-### 2. Learning Command Syntax
-
-```bash
-# Try different flags without API cost
-kttc check --demo \
-  --source my_source.txt \
-  --translation my_translation.txt \
+# Test single file mode
+kttc check source.txt translation.txt \
   --source-lang en --target-lang ru \
-  --threshold 90 \
-  --verbose
-```
+  --demo
 
-### 3. Testing File Paths
-
-```bash
-# Verify your files are loaded correctly
-kttc check --demo \
-  --source path/to/source.txt \
-  --translation path/to/translation.txt \
-  --source-lang en --target-lang es \
-  --verbose  # Shows file loading details
-```
-
-### 4. UI/Output Testing
-
-```bash
-# See how verbose output looks
-kttc check --demo \
-  --source examples/cli/source_en.txt \
-  --translation examples/cli/translation_ru_good.txt \
+# Test compare mode (auto-detected!)
+kttc check source.txt trans1.txt trans2.txt \
   --source-lang en --target-lang ru \
-  --verbose
+  --demo
+
+# Test batch mode (auto-detected!)
+kttc check translations.csv --demo
+```
+
+### 2. Test Smart Defaults
+
+```bash
+# See smart routing in action
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --demo --verbose
+
+# Output shows:
+# 🎯 Mode: single
+# 📚 Glossary: base  ← Auto-detected!
+# 🧠 Smart routing: enabled ← Default!
+```
+
+### 3. Test Auto-Format Detection
+
+```bash
+# HTML output (auto-detected from .html)
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --output report.html \
+  --demo
+
+# Markdown output (auto-detected from .md)
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --output report.md \
+  --demo
+```
+
+### 4. Test Disabling Smart Features
+
+```bash
+# Turn off smart defaults
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --no-smart-routing \
+  --glossary none \
+  --demo --verbose
+
+# Output shows features disabled
 ```
 
 ---
@@ -134,8 +157,9 @@ Use real API calls (without `--demo`) when you need:
 
 ### Demo Mode
 ```bash
-kttc check --demo --source file.txt --translation trans.txt \
-  --source-lang en --target-lang ru
+kttc check file.txt trans.txt \
+  --source-lang en --target-lang ru \
+  --demo
 ```
 **Cost:** $0.00 (no API calls)
 
@@ -144,7 +168,7 @@ kttc check --demo --source file.txt --translation trans.txt \
 # Using Claude Haiku (cheapest Anthropic model)
 export KTTC_DEFAULT_MODEL=claude-3-5-haiku-20241022
 
-kttc check --source file.txt --translation trans.txt \
+kttc check file.txt trans.txt \
   --source-lang en --target-lang ru \
   --provider anthropic
 ```
@@ -156,15 +180,15 @@ kttc check --source file.txt --translation trans.txt \
 
 ```bash
 # Demo mode - no API calls
-kttc check --demo [options...]
+kttc check SOURCE TRANSLATION [OPTIONS] --demo
 
 # Real mode - uses configured provider
-kttc check [options...]
+kttc check SOURCE TRANSLATION [OPTIONS]
 
 # Test different providers in demo mode
-kttc check --demo --provider openai [options...]
-kttc check --demo --provider anthropic [options...]
-kttc check --demo --provider gigachat [options...]
+kttc check SOURCE TRANSLATION --provider openai --demo [OPTIONS]
+kttc check SOURCE TRANSLATION --provider anthropic --demo [OPTIONS]
+kttc check SOURCE TRANSLATION --provider gigachat --demo [OPTIONS]
 ```
 
 ---

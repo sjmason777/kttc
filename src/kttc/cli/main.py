@@ -34,7 +34,7 @@ from rich.table import Table
 from kttc import __version__
 from kttc.agents import AgentOrchestrator
 from kttc.cli.commands.benchmark import run_benchmark
-from kttc.cli.commands.compare import run_compare
+from kttc.cli.commands.compare import run_compare as _run_compare_command
 from kttc.cli.commands.glossary import glossary_app
 from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter
 from kttc.cli.ui import (
@@ -95,16 +95,167 @@ def main(
     pass
 
 
+def _detect_check_mode(
+    source: str, translations: list[str] | None
+) -> tuple[str, dict[str, str | list[str]]]:
+    """Detect which mode to run check command in.
+
+    Returns:
+        tuple: (mode, params) where mode is 'single', 'compare', or 'batch'
+               and params contains mode-specific parameters
+    """
+    source_path = Path(source)
+
+    # Check if source is CSV/JSON/JSONL file (batch mode)
+    if source_path.is_file() and source_path.suffix.lower() in [".csv", ".json", ".jsonl"]:
+        return "batch_file", {"file_path": source}
+
+    # Check if source is directory (batch mode)
+    if source_path.is_dir():
+        if not translations or len(translations) != 1:
+            raise ValueError(
+                "Directory mode requires exactly one translation directory. "
+                "Usage: kttc check source_dir/ translation_dir/ --source-lang en --target-lang ru"
+            )
+        trans_path = Path(translations[0])
+        if not trans_path.is_dir():
+            raise ValueError(
+                f"Translation path must be a directory when source is a directory: {translations[0]}"
+            )
+        return "batch_dir", {"source_dir": source, "translation_dir": translations[0]}
+
+    # Single file mode
+    if not source_path.is_file():
+        raise FileNotFoundError(f"Source file not found: {source}")
+
+    # Check number of translations
+    if not translations or len(translations) == 0:
+        raise ValueError("At least one translation file is required")
+
+    if len(translations) == 1:
+        return "single", {"source": source, "translation": translations[0]}
+    else:
+        # Multiple translations - compare mode
+        return "compare", {"source": source, "translations": translations}
+
+
+def _auto_detect_glossary(glossary: str | None) -> str | None:
+    """Auto-detect glossary to use.
+
+    Args:
+        glossary: User-specified glossary ('auto', 'none', or comma-separated names)
+
+    Returns:
+        Glossary string to use, or None
+    """
+    if glossary == "none":
+        return None
+
+    if glossary == "auto":
+        # Check if base glossary exists
+        base_paths = [
+            Path("glossaries/base.json"),  # Project directory
+            Path.home() / ".kttc/glossaries/base.json",  # User directory
+        ]
+        for path in base_paths:
+            if path.exists():
+                return "base"
+        return None
+
+    # User specified glossaries
+    return glossary
+
+
+def _auto_detect_format(output: str | None, format: str | None) -> str:
+    """Auto-detect output format.
+
+    Args:
+        output: Output file path
+        format: User-specified format (overrides auto-detection)
+
+    Returns:
+        Format string: 'text', 'json', 'markdown', or 'html'
+    """
+    if format:
+        return format
+
+    if output:
+        suffix = Path(output).suffix.lower()
+        if suffix == ".json":
+            return "json"
+        elif suffix in [".md", ".markdown"]:
+            return "markdown"
+        elif suffix in [".html", ".htm"]:
+            return "html"
+
+    return "text"
+
+
+async def _run_compare_mode(
+    source: str,
+    translations: list[str],
+    source_lang: str | None,
+    target_lang: str | None,
+    threshold: float,
+    provider: str | None,
+    glossary: str | None,
+    verbose: bool,
+    demo: bool = False,
+) -> None:
+    """Wrapper for compare mode called from check command.
+
+    Args:
+        source: Source file path
+        translations: List of translation file paths
+        source_lang: Source language code
+        target_lang: Target language code
+        threshold: Quality threshold
+        provider: LLM provider
+        glossary: Glossary to use
+        verbose: Verbose output
+        demo: Demo mode
+    """
+    # Check required languages
+    if not source_lang or not target_lang:
+        console.print("[red]Error: --source-lang and --target-lang required for compare mode[/red]")
+        raise typer.Exit(code=1)
+
+    # Call the existing compare command
+    await _run_compare_command(
+        source=source,
+        translations=translations,
+        source_lang=source_lang,
+        target_lang=target_lang,
+        threshold=threshold,
+        provider=provider,
+        verbose=verbose,
+    )
+
+
 @app.command()
 def check(
-    source: str = typer.Argument(..., help="Source text file path"),
-    translation: str = typer.Argument(..., help="Translation file path"),
-    source_lang: str = typer.Option(..., "--source-lang", help="Source language code (e.g., 'en')"),
-    target_lang: str = typer.Option(..., "--target-lang", help="Target language code (e.g., 'es')"),
+    source: str = typer.Argument(..., help="Source text file path, directory, or CSV/JSON file"),
+    translations: list[str] = typer.Argument(
+        None, help="Translation file path(s) - can specify multiple for comparison"
+    ),
+    source_lang: str | None = typer.Option(
+        None, "--source-lang", help="Source language code (e.g., 'en') - auto-detected from file"
+    ),
+    target_lang: str | None = typer.Option(
+        None, "--target-lang", help="Target language code (e.g., 'es') - auto-detected from file"
+    ),
     threshold: float = typer.Option(95.0, "--threshold", help="Minimum MQM score to pass (0-100)"),
-    output: str | None = typer.Option(None, "--output", "-o", help="Output file path (JSON)"),
-    format: str = typer.Option(
-        "text", "--format", "-f", help="Output format: text, json, or markdown"
+    output: str | None = typer.Option(
+        None,
+        "--output",
+        "-o",
+        help="Output file path - format auto-detected from extension (.json/.html/.md)",
+    ),
+    format: str | None = typer.Option(
+        None,
+        "--format",
+        "-f",
+        help="Output format (overrides auto-detection): text, json, markdown, or html",
     ),
     provider: str | None = typer.Option(
         None, "--provider", help="LLM provider (openai or anthropic)"
@@ -121,7 +272,9 @@ def check(
         help="Correction level: light (critical/major) or full (all errors)",
     ),
     smart_routing: bool = typer.Option(
-        False, "--smart-routing", help="Enable complexity-based smart routing to optimize costs"
+        True,
+        "--smart-routing/--no-smart-routing",
+        help="Enable complexity-based smart routing to optimize costs (default: enabled)",
     ),
     show_routing_info: bool = typer.Option(
         False, "--show-routing-info", help="Display routing decision and complexity score"
@@ -133,10 +286,10 @@ def check(
         0.7, "--complex-threshold", help="Complexity threshold for complex texts (0.0-1.0)"
     ),
     glossary: str | None = typer.Option(
-        None,
+        "auto",
         "--glossary",
         "-g",
-        help="Glossaries to use (comma-separated, e.g., 'base,medical')",
+        help="Glossaries to use (comma-separated, e.g., 'base,medical'), 'auto' to auto-detect, or 'none' to disable",
     ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
     demo: bool = typer.Option(
@@ -144,17 +297,40 @@ def check(
     ),
 ) -> None:
     """
-    Check translation quality.
+    Smart translation quality checker with auto-detection.
 
-    Evaluates a translation using multi-agent QA system and provides
-    MQM score, error annotations, and pass/fail status.
+    🎯 AUTO-DETECTS MODE:
+    - Single file: Simple quality check
+    - Multiple translations: Automatic comparison
+    - Directory/CSV/JSON: Batch processing
 
-    Optionally can auto-correct detected errors using AI post-editing.
+    🚀 SMART DEFAULTS (can disable):
+    - Smart routing enabled (--no-smart-routing to disable)
+    - Auto-detects glossary 'base' if exists
+    - Auto-detects output format from file extension
 
-    Example:
-        kttc check source.txt trans.txt \\
-                   --source-lang en --target-lang es --threshold 95 \\
-                   --auto-correct --correction-level light
+    📝 EXAMPLES:
+
+    # Single check
+    kttc check source.txt translation.txt --source-lang en --target-lang ru
+
+    # Compare multiple translations (auto-detected)
+    kttc check source.txt trans1.txt trans2.txt trans3.txt \\
+               --source-lang en --target-lang ru
+
+    # Batch process directory (auto-detected)
+    kttc check source_dir/ translation_dir/ --source-lang en --target-lang ru
+
+    # Batch process CSV (auto-detected, langs from file)
+    kttc check translations.csv
+
+    # HTML report (auto-detected from extension)
+    kttc check source.txt trans.txt --source-lang en --target-lang ru \\
+               --output report.html
+
+    # Disable smart features
+    kttc check source.txt trans.txt --source-lang en --target-lang ru \\
+               --no-smart-routing --glossary none
     """
     # Check models with loader
     from kttc.cli.ui import check_models_with_loader
@@ -162,30 +338,116 @@ def check(
     if not check_models_with_loader():
         raise typer.Exit(code=1)
 
-    # Run async function
     try:
-        asyncio.run(
-            _check_async(
-                source,
-                translation,
-                source_lang,
-                target_lang,
-                threshold,
-                output,
-                format,
-                provider,
-                auto_select_model,
-                auto_correct,
-                correction_level,
-                smart_routing,
-                show_routing_info,
-                simple_threshold,
-                complex_threshold,
-                glossary,
-                verbose,
-                demo,
+        # 🎯 Auto-detect mode
+        mode, mode_params = _detect_check_mode(source, translations)
+
+        # 🚀 Auto-detect glossary
+        detected_glossary = _auto_detect_glossary(glossary)
+
+        # 📄 Auto-detect output format
+        detected_format = _auto_detect_format(output, format)
+
+        # Show auto-detection info if verbose
+        if verbose:
+            console.print(f"[dim]🎯 Mode: {mode}[/dim]")
+            if detected_glossary:
+                console.print(f"[dim]📚 Glossary: {detected_glossary}[/dim]")
+            if smart_routing:
+                console.print("[dim]🧠 Smart routing: enabled[/dim]")
+            console.print(f"[dim]📄 Output format: {detected_format}[/dim]\n")
+
+        # Route to appropriate handler
+        if mode == "single":
+            # Single file check
+            # Check required languages
+            if not source_lang or not target_lang:
+                console.print("[red]Error: --source-lang and --target-lang are required[/red]")
+                raise typer.Exit(code=1)
+
+            asyncio.run(
+                _check_async(
+                    str(mode_params["source"]),
+                    str(mode_params["translation"]),
+                    source_lang,
+                    target_lang,
+                    threshold,
+                    output,
+                    detected_format,
+                    provider,
+                    auto_select_model,
+                    auto_correct,
+                    correction_level,
+                    smart_routing,
+                    show_routing_info,
+                    simple_threshold,
+                    complex_threshold,
+                    detected_glossary,
+                    verbose,
+                    demo,
+                )
             )
-        )
+        elif mode == "compare":
+            # Compare mode - delegate to compare command logic
+            translations_list = mode_params["translations"]
+            assert isinstance(
+                translations_list, list
+            ), "translations must be a list in compare mode"
+
+            asyncio.run(
+                _run_compare_mode(
+                    str(mode_params["source"]),
+                    translations_list,
+                    source_lang,
+                    target_lang,
+                    threshold,
+                    provider,
+                    detected_glossary,
+                    verbose,
+                    demo,
+                )
+            )
+        elif mode == "batch_file":
+            # Batch file mode
+            asyncio.run(
+                _batch_from_file_async(
+                    str(mode_params["file_path"]),
+                    threshold,
+                    output or "report.json",
+                    4,  # parallel workers
+                    None,  # batch_size
+                    provider,
+                    smart_routing,
+                    False,  # show_cost_savings
+                    True,  # show_progress
+                    detected_glossary,
+                    verbose,
+                    demo,
+                )
+            )
+        elif mode == "batch_dir":
+            # Batch directory mode
+            if not source_lang or not target_lang:
+                console.print(
+                    "[red]Error: --source-lang and --target-lang required for directory mode[/red]"
+                )
+                raise typer.Exit(code=1)
+
+            asyncio.run(
+                _batch_async(
+                    str(mode_params["source_dir"]),
+                    str(mode_params["translation_dir"]),
+                    source_lang,
+                    target_lang,
+                    threshold,
+                    output or "report.json",
+                    4,  # parallel workers
+                    provider,
+                    verbose,
+                    demo,
+                )
+            )
+
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
         raise typer.Exit(code=130)
@@ -1783,7 +2045,7 @@ def compare(
 
     try:
         asyncio.run(
-            run_compare(
+            _run_compare_command(
                 source=source,
                 translations=translations,
                 source_lang=source_lang,

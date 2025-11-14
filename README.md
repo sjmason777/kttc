@@ -88,11 +88,10 @@ export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
 
 ### 3. Check Translation Quality
 ```bash
-# Basic quality check
+# 🎯 Smart check - auto-detects what to do!
 kttc check source.txt translation.txt \
   --source-lang en \
-  --target-lang es \
-  --threshold 95
+  --target-lang es
 
 # Output:
 # ✅ MQM Score: 96.5 (PASS - Excellent Quality)
@@ -101,11 +100,50 @@ kttc check source.txt translation.txt \
 # ✓ Quality threshold met (≥95.0)
 ```
 
-That's it! KTTC works out of the box with core metrics.
+**🚀 Smart Defaults (enabled automatically):**
+- ✅ **Smart routing** - chooses cheaper models for simple texts (saves 💰)
+- ✅ **Auto-glossary** - uses `base` glossary if exists
+- ✅ **Auto-format** - detects output format from file extension
+
+That's it! KTTC works out of the box with smart defaults.
 
 ## Advanced Usage
 
-### Auto-Correct Detected Errors
+### 🎯 Auto-Detect Mode (Hybrid Format)
+
+The `check` command automatically detects what you want to do:
+
+```bash
+# ✅ Single file → quality check
+kttc check source.txt translation.txt --source-lang en --target-lang ru
+
+# ✅ Multiple translations → automatic comparison
+kttc check source.txt trans1.txt trans2.txt trans3.txt \
+  --source-lang en --target-lang ru
+
+# ✅ CSV/JSON file → batch processing
+kttc check translations.csv
+
+# ✅ Directory → batch processing
+kttc check source_dir/ translation_dir/ \
+  --source-lang en --target-lang ru
+
+# ✅ HTML/MD output → auto-format detection
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --output report.html  # Automatically generates HTML!
+```
+
+### 🎨 Disable Smart Features
+```bash
+# Turn off smart defaults if needed
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --no-smart-routing \      # Disable smart model selection
+  --glossary none           # Disable auto-glossary
+```
+
+### 🔧 Auto-Correct Detected Errors
 ```bash
 kttc check source.txt translation.txt \
   --source-lang en \
@@ -114,49 +152,33 @@ kttc check source.txt translation.txt \
   --correction-level light  # or 'full'
 ```
 
-### Smart Routing (Complexity-Based Model Selection)
+### 📊 Show Routing Information
 ```bash
-# Automatically route to optimal model based on text complexity
+# See which model was selected and why
 kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang ru \
-  --smart-routing \
-  --show-routing-info  # Show complexity analysis
-```
-
-### Glossary Support
-```bash
-# Use custom glossaries for terminology validation
-kttc check source.txt translation.txt \
-  --source-lang en \
-  --target-lang ru \
-  --glossary base,medical  # Comma-separated glossary names
-```
-
-### Intelligent Model Selection
-```bash
-# Automatically select best model for language pair
-kttc check source.txt translation.txt \
-  --source-lang en \
-  --target-lang ru \
-  --auto-select-model \
+  --show-routing-info \
   --verbose
 ```
 
-### Batch Processing
+### 📚 Custom Glossaries
 ```bash
-# Process multiple translations from CSV/JSON/JSONL
+# Smart default: uses 'base' automatically if exists
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru
+
+# Use specific glossaries
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --glossary base,medical,technical
+```
+
+### 🚀 Legacy Batch Command (still works)
+```bash
+# You can still use dedicated batch command
 kttc batch --file translations.csv \
   --show-progress \
-  --smart-routing \
-  --output report.json
-
-# Process from directories
-kttc batch \
-  --source-dir ./source \
-  --translation-dir ./translations \
-  --source-lang en \
-  --target-lang es \
   --output report.json
 ```
 

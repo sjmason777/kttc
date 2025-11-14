@@ -1,58 +1,81 @@
-# KTTC CLI - Beautiful Terminal Interface
+# KTTC CLI - Smart & Beautiful Terminal Interface
 
 ## Overview
 
-KTTC now features a beautiful, modern CLI built with Rich and Typer, inspired by industry-leading tools like Strix and Claude Code.
+KTTC features a modern, intelligent CLI with **Hybrid Format** - one smart command that auto-detects what you want to do!
 
-## Key Features
+## ✨ What's New in Hybrid Format
 
-### ✨ Beautiful Visual Output
+### 🎯 Smart `check` Command
+One command to rule them all! Auto-detects mode based on your input:
+- **Single file** → Quality check
+- **Multiple files** → Comparison mode
+- **CSV/JSON** → Batch processing
+- **Directory** → Batch processing
 
-- **Rich panels** with color-coded status indicators
-- **Tables** with syntax highlighting and Unicode borders
-- **Progress bars** for long-running operations
-- **Spinners** for real-time feedback
-- **Error details** with severity color coding
-
-### 🚀 Powerful Commands
-
-1. **`check`** - Quality check single translation
-2. **`translate`** - Translate with auto-refinement
-3. **`batch`** - Process multiple files in parallel
-4. **`benchmark`** - Compare LLM providers
-5. **`compare`** - Compare multiple translations
-6. **`report`** - Generate formatted reports
+### 🚀 Smart Defaults (Auto-Enabled)
+- ✅ **Smart routing** - Saves money by using cheaper models for simple texts
+- ✅ **Auto-glossary** - Automatically uses `base` glossary if it exists
+- ✅ **Auto-format** - Detects output format from file extension (.html, .md, .json)
 
 ### 🎨 User Experience
-
-- **Auto-completion** support
-- **Detailed help** for every command
-- **Colored output** (green=pass, red=fail)
-- **Verbose mode** for debugging
-- **CI/CD friendly** (exit codes, JSON output)
+- **Beautiful visuals** - Rich panels, tables, and progress bars
+- **Auto-detection** - No need to remember which command to use
+- **Smart defaults** - Works great out of the box
+- **Backwards compatible** - Old commands (`batch`, `compare`) still work
+- **CI/CD friendly** - Exit codes and JSON output
 
 ## Quick Start
 
 ### Installation
 
 ```bash
-# Install with dev dependencies
+# Install KTTC
+pip install kttc
+
+# Or for development
 python3.11 -m pip install -e ".[dev]"
 
 # Verify installation
 kttc --help
 ```
 
-### First Command
+### Your First Command
 
 ```bash
-# Check translation quality
+# 🎯 Smart check - it figures out what you want!
 kttc check \
-  --source examples/cli/source_en.txt \
-  --translation examples/cli/translation_ru_good.txt \
+  examples/cli/source_en.txt \
+  examples/cli/translation_ru_good.txt \
   --source-lang en \
-  --target-lang ru \
-  --verbose
+  --target-lang ru
+
+# That's it! Smart routing, glossary auto-detection enabled by default
+```
+
+### Compare Translations (Auto-Detected)
+
+```bash
+# Just add more files - compare mode activates automatically!
+kttc check \
+  examples/cli/source_en.txt \
+  examples/cli/translation_ru_good.txt \
+  examples/cli/translation_ru_bad.txt \
+  --source-lang en \
+  --target-lang ru
+
+# Shows comparison table automatically
+```
+
+### Batch Process (Auto-Detected)
+
+```bash
+# CSV file? Batch mode activated!
+kttc check examples/batch/translations.csv
+
+# Or use directories
+kttc check source_dir/ translation_dir/ \
+  --source-lang en --target-lang ru
 ```
 
 ### Output Example
@@ -110,49 +133,39 @@ kttc/
 
 ## Command Overview
 
-### 1. check - Quality Check
+### 🎯 check - Smart Quality Check (Hybrid)
+
+The `check` command is your **one-stop solution** - it auto-detects the mode:
 
 ```bash
-kttc check --source src.txt --translation tgt.txt \
-  --source-lang en --target-lang ru --threshold 95 --verbose
+# Single file check
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru
+
+# Compare mode (2+ translations) - AUTO-DETECTED!
+kttc check source.txt trans1.txt trans2.txt \
+  --source-lang en --target-lang ru
+
+# Batch mode (CSV) - AUTO-DETECTED!
+kttc check translations.csv
+
+# Batch mode (directories) - AUTO-DETECTED!
+kttc check source_dir/ trans_dir/ \
+  --source-lang en --target-lang ru
 ```
 
-**Features:**
-- MQM scoring
-- Error categorization
-- Auto-correction
-- Multiple output formats
-
-### 2. benchmark - Provider Comparison
-
-```bash
-kttc benchmark --source text.txt \
-  --source-lang en --target-lang ru \
-  --providers gigachat,openai,anthropic \
-  --reference ref.txt
-```
+**🚀 Smart Defaults (Auto-Enabled):**
+- ✅ Smart routing (--no-smart-routing to disable)
+- ✅ Auto-glossary detection (--glossary none to disable)
+- ✅ Auto-format from extension (--format to override)
 
 **Features:**
-- COMET + MQM scoring
-- Performance metrics
-- Cost comparison
-- Best provider recommendation
+- MQM scoring with multi-agent QA
+- Error categorization (critical/major/minor)
+- Auto-correction support
+- Multiple output formats (text/json/markdown/html)
 
-### 3. compare - Translation Comparison
-
-```bash
-kttc compare --source text.txt \
-  --translation trans1.txt --translation trans2.txt \
-  --source-lang en --target-lang ru --verbose
-```
-
-**Features:**
-- Side-by-side comparison
-- Quality ranking
-- Detailed error analysis
-- Best translation selection
-
-### 4. translate - AI Translation
+### 2. translate - AI Translation with TEaR Loop
 
 ```bash
 kttc translate --text "Hello world" \
@@ -162,17 +175,63 @@ kttc translate --text "Hello world" \
 
 **Features:**
 - TEaR loop (Translate-Estimate-Refine)
-- Iterative improvement
-- Quality convergence
-- Auto-stop on threshold
+- Iterative quality improvement
+- Auto-stop when threshold met
+- Built-in quality validation
 
-### 5. batch - Batch Processing
+### 3. glossary - Manage Translation Glossaries
+
+```bash
+# List available glossaries
+kttc glossary list
+
+# Show glossary contents
+kttc glossary show base
+
+# Create new glossary
+kttc glossary create my-terms --from-csv terms.csv
+```
+
+**Features:**
+- Multiple glossary support
+- Auto-detection in check command
+- CSV/JSON import/export
+- Version control friendly
+
+---
+
+## 🔄 Legacy Commands (Still Available)
+
+These commands still work for backwards compatibility. However, we recommend using the smart `check` command instead.
+
+### compare - Dedicated Comparison
+
+```bash
+kttc compare --source text.txt \
+  --translation trans1.txt --translation trans2.txt \
+  --source-lang en --target-lang ru
+```
+
+💡 **New way:** `kttc check text.txt trans1.txt trans2.txt --source-lang en --target-lang ru`
+
+**Features:**
+- Side-by-side comparison
+- Quality ranking
+- Detailed error analysis
+- Best translation selection
+
+### batch - Dedicated Batch Processing
 
 ```bash
 kttc batch --source-dir ./sources \
   --translation-dir ./translations \
   --source-lang en --target-lang ru --parallel 8
+
+# Or with file
+kttc batch --file translations.csv
 ```
+
+💡 **New way:** `kttc check translations.csv` or `kttc check source_dir/ trans_dir/`
 
 **Features:**
 - Parallel processing
@@ -180,17 +239,19 @@ kttc batch --source-dir ./sources \
 - Aggregated reports
 - CI/CD integration
 
-### 6. report - Report Generation
+### benchmark - Provider Comparison
 
 ```bash
-kttc report results.json --format html --output report.html
+kttc benchmark --source text.txt \
+  --source-lang en --target-lang ru \
+  --providers gigachat,openai,anthropic
 ```
 
 **Features:**
-- HTML reports
-- Markdown export
-- JSON data
-- Custom styling
+- COMET + MQM scoring
+- Performance metrics
+- Cost comparison
+- Best provider recommendation
 
 ## Configuration
 

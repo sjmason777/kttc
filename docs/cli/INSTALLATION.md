@@ -141,7 +141,7 @@ pip install --use-feature=fast-deps kttc[all]
 
 ```bash
 pip install kttc
-kttc check --source src.txt --translation tgt.txt \
+kttc check src.txt tgt.txt \
   --source-lang en --target-lang ru
 ```
 
@@ -157,8 +157,8 @@ kttc check --source src.txt --translation tgt.txt \
 pip install kttc[metrics]
 
 # First run downloads models (~5-10 min)
-kttc check --source src.txt --translation tgt.txt \
-  --source-lang en --target-lang ru --use-comet
+kttc check src.txt tgt.txt \
+  --source-lang en --target-lang ru
 
 # Subsequent runs are instant (models cached)
 ```
@@ -199,7 +199,7 @@ RUN pip install kttc[metrics] && \
     python -c "from comet import download_model; download_model('Unbabel/wmt22-comet-da')"
 
 # Run checks
-CMD kttc check --source /data/src.txt --translation /data/tgt.txt ...
+CMD kttc check /data/src.txt /data/tgt.txt --source-lang en --target-lang es
 ```
 
 **Time:** Build once, run fast
@@ -348,7 +348,7 @@ kttc --help
 # Test basic functionality
 echo "Hello" > test.txt
 echo "Привет" > test_ru.txt
-kttc check --source test.txt --translation test_ru.txt \
+kttc check test.txt test_ru.txt \
   --source-lang en --target-lang ru
 ```
 

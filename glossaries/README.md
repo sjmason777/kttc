@@ -11,7 +11,9 @@ Common programming and technical terms across all projects.
 
 **Usage:**
 ```bash
-kttc check --glossary base ...
+kttc check SOURCE TRANSLATION \
+  --source-lang en --target-lang ru \
+  --glossary base
 ```
 
 ### technical.json
@@ -21,7 +23,9 @@ Software development and DevOps terminology.
 
 **Usage:**
 ```bash
-kttc check --glossary base,technical ...
+kttc check SOURCE TRANSLATION \
+  --source-lang en --target-lang ru \
+  --glossary base,technical
 ```
 
 ## Creating Custom Glossaries
@@ -105,14 +109,22 @@ Glossaries are searched in this order:
 ## Example Workflow
 
 ```bash
-# Start with base terms
-kttc check --glossary base --source "The API endpoint..." --translation "..."
+# Create a test file with "The API endpoint..."
+echo "The API endpoint..." > source.txt
+echo "..." > translation.txt
+
+# Check with base terms
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --glossary base
 
 # Add project-specific terms
 kttc glossary create my-project --from-csv project-terms.csv
 
 # Use both
-kttc check --glossary base,my-project --source "..." --translation "..."
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang ru \
+  --glossary base,my-project
 
 # Share with team (commit to git)
 git add glossaries/my-project.json

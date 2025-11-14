@@ -66,8 +66,8 @@ Check the quality of a single translation:
 
 ```bash
 kttc check \
-  --source source.txt \
-  --translation translation.txt \
+  source.txt \
+  translation.txt \
   --source-lang en \
   --target-lang es \
   --threshold 95
@@ -102,13 +102,13 @@ kttc batch \
 Create a detailed quality report:
 
 ```bash
-kttc report \
-  --source source.txt \
-  --translation translation.txt \
-  --source-lang en \
-  --target-lang es \
-  --output report.html \
-  --format html
+# First, generate a JSON report from check command
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang es \
+  --output results.json --format json
+
+# Then generate HTML report from the JSON
+kttc report results.json --format html --output report.html
 ```
 
 ---
@@ -119,27 +119,30 @@ kttc report \
 
 Check translation quality for a single file pair.
 
+**Arguments:**
+- `source` (required): Path to source text file
+- `translation` (required): Path to translation file
+
 **Options:**
-- `--source`, `-s` (required): Path to source text file
-- `--translation`, `-t` (required): Path to translation file
 - `--source-lang` (required): Source language code (e.g., `en`, `es`, `fr`)
 - `--target-lang` (required): Target language code
 - `--threshold` (default: `95.0`): Quality threshold (MQM score)
-- `--provider`: LLM provider (`openai`, `anthropic`, `yandex`, `gigachat`)
+- `--provider`: LLM provider (`openai`, `anthropic`, `gigachat`)
 - `--output`, `-o`: Output file path (optional)
-- `--format`: Output format (`text`, `json`, `markdown`, `html`)
-- `--verbose`, `-v`: Enable verbose output
+- `--format`, `-f`: Output format (`text`, `json`, `markdown`)
+- `--verbose`: Enable verbose output
+- `--demo`: Demo mode (no API calls, simulated responses)
 
 **Example:**
 ```bash
 kttc check \
-  -s source.txt \
-  -t translation.txt \
+  source.txt \
+  translation.txt \
   --source-lang en \
   --target-lang es \
   --threshold 95 \
   --format json \
-  -o report.json
+  --output report.json
 ```
 
 **Exit Codes:**
@@ -181,26 +184,26 @@ kttc batch \
 
 ### `kttc report`
 
-Generate detailed quality assessment reports.
+Generate detailed quality assessment reports from QA results.
+
+**Arguments:**
+- `input_file` (required): Path to input report file (JSON)
 
 **Options:**
-- `--source`, `-s` (required): Path to source file
-- `--translation`, `-t` (required): Path to translation file
-- `--source-lang` (required): Source language code
-- `--target-lang` (required): Target language code
-- `--output`, `-o` (required): Output file path
-- `--format` (default: `html`): Report format (`json`, `markdown`, `html`)
-- `--provider`: LLM provider
+- `--format`, `-f` (default: `markdown`): Report format (`markdown`, `html`)
+- `--output`, `-o`: Output file path
 
 **Example:**
 ```bash
-kttc report \
-  -s source.txt \
-  -t translation.txt \
-  --source-lang en \
-  --target-lang es \
-  -o report.html \
-  --format html
+# First run check to generate JSON
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang es \
+  --output results.json --format json
+
+# Then generate formatted report
+kttc report results.json \
+  --format html \
+  --output report.html
 ```
 
 ### `kttc translate`
@@ -331,10 +334,12 @@ Different use cases require different quality thresholds:
 
 ```bash
 # Professional translation
-kttc check -s source.txt -t translation.txt --threshold 95
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang es --threshold 95
 
 # Internal docs
-kttc check -s source.txt -t translation.txt --threshold 90
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang es --threshold 90
 ```
 
 ### 2. Use Batch Processing for Multiple Files
@@ -366,8 +371,10 @@ Different providers have different strengths:
 
 ```bash
 kttc check \
-  -s source.txt \
-  -t translation.txt \
+  source.txt \
+  translation.txt \
+  --source-lang en \
+  --target-lang es \
   --provider anthropic
 ```
 
@@ -376,13 +383,14 @@ kttc check \
 Generate HTML reports for review:
 
 ```bash
-kttc report \
-  -s source.txt \
-  -t translation.txt \
-  --source-lang en \
-  --target-lang es \
-  -o report.html \
-  --format html
+# Generate JSON first
+kttc check source.txt translation.txt \
+  --source-lang en --target-lang es \
+  --output results.json --format json
+
+# Then generate HTML report
+kttc report results.json \
+  --format html --output report.html
 ```
 
 ### 5. Integrate with CI/CD
