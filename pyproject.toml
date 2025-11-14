@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kttc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
