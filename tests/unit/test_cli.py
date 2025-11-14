@@ -12,6 +12,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from typer.testing import CliRunner
 
+from kttc import __version__
 from kttc.cli.main import app
 from kttc.core.models import QAReport
 
@@ -51,7 +52,7 @@ class TestCLIBasics:
         # Assert
         assert result.exit_code == 0
         assert "KTTC version:" in result.stdout
-        assert "0.1.0" in result.stdout
+        assert __version__ in result.stdout
 
     def test_invalid_command_fails(self) -> None:
         """Test invalid command shows error."""
