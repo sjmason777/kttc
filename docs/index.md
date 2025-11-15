@@ -93,6 +93,7 @@ asyncio.run(check_quality())
 
 ## Links
 
+- [Documentation](https://kt.tc) - This site
 - [GitHub Repository](https://github.com/kttc-ai/kttc)
 - [PyPI Package](https://pypi.org/project/kttc/)
 - [Issue Tracker](https://github.com/kttc-ai/kttc/issues)

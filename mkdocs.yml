@@ -1,11 +1,17 @@
-site_name: KTTC - Kaggle Translation Task Checker
-site_description: A Python CLI tool for evaluating translation quality using various LLM providers
+site_name: KTTC - Knowledge Translation Transmutation Core
+site_description: Autonomous AI-powered translation quality assurance
 site_author: KTTC Contributors
-site_url: https://github.com/xopoiii/kttc
+site_url: https://kt.tc
 
-repo_name: xopoiii/kttc
-repo_url: https://github.com/xopoiii/kttc
+repo_name: kttc-ai/kttc
+repo_url: https://github.com/kttc-ai/kttc
 edit_uri: edit/main/docs/
+
+# Exclude old documentation structure to avoid conflicts
+exclude_docs: |
+  en/
+  ru/
+  zh/
 
 theme:
   name: material
