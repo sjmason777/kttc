@@ -38,7 +38,7 @@ from rich.progress import (
 )
 from rich.prompt import Confirm
 
-from kttc.cli.ui import console, print_error, print_info, print_success, print_warning
+from kttc.utils.console import console, print_error, print_info, print_success, print_warning
 
 # Optional dependency groups
 DependencyGroup = Literal["metrics", "webui", "benchmark"]

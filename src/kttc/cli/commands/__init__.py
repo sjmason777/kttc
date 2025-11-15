@@ -12,4 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""CLI commands package."""
+"""CLI subcommands."""
+
+# No public API - subcommands are registered directly with the main app
+__all__: list[str] = []

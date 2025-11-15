@@ -1557,7 +1557,7 @@ async def _translate_async(
     verbose: bool,
 ) -> None:
     """Async implementation of translate command using TEaR loop."""
-    from kttc.core.refinement import IterativeRefinement
+    from kttc.agents.refinement import IterativeRefinement
 
     # Load settings
     settings = get_settings()

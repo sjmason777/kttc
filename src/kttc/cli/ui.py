@@ -22,7 +22,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from rich.console import Console
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.table import Table
@@ -30,8 +29,26 @@ from rich.text import Text
 
 from kttc.core import QAReport
 
-# Global console instance
-console = Console()
+# Import and re-export console utilities for backward compatibility
+from kttc.utils.console import (
+    console,
+    print_error,
+    print_info,
+    print_success,
+    print_warning,
+)
+
+__all__ = [
+    "console",
+    "print_error",
+    "print_info",
+    "print_success",
+    "print_warning",
+    "print_header",
+    "print_startup_info",
+    "print_translation_preview",
+    "print_qa_report",
+]
 
 
 def print_header(title: str, subtitle: str | None = None) -> None:
@@ -624,40 +641,7 @@ def create_step_progress() -> Progress:
     )
 
 
-def print_success(message: str) -> None:
-    """Print a success message.
-
-    Args:
-        message: Success message to display
-    """
-    console.print(f"[bold green]✓[/bold green] {message}")
-
-
-def print_error(message: str) -> None:
-    """Print an error message.
-
-    Args:
-        message: Error message to display
-    """
-    console.print(f"[bold red]✗[/bold red] {message}")
-
-
-def print_warning(message: str) -> None:
-    """Print a warning message.
-
-    Args:
-        message: Warning message to display
-    """
-    console.print(f"[bold yellow]⚠[/bold yellow] {message}")
-
-
-def print_info(message: str) -> None:
-    """Print an info message.
-
-    Args:
-        message: Info message to display
-    """
-    console.print(f"[cyan]ℹ[/cyan] {message}")
+# Note: print_success, print_error, print_warning, print_info are now imported from kttc.utils.console
 
 
 def print_translation_preview(source: str, translation: str, max_length: int = 100) -> None:
