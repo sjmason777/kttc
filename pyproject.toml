@@ -40,10 +40,7 @@ dependencies = [
     "sacrebleu>=2.5.1",
     "mtdata>=0.4.3",
     # Mawo NLP (Russian)
-    "mawo-pymorphy3>=1.0.4",
-    "mawo-razdel>=1.0.6",
-    "mawo-slovnet>=1.0.7",
-    "mawo-natasha>=1.0.3",
+    "mawo-core[all]>=0.1.1",
     # Multi-language NLP
     "spacy>=3.8.0,<3.9.0",  # English, Chinese, and other languages
     "jieba>=0.42",  # Chinese word segmentation (lightweight)
@@ -138,6 +135,10 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["hanlp", "hanlp.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["mawo", "mawo.*", "mawo_grammar", "mawo_grammar.*"]
 ignore_missing_imports = true
 
 # Pytest configuration
