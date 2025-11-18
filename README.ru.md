@@ -95,7 +95,11 @@ kttc batch --file translations.csv              # Явная пакетная о
 kttc compare --source src.txt -t t1 -t t2      # Сравнение переводов
 kttc translate --text "Hello" --source-lang en --target-lang ru  # Перевод с QA
 kttc benchmark --source text.txt --providers openai,anthropic    # Бенчмарк LLM
-kttc glossary list                              # Управление терминологией
+
+# Управление глоссариями (проектное + глобальное пользовательское хранение)
+kttc glossary list                              # Список всех глоссариев
+kttc glossary create tech --from-csv terms.csv  # Создать проектный глоссарий
+kttc glossary create personal --from-csv my.csv --user  # Создать пользовательский глоссарий
 ```
 
 **См. полный справочник команд:** [docs/ru/reference/cli-commands.md](docs/ru/reference/cli-commands.md)

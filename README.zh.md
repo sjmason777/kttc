@@ -95,7 +95,11 @@ kttc batch --file translations.csv              # 显式批处理
 kttc compare --source src.txt -t t1 -t t2      # 并排比较翻译
 kttc translate --text "Hello" --source-lang en --target-lang zh  # 带 QA 的翻译
 kttc benchmark --source text.txt --providers openai,anthropic    # LLM 基准测试
-kttc glossary list                              # 管理术语
+
+# 术语表管理（项目 + 用户全局存储）
+kttc glossary list                              # 列出所有术语表
+kttc glossary create tech --from-csv terms.csv  # 创建项目术语表
+kttc glossary create personal --from-csv my.csv --user  # 创建用户术语表
 ```
 
 **查看完整命令参考：** [docs/zh/reference/cli-commands.md](docs/zh/reference/cli-commands.md)

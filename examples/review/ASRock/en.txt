@@ -1,0 +1,23 @@
+ASRock has rarely not picked up an award with its AMD Socket AM5 800-series chipset motherboards, and it hasn't just scored highly on value. It's usually done well in terms of performance as well as cramming in more features than the competition at similar price points. The same seems to be true of the X870 Live Mixer Wi-Fi, at least on paper, as this X870 motherboard costs just $230, making it one of the cheapest options for this chipset.
+
+The board is advertised as being aimed at content creators thanks to some specific features. This is maybe slightly loose-fitting, but the key takeaways are up to 25 USB ports with 13 Type-A ports on the rear I/O panel, dual PCIe Gen 5 SSD support without stealing bandwidth from PCIe slots, with plenty of expansion options for storage and PCIe devices too.
+
+As you'd expect, there's also PCIe Gen 5 GPU support, Wi-Fi 7, USB4/Thunderbolt 4 and even a USB 3.2 Gen 2x2 20 Gbps Type-C front panel header and tool-free SSD heatsink. So far so good, but let's see if ASRock has had to cut corners elsewhere to hit this price point.
+
+Getting hold of an X870 chipset motherboard less than $250 is one thing, but one that hasn't had its features cut drastically in some areas to offer X870's benefits over B850 is even harder. It's something we've seen plenty of times, meaning you have to really want the USB4 support, extra bandwidth or connectivity that AMD's more premium chipset offers. How does the ASRock X870 Live Mixer Wi-Fi fare here then?
+
+Well, the premium over its B850 counterpart is around $40 and even less compared to other alternatives such as the excellent ASRock Phantom Gaming B850 Riptide Wi-Fi. The extra cash gets you that USB4 support as well as faster Ethernet, additional PCIe Gen 5 M.2 support, more M.2 ports and heatsinks plus a couple more vCore power phases.
+
+Despite it being considerably cheaper than competition offering similar features, its VRMs kept cool even dealing with a Ryzen 9 9950X under full load for half an hour and even more impressive was it preventing our PCIe Gen 5 SSD from throttling. That's something plenty of competing boards have failed to do so if you're planning on overclocking or hammering your shiny new PCIe Gen 5 SSD on a regular basis, the X870 Live Mixer Wi-Fi has your back.
+
+We also like the fact its lower M.2 heatsinks, while not all tool-free - are split, allowing you to get at three M.2 slots without the need to remove your graphic card, so long as it's triple-slot or thinner. There's also a thermistor header for probes to be used and tied into the fan control and there's decent power available over most of its fan headers too.
+
+However, there's little here that will benefit you compared to decent B850 options if you're using a single SSD and have no USB4 or Thunderbolt 4 devices. Most B850 options have WI-Fi 7 and PCIe Gen 5 GPU and SSD support, and many include USB 3.2 Gen 202 20 Gbps Type-C headers too, so it comes down to what else is on offer here.
+
+Unfortunately, a lot of ASRock's cheaper boards have done well when it comes to VRM and SSD temperatures and the X870 Live Mixer Wi-Fi doesn't completely remove bandwidth sharing either. You'll have to lose the USB4 ports if you want to use the second PCIe Gen 5 M.2 port, and both lower PCIe slots share bandwidth with the lower M.2 ports.
+
+The future may see more of a need for M.2 PCIe Gen 5 ports and maybe even USB4, but at the moment that extra $40 difference between this and the B850 Live Mixer Wi-Fi can buy a decent air cooler. The Phantom Gaming B850 Riptide Wi-Fi also saves you cash and is one of our favorite options for around $200.
+
+Spending a little more money might not have resulted in much six months ago, but plenty of boards that retailed for over $300 a while back can now leave you with change from $270. The MSI MAG X870E Tomahawk W-Fi is a good example, costing just $260. For the extra $30 or so, there's less bandwidth sharing compared to the X870 Live Mixer Wi-Fi, IT has four rather than two SATA ports, a better EFI and 27 W power delivery over its USB Type-C front panel header It's maybe a little more well-rounded as a result.
+
+Still, if the X870 Live Mixer Wi-Fi meets your needs, and stepping down or up in price doesn't work, there's very little here to disappoint and a lot that ASRock gets right that means it's more than capable of sitting at the heart of a high-end overclocked AMD PC, and that's an impressive feat for a motherboard leaving you with change from $250.

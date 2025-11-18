@@ -99,7 +99,11 @@ kttc batch --file translations.csv              # Explicit batch processing
 kttc compare --source src.txt -t t1 -t t2      # Compare translations side-by-side
 kttc translate --text "Hello" --source-lang en --target-lang es  # Translate with QA
 kttc benchmark --source text.txt --providers openai,anthropic    # Benchmark LLMs
-kttc glossary list                              # Manage terminology
+
+# Glossary management (project + user global storage)
+kttc glossary list                              # List all glossaries
+kttc glossary create tech --from-csv terms.csv  # Create project glossary
+kttc glossary create personal --from-csv my.csv --user  # Create user glossary
 ```
 
 **See full command reference:** [docs/en/reference/cli-commands.md](docs/en/reference/cli-commands.md)

@@ -392,77 +392,217 @@ kttc report results.json --format html -o report.html
 
 ## kttc glossary
 
-Manage terminology glossaries.
+Manage terminology glossaries with support for both project-local and user-global storage.
+
+### Storage Locations
+
+KTTC supports two-tier glossary storage:
+
+- **Project glossaries** (default): `./glossaries/` - Stored in current project, can be version-controlled
+- **User glossaries** (with `--user` flag): `~/.kttc/glossaries/` - Global glossaries available across all projects
+
+**Search priority**: Project glossaries are checked first, then user glossaries.
 
 ### Subcommands
 
 #### list
 
-List available glossaries:
+List all available glossaries from both locations:
 
 ```bash
 kttc glossary list
 ```
+
+Shows: name, location (project/user), term count, and file path.
 
 #### show
 
-Show glossary details:
+Show glossary contents:
 
 ```bash
-kttc glossary show NAME
+kttc glossary show NAME [OPTIONS]
 ```
 
-#### add
+**Options:**
+- `--lang-pair SRC-TGT` - Filter by language pair (e.g., `en-ru`)
+- `--limit N` - Limit number of entries shown
 
-Add glossary entry:
+#### create
+
+Create a new glossary from CSV or JSON file:
 
 ```bash
-kttc glossary add NAME \
-  --source TEXT \
-  --target TEXT \
-  --lang-pair SRC-TGT
+kttc glossary create NAME --from-csv FILE
+# or
+kttc glossary create NAME --from-json FILE
 ```
 
-#### import
+**Options:**
+- `--from-csv PATH` - Create from CSV file (required if not using `--from-json`)
+- `--from-json PATH` - Create from JSON file (required if not using `--from-csv`)
+- `--user` - Save to user directory (`~/.kttc/glossaries/`) instead of project directory
 
-Import glossary from file:
+**CSV format** (required columns):
+
+```csv
+source,target,source_lang,target_lang,context,notes
+API,API,en,es,Keep as-is,Technical term
+database,base de datos,en,es,,
+```
+
+**JSON format:**
+
+```json
+{
+  "metadata": {
+    "name": "technical",
+    "description": "Technical terminology",
+    "version": "1.0.0"
+  },
+  "entries": [
+    {
+      "source": "API",
+      "target": "API",
+      "source_lang": "en",
+      "target_lang": "es",
+      "context": "Keep as-is",
+      "notes": "Technical term"
+    }
+  ]
+}
+```
+
+#### merge
+
+Merge multiple glossaries into one:
 
 ```bash
-kttc glossary import NAME \
-  --file PATH \
-  --format csv|json|tbx
+kttc glossary merge GLOSSARY1 GLOSSARY2 [...] --output NAME [OPTIONS]
 ```
+
+**Options:**
+- `--output NAME` - Output glossary name (required)
+- `--user` - Save merged glossary to user directory
+
+#### export
+
+Export glossary to CSV or JSON:
+
+```bash
+kttc glossary export NAME [OPTIONS]
+```
+
+**Options:**
+- `--format csv|json` - Export format (default: csv)
+- `--output PATH` - Output file path (default: `{name}.{format}`)
+
+#### validate
+
+Validate glossary file format:
+
+```bash
+kttc glossary validate FILE
+```
+
+Checks for:
+- Required fields (source, target, source_lang, target_lang)
+- Duplicate entries
+- Empty values
+- Valid language codes
 
 ### Examples
 
-**List glossaries:**
+**List all glossaries (project + user):**
 
 ```bash
 kttc glossary list
 ```
 
-**Show base glossary:**
+Output:
+```
+📚 Project Glossaries (./glossaries/):
+  • base (120 terms) - ./glossaries/base.json
+  • technical (45 terms) - ./glossaries/technical.json
 
-```bash
-kttc glossary show base
+📚 User Glossaries (~/.kttc/glossaries/):
+  • personal (30 terms) - ~/.kttc/glossaries/personal.json
 ```
 
-**Add term:**
+**Create project glossary from CSV:**
 
 ```bash
-kttc glossary add medical \
-  --source "myocardial infarction" \
-  --target "инфаркт миокарда" \
-  --lang-pair en-ru
+kttc glossary create medical --from-csv medical-terms.csv
 ```
 
-**Import from CSV:**
+Saves to `./glossaries/medical.json` (can be committed to git).
+
+**Create global user glossary:**
 
 ```bash
-kttc glossary import technical \
-  --file terms.csv \
-  --format csv
+kttc glossary create personal --from-csv my-terms.csv --user
 ```
+
+Saves to `~/.kttc/glossaries/personal.json` (available in all projects).
+
+**Show glossary with filtering:**
+
+```bash
+kttc glossary show base --lang-pair en-ru --limit 10
+```
+
+**Merge multiple glossaries:**
+
+```bash
+kttc glossary merge base technical medical --output combined
+```
+
+Creates `./glossaries/combined.json` with all terms from three glossaries.
+
+**Merge to user directory:**
+
+```bash
+kttc glossary merge base technical --output my-combined --user
+```
+
+Creates `~/.kttc/glossaries/my-combined.json`.
+
+**Export to CSV:**
+
+```bash
+kttc glossary export technical --format csv --output technical-export.csv
+```
+
+**Validate glossary file:**
+
+```bash
+kttc glossary validate my-glossary.csv
+```
+
+Output:
+```
+✓ All required columns present
+✓ No duplicate entries found
+✓ All language codes valid
+✓ No empty values
+✅ Glossary is valid
+```
+
+### Using Glossaries in Translation Checks
+
+Reference glossaries by name in `kttc check`:
+
+```bash
+# Auto-detect 'base' glossary (searches project, then user)
+kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary auto
+
+# Use specific glossaries (comma-separated)
+kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary base,technical,medical
+
+# Disable glossaries
+kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary none
+```
+
+**Search order**: KTTC searches for glossaries in project directory first, then user directory.
 
 ---
 

@@ -82,33 +82,95 @@ kttc check source.txt translation.txt \
 
 ### Glossary
 
-Use a custom glossary for terminology validation:
+Use glossaries for terminology validation. KTTC supports both project-local and user-global glossaries.
 
 ```bash
---glossary FILE    # Path to glossary JSON file
+--glossary TEXT    # Glossary names (comma-separated), 'auto', or 'none'
 ```
 
-Example:
+**Options:**
+- `auto` - Auto-detect 'base' glossary (default)
+- `none` - Disable glossary checking
+- `name1,name2` - Use specific glossaries by name
+
+Examples:
 
 ```bash
+# Auto-detect 'base' glossary (searches ./glossaries/, then ~/.kttc/glossaries/)
 kttc check source.txt translation.txt \
     --source-lang en --target-lang es \
-    --glossary my-glossary.json
+    --glossary auto
+
+# Use specific glossaries
+kttc check source.txt translation.txt \
+    --source-lang en --target-lang es \
+    --glossary base,technical,medical
+
+# Disable glossary checking
+kttc check source.txt translation.txt \
+    --source-lang en --target-lang es \
+    --glossary none
 ```
 
-**Glossary format:**
+**Managing Glossaries:**
 
+```bash
+# List all available glossaries (project + user)
+kttc glossary list
+
+# Create project glossary (./glossaries/)
+kttc glossary create my-terms --from-csv terms.csv
+
+# Create user glossary (~/.kttc/glossaries/) - available in all projects
+kttc glossary create personal --from-csv my-terms.csv --user
+
+# Show glossary contents
+kttc glossary show base --lang-pair en-ru --limit 10
+
+# Merge glossaries
+kttc glossary merge base technical --output combined
+
+# Export to CSV
+kttc glossary export technical --format csv --output terms.csv
+
+# Validate glossary file
+kttc glossary validate my-glossary.csv
+```
+
+**Glossary file formats:**
+
+CSV format (required columns):
+```csv
+source,target,source_lang,target_lang,context,notes
+API,API,en,es,Keep as-is,Technical term
+database,base de datos,en,es,,
+```
+
+JSON format:
 ```json
 {
-  "terms": [
+  "metadata": {
+    "name": "technical",
+    "description": "Technical terminology",
+    "version": "1.0.0"
+  },
+  "entries": [
     {
       "source": "API",
       "target": "API",
-      "context": "Keep as-is"
+      "source_lang": "en",
+      "target_lang": "es",
+      "context": "Keep as-is",
+      "notes": "Technical term"
     }
   ]
 }
 ```
+
+**Storage locations:**
+- **Project glossaries**: `./glossaries/` (can be committed to git)
+- **User glossaries**: `~/.kttc/glossaries/` (available across all projects)
+- **Search priority**: Project glossaries are checked first, then user glossaries
 
 ### LLM Provider
 
@@ -177,9 +239,26 @@ kttc benchmark --source test.txt \
 ### Glossary Management
 
 ```bash
-kttc glossary list                    # List all glossaries
-kttc glossary show my-glossary        # Show glossary details
-kttc glossary validate my-glossary    # Validate glossary format
+# List all glossaries (project + user)
+kttc glossary list
+
+# Create project glossary
+kttc glossary create my-terms --from-csv terms.csv
+
+# Create user glossary (available in all projects)
+kttc glossary create personal --from-csv my-terms.csv --user
+
+# Show glossary details
+kttc glossary show my-glossary --lang-pair en-ru
+
+# Merge multiple glossaries
+kttc glossary merge base technical --output combined
+
+# Export glossary
+kttc glossary export my-glossary --format csv --output export.csv
+
+# Validate glossary format
+kttc glossary validate my-glossary.csv
 ```
 
 ## Exit Codes
