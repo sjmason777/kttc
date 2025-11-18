@@ -1,3 +1,11 @@
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="docs/content/assets/img/kttc.logo-dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="docs/content/assets/img/kttc.logo.png">
+      <img alt="KTTC" title="KTTC" src="docs/content/assets/img/kttc.logo.png">
+    </picture>
+</p>
+
 [English](README.md) · **Русский** · [中文](README.zh.md)
 
 # KTTC - Knowledge Translation Transmutation Core
