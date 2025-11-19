@@ -62,7 +62,7 @@ jobs:
           import asyncio
           from tests.benchmarks.wmt_benchmark import WMTBenchmark
           from kttc.agents.orchestrator import AgentOrchestrator
-          from kttc.llm.providers.openai import OpenAIProvider
+          from kttc.llm import OpenAIProvider
 
           async def main():
               # Initialize
