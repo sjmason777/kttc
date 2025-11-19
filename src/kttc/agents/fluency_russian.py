@@ -155,6 +155,12 @@ class RussianFluencyAgent(FluencyAgent):
                 nlp_errors: list[ErrorAnnotation] = []
             else:
                 nlp_errors = cast(list[ErrorAnnotation], nlp_result)
+                # CRITICAL: Filter false positives from NLP (digit+genitive, etc.)
+                nlp_errors_before = len(nlp_errors)
+                nlp_errors = self._filter_false_positives(nlp_errors, task.translation)
+                filtered_count = nlp_errors_before - len(nlp_errors)
+                if filtered_count > 0:
+                    logger.info(f"Filtered {filtered_count} false positives from NLP output")
 
             if isinstance(llm_result, Exception):
                 logger.warning(f"LLM check failed: {llm_result}")
@@ -720,6 +726,7 @@ Output only valid JSON, no explanation."""
         - Technical designations (Gen 5, Wi-Fi 7, USB4, etc.)
         - Plural inanimate accusative (nomn == accs)
         - Standard particles ("то же самое", "если...то")
+        - Digit numerals with genitive (5 минут, 50 МБ, etc.)
 
         Args:
             errors: Errors from LLM
@@ -728,6 +735,13 @@ Output only valid JSON, no explanation."""
         Returns:
             Filtered list of errors (false positives removed)
         """
+        logger.info(f"=== Filter Debug: Processing {len(errors)} errors ===")
+        for i, err in enumerate(errors):
+            logger.info(
+                f"Error {i+1}: {err.subcategory} | "
+                f"Location: {err.location} | "
+                f"Desc: {err.description[:80]}"
+            )
         # Technical terminology patterns
         tech_patterns = [
             r"\bGen\s+\d+",
@@ -762,7 +776,23 @@ Output only valid JSON, no explanation."""
 
         filtered = []
         for error in errors:
-            # Skip if no location
+            # CRITICAL FIX: Filter digit+genitive errors FIRST (before location check)
+            # because NLP often generates these errors without valid location
+            if error.subcategory == "russian_numeral_agreement":
+                desc = error.description
+
+                # Check if description contains digit followed by "requires gent"
+                # Pattern: "5 requires gent plur", "10 requires gent plur", etc.
+                pattern_match = re.search(r"\d+\s+requires\s+gent", desc, re.IGNORECASE)
+
+                if pattern_match:
+                    # This is a digit + genitive construction which is grammatically correct in Russian
+                    logger.info(
+                        f"Filtered digit+genitive FP: '{pattern_match.group()}' in '{desc[:80]}'"
+                    )
+                    continue  # Skip this error - it's a false positive
+
+            # Skip if no location (but allow through if not already filtered above)
             if not error.location or len(error.location) != 2:
                 filtered.append(error)
                 continue
@@ -781,21 +811,9 @@ Output only valid JSON, no explanation."""
             context_end = min(len(text), end + 50)
             context = text[context_start:context_end]
 
-            # Filter numeral agreement errors on technical terms and correct digit+genitive
+            # Additional location-based filters for numeral agreement errors
             if error.subcategory == "russian_numeral_agreement":
                 is_false_positive = False
-
-                # Check error description for common false positives (fallback when location invalid)
-                # Pattern: "5 requires gent", "10 requires gent", etc.
-                desc = error.description
-                # Simple check: if description contains digit followed by "requires gent"
-                if re.search(r"\d+\s+requires\s+gent", desc, re.IGNORECASE):
-                    # This is a digit + genitive construction which is grammatically correct in Russian
-                    logger.info(
-                        f"Filtered numeral agreement FP: digit+genitive pattern in description "
-                        f"'{desc[:80]}'"
-                    )
-                    is_false_positive = True
 
                 # Check for technical terms (Gen 5, Wi-Fi 7, etc.)
                 if not is_false_positive:
