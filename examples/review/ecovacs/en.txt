@@ -1,0 +1,146 @@
+Ecovacs recently came out with its newest robot vacuum, the Deebot X11 Omnicyclone. Like the last couple of models, this new vacuum has Matter integration and it's able to connect to HomeKit so it can be sent off to clean the floor with Siri voice commands.
+
+ecovacs x11 2
+
+Design
+The X11 is the same size as the prior-generation X9, coming in at 3.86 inches tall. I've tested several robot vacuums now, and that's on the thinner side. It can get under almost all of my furniture, including my stove, to vacuum in areas that are often untouched.
+
+Height is the most important metric when it comes to robot vacuums, but if you have a lot of tightly spaced furniture, you also need to consider width. The X11 is about 13.8 inches across, and it could be too large for smaller apartments.
+
+x11 main design
+Underneath the vacuum, there's a roller bar, a mop, a brush that gets into nooks and crannies along baseboards, a canister for dust and debris, and internal areas for clean and dirty water for mop washing and cleaning. You can access the dust canister by removing the top plate of the robot and undoing the latch.
+
+x11 underneath
+Exterior vacuum design didn't change much between the X9 and the X11, but the X11's base station is entirely different. It's significantly larger than before because it includes a reusable canister for dust instead of a bag.
+
+The canister is why the X11 has its "Omnicyclone" name. It reminds me of a Dyson-style vacuum canister, and it's built right into the middle of the base station. You can pop it out and empty it into the trash, then stick it right back in. Large chunks of debris can get stuck, so as with a Dyson, the canister can need cleaning at times. There is no need to buy bags with the X11, which does make it stand out from other robot vacuums on the market.
+
+x11 base station
+Along with the vacuum canister, the base station houses a 2.7-liter dirty water tank and a 3.2-liter clean water tank. The water tanks are larger than the tanks in the X9, which means less maintenance. I fill the clean water tank less, and I try to remember to empty the dirty water tank regularly because it can get smelly if it sits.
+
+x11 canister
+Inside the base station, there's a spot to add cleaning fluid. The X11 supports two kinds of cleaning fluid, one for standard cleaning and one for deep cleaning. Two cleaning fluid options are more expensive and more of a hassle, so I'm not a fan of the dual cleaning. Ecovacs recommends that you use Ecovacs cleaning fluid, and it sells the two variants.
+
+Setup and Maintenance
+Setting up the X11 is straightforward enough that anyone can do it. There's a single-page startup guide that has easy instructions on putting the base station components together, then it's just a matter of filling the water tank, downloading the app, turning on the robot, and following the app steps for pairing.
+
+The X11 is simple enough that someone not technologically inclined could operate it, but the number of app settings and complicated features like voice activation could be confusing. None of those features are required, and it can clean on default settings, but if you have older parents who struggle with electronics and buy this (or any robot vacuum) for them, you're going to get calls for troubleshooting.
+
+There is maintenance to take care of, like occasionally replacing the rollers and brush with parts purchased from Ecovacs. The site sells a bundle that includes a new roller brush, three filters and two side brushes for $60, and a new roller mop is $35.
+
+Vacuuming
+The X11 has the strongest suction of any robot vacuum that I've tried. It is excellent at picking up pet hair, dust, and debris on my hardwood and tile floors. I started tossing a handful or two of dirt on the floor to see how much robot vacuums can clean up, and the X11 got almost all of it in the first pass.
+
+Robot vacuums are meant to clean regularly rather than deeply, which is why it's not an ideal test, but it does give me a clear metric to compare by.
+
+x11 front
+According to Ecovacs, the X11 has 19,000 Pa suction and it uses the same Blast system (multi-stage suction and airflow) from prior Ecovacs robots. It's more suction than the X9, which I already thought worked well, and more suction than the Roborock vacuum I use regularly. If you have hard floors and pets or kids, it's good at getting up even trace amounts of pet hair, and it doesn't miss crumbs in the kitchen.
+
+There's a side brush for sweeping along baseboards and in corners, and it's able to get most dirt and fur up. You'll want to manually vacuum in corners every so often, but it's not a situation where the X11 is vacuuming the main area of a room and pushing dust to the sides. It is able to use the added side brush and the improved suction to do a passable job keeping hard to reach areas clean.
+
+Ecovacs' robots have a ZeroTangle brush, and it works. I have long hair, my partner has long hair, and we have two cats. I haven't seen the brush get tangled up with hair, and I've never had to fuss with it.
+
+x11 edge cleaning
+The X11 is able to get over higher thresholds than prior Ecovacs robots, so if you have a tall threshold that other robots can't handle, the X11 might be able to navigate it. It can go over thresholds as high as 2.4cm (0.95 inches). It can get into a bathroom that has a higher than average threshold, but another room with a baby gate has a threshold too high for it to overcome. I definitely notice a difference between the X11 and the older X9 when it comes to threshold navigation.
+
+Despite stronger suction, the X11 isn't louder than prior models, measuring in at around 62 dBA in tests. I wouldn't want to sleep while the X11 is running, but I can work while it's on if I put in my AirPods Pro to block out the noise. Emptying the vacuum into the canister at the base station is the loudest action that it performs (close to 80 dBA), so keep that in mind when positioning the base station.
+
+The X11 is one of the quieter robot vacuums that I've tried in terms of straight vacuuming and operation sound, and it has a mode that makes it even quieter. Turning down the suction level will also help.
+
+Mopping
+Like Ecovacs' prior-generation high-end robots, the X11 has a roller mop rather than two rotating mopping pads. I am a fan of this design because it continually removes dirty water, so it's washing the floor with clean water.
+
+x11 back cleaning
+It sprays water onto the mop, cleans the floor, and squeezes the dirty water into a collection tank before starting the process over again. With this version, the roller extends out further, so it can get into corners. It's also supposed to have stain-detecting AI to go over a dirty area again, and I've seen this work as long as certain AI cleaning modes are enabled.
+
+With wet stains, the X11 can get a mess in one go. A squirt of ketchup on the floor, for example, gets wiped up with a single cleaning. With dried-on stains, it can take a few passes. I tested dried ketchup, and needed to have the robot go over it three times to get every speck up. Anecdotally, the X11 seems to be better at getting up things like dried up cat food in fewer passes than prior Ecovacs robots.
+
+Every so often, the X11 returns to the base station to wash the mop with hot water, and when a cleaning is finished, it's dried with hot air.
+
+I wouldn't expect any robot vacuum to get a floor entirely spotless in one cleaning, but weekly cleanings paired with daily cleanings in specific areas like the kitchen keep the floors clean.
+
+Time
+Cleaning 2,000 square feet takes the X11 approximately five hours on the standard setting with one pass, though that can vary depending on the number of passes that it's instructed to make when mopping, how often it empties the vacuum and washes the mop, and how far it is from the base station. That time is fairly standard for the robot vacuums that I've tested, though some will take longer because of long periods for charging.
+
+I find it useful to set up scheduled cleanings with the Ecovacs app or the Home app. I schedule the X11 to clean one area of the house per day, which keeps the floor clean but doesn't subject me to listening to a vacuum run for hours on end. It can be set to clean after meal times or more frequently just in high traffic areas, which is helpful.
+
+Navigation and AI
+When you set up the X11 for the first time, it maps each room in your house prior to cleaning. You can see the map as it goes, and it's clear that the lidar sensor at the front works well. It made a perfect map of my house, though unlike some other robot vacuums, it doesn't detect furniture and add those items to the map automatically, nor is it great at labeling rooms.
+
+It can detect some thresholds, but it's best to go in and edit the map to make changes. My house has an open-concept main area, and it wasn't able to distinguish between the kitchen, dining room, and living room, and it also merged one bedroom with those areas. In my office, it wasn't able to tell the bathroom from the main office area, I suppose because it didn't detect the door.
+
+x11 on floor
+The X11 is good at obstacle avoidance, using a camera-based sensor system for object detection. It hasn't run directly into anything, and it is better at not getting trapped by furniture. It knows where walls are, where furniture legs are, and it can detect and avoid items on the floor like cables, socks, pets, and more. It doesn't see smaller items like LEGO bricks, and it can suck those up.
+
+Some vacuums will label the in-app map with items that have been detected so you can go in and tell them whether to avoid that item in the future. The X11's object detection is more behind-the-scenes, so I don't get a readout of what it's avoiding.
+
+It's good at navigating the house, though I did see it get inexplicably lost one time. It might have been that the hallway was too dark, but it couldn't find its way back to the dock in another room.
+
+The AI in the X11 is more transparent than in prior models, and I can better keep track of what the robot is doing, why it's doing it, where it's cleaned, where it hasn't cleaned, and where access was blocked by a closed door or another obstacle.
+
+Rugs
+I've been frustrated with the way the Ecovacs robots handle small rugs, and there's no change with the X11 Omnicyclone. It regularly gets trapped on the rugs in bathrooms and thin, soft-backed rugs on my wood floors that don't have grip. It also cannot handle tassels. By "trapped," I mean that the roller vacuum sucks up the rug and can't release it, so I'm forced to go pull it out and set the vacuum to continue cleaning.
+
+x11 stuck on rug
+To be fair, Ecovacs does recommend picking up smaller rugs and tucking tassels away underneath the rug to avoid these issues, but that's a hassle. It's annoying to have to fix the vacuum when it sucks up a rug, and it's annoying to have to take the time to move everything out of the way every time it's running. Having to regularly move rugs makes it more difficult to automate and schedule cleanings.
+
+With bigger, thicker rugs anchored by furniture, the X11 works with no issue. I have one rug that sheds like crazy even two years after I bought it. Sometimes the X11 will leave behind a big ball of rug fuzz, but all of my vacuums do that. My Dyson can't even clean that rug without getting clogged.
+
+ecovacs app notifications
+There is another rug in my laundry room that is an absolute dirt and lint magnet, and the X11 can get every speck of dust off of it. I'm satisfied with how well it cleans rugs, but it needs to be better about not getting stuck.
+
+Battery
+The X11 has a fast-charging feature where the robot can go back to the base station and quick charge for about 10 minutes. For a large home, this means that there's no multi-hour pause in cleaning.
+
+ecovacs app fast charging
+With prior Ecovacs robots, there would be a long break for charging in the middle of a cleaning. With the X11, it cleaned for six hours straight with only brief stops to quick charge.
+
+Ecovacs recommends the fast charge system for homes that are over 2,000 square feet, and there is an option to turn it off for smaller homes. Faster charging works well, and it sets the X11 apart from other vacuums. If you have a large home, it's a reason to consider this model over other options.
+
+Ecovacs App
+Even if you're planning to use the X11 with the Home app and through ‌Siri‌ voice commands, you need the Ecovacs app. It's the only place to manage the many, many settings that are available for the vacuum, and it houses the map the robot uses for navigation.
+
+ecovacs app
+There are settings to adjust the vacuum suction, mopping water level, noise, and set up different types of cleaning such as after-meal cleaning, daily cleaning, and deep cleaning. You can set up custom scenarios for future one-touch cleanings, customize charging and station settings, adjust settings for carpet, view cleaning logs, and more. There's more than I can go over in a review, but if you get an Ecovacs robot, expect to spend a half-hour or so going through the options selecting your preferred parameters.
+
+The X11 has an AI cleaning mode that incorporates cleaning history and preferences that you set. You can customize it with natural language commands, and it's meant to learn over time. It's new to this model, and it wasn't a feature that was available in prior Ecovacs robots I've reviewed.
+
+The AI mode is listed in the app as "Agent Hosting," and you can tap on it instead of "Start" when beginning a cleaning. The AI will analyze your prior cleaning, take into account your app settings and preferences you've provided, and then adjust its settings on its own to clean the house.
+
+ecovacs app ai
+I've had mixed results with it, but I'm still working on customization. The first time I used it, it determined that the living room hadn't been cleaned for seven days, so it proceeded to clean it for like three hours (two passes) even though it wasn't dirty (the X11 hadn't vacuumed the floor in a week because I had). There is an AI feature that's supposed to notice messes and do another pass, but it clearly wasn't using that when evaluating how to clean.
+
+The AI cleaned for 5.5 hours, and because it was doing double passes everywhere, it didn't get the task finished. I had to turn it off at around 11 p.m., and I wasn't able to resume the cleaning the next day because it can't pick up a task if the pause is more than a few hours.
+
+In other tests, the AI performed better and selected reasonable cleaning parameters for various rooms, successfully executing a cleaning. I like that I can see what the AI is thinking and follow along as it completes each task, but there is a major issue I've run into. For some reason, the X11 has the wrong time. I started a clean at 2:30 p.m., and it thought it was 2:30 a.m. Another time, it was around 11:00 a.m., and it thought it was 11:00 p.m. The time is an issue because it will adjust suction to avoid being too loud if it's late at night.
+
+The AI cleaning option is useful overall if you don't want to mess with settings for every clean, but it also takes time and effort to train it with your preferences. Luckily, plain old "Start" launches a standard clean where you can select the options that you want.
+
+There's also a "Yiko" voice assistant that you can use to direct the X11 to clean. It's been present in the last several Ecovacs robots, but I don't use it often. Yiko isn't super responsive when I attempt to activate it, doesn't understand some simple commands, and doesn't do enough where I can use it instead of the app.
+
+Home App
+The X11 has Matter integration, so it connects to the Home app. You only get a few controls in the Home app, but it's enough to operate it on a basic level.
+
+You can have the robot vacuum or vacuum and mop, selecting the entire house or just a single room. You can also choose from a standard clean or a deep clean for two mopping passes instead of one. The app will let you know if there's an error, such as when the water tank needs to be filled up. You can also play a sound so you can locate the robot if it gets itself stuck somewhere in the house.
+
+ecovacs home app
+Matter integration is useful for the ‌Siri‌ voice commands and for automations. You can use the Ecovacs app for setting schedules, or do it through the Home app if you want to use geofencing (such as having the robot clean when you leave home) or pair it with other ‌HomeKit‌ accessories.
+
+Siri
+I don't often use the Home app with robot vacuums, but I like being able to use ‌Siri‌. There are HomePods in the main areas of my house, so I can say something like "Hey ‌Siri‌, clean the kitchen" if I happen to be in the kitchen and notice crumbs on the floor.
+
+When I first used a robot vacuum with ‌HomeKit‌, I was skeptical that it would be useful, but it's been a convenience. I wouldn't necessarily buy a robot vacuum just for the Matter integration, but if there are two robots with similar features and only one has Matter, I'm going to choose the Matter version.
+
+I am hoping that Matter integration with products like the Omnicyclone X11 gets even better when Apple introduces the new version of ‌Siri‌ that it's been working on, and when the rumored home hub comes out.
+
+Bottom Line
+The X11 has the strongest AI functionality of a robot vacuum that I've tested, and aside from its poor performance with thin rugs, it's the best vacuum that I've tried so far. I appreciate that the X11's AI can learn my cleaning preferences and adjust, but sometimes a simple scheduled cleaning with pre-set parameters is better than AI. There's a lot of redundancy in the Ecovacs app with the option to use AI, standard settings, or the Yiko voice assistant, and it can be confusing. I'd like to see streamlining in the future.
+
+x11 cat
+Matter integration isn't necessarily a reason to buy one robot vacuum over another, but it is useful if you have a lot of Apple devices and tend to use ‌Siri‌ voice commands for smart home devices.
+
+The X11 isn't leagues ahead of the X8 and X9 when it comes to cleaning performance, but there are a few features that could be a reason to consider it instead of another robot vacuum. If there's a threshold in your house that other vacuums can't climb, there's a good chance the X11 can navigate it. It's the only robot vacuum I've tested that has a vacuum chamber you can empty, eliminating the need for vacuum bags.
+
+For larger homes, the change to charging makes a difference in how quickly cleaning gets done, and it prevents frustrating multi-hour pauses. Fast charging could be worth the cost if you have a home larger than 2,000 square feet.
+
+If you don't need those features, Ecovacs' X8 and X9 robots clean well too, and are available at a lower price.

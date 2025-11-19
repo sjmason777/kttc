@@ -374,15 +374,30 @@ class RussianFluencyAgent(FluencyAgent):
                     "\nUse this morphological context to make informed decisions.\n"
                 )
 
-        prompt = f"""You are a native Russian speaker and professional translator.
+        # MODERN PROMPT ENGINEERING (Nov 2025):
+        # 1. Step-Back Prompting: First classify text type
+        # 2. According-to Prompting: Bind to source text
+        # 3. Few-Shot Examples: Show correct/incorrect patterns
+        # 4. Chain-of-Verification: Self-check answers
 
-Your task: Identify ONLY clear Russian-specific linguistic errors in the translation.
+        prompt = f"""You are a native Russian speaker and professional linguist with expertise in grammar checking.
+
+## STEP 1: TEXT CLASSIFICATION (Step-Back Prompting)
+
+First, classify the text type to apply appropriate rules:
+- **Technical**: Product reviews, specifications, IT articles (Gen 5, Wi-Fi 7, USB4 are PROPER NAMES)
+- **Literary**: Fiction, creative writing (more flexible word order)
+- **Formal**: Business, academic (strict grammar rules)
+
+According to the SOURCE TEXT below, this appears to be: [auto-detect from content]
 
 ## SOURCE TEXT (English):
 {task.source_text}
 {morphology_section}
-## TRANSLATION (Russian):
+## TRANSLATION (Russian - YOUR PRIMARY REFERENCE):
 {task.translation}
+
+**CRITICAL**: All your analysis MUST be "according to the TRANSLATION text above". Do not invent phrases that don't exist in the translation.
 
 ## IMPORTANT GUIDELINES:
 
@@ -397,12 +412,113 @@ Your task: Identify ONLY clear Russian-specific linguistic errors in the transla
 - Direct translations that are grammatically correct
 - Natural Russian that differs from your personal preference
 - Minor stylistic variations
+- Technical terminology and standard names (see SPECIAL CASES below)
+
+## FEW-SHOT EXAMPLES (Learn from these!)
+
+### ✅ CORRECT - Do NOT flag these:
+
+**Technical terminology:**
+- "материнская плата поддерживает PCIe Gen 5" ✓ (Gen 5 is a standard name, NOT "пять")
+- "процессор Ryzen 9 9950X" ✓ (model number, NOT numeral)
+- "скорость 20 Гбит/с" ✓ (technical specification)
+
+**Plural forms:**
+- "За эти деньги вы получаете много" ✓ (plural accusative = nominative form)
+- "получить дополнительные функции" ✓ (plural accusative = nominative form)
+
+**Standard particles:**
+- "то же самое можно сказать" ✓ (standard phrase, separate spelling)
+- "если X, то Y" ✓ (conditional construction)
+
+### ❌ INCORRECT - These ARE errors:
+
+**Case agreement:**
+- "красивый девочка" ❌ (gender mismatch: красивая девочка)
+- "в городом" ❌ (wrong case: в городе)
+
+**Real numeral agreement:**
+- "пять дом" ❌ (should be: пять домов)
+- "два книга" ❌ (should be: две книги)
+- "2 минута" ❌ (should be: 2 минуты)
+
+**IMPORTANT: Digit numerals 5-20 require genitive plural:**
+- "5 минут" ✓ CORRECT (5 + genitive plural)
+- "10 минут" ✓ CORRECT (10 + genitive plural)
+- "15 секунд" ✓ CORRECT (15 + genitive plural)
+- "20 часов" ✓ CORRECT (20 + genitive plural)
+
+Do NOT flag digit numerals (2, 5, 10, etc.) with correct genitive forms as errors!
+
+## SPECIAL CASES - DO NOT FLAG THESE AS ERRORS:
+
+### 1. Technical Terminology (названия стандартов, версий, спецификаций)
+
+Technical designations are NOT numerals with nouns. DO NOT check numeral agreement for:
+
+**Technology versions and standards:**
+- PCIe Gen 5, Gen 4, Gen 3 (NOT "пять", "четыре", "три")
+- Wi-Fi 7, Wi-Fi 6E, Wi-Fi 6 (NOT "семь", "шесть")
+- USB4, USB 3.2, USB 2.0 (version numbers, not numerals)
+- Thunderbolt 4, Thunderbolt 3 (protocol names)
+- DDR5, DDR4, GDDR6 (memory types)
+- HDMI 2.1, DisplayPort 1.4 (interface versions)
+
+**Processor/hardware models:**
+- Ryzen 9 9950X, Ryzen 7 7800X3D (model numbers)
+- RTX 4090, RTX 4080 (GPU models)
+- Core i9-14900K (CPU models)
+
+**Technical specifications:**
+- Type-C 20 Гбит/с (speed specifications)
+- 230 MHz, 5.0 GHz (frequencies)
+- Technical measurements with numbers
+
+These are PROPER NAMES, not numeral+noun constructions. Never flag them as agreement errors!
+
+### 2. Plural Forms (множественное число)
+
+For inanimate nouns and adjectives in PLURAL:
+- Nominative case (именительный) == Accusative case (винительный)
+- The forms are IDENTICAL - this is correct Russian grammar!
+
+**Examples of CORRECT usage:**
+- "За эти деньги" (за + accs plural = nomn plural form) ✓ CORRECT
+- "за дополнительные доллары" (за + accs plural = nomn plural form) ✓ CORRECT
+- "получить дополнительные функции" (accs plural = nomn plural form) ✓ CORRECT
+- "Я вижу эти книги" (accs plural = nomn plural form) ✓ CORRECT
+
+DO NOT flag preposition + plural inanimate noun/adjective as case error!
+The nominative form is CORRECT for accusative in plural.
+
+### 3. Particle and Conjunction Usage (частицы и союзы)
+
+**"то" has different meanings and spellings:**
+
+**РАЗДЕЛЬНО (separate):**
+- "то же самое" (the same thing) - CORRECT ✓
+- "то же" (the same) - CORRECT ✓
+- "если... то" (if... then) - CORRECT ✓
+- "то есть" (that is) - CORRECT ✓
+
+**СЛИТНО (together):**
+- "тоже" (also, too) - CORRECT ✓
+
+**ЧЕРЕЗ ДЕФИС (hyphen):**
+- "кто-то" (someone) - CORRECT ✓
+- "что-то" (something) - CORRECT ✓
+- "как-то" (somehow) - CORRECT ✓
+- "где-то" (somewhere) - CORRECT ✓
+
+DO NOT suggest adding hyphens to "то же" or "если... то"!
+DO NOT flag "то же самое" as double particle usage - this is a standard phrase!
 
 ## CHECKS TO PERFORM:
 
 1. **Case Agreement (Падежное согласование)** - ONLY flag clear violations
    - Noun-adjective gender/case mismatch
-   - Numeral-noun agreement errors
+   - Numeral-noun agreement errors (but EXCLUDE technical terminology - see SPECIAL CASES #1)
+   - REMEMBER: Plural accusative == nominative for inanimate (see SPECIAL CASES #2)
 
 2. **Verb Aspect (Вид глагола)** - Consider source text context
    - Check if aspect matches the source tense/context
@@ -415,26 +531,91 @@ Your task: Identify ONLY clear Russian-specific linguistic errors in the transla
 
 4. **Particle Usage** - ONLY clear mistakes
    - Incorrect particle that changes/breaks meaning
+   - REMEMBER: "то же" and "если...то" are correct (see SPECIAL CASES #3)
 
-Output JSON format:
+## CHAIN-OF-VERIFICATION (Self-Check Process)
+
+**CRITICAL**: Before finalizing ANY error, you MUST verify through this self-check loop:
+
+### Verification Questions for EACH Potential Error:
+
+**Q1: Location Verification**
+- "Does text[start:end] actually contain the EXACT phrase I'm flagging?"
+- "Can I point to this exact location in the TRANSLATION text above?"
+- **If NO**: Do NOT report this error (it's a hallucination)
+
+**Q2: Technical Term Check** (for numeral_agreement errors only)
+- "Could this be a technical designation: Gen X, Wi-Fi X, USB X, Ryzen X, RTX X, DDR X?"
+- "Is this a product model, standard name, or technical specification?"
+- **If YES**: Do NOT report this error (it's a proper name, not a numeral)
+- "Is this a digit numeral (2, 5, 10, etc.) with genitive plural/singular (минут, часов, секунд, дня, недель)?"
+- **If YES**: Do NOT report this error (digit numerals with correct genitive forms are correct!)
+
+**Q3: Plural Form Check** (for case_agreement and preposition_case errors only)
+- "Is this a plural inanimate noun or adjective?"
+- "Remember: plural inanimate nominative == accusative (это правильно!)"
+- **If YES**: Do NOT report this error (the nominative form IS correct for accusative)
+
+**Q4: Standard Phrase Check** (for particle_usage errors only)
+- "Is this 'то же самое', 'то же', 'если...то', or 'то есть'?"
+- "These are STANDARD CORRECT phrases in Russian"
+- **If YES**: Do NOT report this error (it's correct usage)
+
+**Q5: Source Context Check** (for aspect_usage errors only)
+- "Does the source text context support both aspects?"
+- "Is my suggested aspect correction actually more natural?"
+- **If UNCERTAIN**: Do NOT report this error (multiple aspects can be valid)
+
+### Verification Summary
+
+After checking ALL potential errors, provide:
+- **text_type**: Technical/Literary/Formal classification from STEP 1
+- **verification_summary**: "Checked X potential errors, filtered Y false positives (Q1: Z hallucinations, Q2: A tech terms, Q3: B plural forms, Q4: C standard phrases), reporting D real errors"
+- **errors**: Only errors that passed ALL verification questions
+
+## OUTPUT FORMAT (Structured JSON Schema)
+
+You MUST return ONLY valid JSON with this EXACT structure:
+
 {{
+  "text_type": "technical|literary|formal",
+  "verification_summary": "Checked X potential errors, filtered Y false positives (Q1: Z hallucinations, Q2: A tech terms, Q3: B plural forms, Q4: C standard phrases, Q5: E uncertain aspects), reporting F real errors",
   "errors": [
     {{
       "subcategory": "case_agreement|aspect_usage|particle_usage|register",
       "severity": "critical|major|minor",
-      "location": [start_char, end_char],
-      "description": "Specific Russian linguistic issue with the exact word/phrase you found",
-      "suggestion": "Corrected version in Russian"
+      "location": [start_char_int, end_char_int],
+      "description": "According to the translation, the phrase '[exact phrase from text[start:end]]' has [specific issue]",
+      "suggestion": "Corrected version in Russian",
+      "verification": {{
+        "location_verified": true,
+        "not_technical_term": true,
+        "not_plural_form": true,
+        "not_standard_phrase": true,
+        "source_context_supports": true
+      }}
     }}
   ]
 }}
+
+**CRITICAL JSON Requirements**:
+- `text_type`: MUST be one of: "technical", "literary", "formal"
+- `verification_summary`: MUST include counts (X potential, Y filtered, Z real)
+- `errors`: Array (can be empty if no errors found)
+- `location`: MUST be [int, int] with valid 0-indexed positions
+- `description`: MUST start with "According to the translation, the phrase '[exact phrase]'..."
+- `verification`: MUST include all 5 boolean fields
 
 Rules:
 - CONSERVATIVE: Only report clear, unambiguous errors
 - VERIFY: Ensure the word/phrase you mention actually exists in the text at the specified position
 - CONTEXT: Consider the source text when evaluating aspect and tense
+- SPECIAL CASES: Review SPECIAL CASES section - DO NOT flag technical terms, plural forms, or standard particles
 - If the translation is natural and grammatically correct, return empty errors array
 - Provide accurate character positions (0-indexed, use Python string slicing logic)
+- DOUBLE-CHECK: Before flagging numeral agreement, confirm it's not a technical designation (Gen 5, Wi-Fi 7, etc.)
+- DOUBLE-CHECK: Before flagging preposition case, confirm it's not a plural inanimate (nomn == accs)
+- DOUBLE-CHECK: Before flagging particle usage, confirm it's not "то же самое" or "если...то"
 
 Output only valid JSON, no explanation."""
 
@@ -451,6 +632,16 @@ Output only valid JSON, no explanation."""
 
             # Parse response
             response_data = self._parse_json_response(response)
+
+            # Extract and log verification metadata (Chain-of-Verification)
+            text_type = response_data.get("text_type", "unknown")
+            verification_summary = response_data.get("verification_summary", "")
+
+            if text_type != "unknown":
+                logger.info(f"LLM classified text as: {text_type}")
+            if verification_summary:
+                logger.info(f"LLM verification: {verification_summary}")
+
             errors_data = response_data.get("errors", [])
 
             errors = []
@@ -460,6 +651,11 @@ Output only valid JSON, no explanation."""
                     location_tuple = (location[0], location[1])
                 else:
                     location_tuple = (0, 10)
+
+                # Log verification data if present (for debugging)
+                verification = error_dict.get("verification", {})
+                if verification:
+                    logger.debug(f"Error verification data: {verification}")
 
                 errors.append(
                     ErrorAnnotation(
@@ -472,7 +668,13 @@ Output only valid JSON, no explanation."""
                     )
                 )
 
-            return errors
+            # Filter false positives (technical terms, plural forms, standard particles)
+            filtered_errors = self._filter_false_positives(errors, task.translation)
+            filtered_count = len(errors) - len(filtered_errors)
+            if filtered_count > 0:
+                logger.info(f"Filtered {filtered_count} false positives from LLM output")
+
+            return filtered_errors
 
         except Exception as e:
             logger.error(f"Russian-specific check failed: {e}")
@@ -508,3 +710,154 @@ Output only valid JSON, no explanation."""
 
             logger.warning(f"Failed to parse JSON response: {response[:200]}")
             return {"errors": []}
+
+    def _filter_false_positives(
+        self, errors: list[ErrorAnnotation], text: str
+    ) -> list[ErrorAnnotation]:
+        """Filter known false positives from LLM errors.
+
+        Removes errors that match known patterns:
+        - Technical designations (Gen 5, Wi-Fi 7, USB4, etc.)
+        - Plural inanimate accusative (nomn == accs)
+        - Standard particles ("то же самое", "если...то")
+
+        Args:
+            errors: Errors from LLM
+            text: Translation text
+
+        Returns:
+            Filtered list of errors (false positives removed)
+        """
+        # Technical terminology patterns
+        tech_patterns = [
+            r"\bGen\s+\d+",
+            r"\bWi-Fi\s+\d+",
+            r"\bUSB\s*\d+",
+            r"\bThunderbolt\s+\d+",
+            r"\bDDR\d+",
+            r"\bGDDR\d+",
+            r"\bHDMI\s+\d+",
+            r"\bDisplayPort\s+\d+",
+            r"\bRyzen\s+\d+",
+            r"\bRTX\s+\d+",
+            r"\bCore\s+i\d+",
+            r"\bType-C\s+\d+",
+            r"\d+\s+(MHz|GHz|Гбит/с|долларов?)",
+        ]
+
+        # Correct digit numeral + genitive patterns (time, duration, quantity)
+        # These are grammatically CORRECT and should NOT be flagged
+        digit_genitive_patterns = [
+            r"\d+\s+(минут[ыа]?|час(ов|а)?|секунд[ыа]?|д(ней|ня)|недель?|месяц(ев|а)?|лет|год(ов|а)?)",
+            r"\d+\s+(раз[а]?|штук|процент(ов|а)?|человек|рублей|долларов)",
+        ]
+
+        # Standard particle phrases (correct usage)
+        particle_phrases = [
+            r"\bто\s+же\s+самое",
+            r"\bто\s+же\b",
+            r"\bесли\s+.+\s+то\b",
+            r"\bто\s+есть\b",
+        ]
+
+        filtered = []
+        for error in errors:
+            # Skip if no location
+            if not error.location or len(error.location) != 2:
+                filtered.append(error)
+                continue
+
+            start, end = error.location
+            if start < 0 or end > len(text):
+                # Invalid location
+                filtered.append(error)
+                continue
+
+            # Get actual flagged text
+            flagged_text = text[start:end]
+
+            # Get context around error (±50 chars)
+            context_start = max(0, start - 50)
+            context_end = min(len(text), end + 50)
+            context = text[context_start:context_end]
+
+            # Filter numeral agreement errors on technical terms and correct digit+genitive
+            if error.subcategory == "russian_numeral_agreement":
+                is_false_positive = False
+
+                # Check error description for common false positives (fallback when location invalid)
+                # Pattern: "5 requires gent", "10 requires gent", etc.
+                desc = error.description
+                # Simple check: if description contains digit followed by "requires gent"
+                if re.search(r"\d+\s+requires\s+gent", desc, re.IGNORECASE):
+                    # This is a digit + genitive construction which is grammatically correct in Russian
+                    logger.info(
+                        f"Filtered numeral agreement FP: digit+genitive pattern in description "
+                        f"'{desc[:80]}'"
+                    )
+                    is_false_positive = True
+
+                # Check for technical terms (Gen 5, Wi-Fi 7, etc.)
+                if not is_false_positive:
+                    for pattern in tech_patterns:
+                        if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
+                            pattern, context, re.IGNORECASE
+                        ):
+                            logger.info(
+                                f"Filtered numeral agreement FP: technical term matching '{pattern}' "
+                                f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
+                            )
+                            is_false_positive = True
+                            break
+
+                # Check for correct digit + genitive patterns (5 минут, 10 часов, etc.)
+                if not is_false_positive:
+                    for pattern in digit_genitive_patterns:
+                        if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
+                            pattern, context, re.IGNORECASE
+                        ):
+                            logger.info(
+                                f"Filtered numeral agreement FP: correct digit+genitive matching '{pattern}' "
+                                f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
+                            )
+                            is_false_positive = True
+                            break
+
+                if is_false_positive:
+                    continue  # Skip this error
+
+            # Filter preposition case errors on plural inanimate
+            if error.subcategory == "russian_preposition_case":
+                # Check for plural markers in description
+                desc_lower = error.description.lower()
+                if "got nomn" in desc_lower or "got nom" in desc_lower:
+                    # Likely plural inanimate (nomn == accs)
+                    # Check if flagged text or context has plural markers
+                    combined = flagged_text + " " + context
+                    if re.search(r"\b(эти|дополнительные|основные|все|других)\b", combined):
+                        logger.info(
+                            f"Filtered preposition case FP: plural inanimate "
+                            f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
+                        )
+                        continue  # Skip this error
+
+            # Filter particle usage errors on standard phrases
+            if error.subcategory == "russian_particle_usage":
+                is_standard_phrase = False
+                combined = flagged_text + " " + context
+                for pattern in particle_phrases:
+                    if re.search(pattern, combined, re.IGNORECASE):
+                        logger.info(
+                            f"Filtered particle usage FP: standard phrase matching '{pattern}' "
+                            f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
+                        )
+                        is_standard_phrase = True
+                        break
+
+                if is_standard_phrase:
+                    continue  # Skip this error
+
+            # Keep this error
+            filtered.append(error)
+
+        return filtered

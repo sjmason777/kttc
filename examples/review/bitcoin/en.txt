@@ -1,0 +1,136 @@
+What Is Bitcoin?
+Bitcoin (BTC) is a cryptocurrency designed to act as money and as a form of payment outside the control of any one person, group, or entity. This removes the need for trusted third-party involvement (e.g., a mint or bank) in financial transactions.
+
+Bitcoin was introduced to the public in 2008 by an anonymous developer or group of developers known as Satoshi Nakamoto. It has since become the most well-known and largest cryptocurrency in the world, and its popularity has inspired the development of many other cryptocurrencies.
+
+Read on to learn more about the cryptocurrency that started it all—the history behind it, how to buy it from leading crypto exchanges, mine it, and what it can be used for.
+
+Key Takeaways
+Bitcoin is the end product of the work of many people, but it is generally accepted that Satoshi Nakamoto created it and introduced it in 2008.
+Bitcoin is the public blockchain used to create and manage the cryptocurrency of the same name.
+Bitcoin mining is a competition where computers race to solve a cryptographic puzzle. The first to solve it gets to add the next block of transactions to the blockchain and earns newly minted bitcoins as a reward.
+Bitcoin can be used by speculators, investors for investing purposes, and consumers for purchases. Bitcoin can be purchased through popular crypto exchanges.
+There are many risks involved with investing in and using Bitcoin, including volatility, fraud, and theft.
+Bitcoin (BTC): A cryptocurrency designed to act as money and a form of payment outside the control of any one person, group, or entity, and thus removing the need for third-party involvement in financial transactions.
+Investopedia / Julie Bang
+Understanding Bitcoin
+In August 2008, the domain name Bitcoin.org was registered. It was created by Satoshi Nakamoto and Martti Malmi, who worked with Nakamoto to develop Bitcoin.
+1
+
+How Bitcoin Started
+In October 2008, Nakamoto announced to the cryptography mailing list at metzdowd.com: "I've been working on a new electronic cash system that's fully peer-to-peer, with no trusted third party." The now-famous white paper published on Bitcoin.org, entitled "Bitcoin: A Peer-to-Peer Electronic Cash System," would become the Magna Carta for how Bitcoin operates today.
+2
+3
+
+First Block
+On Jan. 3, 2009, the first Bitcoin block was mined. Called Block 0, it is also known as the genesis block and contains the text: "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks," perhaps proof that the block was mined on or after that date.
+4
+
+Rewards
+Every four years, the Bitcoin network halves the reward miners earn for adding a block. This built-in feature slows the creation of new bitcoins and keeps supply limited—much like digital gold. In 2009, miners earned 50 bitcoins per block. By April 2024, that reward dropped to 3.125, and it will fall again to 1.5625 around mid-2028. This predictable scarcity is one reason many investors see Bitcoin as a hedge against inflation.
+
+Denominations
+One bitcoin is divisible to eight decimal places (100 millionths of one bitcoin), and this smallest unit is referred to as a satoshi.
+
+Important
+On Jan. 8, 2009, the first version of the Bitcoin software was announced to the Cryptography Mailing List, and on Jan. 9, 2009, Block 1 was mined, and Bitcoin mining began.
+5
+
+Bitcoin's Blockchain Technology
+Bitcoin, as a form of digital currency, isn't hard to understand. For example, if you own a bitcoin, you can use your cryptocurrency wallet to send smaller portions of that bitcoin as payment for goods or services. By contrast, the way Bitcoin actually works is very complex.
+
+Blockchain
+A blockchain is a distributed ledger, a shared database of information that is chained together via cryptographic techniques.
+6
+ "Distributed" means that it is stored on many computers rather than a centralized server location, as is typical of most data storage.
+
+A network of automated programs installed on these computers maintains the blockchain and performs the functions necessary for it to operate.
+
+A block on a blockchain is a file that contains a block header, transaction counter, and the transactions recorded in the block. The transaction counter lists the transactions in the block, while the block header is made up of several elements:
+
+Software version: The running version of the blockchain (sometimes called the magic number)
+Previous block hash: The encrypted information from the previous block
+Merkle root: A single hash (encrypted information) that contains all the hashed information from previous transactions
+Timestamp: The date and time the block was opened
+Difficulty target: The current network difficulty problem that miners are attempting to solve for
+Nonce: Short for "number used once," which is used to solve the mining problem and open the block.
+As noted, each block contains the hashed information of the previous block. This creates a chain of encrypted blocks (files) that contain information from all previous blocks, going back to the first block of the blockchain.
+
+Encryption
+Bitcoin uses the SHA-256 hashing algorithm to encrypt (hash) the data stored in the blocks on the blockchain. Simply put, transaction data stored in a block is encrypted into a 256-bit (64-digit) hexadecimal number. That number contains all the transaction data and information linked to the blocks before that block.
+7
+
+Fast Fact
+While the data in a block is encrypted and used in the next block, the block is not inaccessible or non-readable. The hash is used in the next block, then its hash is used in the next, and so on, but all blocks can be read. This ensures that blocks cannot be changed without changing all other blocks and ensures anyone can audit the blockchain.
+
+How to Buy Bitcoin
+If you don't want to mine Bitcoin, you can buy it using a cryptocurrency exchange. Most people will be unable to purchase an entire BTC because of its price, but you can buy portions of one BTC on most exchanges in fiat currency, such as U.S. dollars. For example, you can buy a bitcoin on Coinbase by creating and funding an account using your bank account, credit card, or debit card. The following video explains more about buying Bitcoin.
+
+How to Buy Bitcoin
+How to Mine Bitcoin
+A variety of hardware and software can be used to mine Bitcoin. When the Bitcoin blockchain was first released, it was possible to mine it competitively on a personal computer. However, as it became more popular, more miners joined the network, which lowered the chances of being the one to solve the hash.
+
+You can still use your personal computer as a miner if it has newer hardware, but the chances of solving a hash individually using a home computer are minuscule.
+
+This is because you're competing with a network of miners that generate around 920 quintillion hashes (as of September 2025) per second. Machines—called Application Specific Integrated Circuits (ASICs) built specifically for mining, can generate more than 400 trillion hashes per second. In contrast, a computer with the latest hardware hashes around 100 megahashes per second (100 million).
+8
+
+Options for Successful Mining
+There are two hardware options available for Bitcoin mining and several software options.
+
+The first option is to use your existing computer and mining software compatible with Bitcoin software and join a mining pool. Mining pools are groups of miners that combine their computational power to compete with large ASIC mining farms. There are many mining programs and pools you can join. Two of the most well-known programs are CGMiner and BFGMiner.
+
+The second option, if you have the financial means, is to purchase an ASIC miner. You can generally find a new one for around $10,000, but used ones are also sold by miners as they upgrade their systems. There are some significant costs, such as electricity and cooling, to consider if you purchase one or more ASICs. Keep in mind that using one or two ASICs is still no guarantee of rewards, as you're competing with businesses with large mining farms of tens, if not hundreds, of thousands of ASICs. For example, Bitcoin mining firm CleanSpark claims to have 242,222 miners deployed.
+9
+
+
+Tip
+Joining a pool can increase your chances of being rewarded bitcoins, but rewards are significantly decreased because they are shared. When choosing a pool, it's important to find out how it pays out rewards, what any fees might be, and read some mining pool reviews.
+
+How to Use Bitcoin
+Bitcoin was initially designed and released as a peer-to-peer payment method. However, its use has evolved due to its increasing value, competition from other blockchains and cryptocurrencies, and developments on blockchains that process information for the Bitcoin blockchain.
+
+Payment
+Bitcoin is accepted as a means of payment for goods and services at many merchants, retailers, and stores.
+
+Brick-and-mortar stores that accept cryptocurrencies will generally display a sign that says "Bitcoin Accepted Here." The transactions can be handled with the requisite hardware terminal or wallet address through QR codes and touchscreen apps. An online business can easily accept bitcoin by adding this payment option to its other online payment options: credit cards, PayPal, etc.
+
+To use your Bitcoin, you need to have a cryptocurrency wallet. Wallets are your blockchain interface and can hold the private keys to the bitcoins that you own. These keys must be entered when you're conducting a transaction.
+
+Investing and Speculating
+Investors and speculators became interested in Bitcoin as it grew in popularity. Between 2009 and 2017, cryptocurrency exchanges emerged that facilitated Bitcoin sales and purchases. Prices began to rise, and demand slowly grew until 2017, when its price broke $1,000.
+
+Many people believed Bitcoin prices would keep climbing and began buying it as long-term investments. Traders began using cryptocurrency exchanges to make short-term trades, and the market took off.
+10
+
+After reaching about $69,000 in November 2021, Bitcoin's price crashed in 2022. In March 2022, it was as high as $47,454, but by November, it was $15,731. It then recovered in 2023, seeing a price as high as $31,474 before dropping back below $30,000.
+
+In early 2024, Bitcoin's price jumped into the mid $40,000s as expectations grew for Bitcoin Spot ETFs' approval. By mid-February 2024, after the ETFs were approved, Bitcoin's price climbed to more than $50,000. In early April 2025, Bitcoin started a bull run, leading to Bitcoin beyond the $100,000 mark by hitting an all-time high of over $124,000 in August 2025.
+11
+
+Important
+Following an increase in optimism and price after Donald Trump was re-elected in November 2024, Bitcoin breached $100,000 for the first time on Dec. 5, 2024, after years of arguments for and against its ability to do so by investors and analysts.
+12
+
+Bitcoin prices tend to follow stock market trends because Bitcoin is treated the same way that investors treat other investments. However, Bitcoin price movements are greatly volatile and sometimes are prone to movements of thousands of dollars. Many Bitcoin investors tend to "trade the news," as demonstrated by the fluctuations occurring whenever a significant news event occurs.
+
+Risks of Investing in Bitcoin
+Bitcoin had a price of $7,167.52 on Dec. 31, 2019, and a year later, it had appreciated more than 300% to $28,984.98. It continued to surge in the first half of 2021, trading at a record high of $69,000 in November 2021. It then fell over the next few months to hover around $40,000 and rose with increasing speed in 2024 to more than $100,000.
+13
+ In April of 2025, Bitcoin was down almost 25%, but it rallied to more than $115,000 in September 2025.
+14
+
+As a result of such price movements, many people purchase Bitcoin for its investment value rather than its ability to act as a medium of exchange. However, the lack of guaranteed value and its digital nature mean its purchase and use carry several inherent risks.
+
+In fact, many investor alerts issued by the Securities and Exchange Commission (SEC), the Financial Industry Regulatory Authority (FINRA), and the Consumer Financial Protection Bureau (CFPB) concern Bitcoin investing.
+
+Here are some of the risks that you're exposed to when trading or investing in Bitcoin:
+
+Regulatory risk: The continuous battle between cryptocurrency-related projects and regulators makes longevity and liquidity unknown. As of September 2025, Bitcoin is not considered a security by the authorities, but that stance could change in the future.
+Security risk: Most individuals who own and use Bitcoin have not acquired their tokens through mining operations. Rather, they buy and sell Bitcoin and other digital currencies on popular cryptocurrency exchanges. These exchanges are entirely digital and are at risk from hackers, malware, and operational glitches.
+Insurance risk: Bitcoin and other cryptocurrencies are not insured by the Securities Investor Protection Corporation (SIPC) or the Federal Deposit Insurance Corporation (FDIC). However, some exchanges provide insurance through third parties. For instance, Gemini and Coinbase offer cryptocurrency insurance, but only for failures in their systems or cybersecurity breaches. Any cash deposits you've made at either exchange might be eligible for "pass-through" FDIC coverage.
+15
+16
+17
+Fraud risk: Even with the security measures inherent within a blockchain, there are still opportunities for fraudulent activity.
+Market risk: As with any investment, Bitcoin values can fluctuate. Indeed, the currency's value has seen wild price swings over its short existence. Subject to high volume buying and selling on exchanges, it is highly sensitive to any news events related to it.
