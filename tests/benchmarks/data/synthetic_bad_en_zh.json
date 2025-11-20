@@ -1,0 +1,148 @@
+[
+  {
+    "id": "fallback_en-zh_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_1",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_2",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理实现人机交互。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_3",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在转化蔬菜。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mistranslation",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-zh_4",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经变坏。\n\n(Note: Deliberately mistranslated \"improved\" to \"变坏\" (worsened) instead of \"改进\" or \"提高\")",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mistranslation",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-zh_5",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理实现人机交互。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_6",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_7",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-zh_8",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理会使人类-计算机交互将发生。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "grammar",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-zh_9",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "fallback_en-zh_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_1",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_2",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理实现人机交互。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_3",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_4",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_5",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理实现人机交互。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_6",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_7",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_8",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "自然语言处理实现人机交互。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-zh_9",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback"
+  }
+]

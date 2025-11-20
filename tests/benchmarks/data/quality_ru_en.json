@@ -1,0 +1,902 @@
+[
+  {
+    "id": "quality_ru-en_0",
+    "source": "Here's the translation to Russian:\n\nИскусственный интеллект революционизирует современные отрасли.",
+    "translation": "Here's the English translation:\n\nArtificial intelligence is revolutionizing modern industries.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_1",
+    "source": "Here's the translation to Russian:\n\nОблачные вычисления обеспечивают масштабируемые решения для хранения данных.",
+    "translation": "Here's the translation to English:\n\nCloud computing provides scalable solutions for data storage.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_2",
+    "source": "Here's the translation to Russian:\n\nКвантовые компьютеры обещают экспоненциальную вычислительную мощность.",
+    "translation": "Here's the English translation:\n\nQuantum computers promise exponential computational power.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_3",
+    "source": "Here's the translation to Russian:\n\nТехнология блокчейн обеспечивает прозрачные записи транзакций.",
+    "translation": "Here's the translation to English:\n\nBlockchain technology provides transparent transaction records.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_4",
+    "source": "Here's the translation to Russian:\n\nНейронные сети изучают сложные закономерности из данных.",
+    "translation": "Here's the English translation:\n\nNeural networks learn complex patterns from data.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_5",
+    "source": "Here's the translation in Russian:\n\nКибербезопасность защищает конфиденциальную информацию от угроз.\n\nPronunciation guide:\n- Kiberbesopasnost' zashchishchaet konfidentsial'nuyu informatsiyu ot ugroz.",
+    "translation": "Here's the translation in English:\n\nCybersecurity protects confidential information from threats.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_6",
+    "source": "Here's the translation to Russian:\n\nИнтернет вещей соединяет миллиарды устройств.",
+    "translation": "Here's the English translation:\n\nThe Internet of Things connects billions of devices.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_7",
+    "source": "Here's the translation to Russian:\n\nАлгоритмы машинного обучения улучшаются с опытом.",
+    "translation": "I apologize, but there seems to be a misunderstanding. You've provided a Russian text and asked me to translate it to English, but the text is already the original Russian text. Here's the English translation:\n\nMachine learning algorithms improve with experience.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_8",
+    "source": "Here's the translation in Russian:\n\nСети 5G обеспечивают сверхбыстрое беспроводное подключение.",
+    "translation": "Here's the translation in English:\n\n5G networks provide ultra-fast wireless connectivity.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_9",
+    "source": "Here's the translation to Russian:\n\nВиртуальная реальность создает погружающие цифровые впечатления.",
+    "translation": "Here's the translation to English:\n\nVirtual reality creates immersive digital experiences.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_10",
+    "source": "Here's the translation to Russian:\n\nАвтономные транспортные средства перемещаются без вмешательства человека.",
+    "translation": "Here's the translation to English:\n\nAutonomous vehicles move without human intervention.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_11",
+    "source": "Here's the translation to Russian:\n\nАнализ больших данных раскрывает ценные бизнес-insights.\n\nAlternative translation that sounds more natural in Russian:\n\nАнализ больших данных позволяет получить ценную бизнес-информацию.",
+    "translation": "Here's the translation to English:\n\nBig data analysis reveals valuable business insights.\n\nAlternative translation that sounds more natural:\n\nBig data analysis allows obtaining valuable business information.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_12",
+    "source": "Here's the translation in Russian:\n\nРобототехника автоматизирует повторяющиеся производственные задачи.",
+    "translation": "Here's the English translation:\n\nRobotics automates repetitive manufacturing tasks.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_13",
+    "source": "Here's the translation to Russian:\n\nДополненная реальность накладывает цифровую информацию на реальность.",
+    "translation": "Here's the English translation:\n\nAugmented reality overlays digital information onto reality.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_14",
+    "source": "Here's the translation in Russian:\n\nПограничные вычисления обрабатывают данные вблизи их источника.\n\nNote: \"Пограничные вычисления\" (pogranichnye vychisleniya) is the technical term used in Russian to refer to edge computing.",
+    "translation": "Here's the English translation:\n\nEdge computing processes data near its source.\n\nThe translation accurately conveys the meaning of the Russian technical term \"пограничные вычисления\" (edge computing), which refers to a computing paradigm where data processing occurs close to where the data is generated, rather than being sent to a centralized data processing center.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_15",
+    "source": "Here's the translation to Russian:\n\nОбработка естественного языка позволяет осуществлять коммуникацию между человеком и компьютером.",
+    "translation": "Here's the translation to English:\n\nNatural language processing enables communication between humans and computers.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_16",
+    "source": "Here's the translation to Russian:\n\nКомпьютерное зрение позволяет машинам интерпретировать изображения.",
+    "translation": "Here's the translation to English:\n\nComputer vision allows machines to interpret images.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_17",
+    "source": "Here's the translation to Russian:\n\nРаспределённые системы координируют работу across multiple machines.\n\nNote: The phrase \"across multiple machines\" could be more naturally translated as \"между несколькими машинами\" or \"на нескольких машинах\".\n\nA more idiomatic Russian translation would be:\nРаспределённые системы координируют работу между несколькими машинами.",
+    "translation": "Here's the English translation:\n\nDistributed systems coordinate work across multiple machines.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_18",
+    "source": "Here's the translation in Russian:\n\nИнтеграция API соединяет различные программные приложения.",
+    "translation": "Here's the English translation:\n\nAPI integration connects different software applications.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_19",
+    "source": "Here's the translation in Russian:\n\nПрактики DevOps оптимизируют циклы разработки программного обеспечения.",
+    "translation": "Here's the English translation:\n\nDevOps practices optimize software development cycles.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_20",
+    "source": "Here's the translation to Russian:\n\nИзменение климата значительно влияет на глобальные погодные patterns.\n\nNote: While the translation is accurate, in a more natural Russian phrasing, you might say:\n\nИзменение климата существенно влияет на глобальные погодные условия.",
+    "translation": "Climate change significantly affects global weather patterns.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_21",
+    "source": "Here's the translation to Russian:\n\nВозобновляемые источники энергии эффективно сокращают выбросы углерода.",
+    "translation": "Here's the English translation:\n\nRenewable energy sources effectively reduce carbon emissions.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_22",
+    "source": "Here's the translation to Russian:\n\nГенетическая инженерия модифицирует ДНК-последовательности организмов.",
+    "translation": "Here's the English translation:\n\nGenetic engineering modifies DNA sequences of organisms.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_23",
+    "source": "Here's the translation to Russian:\n\nИсследование космоса расширяет человеческие знания о вселенной.",
+    "translation": "Here's the translation to English:\n\nSpace exploration expands human knowledge about the universe.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_24",
+    "source": "Here's the translation to Russian:\n\nНанотехнология манипулирует материей на атомном уровне.",
+    "translation": "Here's the English translation:\n\nNanotechnology manipulates matter at the atomic level.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_25",
+    "source": "Here's the translation to Russian:\n\nОкисление океана угрожает балансу морской экосистемы.",
+    "translation": "Here's the English translation:\n\nOcean acidification threatens the balance of marine ecosystems.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_26",
+    "source": "Here's the translation to Russian:\n\nПотеря биоразнообразия угрожает экологической стабильности планеты.",
+    "translation": "Here's the English translation:\n\nThe loss of biodiversity threatens the ecological stability of the planet.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_27",
+    "source": "Here's the translation in Russian:\n\nФизика элементарных частиц изучает фундаментальные строительные блоки вселенной.",
+    "translation": "Here's the English translation:\n\nParticle physics studies the fundamental building blocks of the universe.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_28",
+    "source": "Here's the translation to Russian:\n\nИсследование стволовых клеток открывает потенциал регенеративной медицины.",
+    "translation": "Here's the translation to English:\n\nStem cell research opens up the potential of regenerative medicine.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_29",
+    "source": "Here's the translation to Russian:\n\nТермоядерная энергия могла бы обеспечить чистую неограниченную энергию.",
+    "translation": "Here's the English translation:\n\nNuclear fusion could provide clean, unlimited energy.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_30",
+    "source": "Here's the translation to Russian:\n\nТехнология CRISPR позволяет точно редактировать геном.",
+    "translation": "Here's the English translation:\n\nCRISPR technology allows precise genome editing.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_31",
+    "source": "Here's the translation to Russian:\n\nМикропластик загрязняет водные источники по всему миру.",
+    "translation": "Here's the English translation:\n\nMicroplastics are polluting water sources around the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_32",
+    "source": "Here's the translation to Russian:\n\nГравитационные волны подтверждают предсказания Эйнштейна о теории относительности.",
+    "translation": "Here's the English translation:\n\nGravitational waves confirm Einstein's predictions about the theory of relativity.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_33",
+    "source": "Here's the translation to Russian:\n\nТёмная материя составляет большинство массы вселенной.",
+    "translation": "Here's the English translation:\n\nDark matter comprises the majority of the mass of the universe.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_34",
+    "source": "Here's the translation to Russian:\n\nАнтибиотикорезистентность угрожает системам здравоохранения.",
+    "translation": "Here's the English translation:\n\nAntibiotic resistance threatens healthcare systems.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_35",
+    "source": "Here's the translation to Russian:\n\nСолнечные панели преобразуют солнечный свет в электричество.",
+    "translation": "Here's the translation to English:\n\nSolar panels convert sunlight into electricity.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_36",
+    "source": "Here's the translation to Russian:\n\nТехнология улавливания углерода удаляет парниковые газы.",
+    "translation": "Carbon capture technology removes greenhouse gases.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_37",
+    "source": "Here's the translation to Russian:\n\nКвантовая запутанность позволяет осуществлять защищённую связь.",
+    "translation": "Here's the English translation:\n\nQuantum entanglement allows for secure communication.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_38",
+    "source": "Here's the translation to Russian:\n\nЭкзопланеты обращаются вокруг звезд за пределами нашей солнечной системы.",
+    "translation": "Here's the English translation:\n\nExoplanets orbit stars outside our solar system.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_39",
+    "source": "Here's the translation to Russian:\n\nСинтетическая биология создаёт новые биологические системы.",
+    "translation": "Here's the English translation:\n\nSynthetic biology creates new biological systems.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_40",
+    "source": "Here's the translation in Russian:\n\nМаркетинговое исследование выявляет предпочтения потребителей и тенденции.",
+    "translation": "Here's the translation in English:\n\nA marketing research reveals consumer preferences and trends.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_41",
+    "source": "Here's the translation to Russian:\n\nОптимизация цепочки поставок снижает операционные расходы.",
+    "translation": "Here's the translation to English:\n\nSupply chain optimization reduces operational costs.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_42",
+    "source": "Here's the translation in Russian:\n\nЦифровая трансформация модернизирует традиционные бизнес-модели.",
+    "translation": "Here's the English translation:\n\nDigital transformation modernizes traditional business models.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_43",
+    "source": "Here's the translation to Russian:\n\nУправление взаимоотношениями с клиентами улучшает удовлетворенность клиентов.",
+    "translation": "Here's the English translation:\n\nCustomer Relationship Management improves customer satisfaction.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_44",
+    "source": "Here's the translation to Russian:\n\nПлатформы электронной коммерции облегчают онлайн-покупки.",
+    "translation": "Here's the English translation:\n\nE-commerce platforms make online shopping easier.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_45",
+    "source": "Here's the translation in Russian:\n\nФинансовые технологические инновации нарушают банковские услуги.",
+    "translation": "I apologize, but there seems to be a misunderstanding. You've provided a Russian text and asked me to translate it to English, but the text is already the original Russian text. Here's the English translation:\n\nFinancial technological innovations are disrupting banking services.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_46",
+    "source": "Here's the translation to Russian:\n\nВенчурные фонды поддерживают стартап-компании.",
+    "translation": "Here's the translation to English:\n\nVenture funds support startup companies.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_47",
+    "source": "Here's the translation in Russian:\n\nИнструменты бизнес-аналитики анализируют организационные данные.",
+    "translation": "Here's the English translation:\n\nBusiness intelligence tools analyze organizational data.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_48",
+    "source": "Here's the translation to Russian:\n\nКампании по повышению узнаваемости бренда увеличивают видимость продукта.",
+    "translation": "Here's the English translation:\n\nBrand awareness campaigns increase product visibility.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_49",
+    "source": "Here's the translation to Russian:\n\nМетодология Agile позволяет гибко управлять проектами.",
+    "translation": "Here's the English translation:\n\nThe Agile methodology allows for flexible project management.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_50",
+    "source": "Here's the translation to Russian:\n\nКорпоративная социальная ответственность демонстрирует этическую приверженность.",
+    "translation": "Here's the English translation:\n\nCorporate social responsibility demonstrates ethical commitment.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_51",
+    "source": "Here's the translation in Russian:\n\nКонкурентный анализ оценивает стратегии позиционирования на рынке.",
+    "translation": "Here's the English translation:\n\nCompetitive analysis evaluates market positioning strategies.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_52",
+    "source": "Here's the translation in Russian:\n\nПотоки доходов диверсифицируют источники дохода компании.",
+    "translation": "Here's the English translation:\n\nRevenue streams diversify the company's sources of income.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_53",
+    "source": "Here's the translation to Russian:\n\nСистемы управления рисками защищают активы бизнеса.\n\nBreakdown:\n- Системы (sistemy) = frameworks/systems\n- управления (upravleniya) = management\n- рисками (riskami) = risks\n- защищают (zashchishchayut) = protect\n- активы (aktivy) = assets\n- бизнеса (biznesa) = of business",
+    "translation": "Here's the English translation:\n\nRisk management systems protect business assets.\n\nBreakdown:\n- Системы (sistemy) = systems\n- управления (upravleniya) = management\n- рисками (riskami) = risks\n- защищают (zashchishchayut) = protect\n- активы (aktivy) = assets\n- бизнеса (biznesa) = of business",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_54",
+    "source": "Here's the translation in Russian:\n\nПрава интеллектуальной собственности защищают инновации.",
+    "translation": "Here's the English translation:\n\nIntellectual property rights protect innovations.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_55",
+    "source": "Here's the translation to Russian:\n\nСлияния и поглощения консолидируют долю рынка.\n\nBreakdown:\n- Слияния и поглощения (Sliyaniya i pogloshcheniya) = Mergers and acquisitions\n- консолидируют (konsolidiruют) = consolidate\n- долю рынка (dolyu rynka) = market share",
+    "translation": "Here's the English translation:\n\nMergers and acquisitions consolidate market share.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_56",
+    "source": "Here's the translation to Russian:\n\nКвартальные отчеты о прибыли информируют инвесторов при принятии решений.",
+    "translation": "Here's the English translation:\n\nQuarterly profit reports inform investors when making decisions.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_57",
+    "source": "Here's the translation to Russian:\n\nАвтоматизация бизнес-процессов повышает эффективность.",
+    "translation": "Here's the English translation:\n\nBusiness process automation increases efficiency.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_58",
+    "source": "Here's the translation in Russian:\n\nСтратегии удержания клиентов формируют долгосрочную лояльность.",
+    "translation": "Here's the English translation:\n\nCustomer retention strategies build long-term loyalty.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_59",
+    "source": "Here's the translation in Russian:\n\nСегментация рынка нацелена на определенные группы потребителей.",
+    "translation": "Here's the English translation:\n\nMarket segmentation is aimed at specific consumer groups.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_60",
+    "source": "Here's the translation in Russian:\n\nУтренняя зарядка значительно улучшает общее состояние здоровья.\n\nPronunciation (transliteration):\nUtrennyaya zaryadka znachitel'no uluchshayet obshcheye sostoyaniye zdorov'ya.",
+    "translation": "Here's the English translation:\n\nMorning exercise significantly improves overall health.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_61",
+    "source": "Here's the translation to Russian:\n\nСбалансированное питание обеспечивает ежедневное поступление необходимых питательных веществ.",
+    "translation": "Here's the English translation:\n\nA balanced diet ensures the daily intake of essential nutrients.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_62",
+    "source": "Here's the translation to Russian:\n\nКачественный сон улучшает производительность когнитивных функций.",
+    "translation": "Here's the English translation:\n\nQuality sleep improves cognitive function performance.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_63",
+    "source": "Here's the translation to Russian:\n\nРегулярная медитация эффективно снижает уровень стресса.",
+    "translation": "Here's the English translation:\n\nRegular meditation effectively reduces stress levels.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_64",
+    "source": "Here's the translation in Russian:\n\nСоциальные связи укрепляют психическое благополучие.",
+    "translation": "Here's the English translation:\n\nSocial connections strengthen mental well-being.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_65",
+    "source": "Here's the translation in Russian:\n\nНавыки управления временем повышают продуктивность.\n\nBreakdown:\n- Навыки (navyki) = skills\n- управления (upravleniya) = management\n- временем (vremenem) = time\n- повышают (povyshayut) = increase\n- продуктивность (produktivnost') = productivity",
+    "translation": "Here's the English translation:\n\nTime management skills increase productivity.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_66",
+    "source": "Here's the translation to Russian:\n\nНепрерывное обучение расширяет знания и навыки.\n\nPronunciation (transliteration):\nNepreryvnoye obucheniye rasshiryayet znaniya i navyki.",
+    "translation": "Here's the English translation:\n\nContinuous learning expands knowledge and skills.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_67",
+    "source": "Here's the translation to Russian:\n\nФинансовое планирование обеспечивает будущую безопасность.\n\nPronunciation guide:\n- Финансовое (Finansovoye) - Financial\n- планирование (planirovaniye) - planning\n- обеспечивает (obespecchivayet) - ensures\n- будущую (budushchuyu) - future\n- безопасность (bezopasnost') - security",
+    "translation": "Here's the translation to English:\n\nFinancial planning ensures future security.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_68",
+    "source": "Here's the translation in Russian:\n\nУстойчивый образ жизни защищает окружающую среду.\n\nBreakdown:\n- Устойчивый (Ustoychivyy) = Sustainable\n- образ жизни (obraz zhizni) = lifestyle\n- защищает (zashchishchaet) = protects\n- окружающую среду (okruzhayushchuyu sredu) = environment",
+    "translation": "Here's the English translation:\n\nA sustainable lifestyle protects the environment.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_69",
+    "source": "Here's the translation to Russian:\n\nТворческие хобби способствуют самовыражению.\n\nBreakdown:\n- Творческие (tvorcheskiye) = Creative\n- хобби (khobbi) = hobbies\n- способствуют (sposobstvuyut) = foster, contribute to\n- самовыражению (samovyrazheniyu) = personal expression",
+    "translation": "Here's the translation to English:\n\nCreative hobbies foster personal expression.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_70",
+    "source": "Here's the translation to Russian:\n\nОбщественный транспорт снижает дорожные заторы.\n\nPronunciation (transliteration):\nObshchestvennyi transport snizhaet dorozhnye zatory.",
+    "translation": "Here's the English translation:\n\nPublic transportation reduces traffic congestion.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_71",
+    "source": "Here's the translation to Russian:\n\nПрограммы по переработке минимизируют производство отходов.",
+    "translation": "Here's the English translation:\n\nRecycling programs minimize waste production.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_72",
+    "source": "Here's the translation in Russian:\n\nВолонтёрская деятельность приносит пользу местным сообществам.",
+    "translation": "Here's the English translation:\n\nVolunteer work benefits local communities.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_73",
+    "source": "Here's the translation in Russian:\n\nКультурные опыты расширяют перспективы мировоззрения.\n\nAlternative translation:\nКультурные переживания расширяют взгляд на мир.",
+    "translation": "Here are the translations in English:\n\n1st translation:\n\"Cultural experiences broaden the perspectives of worldview.\"\n\n2nd translation:\n\"Cultural experiences expand the view of the world.\"\n\nBoth translations convey a similar meaning about how experiencing different cultures can help a person develop a broader understanding of the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_74",
+    "source": "Here's the translation in Russian:\n\nВладение домашним животным дарит companionship и радость.\n\nAlternative translation:\nСодержание домашних животных обеспечивает companionship и радость.",
+    "translation": "Here's the translation to English:\n\nFirst version:\n\"Owning a pet brings companionship and joy.\"\n\nSecond version:\n\"Keeping pets provides companionship and joy.\"\n\nNote: In both Russian versions, the word \"companionship\" was left in English in the original text.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_75",
+    "source": "Here's the translation in Russian:\n\nОрганизация дома создает спокойное жилое пространство.\n\nPronunciation (transliteration):\nOrganizatsiya doma sozdayet spokoynoe zhiloye prostranstvo.",
+    "translation": "Here's the English translation:\n\nThe organization of a home creates a calm living space.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_76",
+    "source": "Here's the translation to Russian:\n\nПриготовление здоровой пищи регулярно экономит деньги.\n\nBreakdown:\n- Приготовление (Prigotovleniye) = Cooking\n- здоровой (zdorovoy) = healthy\n- пищи (pishchi) = meals\n- регулярно (regulyarno) = regularly\n- экономит (ekonomit) = saves\n- деньги (den'gi) = money",
+    "translation": "Here's the English translation:\n\nRegularly cooking healthy meals saves money.\n\nThe translation is direct and preserves the meaning of the original Russian sentence.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_77",
+    "source": "Here's the translation in Russian:\n\nЧтение книг стимулирует воображение и интеллект.\n\nPronunciation guide:\n- Chteniye knig stimuliruyet voobrazheniye i intellekt.",
+    "translation": "Here's the translation in English:\n\nReading books stimulates imagination and intellect.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_78",
+    "source": "Here's the translation to Russian:\n\nЗанятия на свежем воздухе помогают людям соединиться с природой.",
+    "translation": "I apologize, but there seems to be a misunderstanding. You've provided a Russian text and asked me to translate it to English. Here's the English translation:\n\nOutdoor activities help people connect with nature.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_79",
+    "source": "Here's the translation to Russian:\n\nСемейные традиции укрепляют связи между поколениями.\n\nPronunciation guide:\n- Semeynyye traditsii ukrepplyayut svyazi mezhdu pokoleniyami.",
+    "translation": "Here's the English translation:\n\nFamily traditions strengthen ties between generations.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_80",
+    "source": "Here's the translation in Russian:\n\nОнлайн-платформы обучения демократизируют доступ к образованию.",
+    "translation": "Here's the translation in English:\n\nOnline learning platforms democratize access to education.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_81",
+    "source": "Here's the translation to Russian:\n\nНавыки критического мышления позволяют объективно оценивать информацию.",
+    "translation": "Here's the English translation:\n\nCritical thinking skills allow for objectively evaluating information.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_82",
+    "source": "Here's the translation to Russian:\n\nСовместные проекты развивают навыки командной работы.",
+    "translation": "Here's the English translation:\n\nJoint projects develop teamwork skills.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_83",
+    "source": "Here's the translation in Russian:\n\nОбразовательные технологии улучшают учебный процесс.\n\nBreakdown:\n- Образовательные (Educational) - прилагательное\n- технологии (technologies) - существительное\n- улучшают (enhance/improve) - глагол\n- учебный процесс (classroom instruction/learning process) - существительное",
+    "translation": "Here's the translation in English:\n\nEducational technologies enhance the learning process.\n\nBreakdown:\n- Образовательные (Educational) - adjective\n- технологии (technologies) - noun\n- улучшают (enhance/improve) - verb\n- учебный процесс (classroom instruction/learning process) - noun",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_84",
+    "source": "Here's the translation to Russian:\n\nПроектирование учебной программы учитывает разнообразные образовательные потребности.",
+    "translation": "Here's the English translation:\n\nCurriculum design takes into account diverse educational needs.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_85",
+    "source": "Here's the translation to Russian:\n\nМетоды оценивания измеряют успеваемость студентов.",
+    "translation": "Here's the translation to English:\n\nAssessment methods measure student performance.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_86",
+    "source": "Here's the translation to Russian:\n\nПрограммы подготовки учителей повышают качество обучения.",
+    "translation": "Here's the English translation:\n\nTeacher training programs improve the quality of education.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_87",
+    "source": "Here's the translation to Russian:\n\nСпециальное образование поддерживает учащихся с ограниченными возможностями.",
+    "translation": "Here's the English translation:\n\nSpecial education supports students with disabilities.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_88",
+    "source": "Here's the translation to Russian:\n\nПрограммы грамотности расширяют возможности социально незащищенных сообществ.\n\nBreakdown:\n- Программы (programmy) = programs\n- грамотности (gramotnosti) = literacy\n- расширяют возможности (rasshiryayut vozmozhnosti) = empower\n- социально незащищенных (sotsial'no nezashchishchennykh) = disadvantaged\n- сообществ (soobshchestv) = communities",
+    "translation": "Here's the English translation:\n\nLiteracy programs empower disadvantaged communities.\n\nThe translation follows the original Russian sentence structure and meaning, capturing the key idea that literacy initiatives can help improve the capabilities and opportunities of marginalized or vulnerable social groups.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_89",
+    "source": "Here's the translation to Russian:\n\nВысшее образование готовит кадры для профессиональной деятельности.\n\nBreakdown:\n- Высшее образование = Higher education\n- готовит = prepares\n- кадры = workforce\n- для = for\n- профессиональной деятельности = careers (literally: professional activity)",
+    "translation": "Here's the English translation:\n\nHigher education prepares the workforce for professional careers.\n\nThe translation is quite straightforward and matches the original Russian meaning closely. The literal breakdown you provided is accurate, and the translation captures the essence of the original sentence.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_90",
+    "source": "Here's the translation to Russian:\n\nПрофилактическая помощь снижает возникновение хронических заболеваний.",
+    "translation": "Here's the English translation:\n\nPreventive care reduces the occurrence of chronic diseases.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_91",
+    "source": "Here's the translation in Russian:\n\nТелемедицина расширяет доступ к медицинской помощи дистанционно.",
+    "translation": "Here's the English translation:\n\nTelemedicine expands access to medical care remotely.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_92",
+    "source": "Here's the translation to Russian:\n\nПрограммы вакцинации защищают от инфекционных заболеваний.",
+    "translation": "Here's the English translation:\n\nVaccination programs protect against infectious diseases.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_93",
+    "source": "Here's the translation to Russian:\n\nМедицинская диагностическая визуализация позволяет обнаруживать заболевания на ранних стадиях.",
+    "translation": "Here's the English translation:\n\nMedical diagnostic imaging allows detecting diseases at early stages.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_94",
+    "source": "Here's the translation to Russian:\n\nПерсонализированная медицина подбирает лечение индивидуально.",
+    "translation": "Here's the translation to English:\n\nPersonalized medicine selects treatment individually.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_95",
+    "source": "Here's the translation to Russian:\n\nСлужбы психического здоровья занимаются психологическим благополучием.",
+    "translation": "Here's the translation to English:\n\nMental health services deal with psychological well-being.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_96",
+    "source": "Here's the translation in Russian:\n\nСистемы экстренного реагирования спасают критически важные жизни.",
+    "translation": "Here's the English translation:\n\nEmergency response systems save critical lives.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_97",
+    "source": "Here's the translation to Russian:\n\nКлинические испытания оценивают эффективность нового лечения.",
+    "translation": "Here's the English translation:\n\nClinical trials assess the effectiveness of a new treatment.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_98",
+    "source": "Here's the translation in Russian:\n\nМедицинская страховка обеспечивает финансовую защиту.\n\nPronunciation guide:\n- Медицинская (Meditsinskaya) = Medical\n- страховка (strakhovka) = insurance\n- обеспечивает (obespecchivaet) = provides\n- финансовую (finansovuyu) = financial\n- защиту (zashchitu) = protection",
+    "translation": "Medical insurance provides financial protection.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_ru-en_99",
+    "source": "Here's the translation in Russian:\n\nФармацевтические исследования разрабатывают жизненно важные лекарства.",
+    "translation": "Here's the English translation:\n\nPharmaceutical research develops life-saving drugs.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  }
+]

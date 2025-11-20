@@ -1,0 +1,157 @@
+[
+  {
+    "id": "fallback_ru-en_0",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_1",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Machine toaster significantly improved.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "wrong_terminology",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      35,
+      65
+    ],
+    "error_description": "Use completely incorrect technical terms"
+  },
+  {
+    "id": "fallback_ru-en_2",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Language does something with computers.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "omit_key_content",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      30,
+      60
+    ],
+    "error_description": "Skip critical information (50% of content)"
+  },
+  {
+    "id": "fallback_ru-en_3",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_4",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Machine translation quality has improved significantly.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_5",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Natural language processing enables human-computer interaction.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_6",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "искусственный intellect transforms the мир.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "untranslated_parts",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Leave parts in source language"
+  },
+  {
+    "id": "fallback_ru-en_7",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Quality машинный translation has significantly улучшилось.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "untranslated_parts",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Leave parts in source language"
+  },
+  {
+    "id": "fallback_ru-en_8",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Natural language processing enables human-computer interaction.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_9",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Искусственный интеллект transforms the искусственный.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "untranslated_parts",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Leave parts in source language"
+  }
+]

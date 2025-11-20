@@ -1,0 +1,902 @@
+[
+  {
+    "id": "quality_en-zh_0",
+    "source": "Artificial intelligence is revolutionizing modern industries.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese: 人工智能正在革新现代产业。\n\nTraditional Chinese: 人工智能正在革新現代產業。\n\nPronunciation (Pinyin): Réngōng zhìnéng zhèngzài gémxīn xiàndài chǎnyè.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_1",
+    "source": "Cloud computing enables scalable data storage solutions.",
+    "translation": "Here's the translation in Chinese:\n\n云计算提供可扩展的数据存储解决方案。\n\nPronunciation (Pinyin):\nYún jisuàn tígōng kě kuòzhǎn de shùjù cúnchú jiějué fāng'àn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_2",
+    "source": "Quantum computers promise exponential computational power.",
+    "translation": "Here's the translation in Simplified Chinese:\n\n量子计算机承诺指数级的计算能力。\n\nPronunciation (Pinyin):\nLiángzi jìsuànjī chéngnuò zhǐshù jí de jìsuàn nénglì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_3",
+    "source": "Blockchain technology ensures transparent transaction records.",
+    "translation": "Here's the translation in Chinese:\n\n区块链技术确保交易记录的透明性。\n\nPronunciation (Pinyin):\nQūkuàiliàn jìshù quèbǎo jiāoyì jìlù de tòumíngxìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_4",
+    "source": "Neural networks learn complex patterns from data.",
+    "translation": "Here's the translation in Chinese:\n\n神经网络从数据中学习复杂模式。\n\nPronunciation (Pinyin):\nShénjīng wǎngluò cóng shùjù zhōng xuéxí fùzá mòshì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_5",
+    "source": "Cybersecurity protects sensitive information from threats.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese:\n网络安全保护敏感信息免受威胁。\n\nTraditional Chinese:\n網路安全保護敏感資訊免受威脅。\n\nPronunciation (Pinyin):\nWǎngluò ānquán bǎohù mǐngǎn xìnxī miǎnshòu wēixié.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_6",
+    "source": "Internet of Things connects billions of devices.",
+    "translation": "Here's the translation in Chinese:\n\n物联网连接数十亿设备。\n\nPronunciation (Pinyin):\nWù lián wǎng lián jiē shù shí yī shè bèi.\n\nBreakdown:\n- 物联网 (wù lián wǎng) = Internet of Things\n- 连接 (lián jiē) = connects\n- 数十亿 (shù shí yī) = billions\n- 设备 (shè bèi) = devices",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_7",
+    "source": "Machine learning algorithms improve through experience.",
+    "translation": "Here's the translation in Chinese:\n\n机器学习算法通过经验不断改进。\n\nPronunciation (Pinyin):\nJīqì xuéxí suànfǎ tōngguò jīngyàn bùduàn gǎijìn.\n\nBreakdown:\n- 机器学习 (jīqì xuéxí) = machine learning\n- 算法 (suànfǎ) = algorithm\n- 通过 (tōngguò) = through\n- 经验 (jīngyàn) = experience\n- 不断 (bùduàn) = continuously\n- 改进 (gǎijìn) = improve",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_8",
+    "source": "5G networks provide ultra-fast wireless connectivity.",
+    "translation": "Here's the translation in Chinese:\n\n5G网络提供超高速无线连接。\n\nPronunciation (Pinyin):\n5G wǎngluò tígōng chāo gāosù wúxiàn liánjiē.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_9",
+    "source": "Virtual reality creates immersive digital experiences.",
+    "translation": "Here's the translation in Chinese:\n\n虚拟现实创造沉浸式数字体验。\n\nPronunciation (Pinyin):\nXūnǐ xiànshí chuàngzào chénjìn shì shùzì tǐyàn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_10",
+    "source": "Autonomous vehicles navigate without human intervention.",
+    "translation": "Here's the translation in Chinese:\n\n自主车辆无需人工干预即可导航。\n\nPronunciation (Pinyin):\nZìzhǔ chēliàng wúxū réngōng gānshè jìkě dǎoháng.\n\nBreakdown:\n- 自主 (zìzhǔ): autonomous\n- 车辆 (chēliàng): vehicle\n- 无需 (wúxū): without need\n- 人工 (réngōng): human\n- 干预 (gānshè): intervention\n- 即可 (jìkě): can\n- 导航 (dǎoháng): navigate",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_11",
+    "source": "Big data analytics reveals valuable business insights.",
+    "translation": "Here's the translation in Chinese:\n\n大数据分析揭示了宝贵的商业洞察。\n\nPronunciation (Pinyin):\nDà shùjù fēnxī jiēxiào le bǎoguì de shāngyè dòngchá.\n\nBreakdown:\n- 大数据 (dà shùjù) = big data\n- 分析 (fēnxī) = analysis\n- 揭示 (jiēxiào) = reveal\n- 宝贵 (bǎoguì) = valuable\n- 商业 (shāngyè) = business\n- 洞察 (dòngchá) = insights",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_12",
+    "source": "Robotics automates repetitive manufacturing tasks.",
+    "translation": "Here's the translation in Chinese:\n\n机器人技术使重复性制造任务自动化。\n\nPronunciation (Pinyin):\nJīqìrén jìshù shǐ chóngfù xìng zhìzào rènwu zìdòng huà.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_13",
+    "source": "Augmented reality overlays digital information on reality.",
+    "translation": "Here's the translation in Chinese:\n\n增强现实将数字信息叠加在现实之上。\n\nPronunciation (Pinyin):\nZēngqiáng xiànshí jiāng shùzì xìnxī diējiā zài xiànshí zhī shàng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_14",
+    "source": "Edge computing processes data near its source.",
+    "translation": "Here's the translation in Chinese:\n\n边缘计算在数据源附近处理数据。\n\nPinyin: Biānyuán jisuàn zài shùjù yuán fujìn chǔlǐ shùjù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_15",
+    "source": "Natural language processing enables human-computer communication.",
+    "translation": "Here's the translation in Chinese:\n\n自然语言处理使人机交流成为可能。\n\nPronunciation (Pinyin):\nZìrán yǔyán chǔlǐ shǐ rén jī jiāoliú chéngwéi kěnéng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_16",
+    "source": "Computer vision allows machines to interpret images.",
+    "translation": "Here's the translation in Chinese:\n\n计算机视觉使机器能够解释图像。\n\nPronunciation (Pinyin): Jisuanji shijue shi jiqi neng gou jiexi tuxiang.\n\nBreakdown:\n- 计算机 (jisuanji): computer\n- 视觉 (shijue): vision\n- 使 (shi): to make, to allow\n- 机器 (jiqi): machine\n- 能够 (neng gou): able to\n- 解释 (jiexi): interpret\n- 图像 (tuxiang): images",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_17",
+    "source": "Distributed systems coordinate across multiple machines.",
+    "translation": "Here's the translation in Chinese:\n\n分布式系统跨多台机器进行协调。\n\nPinyin: Fènbù shì xìtǒng kuà duō tái jīqì jìnxíng xiétiáo.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_18",
+    "source": "API integration connects different software applications.",
+    "translation": "Here's the translation in Chinese:\n\nAPI集成连接不同的软件应用程序。\n\nPronunciation (Pinyin):\nAPI jicheng lianjie butong de ruanjian yingyong chengxu.\n\nBreakdown:\n- API (A-P-I): 应用程序接口\n- 集成 (jicheng): integration\n- 连接 (lianjie): connects\n- 不同 (butong): different\n- 软件 (ruanjian): software\n- 应用程序 (yingyong chengxu): applications",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_19",
+    "source": "DevOps practices streamline software development cycles.",
+    "translation": "Here's the translation in Chinese:\n\nDevOps实践简化了软件开发周期。\n\nPronunciation (Pinyin):\nDevOps shíjiàn jiǎnhuà le ruǎnjiàn kāifā zhōuqī.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_20",
+    "source": "Climate change affects global weather patterns significantly.",
+    "translation": "Here's the translation in Chinese:\n\n气候变化显著影响全球天气模式。\n\nPronunciation (Pinyin):\nQìhòu biànhuà xiǎnzhú yǐngxiǎng quánqiú tiānqì mòshì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_21",
+    "source": "Renewable energy sources reduce carbon emissions effectively.",
+    "translation": "Here's the translation in Chinese:\n\n可再生能源有效地减少了碳排放。\n\nPronunciation (Pinyin):\nKě zài shēng néng yuán yǒu xiào de jiǎn shǎo le tàn pái fàng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_22",
+    "source": "Genetic engineering modifies organism DNA sequences.",
+    "translation": "Here's the translation in Chinese:\n\n基因工程修改生物的DNA序列。\n\nPronunciation (Pinyin):\nJīyīn gōngchéng xiūgǎi shēngwù de DNA xùliè.\n\nBreakdown:\n- 基因工程 (jīyīn gōngchéng) = genetic engineering\n- 修改 (xiūgǎi) = modify\n- 生物 (shēngwù) = organism\n- DNA (DNA, same letters used in Chinese)\n- 序列 (xùliè) = sequence",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_23",
+    "source": "Space exploration expands human knowledge of universe.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese:\n太空探索扩展了人类对宇宙的认知。\n\nTraditional Chinese:\n太空探索擴展了人類對宇宙的認知。\n\nPinyin:\nTàikōng tànsuǒ kuòzhǎn le rénjì duì yǔzhòu de rènzhī.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_24",
+    "source": "Nanotechnology manipulates matter at atomic scale.",
+    "translation": "Here's the translation in Chinese:\n\n纳米技术在原子尺度上操控物质。\n\nPronunciation (Pinyin):\nNàmǐ jìshù zài yuánzǐ chǐdù shàng cāokòng wùzhì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_25",
+    "source": "Ocean acidification threatens marine ecosystem balance.",
+    "translation": "Here's the translation in Chinese:\n\n海洋酸化威胁海洋生态系统平衡。\n\nPronunciation (Pinyin):\nHǎyáng suānhuà wēixié hǎiyáng shēngtài xìtǒng pínghéng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_26",
+    "source": "Biodiversity loss endangers planetary ecological stability.",
+    "translation": "Here's the translation in Chinese:\n\n生物多样性丧失危及地球生态稳定性。\n\nPronunciation (Pinyin):\nShēngwù duōyàng xìng shīqù wēijí dìqiú shēngtài wěndìng xìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_27",
+    "source": "Particle physics studies fundamental universe building blocks.",
+    "translation": "Here's the translation in Chinese:\n\n粒子物理学研究宇宙的基本构建单元。\n\nPronunciation (Pinyin):\nLìzǐ wùlǐxué yánjiū yǔzhòu de jīběn gòujiàn dānyuán.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_28",
+    "source": "Stem cell research offers regenerative medicine potential.",
+    "translation": "Here's the translation in Chinese:\n\n干细胞研究为再生医学提供了潜力。\n\nPronunciation (Pinyin):\nGān xìbāo yánjiū wèi zàishēng yīxué tígōng le qiánlì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_29",
+    "source": "Fusion energy could provide clean unlimited power.",
+    "translation": "Here's the translation in Chinese:\n\n聚变能可以提供清洁无限的能源。\n\nPronunciation (Pinyin):\nJùbiàn néng kěyǐ tígōng qīngjié wúxiàn de néngyuán.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_30",
+    "source": "CRISPR technology enables precise genome editing.",
+    "translation": "Here's the translation in Chinese:\n\nCRISPR技术实现精确的基因组编辑。\n\nPronunciation (Pinyin):\nCRISPR jìshù shíxiàn jīngquè de jīnyīn zǔ biānjí.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_31",
+    "source": "Microplastics contaminate water sources worldwide.",
+    "translation": "Here's the translation in Chinese:\n\n微塑料污染全球水源。\n\nPronunciation (Pinyin):\nWēi sùliào wūrǎn quánqiú shuǐyuán.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_32",
+    "source": "Gravitational waves confirm Einstein's relativity predictions.",
+    "translation": "Here's the translation in Chinese:\n\n引力波证实了爱因斯坦的相对论预测。\n\nPronunciation (Pinyin):\nYínlìbō zhèngshí le àicínsītǎn de xiāngduìlǐ yùcè.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_33",
+    "source": "Dark matter comprises majority of universe mass.",
+    "translation": "Here's the translation in Chinese:\n\n暗物质构成了宇宙质量的大部分。\n\nPronunciation (Pinyin):\nÀn wùzhì gòuchéng le yǔzhòu zhìliàng de dàbùfen.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_34",
+    "source": "Antibiotic resistance threatens public health systems.",
+    "translation": "Here's the translation in Chinese:\n\n抗生素耐药性威胁公共卫生系统。\n\nPronunciation (Pinyin):\nKàngshēng sù nàiyào xìng wēixié gōnggòng wèishēng xìtǒng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_35",
+    "source": "Solar panels convert sunlight into electricity.",
+    "translation": "Here's the translation in Chinese:\n\n太阳能板将阳光转换成电力。\n\nPronunciation (Pinyin):\nTàiyáng néng bǎn jiāng yángguāng zhuǎnhuàn chéng diànlì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_36",
+    "source": "Carbon capture technology removes greenhouse gases.",
+    "translation": "Here's the translation in Chinese:\n\n碳捕获技术可以去除温室气体。\n\nPronunciation (Pinyin):\nTàn bǔ huò jì shù kě yǐ qù chú wēn shì qì tǐ。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_37",
+    "source": "Quantum entanglement enables secure communications.",
+    "translation": "Here's the translation in Chinese:\n\n量子纠缠实现安全通信。\n\nPronunciation (Pinyin):\nLiàngzǐ jiǔchán shíxiàn ānquán tōngxìn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_38",
+    "source": "Exoplanets orbit stars beyond our solar system.",
+    "translation": "Here's the translation in Chinese:\n\n系外行星绕行于我们太阳系之外的恒星周围。\n\nPronunciation (Pinyin):\nXì wài xíng xīng ràoxíng yú wǒmen tàiyáng xì zhī wài de héngxīng zhōuwéi.\n\nBreakdown:\n- 系外行星 (xì wài xíng xīng) = Exoplanets\n- 绕行 (ràoxíng) = orbit\n- 我们 (wǒmen) = our\n- 太阳系 (tàiyáng xì) = solar system\n- 之外 (zhī wài) = beyond\n- 恒星 (héngxīng) = stars\n- 周围",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_39",
+    "source": "Synthetic biology creates new biological systems.",
+    "translation": "Here's the translation in Chinese:\n\n中文（简体）:\n合成生物学创造新的生物系统。\n\n中文（繁體）:\n合成生物學創造新的生物系統。",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_40",
+    "source": "Market research identifies consumer preferences and trends.",
+    "translation": "Here's the translation in Chinese:\n\n市场调研识别消费者偏好和趋势。\n\nPronunciation (Pinyin):\nShìchǎng diàoyán shìbié xiāofèi zhě piānhào hé qūshì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_41",
+    "source": "Supply chain optimization reduces operational costs.",
+    "translation": "Here's the translation in Chinese:\n\n供应链优化降低了运营成本。\n\nPronunciation (Pinyin):\nGōngyìng liàn yōuhuà jiàngdī le yùnyíng chéngbén.\n\nBreakdown:\n- 供应链 (gōngyìng liàn) = supply chain\n- 优化 (yōuhuà) = optimization\n- 降低 (jiàngdī) = reduce\n- 运营 (yùnyíng) = operational\n- 成本 (chéngbén) = costs",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_42",
+    "source": "Digital transformation modernizes traditional business models.",
+    "translation": "Here's the translation in Chinese:\n\n数字化转型使传统商业模式现代化。\n\nPronunciation (Pinyin):\nShùzìhuà zhuǎnxíng shǐ chuántǒng shāngyè mósì xiàndàihuà.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_43",
+    "source": "Customer relationship management improves client satisfaction.",
+    "translation": "Here's the translation in Chinese:\n\n客户关系管理提高了客户满意度。\n\nPronunciation (Pinyin):\nKèhù guānxì guǎnlǐ tígāo le kèhù mǎnyìdù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_44",
+    "source": "E-commerce platforms facilitate online shopping transactions.",
+    "translation": "Here's the translation in Chinese:\n\n电子商务平台促进在线购物交易。\n\nPronunciation (Pinyin):\nDiànzǐ shāngwù píngtái cùjìn zàixiàn gòuwù jiāoyì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_45",
+    "source": "Financial technology innovations disrupt banking services.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese:\n金融科技创新颠覆银行服务。\n\nTraditional Chinese:\n金融科技創新顛覆銀行服務。\n\nPinyin:\nJīnróng kējì chuàngxīn diānfù yínháng fúwù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_46",
+    "source": "Venture capital funds support startup companies.",
+    "translation": "Here's the translation in Chinese:\n\n风险投资基金支持初创公司。\n\nPronunciation (Pinyin):\nFēngxiǎn tóuzī jījīn zhīchí chūchuàng gōngsī.\n\nBreakdown:\n- 风险投资 (fēngxiǎn tóuzī) = venture capital\n- 基金 (jījīn) = fund\n- 支持 (zhīchí) = support\n- 初创公司 (chūchuàng gōngsī) = startup company",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_47",
+    "source": "Business intelligence tools analyze organizational data.",
+    "translation": "Here's the translation in Chinese:\n\n商业智能工具分析组织数据。\n\nPronunciation (Pinyin):\nShāngyè zhìnéng gōngjù fēnxī zǔzhī shùjù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_48",
+    "source": "Brand awareness campaigns increase product visibility.",
+    "translation": "Here's the translation in Chinese:\n\n品牌知名度营销活动提高了产品的可见性。\n\nPinyin: Pǐnpái zhīmíngdù yíngxiāo huódòng tígāo le chǎnpǐn de kějiànxìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_49",
+    "source": "Agile methodology enables flexible project management.",
+    "translation": "Here's the translation in Chinese:\n\n敏捷方法论使项目管理更加灵活。\n\nPronunciation (Pinyin):\nMǐnjié fāngfǎ lùn shǐ xiàngmù guǎnlǐ gèng jiā línghuó.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_50",
+    "source": "Corporate social responsibility demonstrates ethical commitment.",
+    "translation": "Here's the translation in Chinese:\n\n企业社会责任体现了道德承诺。\n\nPronunciation (Pinyin):\nQǐyè shèhuì zérèn tǐxiànle dàodé chéngnuò.\n\nBreakdown:\n- 企业 (qǐyè) = corporation/enterprise\n- 社会 (shèhuì) = society\n- 责任 (zérèn) = responsibility\n- 体现 (tǐxiàn) = to embody/demonstrate\n- 道德 (dàodé) = moral/ethical\n- 承诺 (chéngnuò) = commitment",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_51",
+    "source": "Competitive analysis evaluates market positioning strategies.",
+    "translation": "Here's the translation in Chinese:\n\n竞争性分析评估市场定位策略。\n\nPronunciation (Pinyin):\nJìngzhēng xìng fēnxī pínggu shìchǎng dìngwèi cèlüè.\n\nBreakdown:\n- 竞争性 (jìngzhēng xìng) = competitive\n- 分析 (fēnxī) = analysis\n- 评估 (pínggu) = evaluate\n- 市场 (shìchǎng) = market\n- 定位 (dìngwèi) = positioning\n- 策略 (cèlüè) = strategy/strategies",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_52",
+    "source": "Revenue streams diversify company income sources.",
+    "translation": "Here's the translation in Chinese:\n\n收入流多元化公司收入来源。\n\nPinyin: Shōurù liú duōyuánhuà gōngsī shōurù láiyuán.\n\nBreakdown:\n- 收入流 (shōurù liú) = Revenue streams\n- 多元化 (duōyuánhuà) = Diversify\n- 公司 (gōngsī) = Company\n- 收入 (shōurù) = Income\n- 来源 (láiyuán) = Sources",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_53",
+    "source": "Risk management frameworks protect business assets.",
+    "translation": "Here's the translation in Chinese:\n\n风险管理框架保护企业资产。\n\nPronunciation (Pinyin):\nFēng xiǎn guǎnlǐ kuàngjià bǎohù qǐyè zīchǎn.\n\nBreakdown:\n- 风险 (fēng xiǎn) = risk\n- 管理 (guǎnlǐ) = management\n- 框架 (kuàngjià) = framework\n- 保护 (bǎohù) = protect\n- 企业 (qǐyè) = business\n- 资产 (zīchǎn) = assets",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_54",
+    "source": "Intellectual property rights safeguard innovations.",
+    "translation": "Here's the translation in Chinese:\n\n知识产权保护创新。\n\nPronunciation (Pinyin):\nZhishi chanquan baohu chuangxin.\n\nBreakdown:\n- 知识产权 (zhishi chanquan) = intellectual property rights\n- 保护 (baohu) = safeguard, protect\n- 创新 (chuangxin) = innovation",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_55",
+    "source": "Merger acquisitions consolidate market share.",
+    "translation": "Here's the translation in Chinese:\n\n合并收购巩固市场份额。\n\nPronunciation (Pinyin):\nHébìng shōugòu gǔnggù shìchǎng fèn'é.\n\nBreakdown:\n- 合并 (hébìng): merger\n- 收购 (shōugòu): acquisition\n- 巩固 (gǔnggù): consolidate\n- 市场 (shìchǎng): market\n- 份额 (fèn'é): market share",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_56",
+    "source": "Quarterly earnings reports inform investor decisions.",
+    "translation": "Here's the translation in Chinese:\n\n季度收益报告为投资者决策提供信息。\n\nPronunciation (Pinyin):\nJìdù shōuyì bàogào wèi tóuzī zhě juécè tígōng xìnxī.\n\nBreakdown:\n- 季度 (jìdù) = quarterly\n- 收益 (shōuyì) = earnings\n- 报告 (bàogào) = report\n- 为 (wèi) = for\n- 投资者 (tóuzī zhě) = investors\n- 决策 (juécè) = decisions\n- 提供 (tígōng) = provide\n- 信息 (xìnxī) = information",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_57",
+    "source": "Business process automation increases efficiency.",
+    "translation": "Here's the translation in Chinese:\n\n业务流程自动化提高了效率。\n\nPronunciation (Pinyin):\nYèwù liúchéng zìdònghuà tígāo le xiàolǜ.\n\nBreakdown:\n- 业务 (yèwù): business\n- 流程 (liúchéng): process\n- 自动化 (zìdònghuà): automation\n- 提高 (tígāo): to improve, to increase\n- 了 (le): particle indicating completed action\n- 效率 (xiàolǜ): efficiency",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_58",
+    "source": "Customer retention strategies build long-term loyalty.",
+    "translation": "Here's the translation in Chinese:\n\n客户保留策略建立长期忠诚度。\n\nPronunciation (Pinyin):\nKèhù bǎoliú cèlüè jiànlì chángqī zhōngjié dù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_59",
+    "source": "Market segmentation targets specific consumer groups.",
+    "translation": "Here's the translation in Chinese:\n\n市场细分针对特定的消费者群体。\n\nPinyin: Shìchǎng xìfēn zhǐxiàng tèdìng de xiāofèi zhě qúntǐ.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_60",
+    "source": "Morning exercise improves overall health significantly.",
+    "translation": "Here's the translation in Chinese:\n\n早晨锻炼显著改善整体健康。\n\nPronunciation (Pinyin):\nZǎochén duànliàn xiǎnzhú gǎishàn zhěngtǐ jiànkāng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_61",
+    "source": "Balanced diet provides essential nutrients daily.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese:\n均衡饮食每天提供必需营养素。\n\nTraditional Chinese:\n均衡飲食每天提供必需營養素。\n\nPinyin:\nJúnhéng yǐnshí měi tiān tígōng bìxū yíngyǎng sù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_62",
+    "source": "Quality sleep enhances cognitive function performance.",
+    "translation": "Here's the translation in Chinese:\n\n优质睡眠提高认知功能表现。\n\nPronunciation (Pinyin):\nYōuzhì shuìmiàn tígāo rèngzhī gōngnéng biǎoxiàn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_63",
+    "source": "Regular meditation reduces stress levels effectively.",
+    "translation": "Here's the translation in Chinese:\n\n定期冥想有效地降低压力水平。\n\nPronunciation (Pinyin):\nDìngqī míngxiǎng yǒuxiào de jiàngdī yālì shuǐpíng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_64",
+    "source": "Social connections strengthen mental wellbeing.",
+    "translation": "Here's the translation in Chinese:\n\n社交联系增强心理健康。\n\nPronunciation (Pinyin):\nShè jiāo lián xì zēng qiáng xīn lǐ jiàn kāng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_65",
+    "source": "Time management skills increase productivity.",
+    "translation": "Here's the translation in Chinese:\n\n时间管理技能提高生产力。\n\nPronunciation (Pinyin):\nShíjiān guǎnlǐ jìnéng tígāo shēngchǎnlì.\n\nBreakdown:\n- 时间 (shíjiān) = time\n- 管理 (guǎnlǐ) = management\n- 技能 (jìnéng) = skills\n- 提高 (tígāo) = increase, improve\n- 生产力 (shēngchǎnlì) = productivity",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_66",
+    "source": "Lifelong learning expands knowledge and skills.",
+    "translation": "Here's the translation in Chinese:\n\n终身学习拓展知识和技能。\n\nPronunciation (Pinyin):\nZhōngshēn xuéxí tuòzhǎn zhīshi hé jìnéng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_67",
+    "source": "Financial planning ensures future security.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese: 财务规划确保未来安全。\nPinyin: Cáiwù guìhuà quèbǎo wèilái ānquán.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_68",
+    "source": "Sustainable lifestyle choices protect environment.",
+    "translation": "Here's the translation in Chinese:\n\n可持续的生活方式保护环境。\n\nPronunciation (Pinyin):\nKě chíxù de shēnghuó fāngshì bǎohù huánjìng.\n\nBreakdown:\n- 可持续 (kě chíxù): sustainable\n- 生活方式 (shēnghuó fāngshì): lifestyle\n- 保护 (bǎohù): protect\n- 环境 (huánjìng): environment",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_69",
+    "source": "Creative hobbies foster personal expression.",
+    "translation": "Here's the translation in Chinese:\n\n创意爱好培养个人表达。\n\nPronunciation (Pinyin):\nChuàngyì àihào péiyǎng gèrén biǎodá.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_70",
+    "source": "Public transportation reduces traffic congestion.",
+    "translation": "Here's the translation in Chinese:\n\n公共交通减少交通拥堵。\n\nPronunciation (Pinyin):\nGōnggòng jiāotōng jiǎnshǎo jiāotōng yōngdǔ.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_71",
+    "source": "Recycling programs minimize waste production.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese: 回收计划最大限度地减少废物生产。\n\nTraditional Chinese: 回收計劃最大限度地減少廢物生產。\n\nPronunciation (Pinyin): Huíshōu jìhuà zuì dàxiàn dù de jiǎnshǎo fèiwù shēngchǎn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_72",
+    "source": "Volunteering activities benefit local communities.",
+    "translation": "Here's the translation in Chinese:\n\n志愿服务活动有利于当地社区。\n\nPronunciation (Pinyin):\nZhìyuán fúwù huódòng yǒulì yú dāngdì shèqū.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_73",
+    "source": "Cultural experiences broaden worldview perspectives.",
+    "translation": "Here's the translation in Chinese:\n\n文化体验拓宽世界观视角。\n\nPinyin: Wénhuà tǐyàn tuòkuò shìjiè guān shìjiǎo.\n\nBreakdown:\n- 文化 (wénhuà): culture\n- 体验 (tǐyàn): experience\n- 拓宽 (tuòkuò): broaden, expand\n- 世界观 (shìjiè guān): worldview\n- 视角 (shìjiǎo): perspective",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_74",
+    "source": "Pet ownership provides companionship and joy.",
+    "translation": "Here's the translation in Chinese:\n\n养宠物能提供陪伴和快乐。\n\nPronunciation (Pinyin):\nYǎng chǒngwù néng tígōng péibàn hé kuàilè.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_75",
+    "source": "Home organization creates peaceful living space.",
+    "translation": "Here's the translation in Chinese:\n\n家居整理创造宁静的生活空间。\n\nPronunciation (Pinyin):\nJiā jū zhěng lǐ chuàng zào níng jìng de shēng huó kōng jiān.\n\nBreakdown:\n- 家居 (jiā jū): home, household\n- 整理 (zhěng lǐ): organize, tidy up\n- 创造 (chuàng zào): create\n- 宁静的 (níng jìng de): peaceful, tranquil\n- 生活 (shēng huó): life, living\n- 空间 (kōng jiān): space",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_76",
+    "source": "Cooking healthy meals saves money regularly.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese: 经常烹饪健康的餐点可以省钱。\n\nPinyin: Jīngcháng pēngzhǔ jiànkāng de cāntián kěyǐ shěng qián.\n\nNote: This translation captures the meaning that regularly cooking healthy meals can help save money.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_77",
+    "source": "Reading books stimulates imagination and intellect.",
+    "translation": "Here's the translation in Chinese:\n\nTraditional Chinese:\n閱讀書籍能刺激想像力和智力。\n\nSimplified Chinese:\n阅读书籍能刺激想象力和智力。\n\nPinyin:\nYuèdú shūjí néng cìjī xiǎngxiàng lì hé zhìlì.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_78",
+    "source": "Outdoor activities connect people with nature.",
+    "translation": "Here's the translation in Chinese:\n\n户外活动让人们与自然联系在一起。\n\nPronunciation (Pinyin):\nHùwài huódòng ràng rénmen yǔ zìrán liánxì zài yìqǐ.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_79",
+    "source": "Family traditions strengthen generational bonds.",
+    "translation": "Here's the translation in Chinese:\n\n家庭传统增强了代际纽带。\n\nPronunciation (Pinyin):\nJiātíng chuántǒng zēngqiáng le dàijì niǔdài.\n\nBreakdown:\n- 家庭 (jiātíng) = family\n- 传统 (chuántǒng) = traditions\n- 增强 (zēngqiáng) = strengthen\n- 了 (le) = completed action marker\n- 代际 (dàijì) = generational\n- 纽带 (niǔdài) = bond",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_80",
+    "source": "Online learning platforms democratize education access.",
+    "translation": "Here's the translation in Chinese:\n\n在线学习平台使教育资源民主化。\n\nPronunciation (Pinyin):\nZàixiàn xuéxí píngtái shǐ jiàoyù zīyuán mínzhǔhuà.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_81",
+    "source": "Critical thinking skills evaluate information objectively.",
+    "translation": "Here's the translation in Chinese:\n\n批判性思维能力能客观地评估信息。\n\nPinyin: Pīpàn xìng sīwéi nénglì néng kèguān de pínggu xìnxī.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_82",
+    "source": "Collaborative projects develop teamwork abilities.",
+    "translation": "Here's the translation in Chinese:\n\n协作项目培养团队合作能力。\n\nPronunciation (Pinyin): Xiézuò xiàngmù péiyǎng tuánduì hézuò nénglì.\n\nBreakdown:\n- 协作 (xiézuò): collaborative, cooperative\n- 项目 (xiàngmù): project\n- 培养 (péiyǎng): develop, nurture\n- 团队 (tuánduì): team\n- 合作 (hézuò): teamwork, cooperation\n- 能力 (nénglì): ability, capability",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_83",
+    "source": "Educational technology enhances classroom instruction.",
+    "translation": "Here's the translation in Chinese:\n\n教育技术提升课堂教学。\n\nPronunciation (Pinyin): Jiàoyù jìshù tíshēng kètáng jiàoxué.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_84",
+    "source": "Curriculum design addresses diverse learning needs.",
+    "translation": "Here's the translation in Chinese:\n\n课程设计满足多样化的学习需求。\n\nPinyin: Kèchéng shèjì mǎnzú duōyàng huà de xuéxí xūqiú.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_85",
+    "source": "Assessment methods measure student achievement.",
+    "translation": "Here's the translation in Chinese:\n\n评估方法衡量学生成就。\n\nPinyin: Pínggu fāngfǎ héngliáng xuésheng chéngjiù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_86",
+    "source": "Teacher training programs improve instruction quality.",
+    "translation": "Here's the translation in Chinese:\n\n教师培训项目提高教学质量。\n\nPronunciation (Pinyin):\nJiàoshī péixùn xiàngmù tígāo jiàoxué zhìliàng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_87",
+    "source": "Special education supports students with disabilities.",
+    "translation": "Here's the translation in Chinese:\n\n特殊教育支持残障学生。\n\nPronunciation (Pinyin): \nTèshū jiàoyù zhīchí cánzhàng xuésheng.\n\nBreakdown:\n- 特殊 (tèshū): special\n- 教育 (jiàoyù): education\n- 支持 (zhīchí): supports\n- 残障 (cánzhàng): disabled, with disabilities\n- 学生 (xuésheng): students",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_88",
+    "source": "Literacy programs empower disadvantaged communities.",
+    "translation": "Here's the translation in Chinese:\n\n简体中文（Simplified Chinese）:\n扫盲项目赋能弱势社区。\n\n繁體中文（Traditional Chinese）:\n掃盲項目賦能弱勢社區。\n\nPronunciation (Pinyin):\nSǎománg xiàngmù fùnéng ruòshì shèqū.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_89",
+    "source": "Higher education prepares workforce for careers.",
+    "translation": "Here's the translation in Chinese:\n\n高等教育为劳动力培养职业生涯。\n\nPinyin: Gāo děng jiào yù wèi láo dòng lì péi yàng zhí yè shēng yà.\n\nNote: This translation captures the meaning that higher education helps prepare people for their professional careers.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_90",
+    "source": "Preventive care reduces chronic disease occurrence.",
+    "translation": "Here's the translation in Chinese:\n\n预防性医疗可减少慢性疾病的发生。\n\nPronunciation (Pinyin):\nYùfáng xìng yīliáo kě jiǎnshǎo mángxìng jíbìng de fāshēng.\n\nBreakdown:\n- 预防性 (yùfáng xìng) = preventive\n- 医疗 (yīliáo) = medical care\n- 可 (kě) = can, able to\n- 减少 (jiǎnshǎo) = reduce\n- 慢性 (mángxìng) = chronic\n- 疾病 (jíbìng) = disease\n- 发生 (fāshēng) = occurrence",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_91",
+    "source": "Telemedicine expands healthcare access remotely.",
+    "translation": "Here's the translation in Chinese:\n\n远程医疗扩大了医疗服务的远程获取。\n\nPinyin: Yuancheng yiliao kuoda le yiliao fuwu de yuancheng huoqu.\n\nAlternative translation:\n远程医疗拓展了远程医疗服务。\n\nPinyin: Yuancheng yiliao tuozhan le yuancheng yiliao fuwu.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_92",
+    "source": "Vaccination programs protect against infectious diseases.",
+    "translation": "Here's the translation in Chinese:\n\n疫苗接种计划可以预防传染病。\n\nPronunciation (Pinyin):\nYìmiáo jiēzhòng jìhuà kěyǐ yùfáng chuánrǎn bìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_93",
+    "source": "Medical imaging diagnostics detect health conditions early.",
+    "translation": "Here's the translation in Chinese:\n\n医学影像诊断可以早期发现健康状况。\n\nPronunciation (Pinyin):\nYīxué yǐngxiàng zhěnduàn kěyǐ zǎoqī fāxiàn jiànkāng zhuàngkuàng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_94",
+    "source": "Personalized medicine tailors treatments to individuals.",
+    "translation": "Here's the translation in Chinese:\n\n个性化医疗针对个人定制治疗方案。\n\nPinyin: Gèxìng huà yīliáo zhēn duì gèrén dìng zhì zhìliáo fāng'àn.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_95",
+    "source": "Mental health services address psychological wellbeing.",
+    "translation": "Here's the translation in Chinese:\n\n心理健康服务关注心理健康。\n\nPronunciation (Pinyin):\nXīnlǐ jiànkāng fúwù guānzhù xīnlǐ jiànkāng.\n\nBreakdown:\n- 心理 (xīnlǐ): mental, psychological\n- 健康 (jiànkāng): health\n- 服务 (fúwù): services\n- 关注 (guānzhù): to focus on, to pay attention to",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_96",
+    "source": "Emergency response systems save critical lives.",
+    "translation": "Here's the translation in Chinese:\n\n紧急响应系统挽救了关键的生命。\n\nPronunciation (Pinyin):\nJǐjí xiǎngyìng xìtǒng wǎnjiù le guānjiàn de shēngmìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_97",
+    "source": "Clinical trials evaluate new treatment efficacy.",
+    "translation": "Here's the translation in Chinese:\n\n临床试验评估新治疗方法的有效性。\n\nPronunciation (Pinyin):\nLínchuáng shìyàn pínggu xīn zhìliáo fāngfǎ de yǒuxiàoxìng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_98",
+    "source": "Health insurance provides financial protection.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese: 医疗保险提供经济保障。\n\nPinyin: Yīliáo bǎoxiǎn tígōng jīngjì bǎozhàng.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_en-zh_99",
+    "source": "Pharmaceutical research develops life-saving medications.",
+    "translation": "Here's the translation in Chinese:\n\nSimplified Chinese:\n制药研究开发挽救生命的药物。\n\nTraditional Chinese:\n製藥研究開發挽救生命的藥物。\n\nPronunciation (Pinyin):\nZhìyào yánjiū kāifā wǎnjiù shēngmìng de yàowù.",
+    "source_lang": "en",
+    "target_lang": "zh",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  }
+]

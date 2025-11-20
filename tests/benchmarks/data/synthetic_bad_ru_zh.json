@@ -1,0 +1,148 @@
+[
+  {
+    "id": "fallback_ru-zh_0",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_1",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "机器传输质量显著提升了电子信号。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "terminology",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_2",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_3",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_4",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_5",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "机器翻译质量 显著地 已经 改善。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "word_order",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_6",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_7",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "机器翻译质量 明显 改进 已。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "word_order",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_8",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "人工智能正在改变世界。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-zh_9",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "机器翻译质量已经显著提高。",
+    "source_lang": "ru",
+    "target_lang": "zh",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  }
+]

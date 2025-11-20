@@ -1,0 +1,157 @@
+[
+  {
+    "id": "fallback_zh-ru_0",
+    "source": "人工智能正在改变世界。",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-ru_1",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Машинный перевод полностью бесполезен и никогда не улучшится.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "opposite_meaning",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      15,
+      45
+    ],
+    "error_description": "Use opposite/negated meaning"
+  },
+  {
+    "id": "fallback_zh-ru_2",
+    "source": "人工智能正在改变世界。",
+    "translation": "Искусственный картофель изменяет стиральную машину.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "wrong_terminology",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      35,
+      65
+    ],
+    "error_description": "Use completely incorrect technical terms"
+  },
+  {
+    "id": "fallback_zh-ru_3",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-ru_4",
+    "source": "人工智能正在改变世界。",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-ru_5",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-ru_6",
+    "source": "人工智能正在改变世界。",
+    "translation": "Человек-гриль интеллигентно режет картошку.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "wrong_terminology",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      35,
+      65
+    ],
+    "error_description": "Use completely incorrect technical terms"
+  },
+  {
+    "id": "fallback_zh-ru_7",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-ru_8",
+    "source": "人工智能正在改变世界。",
+    "translation": "Искусственный интеллект никогда не существует и не имеет никакого влияния на мир.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "opposite_meaning",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      15,
+      45
+    ],
+    "error_description": "Use opposite/negated meaning"
+  },
+  {
+    "id": "fallback_zh-ru_9",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Медведи любят танцевать в розовых туфлях.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      20,
+      50
+    ],
+    "error_description": "Translate with completely wrong meaning"
+  }
+]

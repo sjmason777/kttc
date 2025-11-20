@@ -25,62 +25,87 @@ from .base import LanguageHelper, MorphologyInfo
 
 logger = logging.getLogger(__name__)
 
-# Try to import MAWO dependencies (unified libraries)
+# Try to import MAWO core (for morphology, tokenization, NER)
 try:
     from mawo import Russian  # mawo-core package
-    from mawo_grammar import RussianGrammarChecker  # mawo-grammar package
 
-    DEPS_AVAILABLE = True
-    logger.info("Using MAWO unified libraries (mawo-core + mawo-grammar)")
+    MAWO_AVAILABLE = True
+    logger.info("Using MAWO core for Russian NLP (morphology, tokenization, NER)")
 except ImportError as e:
-    DEPS_AVAILABLE = False
+    MAWO_AVAILABLE = False
     logger.warning(
-        f"MAWO libraries not installed: {e}. "
+        f"MAWO core not installed: {e}. "
         "RussianLanguageHelper will run in limited mode. "
         "Install with: pip install 'mawo-core[all]>=0.1.1'"
     )
 
+# Try to import LanguageTool (for grammar checking)
+try:
+    import language_tool_python
+
+    LANGUAGETOOL_AVAILABLE = True
+    logger.info("LanguageTool available for Russian grammar checking (930+ rules)")
+except ImportError:
+    LANGUAGETOOL_AVAILABLE = False
+    logger.warning(
+        "LanguageTool not installed. "
+        "RussianLanguageHelper will run without grammar checking. "
+        "Install with: pip install language-tool-python"
+    )
+
 
 class RussianLanguageHelper(LanguageHelper):
-    """Language helper for Russian with MAWO unified libraries.
+    """Language helper for Russian with MAWO core + LanguageTool.
 
-    Uses MAWO unified libraries (mawo-core + mawo-grammar) for:
+    Uses MAWO core for NLP features:
     - Morphological analysis with rich Document/Token objects
     - Russian tokenization and NER
-    - Grammar checking with 690+ rules
     - Verb aspect detection
     - Adjective-noun agreement checking
     - Entity preservation validation
     - Anti-hallucination verification
 
+    Uses LanguageTool for grammar checking:
+    - 930+ Russian grammar rules
+    - Case agreement validation
+    - Spelling and punctuation checks
+    - Style and typography checks
+
     Example:
         >>> helper = RussianLanguageHelper()
         >>> if helper.is_available():
-        ...     errors = helper.check_grammar("быстрый лиса")
-        ...     print(errors[0].description)
-        Gender mismatch: 'быстрый' is masc, but 'лиса' is femn
+        ...     errors = helper.check_grammar("Я пошел в магазин")
+        ...     print(errors[0].description if errors else "No errors")
     """
 
     def __init__(self) -> None:
         """Initialize Russian language helper."""
         self._nlp: Any = None
-        self._grammar_checker: Any = None
+        self._language_tool: Any = None
         self._initialized = False
+        self._lt_available = False
 
-        if DEPS_AVAILABLE:
+        # Initialize MAWO core for NLP features
+        if MAWO_AVAILABLE:
             try:
                 self._nlp = Russian()
-                self._grammar_checker = RussianGrammarChecker()
                 self._initialized = True
-                logger.info(
-                    "RussianLanguageHelper initialized with MAWO unified libraries "
-                    "(mawo-core + mawo-grammar)"
-                )
+                logger.info("RussianLanguageHelper initialized with MAWO core (NLP features)")
             except Exception as e:
-                logger.error(f"Failed to initialize RussianLanguageHelper: {e}")
+                logger.error(f"Failed to initialize MAWO core: {e}")
                 self._initialized = False
         else:
-            logger.info("RussianLanguageHelper running in limited mode (no MAWO libraries)")
+            logger.info("RussianLanguageHelper running in limited mode (no MAWO core)")
+
+        # Initialize LanguageTool for grammar checking
+        if LANGUAGETOOL_AVAILABLE:
+            try:
+                self._language_tool = language_tool_python.LanguageTool("ru")
+                self._lt_available = True
+                logger.info("LanguageTool initialized successfully (930+ Russian grammar rules)")
+            except Exception as e:
+                logger.warning(f"LanguageTool initialization failed: {e}")
+                self._lt_available = False
 
     @property
     def language_code(self) -> str:
@@ -89,7 +114,7 @@ class RussianLanguageHelper(LanguageHelper):
 
     def is_available(self) -> bool:
         """Check if NLP dependencies are available."""
-        return self._initialized and DEPS_AVAILABLE
+        return self._initialized and MAWO_AVAILABLE
 
     def verify_word_exists(self, word: str, text: str) -> bool:
         """Verify word exists in text (anti-hallucination).
@@ -213,15 +238,20 @@ class RussianLanguageHelper(LanguageHelper):
         return results
 
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
-        """Check Russian grammar using MAWO grammar checker with 690+ rules.
+        """Check Russian grammar using LanguageTool + custom rules.
+
+        Hybrid approach:
+        1. LanguageTool - 930+ rules for spelling, punctuation, style
+        2. Custom rules - Adjective-noun agreement that LanguageTool misses
 
         The grammar checker validates:
-        - Case agreement (adjective-noun, numeral-noun)
-        - Verb aspect usage
-        - Particle correctness
-        - Preposition + case government
-        - Register consistency
-        - And 685+ more rules
+        - Grammar (грамматика)
+        - Spelling (орфография)
+        - Punctuation (пунктуация)
+        - Style (стиль)
+        - Typography (типографика)
+        - Adjective-noun gender/case/number agreement (custom)
+        - And 925+ more rules
 
         Args:
             text: Russian text to check
@@ -229,35 +259,218 @@ class RussianLanguageHelper(LanguageHelper):
         Returns:
             List of detected grammar errors
         """
+        errors = []
+
+        # 1. LanguageTool checks (930+ rules)
+        if self._lt_available:
+            try:
+                matches = self._language_tool.check(text)
+
+                for match in matches:
+                    # Filter out style-only suggestions not relevant for translation
+                    if not self._is_translation_relevant(match):
+                        continue
+
+                    # Map to our error format
+                    errors.append(
+                        ErrorAnnotation(
+                            category="fluency",
+                            subcategory=f"russian_{match.ruleId}",
+                            severity=self._map_severity(match),
+                            location=(match.offset, match.offset + match.errorLength),
+                            description=match.message,
+                            suggestion=match.replacements[0] if match.replacements else None,
+                        )
+                    )
+
+                logger.debug(f"LanguageTool found {len(errors)} grammar errors")
+
+            except Exception as e:
+                logger.error(f"LanguageTool check failed: {e}")
+
+        # 2. Custom agreement checks (using MAWO core morphology)
+        if self.is_available():
+            try:
+                custom_errors = self._check_adjective_noun_agreement(text)
+                errors.extend(custom_errors)
+                logger.debug(f"Custom rules found {len(custom_errors)} additional errors")
+            except Exception as e:
+                logger.error(f"Custom agreement checks failed: {e}")
+
+        # 3. Deduplicate errors (same location = same error)
+        errors = self._deduplicate_errors(errors)
+
+        return errors
+
+    def _deduplicate_errors(self, errors: list[ErrorAnnotation]) -> list[ErrorAnnotation]:
+        """Remove duplicate errors at the same location.
+
+        Keeps the error with higher severity, or the first one if severity is equal.
+
+        Args:
+            errors: List of errors to deduplicate
+
+        Returns:
+            Deduplicated list of errors
+        """
+        if not errors:
+            return errors
+
+        # Group by location
+        by_location: dict[tuple[int, int], list[ErrorAnnotation]] = {}
+        for error in errors:
+            key = error.location
+            if key not in by_location:
+                by_location[key] = []
+            by_location[key].append(error)
+
+        # Keep best error per location
+        severity_order = {
+            ErrorSeverity.CRITICAL: 3,
+            ErrorSeverity.MAJOR: 2,
+            ErrorSeverity.MINOR: 1,
+        }
+
+        deduplicated = []
+        for location, group in by_location.items():
+            if len(group) == 1:
+                deduplicated.append(group[0])
+            else:
+                # Sort by severity (highest first)
+                group.sort(key=lambda e: severity_order.get(e.severity, 0), reverse=True)
+                deduplicated.append(group[0])
+
+        return deduplicated
+
+    def _check_adjective_noun_agreement(self, text: str) -> list[ErrorAnnotation]:
+        """Check adjective-noun agreement using MAWO core morphology.
+
+        This catches errors that LanguageTool misses, like:
+        - "Быстрый лиса" (masc adjective + fem noun)
+        - "Красивая дом" (fem adjective + masc noun)
+
+        Args:
+            text: Russian text to check
+
+        Returns:
+            List of agreement errors
+        """
         if not self.is_available():
             return []
 
-        # Use MAWO grammar checker for comprehensive grammar checking
-        grammar_errors = self._grammar_checker.check(text)
-
-        # Convert to ErrorAnnotation format
         errors = []
-        for error in grammar_errors:
-            # Map severity from mawo-grammar to our ErrorSeverity
-            if error.severity == "major":
-                severity = ErrorSeverity.CRITICAL
-            elif error.severity == "minor":
-                severity = ErrorSeverity.MINOR
-            else:
-                severity = ErrorSeverity.MAJOR
 
-            errors.append(
-                ErrorAnnotation(
-                    category="fluency",
-                    subcategory=f"russian_{error.type}",
-                    severity=severity,
-                    location=error.location,
-                    description=error.description,
-                    suggestion=error.suggestion,
+        # Get morphological analysis
+        doc = self._nlp(text)
+        tokens = list(doc.tokens)
+
+        for i, token in enumerate(tokens):
+            # Find adjectives
+            if token.pos not in ["ADJF", "ADJS"]:
+                continue
+
+            adj_gender = token.gender
+            if not adj_gender:
+                continue
+
+            # Find next noun (skip other adjectives)
+            j = i + 1
+            next_noun = None
+            while j < len(tokens):
+                if tokens[j].pos in ["ADJF", "ADJS"]:
+                    j += 1
+                    continue
+                if tokens[j].pos == "NOUN":
+                    next_noun = tokens[j]
+                    break
+                break
+
+            if not next_noun:
+                continue
+
+            noun_gender = next_noun.gender
+            if not noun_gender:
+                continue
+
+            # Check if genders match
+            if adj_gender != noun_gender:
+                # Skip common false positives
+                adj_text = token.text.lower()
+
+                # Skip cases like "один человек" (один can be masc but used with any gender)
+                if adj_text in ["один", "одна", "одно"]:
+                    continue
+
+                # Skip demonstrative pronouns (этот, тот, etc)
+                if adj_text in ["этот", "эта", "это", "тот", "та", "то", "весь", "вся", "всё"]:
+                    continue
+
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="russian_adj_noun_gender_agreement",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(token.start, next_noun.end),
+                        description=(
+                            f"Adjective-noun gender mismatch: '{token.text}' is {adj_gender}, "
+                            f"but '{next_noun.text}' is {noun_gender}"
+                        ),
+                        suggestion=None,  # No auto-suggestion for gender mismatch
+                    )
                 )
-            )
 
         return errors
+
+    def _map_severity(self, match: Any) -> ErrorSeverity:
+        """Map LanguageTool match to ErrorSeverity.
+
+        Args:
+            match: LanguageTool Match object
+
+        Returns:
+            ErrorSeverity enum value
+        """
+        rule_id = match.ruleId.lower()
+
+        # Critical errors (spelling, clear grammar mistakes)
+        if any(pattern in rule_id for pattern in ["spelling", "typo", "misspell", "орфография"]):
+            return ErrorSeverity.CRITICAL
+
+        # Major errors (agreement, verb form, tense)
+        if any(
+            pattern in rule_id
+            for pattern in [
+                "grammar",
+                "agreement",
+                "verb",
+                "case",
+                "грамматика",
+                "согласование",
+            ]
+        ):
+            return ErrorSeverity.MAJOR
+
+        # Minor errors (everything else)
+        return ErrorSeverity.MINOR
+
+    def _is_translation_relevant(self, match: Any) -> bool:
+        """Filter out style-only suggestions not relevant for translation QA.
+
+        Args:
+            match: LanguageTool Match object
+
+        Returns:
+            True if error is relevant for translation, False otherwise
+        """
+        rule_id = match.ruleId.lower()
+
+        # Exclude pure style suggestions
+        exclude_patterns = ["style", "redundancy", "collocation", "cliche", "wordiness"]
+
+        if any(pattern in rule_id for pattern in exclude_patterns):
+            return False
+
+        return True
 
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
         """Get comprehensive morphological data using MAWO core.

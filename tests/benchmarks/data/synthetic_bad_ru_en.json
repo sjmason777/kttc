@@ -1,0 +1,148 @@
+[
+  {
+    "id": "fallback_ru-en_0",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_1",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Machine translation quality has improved significantly.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_2",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Natural language processing enables human-computer interaction.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_3",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_4",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Machine translation quality has notably and substantially improved.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "addition",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-en_5",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Computer with interaction human provides language natural of processing.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "word_order",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-en_6",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Yo, this computational brain-thingy be totally revolutionizing the entire planetary situation, no cap!",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "style",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_ru-en_7",
+    "source": "Качество машинного перевода значительно улучшилось.",
+    "translation": "Machine translation quality has improved significantly.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_8",
+    "source": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "translation": "Natural language processing enables human-computer interaction.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_ru-en_9",
+    "source": "Искусственный интеллект преобразует мир.",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "ru",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  }
+]

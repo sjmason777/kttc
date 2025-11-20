@@ -190,8 +190,9 @@ class WMTBenchmark:
             Tuple of (source_lang, target_lang)
         """
         if "-" in language_pair:
-            return tuple(language_pair.split("-", 1))
-        return language_pair, language_pair
+            parts = language_pair.split("-", 1)
+            return (parts[0], parts[1])
+        return (language_pair, language_pair)
 
     def _parse_language(self, language_pair: str, which: str) -> str:
         """Parse specific language from pair.

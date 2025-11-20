@@ -1,0 +1,92 @@
+[
+  {
+    "id": "fallback_en-ru_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_1",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_2",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_3",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_4",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_5",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_6",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_7",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "Качество машинного перевода значительно улучшилось.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_8",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "Обработка естественного языка обеспечивает взаимодействие человека с компьютером.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-ru_9",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "Искусственный интеллект преобразует мир.",
+    "source_lang": "en",
+    "target_lang": "ru",
+    "domain": "general",
+    "dataset": "fallback"
+  }
+]

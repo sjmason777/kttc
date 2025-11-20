@@ -1,0 +1,157 @@
+[
+  {
+    "id": "fallback_zh-en_0",
+    "source": "人工智能正在改变世界。",
+    "translation": "Artificial Potato is destroying the universe.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "wrong_numbers",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      25,
+      55
+    ],
+    "error_description": "Change numbers drastically"
+  },
+  {
+    "id": "fallback_zh-en_1",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Machine translation quality has improved significantly.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-en_2",
+    "source": "自然语言处理实现人机交互。",
+    "translation": "Elephants juggle umbrellas while dancing ballet.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      20,
+      50
+    ],
+    "error_description": "Translate with completely wrong meaning"
+  },
+  {
+    "id": "fallback_zh-en_3",
+    "source": "人工智能正在改变世界。",
+    "translation": "Artificial intelligence 人工 is transforming the 智能 world with incredible 改变 technological advances.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mixed_language",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Mix source and target languages"
+  },
+  {
+    "id": "fallback_zh-en_4",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Machine 机器 translation quality has significantly 翻译 improved 质量.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mixed_language",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Mix source and target languages"
+  },
+  {
+    "id": "fallback_zh-en_5",
+    "source": "自然语言处理实现人机交互。",
+    "translation": "Natural language processing enables human-computer interaction.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-en_6",
+    "source": "人工智能正在改变世界。",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-en_7",
+    "source": "机器翻译质量已经显著提高。",
+    "translation": "Machine translation quality has improved significantly.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_zh-en_8",
+    "source": "自然语言处理实现人机交互。",
+    "translation": "Natural 语言 language processing enables 交互 human-machine interaction.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mixed_language",
+    "error_severity": "major",
+    "expected_mqm_range": [
+      40,
+      70
+    ],
+    "error_description": "Mix source and target languages"
+  },
+  {
+    "id": "fallback_zh-en_9",
+    "source": "人工智能正在改变世界。",
+    "translation": "Artificial intelligence is transforming the world.",
+    "source_lang": "zh",
+    "target_lang": "en",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  }
+]

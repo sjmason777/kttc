@@ -20,7 +20,7 @@ import tempfile
 from pathlib import Path
 
 
-async def main():
+async def main() -> None:
     """Test the WMT benchmark implementation."""
     print("Testing WMT Benchmark implementation...")
 

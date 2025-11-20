@@ -1,0 +1,902 @@
+[
+  {
+    "id": "quality_zh-ru_0",
+    "source": "Here's the translation to Chinese (Simplified):\n\n人工智能正在革新现代产业。\n\nPronunciation (Pinyin):\nRéngōng zhìnéng zhèngzài gémìng xiàndài chǎnyè.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n人工智能正在革新现代产业。\n\nТранскрипция (пиньинь):\nRéngōng zhìnéng zhèngzài gémìng xiàndài chǎnyè.\n\nПеревод:\n\nNote: The text you provided seems to be a meta-translation instruction, so I've translated it accordingly, maintaining the structure and adding the Russian equivalent of the original text.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_1",
+    "source": "Here's the translation to Chinese (Simplified):\n\n云计算提供可扩展的数据存储解决方案。\n\nPronunciation (Pinyin):\nYún jisuàn tígōng kě kuòdà de shùjù cúnchú jiějué fāng'àn.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\nОблачные вычисления предоставляют масштабируемые решения для хранения данных.\n\nPronunciation (Transliteration):\nOblachnyye vychisleniya predostavlyayut masshtabiruyemyye resheniya dlya khraneniya dannykh.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_2",
+    "source": "Here's the translation in Chinese (Simplified):\n\n量子计算机承诺指数级的计算能力。",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\nКвантовые компьютеры обещают вычислительную способность экспоненциального масштаба.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_3",
+    "source": "Here's the translation in Chinese (Simplified):\n\n区块链技术确保交易记录的透明性。\n\nPronunciation (Pinyin):\nQūkuài lián jìshù quèbǎo jiāoyì jìlù de tòumíng xìng.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\nТехнология блокчейн обеспечивает прозрачность записей транзакций.\n\nPronunciation (Transliteration):\nTekhnologiya blokcheyn obespecchivayet prozrachnost' zapisey tranzaktsiy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_4",
+    "source": "Here's the translation to Chinese (Simplified):\n\n神经网络从数据中学习复杂模式。",
+    "translation": "Here's the translation to Russian:\n\nНейронные сети изучают сложные закономерности из данных.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_5",
+    "source": "Here's the translation in Chinese (Simplified):\n\n网络安全保护敏感信息免受威胁。\n\nPronunciation (Pinyin):\nWǎngluò ānquán bǎohù mǐngǎn xìnxī miǎnshòu wēixié.",
+    "translation": "Here's the translation in Russian:\n\nКибербезопасность защищает конфиденциальную информацию от угроз.\n\nPronunciation (Transliteration):\nKiberbezopasnost' zashchishchayet konfidentsial'nuyu informatsiyu ot ugroz.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_6",
+    "source": "物联网连接数十亿设备。",
+    "translation": "Here's the translation in Russian:\n\nИнтернет вещей подключает миллиарды устройств.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_7",
+    "source": "Here's the translation to Chinese (Simplified):\n\n机器学习算法通过经验不断改进。\n\nPronunciation (Pinyin):\nJīqì xuéxí suànfǎ tōngguò jīngyàn bù duàn gǎijìn.",
+    "translation": "Here's the translation to Russian:\n\nАлгоритмы машинного обучения постоянно улучшаются с опытом.\n\nPronunciation (Transliteration):\nAlgoritmy mashinnogo obucheniya postoyanno uluchshayutsya s opytom.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_8",
+    "source": "5G网络提供超高速无线连接。",
+    "translation": "Here's the translation in Russian:\n\nСеть 5G обеспечивает сверхвысокоскоростное беспроводное подключение.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_9",
+    "source": "Here's the translation in Chinese (Simplified):\n\n虚拟现实创造沉浸式数字体验。\n\nPronunciation (Pinyin):\nXūnǐ xiànshí chuàngzào chénmò shùzǐ tǐyàn.",
+    "translation": "Here's the translation in Russian:\n\nВиртуальная реальность создает погружающий цифровой опыт.\n\nPronunciation (Transliteration):\nVirtual'naya real'nost' sozdayet pogruzhennyy tsifrovoy opyt.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_10",
+    "source": "Here's the translation in Chinese (Simplified):\n\n自主车辆无需人工干预即可导航。\n\nPronunciation (Pinyin):\nZìzhǔ chēliàng wúxū réngōng gānshè jí kě dǎoháng.",
+    "translation": "Here's the translation in Russian:\n\nАвтономные транспортные средства могут навигироваться без человеческого вмешательства.\n\nPronunciation (Transliteration):\nAvtonomnye transportnye sredstva mogut navigirovat'sya bez chelovecheskogo vmeshatel'stva.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_11",
+    "source": "Here's the translation to Chinese (Simplified):\n\n大数据分析揭示了宝贵的商业洞察。\n\nPinyin: Dà shùjù fēnxī jiēxiào le bǎoguì de shāngyè dòngchá.",
+    "translation": "Here's the translation to Russian:\n\nАнализ больших данных раскрывает ценные бизнес-insights.\n\nTransliteration (for pronunciation): \nAnaliz bol'shikh dannykh raskryvayet tsennyye biznes-insights.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_12",
+    "source": "Here's the translation to Chinese (Simplified):\n\n机器人技术使重复性制造任务实现自动化。\n\nPronunciation (Pinyin):\nJīqìrén jìshù shǐ chóngfù xìng zhìzào rènwu shíxiàn zìdòng huà.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n机器人技术使重复性制造任务实现自动化。\n\nТранскрипция (пиньинь):\nJīqìrén jìshù shǐ chóngfù xìng zhìzào rènwu shíxiàn zìdòng huà.\n\nПеревод:\n\nРобототехника автоматизирует повторяющиеся производственные задачи.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_13",
+    "source": "增强现实将数字信息叠加在现实之上。",
+    "translation": "Here's the translation in Russian:\n\nДополненная реальность накладывает цифровую информацию поверх реального мира.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_14",
+    "source": "Here's the translation to Chinese (Simplified):\n\n边缘计算在数据源附近处理数据。",
+    "translation": "Here's the translation to Russian:\n\nПограничные вычисления обрабатывают данные вблизи источника данных.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_15",
+    "source": "Here's the translation to Chinese (Simplified):\n\n自然语言处理使人机通信成为可能。",
+    "translation": "Here's the translation to Russian:\n\nОбработка естественного языка делает возможной коммуникацию между человеком и машиной.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_16",
+    "source": "Here's the translation to Chinese (Simplified):\n\n计算机视觉使机器能够解释图像。\n\nPronunciation (Pinyin):\nJisuanji shijue shi jiqi neng gou jiexi tuxiang.",
+    "translation": "Here's the translation to Russian:\n\nКомпьютерное зрение позволяет машинам интерпретировать изображения.\n\nPronunciation (Transliteration):\nKomp'yuternoe zrenie pozvolyaet mashinam interpretirovat' izobrazheniya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_17",
+    "source": "Here's the translation in Chinese (Simplified):\n\n分布式系统在多台机器之间进行协调。",
+    "translation": "Here's the translation in Russian:\n\nРаспределенные системы осуществляют координацию между несколькими машинами.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_18",
+    "source": "Here's the translation in Chinese (Simplified):\n\nAPI集成连接不同的软件应用程序。\n\nPronunciation (Pinyin):\nAPI jicheng lianjie butong de ruanjian yingyong chengxu.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\nAPI интеграция соединяет различные программные приложения.\n\nPronunciation (Transliteration):\nAPI integratsiya soyedinyayet razlichnyye programmnyye prilozheniya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_19",
+    "source": "Here's the translation in Chinese (Simplified):\n\nDevOps实践简化了软件开发周期。",
+    "translation": "Here's the translation in Russian:\n\nПрактика DevOps упрощает цикл разработки программного обеспечения.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_20",
+    "source": "Here's the translation to Chinese (Simplified):\n\n气候变化显著影响全球天气模式。\n\nPinyin: qì hòu biàn huà xiǎn zhú yǐng xiǎng quán qiú tiān qì mó shì.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n气候变化显著影响全球天气模式。\n\nПиньинь: qì hòu biàn huà xiǎn zhú yǐng xiǎng quán qiú tiān qì mó shì.\nПеревод:\n\nNote: The text you provided seems to be a template for a translation, so I've translated the template itself to Russian while preserving the Chinese text and Pinyin.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_21",
+    "source": "Here's the translation to Chinese (Simplified):\n\n可再生能源有效地减少了碳排放。\n\nPronunciation (Pinyin):\nKě zài shēng néng yuán yǒu xiào de jiǎn shǎo le tàn pái fàng.",
+    "translation": "Here's the translation to Russian:\n\nВозобновляемые источники энергии эффективно сократили выбросы углерода.\n\nPronunciation (Transliteration):\nVozobnovlyayemyye istochniki energii effektivno sokratili vybrosy ugleroda.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_22",
+    "source": "Here's the translation in Chinese (Simplified):\n\n基因工程修改生物的DNA序列。\n\nPronunciation (Pinyin):\nJīyīn gōngchéng xiūgǎi shēngwù de DNA xùliè.",
+    "translation": "Here's the translation in Russian:\n\nГенная инженерия изменяет ДНК-последовательность организмов.\n\nPronunciation (Transliteration):\nGennaya inzheneriya izmenyaet DNK-posledovatel'nost' organizmov.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_23",
+    "source": "Here's the translation in Chinese (Simplified):\n\n太空探索拓展了人类对宇宙的认知。",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайском (упрощенном):\n\nКосмическая разведка расширила человеческое понимание вселенной.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_24",
+    "source": "Here's the translation in Chinese (Simplified):\n\n纳米技术在原子尺度上操控物质。\n\nPronunciation (Pinyin):\nNàmǐ jìshù zài yuánzǐ chǐdù shàng cāokòng wùzhì.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\n纳米技术在原子尺度上操控物质。\n\nТранскрипция (пиньинь):\nNàmǐ jìshù zài yuánzǐ chǐdù shàng cāokòng wùzhì.\n\nПеревод:\n\nНанотехнология манипулирует веществом на атомном масштабе.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_25",
+    "source": "Here's the translation in Chinese (Simplified):\n\n海洋酸化威胁海洋生态系统平衡。\n\nPronunciation (Pinyin):\nHǎyáng suānhuà wēixié hǎiyáng shēngtài xìtǒng píngháng.",
+    "translation": "Here's the translation in Russian:\n\nОкисление океана угрожает равновесию морской экосистемы.\n\nPronunciation (Transliteration):\nOkislenie okeana ugrozhaet ravnovesiyu morskoy ekosistemy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_26",
+    "source": "Here's the translation to Chinese (Simplified):\n\n生物多样性丧失危及地球生态系统的稳定性。",
+    "translation": "Here's the translation to Russian:\n\nПотеря биологического разнообразия угрожает стабильности экосистем Земли.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_27",
+    "source": "Here's the translation in Chinese (Simplified):\n\n粒子物理学研究宇宙的基本构建单元。\n\nPinyin: Lìzǐ wùlǐxué yánjiū yǔzhòu de jīběn gòujiàn dānyuán.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\n粒子物理学研究宇宙的基本构建单元。\n\nПиньинь: Lìzǐ wùlǐxué yánjiū yǔzhòu de jīběn gòujiàn dānyuán.\nПеревод:\n\nЧастичная физика изучает фундаментальные строительные блоки вселенной.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_28",
+    "source": "Here's the translation to Chinese (Simplified):\n\n干细胞研究为再生医学提供了潜力。",
+    "translation": "Here's the translation to Russian:\n\nИсследования стволовых клеток предоставляют потенциал для регенеративной медицины.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_29",
+    "source": "核聚变能提供清洁无限的能源。",
+    "translation": "Here's the translation in Russian:\n\nТермоядерный синтез может обеспечить чистую и неограниченную энергию.\n\nBreakdown:\n- 核聚变 (nuclear fusion) = термоядерный синтез\n- 能提供 (can provide) = может обеспечить\n- 清洁 (clean) = чистая\n- 无限 (unlimited) = неограниченная\n- 能源 (energy) = энергия",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_30",
+    "source": "Here's the translation to Chinese (Simplified):\n\nCRISPR技术实现精确的基因组编辑。",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\nТехнология CRISPR обеспечивает точное редактирование генома.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_31",
+    "source": "微塑料污染全球水源。",
+    "translation": "Here's the translation in Russian:\n\nМикропластик загрязняет водные источники по всему миру.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_32",
+    "source": "Here's the translation in Simplified Chinese:\n\n引力波证实了爱因斯坦相对论的预测。",
+    "translation": "Here's the translation in Russian:\n\nГравитационные волны подтвердили предсказания теории относительности Эйнштейна.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_33",
+    "source": "Here's the translation to Chinese (Simplified):\n\n暗物质构成了宇宙质量的大部分。\n\nPronunciation (Pinyin):\nÀn wùzhì gòuchéng le yǔzhòu zhìliàng de dàbùfèn.",
+    "translation": "Here's the translation to Russian:\n\nТемная материя составляет большую часть массы Вселенной.\n\nPronunciation (Transliteration):\nTemnaya materiya sostavljaet bol'shuyu chast' massy Vselennoj.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_34",
+    "source": "Here's the translation to Chinese (Simplified):\n\n抗生素耐药性威胁公共卫生系统。",
+    "translation": "Here's the translation to Russian:\n\nАнтибиотикорезистентность угрожает системе общественного здравоохранения.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_35",
+    "source": "Here's the translation to Chinese (Simplified):\n\n太阳能板将阳光转换成电力。\n\nPronunciation (Pinyin):\nTàiyáng néng bǎn jiāng yángguāng zhuǎnhuàn chéng diànlì.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n太阳能板将阳光转换成电力。\n\nТранскрипция (пиньинь):\nTàiyáng néng bǎn jiāng yángguāng zhuǎnhuàn chéng diànlì.\n\nПеревод:\nСолнечные панели преобразуют солнечный свет в электроэнергию.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_36",
+    "source": "Here's the translation in Chinese (Simplified):\n\n碳捕获技术可以去除温室气体。",
+    "translation": "Here's the translation in Russian:\n\nТехнология улавливания углерода может удалять парниковые газы.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_37",
+    "source": "Here's the translation to Chinese (Simplified):\n\n量子纠缠实现安全通信。\n\nPronunciation (Pinyin):\nLiàngzǐ jiǔchán shíxiàn ānquán tōngxìn.",
+    "translation": "Here's the translation to Russian:\n\nКвантовое запутывание обеспечивает безопасную связь.\n\nPronunciation (Transliteration):\nKvantovoe zaputyvanie obespechivayet bezopasnuyu svyaz'.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_38",
+    "source": "Here's the translation to Chinese (Simplified):\n\n系外行星绕行于我们太阳系之外的恒星周围。\n\nPinyin: Xìwài xíngxīng ràoxíng yú wǒmen tàiyáng xì zhī wài de héngxīng zhōuwéi.",
+    "translation": "Here's the translation to Russian:\n\nЭкзопланеты обращаются вокруг звезд за пределами нашей солнечной системы.\n\nTransliteration (for pronunciation): Ekzoplanety obrashchayutsya vokrug zvezd za predelami nashey solnechnoy sistemy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_39",
+    "source": "Here's the translation to Chinese (Simplified):\n\n合成生物学创造新的生物系统。\n\nPronunciation (Pinyin):\nHéchéng shēngwù xué chuàngzào xīn de shēngwù xìtǒng.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n合成生物学创造新的生物系统。\n\nТранскрипция (пиньинь):\nHéchéng shēngwù xué chuàngzào xīn de shēngwù xìtǒng.\n\nПеревод:\nСинтетическая биология создает новые биологические системы.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_40",
+    "source": "Here's the translation in Chinese (Simplified):\n\n市场调研识别消费者偏好和趋势。",
+    "translation": "Here's the translation in Russian:\n\nМаркетинговое исследование выявляет предпочтения и тренды потребителей.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_41",
+    "source": "Here's the translation to Chinese (Simplified):\n\n供应链优化降低了运营成本。\n\nPronunciation (Pinyin):\nGōngyìng liàn yōuhuà jiàngdī le yùnying chéngbén.",
+    "translation": "Here's the translation to Russian:\n\nОптимизация цепочки поставок снизила операционные расходы.\n\nPronunciation (Transliteration):\nOptimizatsiya tsepochki postavok snizila operatsionnye raskhody.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_42",
+    "source": "Here's the translation in Chinese (Simplified):\n\n数字化转型使传统商业模式现代化。",
+    "translation": "Here's the translation in Russian:\n\nЦифровая трансформация модернизирует традиционные бизнес-модели.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_43",
+    "source": "Here's the translation to Chinese (Simplified):\n\n客户关系管理提高了客户满意度。",
+    "translation": "Here's the translation to Russian:\n\nУправление взаимоотношениями с клиентами повысило удовлетворенность клиентов.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_44",
+    "source": "电子商务平台促进在线购物交易。",
+    "translation": "Here's the translation in Russian:\n\nЭлектронная торговая платформа способствует проведению онлайн-покупок и сделок.\n\nBreakdown:\n- 电子商务平台 = Электронная торговая платформа\n- 促进 = способствует\n- 在线购物 = онлайн-покупки\n- 交易 = сделки",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_45",
+    "source": "Here's the translation in Chinese (Simplified):\n\n金融科技创新颠覆银行服务。\n\nPronunciation (Pinyin):\nJīnróng kējì chuàngxīn diāndǎo yínháng fúwù.",
+    "translation": "Here's the translation in Russian:\n\nФинансово-технологические инновации нарушают банковские услуги.\n\nPronunciation (Transliteration):\nFinansovo-tekhnologicheskiye innovatsii narushayut bankovskiye uslugi.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_46",
+    "source": "Here's the translation in Chinese (Simplified):\n\n风险投资基金支持初创公司。",
+    "translation": "Here's the translation in Russian:\n\nФонды венчурного капитала поддерживают стартапы.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_47",
+    "source": "Here's the translation in Chinese (Simplified):\n\n商业智能工具分析组织数据。\n\nPronunciation (Pinyin):\nShāngyè zhìnéng gōngjù fēnxī zǔzhī shùjù.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\nИнструменты бизнес-аналитики анализируют организационные данные.\n\nNote: The Russian translation is a direct translation of the English sentence, not a translation of the Chinese text.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_48",
+    "source": "Here's the translation in Chinese (Simplified):\n\n品牌知名度营销活动提高了产品的知名度。\n\nPinyin: Pǐnpái zhīmíngdù yíngxiāo huódòng tígāo le chǎnpǐn de zhīmíngdù.",
+    "translation": "Here's the translation in Russian:\n\nМаркетинговая кампания по повышению узнаваемости бренда увеличила известность продукта.\n\nTransliteration (for pronunciation): \nMarketingovaya kampaniya po povysheniyu uznavayemosti brenda uvelichila izvestnost' produkta.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_49",
+    "source": "Here's the translation in Chinese (Simplified):\n\n敏捷方法使项目管理更加灵活。\n\nPronunciation (Pinyin):\nMǐnjié fāngfǎ shǐ xiàngmù guǎnlǐ gèng jiā línghuó.",
+    "translation": "Here's the translation in Russian:\n\nМетоды гибкой разработки делают управление проектами более гибким.\n\nPronunciation (Transliteration):\nMetody gibkoy razrabotki delayut upravleniye proyektami boleye gibkim.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_50",
+    "source": "Here's the translation to Chinese (Simplified):\n\n企业社会责任体现了道德承诺。\n\nPronunciation (Pinyin):\nQǐyè shèhuì zérèn tǐxiànle dàodé chéngnuò.",
+    "translation": "Here's the translation to Russian:\n\nКорпоративная социальная ответственность отражает моральные обязательства.\n\nPronunciation (Transliteration):\nKorporativnaya sotsial'naya otvetstvennost' otrazhayet moral'nyye obyazatel'stva.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_51",
+    "source": "竞争性分析评估市场定位策略。",
+    "translation": "Here's the translation in Russian:\n\nКонкурентный анализ оценивает стратегию рыночного позиционирования.\n\nBreakdown:\n- 竞争性 (competitive) = конкурентный\n- 分析 (analysis) = анализ\n- 评估 (assess) = оценивает\n- 市场 (market) = рыночный\n- 定位 (positioning) = позиционирование\n- 策略 (strategy) = стратегия",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_52",
+    "source": "Here's the translation in Chinese:\n\n收入流多元化公司收入来源。\n\nPinyin: shōurù liú duōyuánhuà gōngsī shōurù láiyuán.\n\nNote: This translation captures the meaning of diversifying revenue streams or income sources for a company.",
+    "translation": "Here's the translation in Russian:\n\nДиверсификация потоков дохода источников дохода компании.\n\nTransliteration: Diversifikatsiya potokov dokhoda istochnikov dokhoda kompanii.\n\nNote: This translation conveys the meaning of diversifying revenue streams or income sources for a company.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_53",
+    "source": "Here's the translation in Chinese (Simplified):\n\n风险管理框架保护企业资产。\n\nPronunciation (Pinyin):\nFēngxiǎn guǎnlǐ kuàngjià bǎohù qǐyè zīchǎn.",
+    "translation": "Here's the translation in Russian:\n\nРамки управления рисками защищают активы предприятия.\n\nPronunciation (Transliteration):\nRamki upravleniya riskami zashchishchayut aktivy predpriyatiya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_54",
+    "source": "Here's the translation in Chinese (Simplified):\n\n知识产权保护创新。\n\nPronunciation (Pinyin):\nZhishi chanquan baohu chuangxin.",
+    "translation": "Here's the translation in Russian:\n\nЗащита интеллектуальной собственности стимулирует инновации.\n\nPronunciation (Transliteration):\nZashchita intellektual'noy sobstvennosti stimuliruet innovatsii.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_55",
+    "source": "Here's the translation to Chinese (Simplified):\n\n并购整合市场份额。\n\nPronunciation (Pinyin): Bìngmǎi zhěnghé shìchǎng fèn'é.",
+    "translation": "Here's the translation to Russian:\n\nСлияние и поглощение для консолидации рыночной доли.\n\nPronunciation (Transliteration): Sliyanie i pogloshchenie dlya konsolidatsii rynochnoy doli.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_56",
+    "source": "Here's the translation in Chinese (Simplified):\n\n季度财报为投资者决策提供信息。\n\nPronunciation (Pinyin):\nJìdù cáibào wèi tóuzī zhě juécè tígōng xìnxī.",
+    "translation": "Here's the translation in Russian:\n\nКвартальный финансовый отчет предоставляет информацию для принятия решений инвесторами.\n\nPronunciation (Transliteration):\nKvartal'nyy finansovyy otchet predostavlyaet informatsiyu dlya prinyatiya resheniy investorami.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_57",
+    "source": "Here's the translation in Chinese (Simplified):\n\n业务流程自动化提高了效率。\n\nPronunciation (Pinyin):\nYèwù liúchéng zìdònghuà tígāo le xiàolǜ.",
+    "translation": "Here's the translation in Russian:\n\nАвтоматизация бизнес-процессов повысила эффективность.\n\nPronunciation (Transliteration):\nAvtomatizatsiya biznes-protsessov povysila effektivnost'.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_58",
+    "source": "Here's the translation in Chinese (Simplified):\n\n客户保留策略建立长期忠诚度。\n\nPinyin: kè hù bǎo liú cè lüè jiàn lì cháng qī zhōng xìn dù.",
+    "translation": "Here's the translation in Russian:\n\nПолитика удержания клиентов способствует долгосрочной лояльности.\n\nTransliteration (for pronunciation): \nPolitika uderzhaniya klientov sposobstvuet dolgosrochnoy loyal'nosti.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_59",
+    "source": "Here's the translation in Chinese (Simplified):\n\n市场细分针对特定的消费者群体。\n\nPinyin: Shìchǎng xìfēn zhǐxiàng tèdìng de xiāofèi zhě qúntǐ.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\n市场细分针对特定的消费者群体。\n\nТранскрипция (пиньинь): Shìchǎng xìfēn zhǐxiàng tèdìng de xiāofèi zhě qúntǐ.\nПеревод:\n\nСегментация рынка нацелена на определенные группы потребителей.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_60",
+    "source": "Here's the translation in Chinese (Simplified):\n\n晨练显著改善整体健康。\n\nPronunciation (Pinyin):\nChén liàn xiǎnzhú gǎishàn zhěngtǐ jiànkāng.",
+    "translation": "Here's the translation in Russian:\n\nУтренняя зарядка значительно улучшает общее здоровье.\n\nPronunciation (transliteration):\nUtrennyaya zaryadka znachitel'no uluchshaet obshchee zdorov'ye.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_61",
+    "source": "Here's the translation in Chinese (Simplified):\n\n均衡饮食每天提供必需营养素。\n\nPronunciation (Pinyin):\nJúnhéng yǐnshí měi tiān tígōng bìxū yíngyǎng sù.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\n均衡饮食每天提供必需营养素。\n\nТранскрипция (Пиньинь):\nJúnhéng yǐnshí měi tiān tígōng bìxū yíngyǎng sù.\n\nПеревод:",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_62",
+    "source": "Here's the translation to Chinese (Simplified):\n\n优质睡眠提高认知功能表现。\n\nPronunciation (Pinyin):\nYōuzhì shuìmiàn tígāo rèngzhī gōngnéng biǎoxiàn.",
+    "translation": "Here's the translation to Russian:\n\nВысококачественный сон улучшает когнитивную производительность.\n\nPronunciation (Transliteration):\nVysokokachestvennyy son uluchshayet kognitivnuyu produktivnost'.\n\nNote: The Russian translation closely matches the meaning of the original Chinese sentence, emphasizing that high-quality sleep improves cognitive performance.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_63",
+    "source": "Here's the translation in Chinese (Simplified):\n\n定期冥想能有效降低压力水平。\n\nPronunciation (Pinyin):\nDìngqī míngxiǎng néng yǒuxiào jiàngdī yālì shuǐpíng.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\n定期冥想能有效降低压力水平。\n\nТранскрипция (пиньинь):\nDìngqī míngxiǎng néng yǒuxiào jiàngdī yālì shuǐpíng.\n\nПеревод:",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_64",
+    "source": "Here's the translation in Chinese (Simplified):\n\n社交联系增强心理健康。\n\nPronunciation (Pinyin):\nShèjiāo liánxì zēngqiáng xīnlǐ jiànkāng.",
+    "translation": "Here's the translation in Russian:\n\nСоциальные контакты укрепляют психическое здоровье.\n\nPronunciation (Transliteration):\nSotsial'nyye kontakty ukrepplyayut psikhicheskoye zdorov'ye.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_65",
+    "source": "Here's the translation to Chinese (Simplified):\n\n时间管理技能提高生产力。\n\nPronunciation (Pinyin):\nShíjiān guǎnlǐ jìnéng tígāo shēngchǎnlì.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n时间管理技能提高生产力。\n\nПроизношение (пиньинь):\nShíjiān guǎnlǐ jìnéng tígāo shēngchǎnlì.\nПеревод:",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_66",
+    "source": "Here's the translation to Chinese (Simplified):\n\n终身学习拓展知识和技能。\n\nPronunciation (Pinyin):\nZhōngshēn xuéxí tuòzhǎn zhīshi hé jìnéng.",
+    "translation": "Here's the translation to Russian:\n\nОбучение в течение всей жизни расширяет знания и навыки.\n\nPronunciation (Transliteration):\nObucheniye v techenie vsey zhizni rasshiryayet znaniya i navyki.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_67",
+    "source": "Here's the translation in Chinese (Simplified):\n\n财务规划确保未来安全。\n\nPronunciation (Pinyin):\nCáiwù guìhuà quèbǎo wèilái ānquán.",
+    "translation": "Here's the translation in Russian:\n\nФинансовое планирование обеспечивает будущую безопасность.\n\nPronunciation (Transliteration):\nFinansovoye planirovaniye obespecchivayet budushchuyu bezopasnost'.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_68",
+    "source": "Here's the translation in Chinese (Simplified):\n\n可持续的生活方式保护环境。\n\nPronunciation (Pinyin):\nKě chíxù de shēnghuó fāngshì bǎohù huánjìng.",
+    "translation": "Here's the translation in Russian:\n\nУстойчивый образ жизни защищает окружающую среду.\n\nPronunciation (Transliteration):\nUstoychivyy obraz zhizni zashchishchaet okruzhayushchuyu sredu.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_69",
+    "source": "Here's the translation in Chinese (Simplified):\n\n创意爱好培养个人表达。\n\nPinyin: Chuàngyì àihào péiyǎng gèrén biǎodá.",
+    "translation": "Here's the translation in Russian:\n\nТворческие хобби развивают личное самовыражение.\n\nTransliteration (for pronunciation): Tvorcheskiye khobbi razvivayut lichnoye samovyrazheniye.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_70",
+    "source": "Here's the translation in Chinese (Simplified):\n\n公共交通减少交通拥堵。\n\nPronunciation (Pinyin):\nGōnggòng jiāotōng jiǎnshǎo jiāotōng yōngsè.",
+    "translation": "Here's the translation in Russian:\n\nОбщественный транспорт уменьшает дорожные заторы.\n\nPronunciation (Transliteration):\nObshchestvennyi transport umen'shaet dorozhnye zatory.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_71",
+    "source": "回收计划最大限度地减少废物生产。",
+    "translation": "Here's the translation in Russian:\n\nПлан переработки максимально сокращает производство отходов.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_72",
+    "source": "Here's the translation in Chinese (Simplified):\n\n志愿服务活动有利于当地社区。\n\nPronunciation (Pinyin):\nZhìyuán fúwù huódòng yǒulì yú dāngdì shèqū.",
+    "translation": "Here's the translation in Russian:\n\nВолонтерская деятельность полезна для местного сообщества.\n\nPronunciation (Transliteration):\nVolonterskaya deyatel'nost' poleznа dlya mestnogo soobshchestva.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_73",
+    "source": "Here's the translation in Chinese (Simplified):\n\n文化体验拓宽世界观视角。\n\nPinyin: Wénhuà tǐyàn tuòkuò shìjiè guān shìjiǎo.",
+    "translation": "Here's the translation in Russian:\n\nКультурный опыт расширяет перспективу мировоззрения.\n\nTransliteration (for pronunciation): Kul'turnyy opyt rasshiryayet perspektivu mirovozzreniya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_74",
+    "source": "养宠物提供陪伴和快乐。",
+    "translation": "Here's the translation in Russian:\n\nСодержание домашних животных дарит companionship и радость.\n\nAlternative translation that sounds more natural:\n\nДомашние животные обеспечивают companionship и приносят радость.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_75",
+    "source": "Here's the translation in Chinese (Simplified):\n\n家居整理营造宁静的生活空间。\n\nPronunciation (Pinyin):\nJiā jū zhěng lǐ yíng zào níng jìng de shēng huó kōng jiān.",
+    "translation": "Here's the translation in Russian:\n\nОрганизация жилого пространства создает спокойную жизненную среду.\n\nPronunciation (Transliteration):\nOrganizatsiya zhilogo prostranstva sozdayet spokoynuyu zhiznennuyu sredu.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_76",
+    "source": "Here's the translation to Chinese (Simplified):\n\n经常烹饪健康的餐点可以省钱。\n\nPronunciation (Pinyin): Jīngcháng pēngzhì jiànkāng de cāntián kěyǐ shěng qián.",
+    "translation": "Here's the translation to Russian:\n\nЧастое приготовление здоровой пищи может сэкономить деньги.\n\nPronunciation (Transliteration): Chastoe prigotovlenie zdorovoy pishchi mozhet sekonomit' den'gi.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_77",
+    "source": "Here's the translation to Chinese (Simplified):\n\n阅读书籍能激发想象力和智力。\n\nPronunciation (Pinyin):\nYuèdú shūjī néng jīfā xiǎngxiàng lì hé zhìlì.",
+    "translation": "Here's the translation to Russian:\n\nЧтение книг способно развивать воображение и интеллект.\n\nPronunciation (Transliteration):\nChtenie knig sposobno razvivat' voobrazheniye i intellekt.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_78",
+    "source": "Here's the translation in Chinese (Simplified):\n\n户外活动让人们与自然亲近。\n\nPronunciation (Pinyin):\nHùwài huódòng ràng rénmen yǔ zìrán qīnjìn.",
+    "translation": "Here's the translation in Russian:\n\nЗанятия на свежем воздухе помогают людям сблизиться с природой.\n\nPronunciation (transliteration):\nZanyatiya na svezhem vozdukhe pomogayut lyudyam sblizit'sya s prirodoy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_79",
+    "source": "Here's the translation to Chinese (Simplified):\n\n家庭传统增强了代际纽带。\n\nPronunciation (Pinyin):\nJiātíng chuántǒng zēngqiáng le dàijì niǔdài.",
+    "translation": "Here's the translation to Russian:\n\nСемейные традиции укрепляют межпоколенческую связь.\n\nPronunciation (Transliteration):\nSemeynye traditsii ukrepplyayut mezhpokolencheskuyu svyaz'.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_80",
+    "source": "Here's the translation in Chinese (Simplified):\n\n在线学习平台使教育资源民主化。\n\nPronunciation (Pinyin):\nZàixiàn xuéxí píngtái shǐ jiàoyù zīyuán mínzhǔhuà.",
+    "translation": "Here's the translation in Russian:\n\nОнлайн-платформы обучения демократизируют образовательные ресурсы.\n\nPronunciation (Transliteration):\nOnlayn-platformy obucheniya demokratiziruyut obrazovatel'nyye resursy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_81",
+    "source": "Here's the translation to Chinese (Simplified):\n\n批判性思维能力能客观地评估信息。\n\nPinyin: Pīpàn xìng sīwéi nénglì néng kèguān de pínggu xìnxī.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n批判性思维能力能客观地评估信息。\n\nПиньинь: Pīpàn xìng sīwéi nénglì néng kèguān de pínggu xìnxī.\nПеревод:\n\nКритическое мышление позволяет объективно оценивать информацию.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_82",
+    "source": "Here's the translation to Chinese (Simplified):\n\n协作项目培养团队合作能力。\n\nPronunciation (Pinyin):\nXiézuò xiàngmù péiyàng tuánduì hézuò nénglì.",
+    "translation": "Here's the translation to Russian:\n\nВот перевод на китайский (упрощенный):\n\n协作项目培养团队合作能力。\n\nТранскрипция (пиньинь):\nXiézuò xiàngmù péiyàng tuánduì hézuò nénglì.\n\nПеревод:\n\nNote: The original text appears to be a statement about how collaborative projects develop team cooperation skills. In Russian, this would be translated as:\n\nСовместные проекты развивают навыки командной работы.\n\nPronunciation (transliteration):\nSovmestnye proekty razvivayut navyki komandnoy raboty.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_83",
+    "source": "Here's the translation in Chinese (Simplified):\n\n教育技术提升课堂教学。\n\nPronunciation (Pinyin):\nJiàoyù jìshù tíshēng kètáng jiàoxué.",
+    "translation": "Here's the translation in Russian:\n\nОбразовательные технологии улучшают классное обучение.\n\nPronunciation (Transliteration):\nObrazovatel'nyye tekhnologii uluchshayut klassnoye obucheniye.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_84",
+    "source": "Here's the translation to Chinese (Simplified):\n\n课程设计满足多样化的学习需求。\n\nPinyin: Kèchéng shèjì mǎnzú duōyànghuà de xuéxí xūqiú.",
+    "translation": "Here's the translation to Russian:\n\nРазработка курса удовлетворяет разнообразным потребностям в обучении.\n\nTransliteration (for pronunciation): Razrabotka kursa udovletvorjaet raznoobraznym potrebnostjam v obuchenii.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_85",
+    "source": "Here's the translation to Chinese (Simplified):\n\n评估方法衡量学生成就。\n\nPinyin: Pínggu fāngfǎ héngliáng xuésheng chéngjiù.",
+    "translation": "Here's the translation to Russian:\n\nМетоды оценки измеряют достижения учащихся.\n\nTransliteration (for pronunciation): Metody otsenki izmeryayut dostizheniya uchashchikhsya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_86",
+    "source": "Here's the translation to Chinese (Simplified):\n\n教师培训项目提高教学质量。\n\nPronunciation (Pinyin):\nJiàoshī péixùn xiàngmù tígāo jiàoxué zhìliàng.",
+    "translation": "Here's the translation to Russian:\n\nПрограмма подготовки учителей повышает качество преподавания.\n\nPronunciation (Transliteration):\nProgramma podgotovki uchiteley povyshayet kachestvo prepodavaniya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_87",
+    "source": "Here's the translation in Chinese (Simplified):\n\n特殊教育支持残障学生。\n\nPronunciation (Pinyin):\nTèshū jiàoyù zhīchí cánzhàng xuésheng.",
+    "translation": "Here's the translation in Russian:\n\nСпециальное образование поддерживает учащихся с ограниченными возможностями.\n\nPronunciation (Transliteration):\nSpetsial'noye obrazovaniye podderzhivayet uchashchikhsya s ogranichennymi vozmozhnostyami.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_88",
+    "source": "Here's the translation to Chinese (Simplified):\n\n扫盲项目赋能弱势群体。\n\nPronunciation (Pinyin): Sǎománg xiàngmù fùnéng ruòshì qúntǐ.\n\nAlternative translation:\n识字计划赋权弱势社区。\n\nPronunciation (Pinyin): Shízì jìhuà fùquán ruòshì shèqū.\n\nBoth translations convey the meaning that literacy programs help empower or give strength to disadvantaged communities.",
+    "translation": "Here's the translation to Russian:\n\nПроект по ликвидации неграмотности расширяет возможности уязвимых групп населения.\n\nPronunciation (Transliteration): Proyekt po likvidatsii negramotnosti rasshiryayet vozmozhnosti uyazvimykh grupp naseleniya.\n\nAlternative translation:\nПрограмма грамотности предоставляет полномочия социально слабым сообществам.\n\nPronunciation (Transliteration): Programma gramotnosti predostavlyayet polnomochiya sotsial'no slabym soobshchestvam.\n\nBoth translations convey the meaning that literacy programs help empower or give strength to disadvantaged communities.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_89",
+    "source": "高等教育为职业生涯培养人才。",
+    "translation": "Here's the translation in Russian:\n\nВысшее образование готовит кадры для профессиональной карьеры.\n\nBreakdown:\n- Высшее образование (Vysshee obrazovanie) = Higher education\n- готовит (gotovit) = prepares\n- кадры (kadry) = personnel, workforce\n- для (dlya) = for\n- профессиональной карьеры (professional'noy kar'ery) = professional career",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_90",
+    "source": "Here's the translation in Chinese (Simplified):\n\n预防性医疗可以减少慢性疾病的发生。\n\nPronunciation (Pinyin):\nYùfáng xìng yīliáo kěyǐ jiǎnshǎo mángxìng jíbìng de fāshēng.",
+    "translation": "Here's the translation in Russian:\n\nПрофилактическая медицина может снизить возникновение хронических заболеваний.\n\nPronunciation (Transliteration):\nProfilakticheskaya meditsina mozhet snizit' vozniknovenie khronicheskikh zabolevaniy.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_91",
+    "source": "远程医疗扩大了医疗服务的远程获取。\n\nAlternative translations:\n1. 远程医疗拓展了远程医疗服务的可及性。\n2. 远程医疗技术扩大了医疗服务的远程获取渠道。",
+    "translation": "Here's the translation in Russian:\n\nТелемедицина расширила удаленный доступ к медицинским услугам.\n\nAlternative translations:\n1. Телемедицина расширила возможности получения медицинской помощи на расстоянии.\n2. Телемедицинские технологии увеличили каналы удаленного получения медицинских услуг.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_92",
+    "source": "Here's the translation in Chinese (Simplified):\n\n疫苗接种计划可以预防传染性疾病。",
+    "translation": "Here's the translation in Russian:\n\nПлан вакцинации может предотвращать инфекционные заболевания.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_93",
+    "source": "Here's the translation in Chinese (Simplified):\n\n医学影像诊断可以早期发现健康状况。\n\nPronunciation (Pinyin):\nYīxué yǐngxiàng zhěnduàn kěyǐ zǎoqī fāxiàn jiànkāng zhuàngkuàng.",
+    "translation": "Here's the translation in Russian:\n\nМедицинская визуальная диагностика может раннее выявлять состояние здоровья.\n\nPronunciation (Transliteration):\nMeditsinskaya vizual'naya diagnostika mozhet rannee vyyavlyat' sostoyanie zdorov'ya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_94",
+    "source": "Here's the translation in Chinese (Simplified):\n\n个性化医疗根据个人定制治疗方案。\n\nPinyin: gè xìng huà yī liáo gēn jù gè rén dìng zhì zhì liáo fāng àn.",
+    "translation": "Here's the translation in Russian:\n\nВот перевод на китайский (упрощенный):\n\nПерсонализированная медицина предусматривает разработку индивидуальных схем лечения.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_95",
+    "source": "Here's the translation in Chinese (Simplified):\n\n心理健康服务关注心理健康状况。\n\nPinyin: Xīnlǐ jiànkāng fúwù guānzhù xīnlǐ jiànkāng zhuàngkuàng.",
+    "translation": "Here's the translation in Russian:\n\nПсихологические услуги уделяют внимание состоянию психического здоровья.\n\nTransliteration (for pronunciation): Psikhologicheskiye uslugi udelyayut vnimaniye sostoyaniyu psikhicheskogo zdorov'ya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_96",
+    "source": "Here's the translation in Chinese (Simplified):\n\n应急响应系统挽救了关键的生命。\n\nPronunciation (Pinyin):\nYìngjí xiǎngyìng xìtǒng wǎnjiù le guānjiàn de shēngmìng.",
+    "translation": "Here's the translation in Russian:\n\nСистема экстренного реагирования спасла критически важные жизни.\n\nPronunciation (Transliteration):\nSistema ekstrennogo reagirovaniya spasla kriticheski vazhnye zhizni.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_97",
+    "source": "Here's the translation in Chinese (Simplified):\n\n临床试验评估新治疗方法的有效性。\n\nPinyin: Línchuáng shìyàn pínggu xīn zhìliáo fāngfǎ de yǒuxiàoxìng.",
+    "translation": "Here's the translation in Russian:\n\nКлинические испытания оценивают эффективность новых методов лечения.\n\nTransliteration (for pronunciation): Klinicheskiye ispytaniya otsenivayut effektivnost' novykh metodov lecheniya.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_98",
+    "source": "Here's the translation in Chinese (Simplified):\n\n医疗保险提供经济保障。\n\nPronunciation (Pinyin):\nYīliáo bǎoxiǎn tígōng jīngjì bǎozhàng.",
+    "translation": "Here's the translation in Russian:\n\nМедицинская страховка обеспечивает экономическую защиту.\n\nPronunciation (transliteration):\nMeditsinskaya strakhovka obespechivayet ekonomicheskuyu zashchitu.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  },
+  {
+    "id": "quality_zh-ru_99",
+    "source": "Here's the translation in Chinese (Simplified):\n\n制药研究开发挽救生命的药物。\n\nPronunciation (Pinyin):\nZhìyào yánjiū kāifā wǎnjiù shēngmìng de yàowù.",
+    "translation": "Here's the translation in Russian:\n\nФармацевтические исследования разрабатывают препараты, спасающие жизни.\n\nPronunciation (Transliteration):\nFarmatsevticheskiye issledovaniya razrabatyvayut preparaty, spasayushchiye zhizni.",
+    "source_lang": "zh",
+    "target_lang": "ru",
+    "domain": "diverse",
+    "dataset": "quality_llm"
+  }
+]
