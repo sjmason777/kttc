@@ -80,6 +80,7 @@ dmypy.json
 *.log
 *.cache
 .ruff_cache/
+cache/
 report.json
 
 # API keys and secrets

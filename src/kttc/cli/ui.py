@@ -48,6 +48,8 @@ __all__ = [
     "print_startup_info",
     "print_translation_preview",
     "print_qa_report",
+    "print_lightweight_metrics",
+    "print_rule_based_errors",
 ]
 
 
@@ -690,4 +692,229 @@ def print_available_extensions() -> None:
     console.print("[bold]Available Extensions:[/bold]")
     console.print(f"  • Benchmark: {'✓' if has_benchmark() else '✗'}")
     console.print(f"  • WebUI: {'✓' if has_webui() else '✗'}")
+    console.print()
+
+
+def print_lightweight_metrics(
+    scores: Any,
+    verbose: bool = False,
+) -> None:
+    """Print lightweight translation metrics (chrF, BLEU, TER).
+
+    Args:
+        scores: MetricScores object with chrF, BLEU, TER scores
+        verbose: Whether to show detailed explanations
+
+    Example output:
+        ┌─ Lightweight Metrics (CPU-based) ─┐
+        │ chrF:           68.50  ✓ Good     │
+        │ BLEU:           42.30  ✓ Good     │
+        │ TER (inverted): 71.90  ✓ Good     │
+        │ Length Ratio:    0.95  ✓          │
+        │ Composite:      65.90  ✓ Good     │
+        └────────────────────────────────────┘
+    """
+
+    # Color-code scores based on thresholds
+    def get_score_color(score: float, metric_type: str = "default") -> str:
+        """Get color for score based on thresholds."""
+        if metric_type == "chrf":
+            if score >= 80:
+                return "green"
+            elif score >= 65:
+                return "yellow"
+            elif score >= 50:
+                return "dim yellow"
+            else:
+                return "red"
+        elif metric_type == "bleu":
+            if score >= 50:
+                return "green"
+            elif score >= 40:
+                return "yellow"
+            elif score >= 30:
+                return "dim yellow"
+            else:
+                return "red"
+        else:  # default for TER and composite
+            if score >= 70:
+                return "green"
+            elif score >= 60:
+                return "yellow"
+            elif score >= 50:
+                return "dim yellow"
+            else:
+                return "red"
+
+    # Create metrics table
+    table = Table(show_header=False, box=None, padding=(0, 2))
+    table.add_column(style="bold cyan", width=18)
+    table.add_column(justify="right", width=8)
+    table.add_column(width=15)
+
+    # Add scores
+    chrf_color = get_score_color(scores.chrf, "chrf")
+    table.add_row(
+        "chrF:",
+        Text(f"{scores.chrf:.2f}", style=chrf_color),
+        Text(f"✓ {scores.quality_level.title()}", style=chrf_color),
+    )
+
+    bleu_color = get_score_color(scores.bleu, "bleu")
+    bleu_status = (
+        "✓ Good" if scores.bleu >= 40 else "⚠ Acceptable" if scores.bleu >= 25 else "✗ Poor"
+    )
+    table.add_row(
+        "BLEU:",
+        Text(f"{scores.bleu:.2f}", style=bleu_color),
+        Text(bleu_status, style=bleu_color),
+    )
+
+    ter_color = get_score_color(scores.ter)
+    ter_status = "✓ Good" if scores.ter >= 70 else "⚠ Acceptable" if scores.ter >= 50 else "✗ Poor"
+    table.add_row(
+        "TER (inverted):",
+        Text(f"{scores.ter:.2f}", style=ter_color),
+        Text(ter_status, style=ter_color),
+    )
+
+    # Length ratio
+    length_status = "✓" if 0.8 <= scores.length_ratio <= 1.2 else "⚠"
+    length_color = "green" if 0.8 <= scores.length_ratio <= 1.2 else "yellow"
+    table.add_row(
+        "Length Ratio:",
+        Text(f"{scores.length_ratio:.2f}", style=length_color),
+        Text(length_status, style=length_color),
+    )
+
+    # Composite score
+    composite = scores.composite_score
+    composite_color = get_score_color(composite)
+    composite_status = (
+        "✓ Good" if composite >= 65 else "⚠ Acceptable" if composite >= 50 else "✗ Poor"
+    )
+    table.add_row(
+        "Composite:",
+        Text(f"{composite:.2f}", style=composite_color),
+        Text(composite_status, style=composite_color),
+    )
+
+    panel = Panel(
+        table,
+        title="Lightweight Metrics (CPU-based)",
+        border_style="cyan",
+        padding=(1, 2),
+    )
+    console.print(panel)
+
+    # Show interpretation if verbose
+    if verbose:
+        from kttc.evaluation import LightweightMetrics
+
+        metrics = LightweightMetrics()
+        interpretation = metrics.get_interpretation(scores)
+        console.print(f"[dim]{interpretation}[/dim]")
+
+    console.print()
+
+
+def print_rule_based_errors(
+    errors: list[Any],
+    rule_based_score: float,
+    verbose: bool = False,
+) -> None:
+    """Print rule-based error detection results.
+
+    Args:
+        errors: List of RuleBasedError objects
+        rule_based_score: Overall rule-based quality score (0-100)
+        verbose: Whether to show detailed explanations
+
+    Example output:
+        ┌─ Rule-Based Checks ─┐
+        │ Score:   85/100  ✓  │
+        │ Errors:  2          │
+        │   Critical: 0       │
+        │   Major:    1       │
+        │   Minor:    1       │
+        └─────────────────────┘
+    """
+    # Color-code score
+    if rule_based_score >= 80:
+        score_color = "green"
+    elif rule_based_score >= 60:
+        score_color = "yellow"
+    else:
+        score_color = "red"
+
+    # Count by severity
+    severity_counts = {"critical": 0, "major": 0, "minor": 0}
+    for error in errors:
+        severity_counts[error.severity] += 1
+
+    # Create summary table
+    table = Table(show_header=False, box=None, padding=(0, 2))
+    table.add_column(style="bold cyan", width=18)
+    table.add_column()
+
+    table.add_row(
+        "Score:",
+        Text(f"{rule_based_score:.0f}/100", style=f"bold {score_color}")
+        + " "
+        + Text(
+            "✓" if rule_based_score >= 80 else "⚠" if rule_based_score >= 60 else "✗",
+            style=score_color,
+        ),
+    )
+
+    table.add_row("Total Errors:", str(len(errors)))
+
+    if errors:
+        if severity_counts["critical"] > 0:
+            table.add_row("  Critical:", Text(str(severity_counts["critical"]), style="red"))
+        if severity_counts["major"] > 0:
+            table.add_row("  Major:", Text(str(severity_counts["major"]), style="yellow"))
+        if severity_counts["minor"] > 0:
+            table.add_row("  Minor:", Text(str(severity_counts["minor"]), style="dim"))
+
+    panel = Panel(
+        table,
+        title="Rule-Based Checks (No AI)",
+        border_style="cyan",
+        padding=(1, 2),
+    )
+    console.print(panel)
+
+    # Show detailed errors if any
+    if errors and verbose:
+        console.print()
+        error_table = Table(title="Rule-Based Errors", show_header=True, header_style="bold cyan")
+        error_table.add_column("Check Type", style="cyan", no_wrap=True)
+        error_table.add_column("Severity", no_wrap=True)
+        error_table.add_column("Description", max_width=60 if not verbose else None)
+
+        for error in errors:
+            # Color-code severity
+            if error.severity == "critical":
+                severity_color = "red"
+            elif error.severity == "major":
+                severity_color = "yellow"
+            else:
+                severity_color = "dim"
+
+            severity_text = Text(error.severity.upper(), style=f"bold {severity_color}")
+
+            # Format description
+            description = error.description
+            if not verbose and len(description) > 60:
+                description = description[:57] + "..."
+
+            error_table.add_row(
+                error.check_type.replace("_", " ").title(),
+                severity_text,
+                description,
+            )
+
+        console.print(error_table)
+
     console.print()

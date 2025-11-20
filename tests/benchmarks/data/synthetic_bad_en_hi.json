@@ -1,0 +1,190 @@
+[
+  {
+    "id": "fallback_en-hi_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "कृत्रिम बुद्धिमत्ता दुनिया को बदल रही है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_1",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "कृत्रिम बुद्धिमत्ता दुनिया को बदल रही है आज।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "addition",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-hi_2",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "मशीनी अनुवाद की गुणवत्ता में काफी सुधार हुआ है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_3",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "मशीनी अनुवाद की गुणवत्ता में काफी सुधार है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "omission",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-hi_4",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "प्राकृतिक भाषा प्रसंस्करण मानव-कंप्यूटर संवाद को सक्षम बनाता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_5",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "प्राकृतिक भाषा प्रसंस्करण मानव-कंप्यूटर संवाद को सक्षम बनाता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "bad",
+    "error_type": "mistranslation",
+    "error_severity": "minor",
+    "expected_mqm_range": [
+      40,
+      75
+    ]
+  },
+  {
+    "id": "fallback_en-hi_6",
+    "source": "Deep learning models process vast amounts of data.",
+    "translation": "डीप लर्निंग मॉडल विशाल मात्रा में डेटा को संसाधित करते हैं।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_8",
+    "source": "Neural networks mimic human brain structure.",
+    "translation": "तंत्रिका नेटवर्क मानव मस्तिष्क की संरचना की नकल करते हैं।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_10",
+    "source": "Cloud computing provides scalable infrastructure.",
+    "translation": "क्लाउड कंप्यूटिंग स्केलेबल बुनियादी ढांचा प्रदान करता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_12",
+    "source": "Cybersecurity protects sensitive information.",
+    "translation": "साइबर सुरक्षा संवेदनशील जानकारी की रक्षा करती है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_14",
+    "source": "Blockchain technology ensures data integrity.",
+    "translation": "ब्लॉकचेन तकनीक डेटा की अखंडता सुनिश्चित करती है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_16",
+    "source": "Quantum computing promises exponential speedup.",
+    "translation": "क्वांटम कंप्यूटिंग घातांकीय गति का वादा करती है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  },
+  {
+    "id": "fallback_en-hi_18",
+    "source": "Internet of Things connects everyday devices.",
+    "translation": "इंटरनेट ऑफ थिंग्स रोजमर्रा के उपकरणों को जोड़ता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "fallback",
+    "quality": "good",
+    "expected_mqm_range": [
+      95,
+      100
+    ]
+  }
+]

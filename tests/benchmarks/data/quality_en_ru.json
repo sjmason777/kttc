@@ -2,7 +2,7 @@
   {
     "id": "quality_en-ru_0",
     "source": "Artificial intelligence is revolutionizing modern industries.",
-    "translation": "Here's the translation in Russian:\n\nИскусственный интеллект революционизирует современные отрасли.\n\nPronunciation guide:\n- Iskusstvennyy intellekt revolyutsioniziruyet sovremennye otrasli.",
+    "translation": "Искусственный интеллект революционизирует современные отрасли.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -11,7 +11,7 @@
   {
     "id": "quality_en-ru_1",
     "source": "Cloud computing enables scalable data storage solutions.",
-    "translation": "Here's the translation to Russian:\n\nОблачные вычисления обеспечивают масштабируемые решения для хранения данных.\n\nPronunciation (transliteration):\nOblachnyye vychisleniya obespechivayut masshtabiruyemyye resheniya dlya khraneniya dannykh.",
+    "translation": "Облачные вычисления обеспечивают масштабируемые решения для хранения данных.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -20,7 +20,7 @@
   {
     "id": "quality_en-ru_2",
     "source": "Quantum computers promise exponential computational power.",
-    "translation": "Here's the translation to Russian:\n\nКвантовые компьютеры обещают экспоненциальную вычислительную мощность.\n\nPronunciation guide:\n- Kvantovyye (квантовые) = quantum\n- kompyutery (компьютеры) = computers\n- obeshchayut (обещают) = promise\n- eksponentsial'nuyu (экспоненциальную) = exponential\n- vychislitel'nuyu (вычислительную) = computational\n- moshchnost' (мощность) = power",
+    "translation": "Квантовые компьютеры обещают экспоненциальную вычислительную мощность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -29,7 +29,7 @@
   {
     "id": "quality_en-ru_3",
     "source": "Blockchain technology ensures transparent transaction records.",
-    "translation": "Here's the translation in Russian:\n\nТехнология блокчейн обеспечивает прозрачные записи транзакций.\n\nBreakdown:\n- Технология блокчейн = Blockchain technology\n- обеспечивает = ensures\n- прозрачные = transparent\n- записи = records\n- транзакций = transactions (genitive case)",
+    "translation": "Технология блокчейн обеспечивает прозрачные записи транзакций. - обеспечивает = ensures",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -38,7 +38,7 @@
   {
     "id": "quality_en-ru_4",
     "source": "Neural networks learn complex patterns from data.",
-    "translation": "Here's the translation in Russian:\n\nНейронные сети изучают сложные закономерности из данных.\n\nPronunciation guide:\n- Neyronnyye seti izuchayut slozhnye zakonomernosti iz dannykh.",
+    "translation": "Нейронные сети изучают сложные закономерности из данных.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -47,7 +47,7 @@
   {
     "id": "quality_en-ru_5",
     "source": "Cybersecurity protects sensitive information from threats.",
-    "translation": "Here's the translation in Russian:\n\nКибербезопасность защищает конфиденциальную информацию от угроз.\n\nPronunciation guide:\n- Kiberbezopasnost' zashchishchaet konfidentsial'nuyu informatsiyu ot ugroz.",
+    "translation": "Кибербезопасность защищает конфиденциальную информацию от угроз.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -56,7 +56,7 @@
   {
     "id": "quality_en-ru_6",
     "source": "Internet of Things connects billions of devices.",
-    "translation": "Here's the translation in Russian:\n\nИнтернет вещей соединяет миллиарды устройств.\n\nPronunciation guide:\n- Internet veshchey soyedinyayet milliardy ustroystv.",
+    "translation": "Интернет вещей соединяет миллиарды устройств.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -65,7 +65,7 @@
   {
     "id": "quality_en-ru_7",
     "source": "Machine learning algorithms improve through experience.",
-    "translation": "Here's the translation in Russian:\n\nАлгоритмы машинного обучения улучшаются с опытом.\n\nPronunciation (transliteration):\nAlgoritmy mashinnogo obucheniya uluchshayutsya s opytom.",
+    "translation": "Алгоритмы машинного обучения улучшаются с опытом.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -74,7 +74,7 @@
   {
     "id": "quality_en-ru_8",
     "source": "5G networks provide ultra-fast wireless connectivity.",
-    "translation": "Here's the translation in Russian:\n\nСети 5G обеспечивают сверхбыстрое беспроводное подключение.\n\nPronunciation guide:\n- Seti 5G obespechivayut sverkh-bystroe besprovodnoe podklyuchenie.",
+    "translation": "Сети 5G обеспечивают сверхбыстрое беспроводное подключение.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -83,7 +83,7 @@
   {
     "id": "quality_en-ru_9",
     "source": "Virtual reality creates immersive digital experiences.",
-    "translation": "Here's the translation to Russian:\n\nВиртуальная реальность создает погружающие цифровые впечатления.\n\nPronunciation guide:\n- Virtualnaya realnost' sozdayet pogruzhayushchiye tsifrovyye vpechatleniya.",
+    "translation": "Виртуальная реальность создает погружающие цифровые впечатления.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -92,7 +92,7 @@
   {
     "id": "quality_en-ru_10",
     "source": "Autonomous vehicles navigate without human intervention.",
-    "translation": "Here's the translation in Russian:\n\nАвтономные транспортные средства движутся без вмешательства человека.\n\nPronunciation guide:\n- Avtonomnye transportnye sredstva\n- dvigayutsya bez vmeshatel'stva cheloveka",
+    "translation": "Автономные транспортные средства движутся без вмешательства человека.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -101,7 +101,7 @@
   {
     "id": "quality_en-ru_11",
     "source": "Big data analytics reveals valuable business insights.",
-    "translation": "Here's the translation to Russian:\n\nАнализ больших данных раскрывает ценные бизнес-insights.\n\nAlternative translation that sounds more natural in Russian:\n\nАнализ больших данных позволяет получить ценную бизнес-информацию.",
+    "translation": "Анализ больших данных раскрывает ценные бизнес-insights. Анализ больших данных позволяет получить ценную бизнес-информацию.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -110,7 +110,7 @@
   {
     "id": "quality_en-ru_12",
     "source": "Robotics automates repetitive manufacturing tasks.",
-    "translation": "Here's the translation in Russian:\n\nРобототехника автоматизирует повторяющиеся производственные задачи.\n\nPronunciation (transliteration):\nRobototehnika avtomatiziryet povtoryayushchiesya proizvodstvennye zadachi.",
+    "translation": "Робототехника автоматизирует повторяющиеся производственные задачи.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -119,7 +119,7 @@
   {
     "id": "quality_en-ru_13",
     "source": "Augmented reality overlays digital information on reality.",
-    "translation": "Here's the translation in Russian:\n\nДополненная реальность накладывает цифровую информацию на реальность.\n\nPronunciation guide:\n- Dopolnennaya real'nost' nakladyvayet tsifrovuyu informatsiyu na real'nost'",
+    "translation": "Дополненная реальность накладывает цифровую информацию на реальность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -128,7 +128,7 @@
   {
     "id": "quality_en-ru_14",
     "source": "Edge computing processes data near its source.",
-    "translation": "Here's the translation in Russian:\n\nПограничные вычисления обрабатывают данные вблизи их источника.\n\nPronunciation guide:\n- Pogranichnye vychisleniya obrabatyvayut dannye vblizi ikh istochnika.",
+    "translation": "Пограничные вычисления обрабатывают данные вблизи их источника.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -137,7 +137,7 @@
   {
     "id": "quality_en-ru_15",
     "source": "Natural language processing enables human-computer communication.",
-    "translation": "Here's the translation in Russian:\n\nОбработка естественного языка позволяет осуществлять коммуникацию между человеком и компьютером.\n\nTransliteration (for pronunciation):\nObrabotka yestestvennogo yazyka pozvolyayet osushchestvlyat' kommunikatsiyu mezhdu chelovekom i komp'yuterom.",
+    "translation": "Обработка естественного языка позволяет осуществлять коммуникацию между человеком и компьютером.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -146,7 +146,7 @@
   {
     "id": "quality_en-ru_16",
     "source": "Computer vision allows machines to interpret images.",
-    "translation": "Here's the translation to Russian:\n\nКомпьютерное зрение позволяет машинам интерпретировать изображения.\n\nPronunciation guide:\n- Kompyuternoe zrenie pozvolyaet mashinam interpretirovat' izobrazheniya.",
+    "translation": "Компьютерное зрение позволяет машинам интерпретировать изображения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -155,7 +155,7 @@
   {
     "id": "quality_en-ru_17",
     "source": "Distributed systems coordinate across multiple machines.",
-    "translation": "Here's the translation in Russian:\n\nРаспределённые системы координируют работу across multiple machines.\n\nNote: The phrase \"across multiple machines\" can be more naturally translated as \"между несколькими машинами\" (between several machines).\n\nA more refined translation would be:\nРаспределённые системы координируют работу между несколькими машинами.",
+    "translation": "Распределённые системы координируют работу across multiple machines. Распределённые системы координируют работу между несколькими машинами.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -164,7 +164,7 @@
   {
     "id": "quality_en-ru_18",
     "source": "API integration connects different software applications.",
-    "translation": "Here's the translation in Russian:\n\nИнтеграция API соединяет различные программные приложения.\n\nPronunciation guide:\n- Интеграция (Integratsiya) - Integration\n- API (A-P-I) - API\n- соединяет (soyedinyayet) - connects\n- различные (razlichniye) - different\n- программные (programmniye) - software\n- приложения (prilozheniya) - applications",
+    "translation": "Интеграция API соединяет различные программные приложения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -173,7 +173,7 @@
   {
     "id": "quality_en-ru_19",
     "source": "DevOps practices streamline software development cycles.",
-    "translation": "Here's the translation in Russian:\n\nПрактики DevOps оптимизируют циклы разработки программного обеспечения.\n\nBreakdown:\n- Практики (praktiki) = practices\n- DevOps = DevOps (transliterated)\n- оптимизируют (optimiziruyut) = streamline/optimize\n- циклы (tsikly) = cycles\n- разработки (razrabotki) = development\n- программного обеспечения (programmnogo obespecheniya) = software",
+    "translation": "Практики DevOps оптимизируют циклы разработки программного обеспечения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -182,7 +182,7 @@
   {
     "id": "quality_en-ru_20",
     "source": "Climate change affects global weather patterns significantly.",
-    "translation": "Here's the translation to Russian:\n\nИзменение климата значительно влияет на глобальные погодные паттерны.\n\nPronunciation guide:\n- Izmeneniye klimata znachitel'no vliyayet na global'nyye pogodnyye patterny.",
+    "translation": "Изменение климата значительно влияет на глобальные погодные паттерны.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -191,7 +191,7 @@
   {
     "id": "quality_en-ru_21",
     "source": "Renewable energy sources reduce carbon emissions effectively.",
-    "translation": "Here's the translation to Russian:\n\nВозобновляемые источники энергии эффективно сокращают углеродные выбросы.\n\nPronunciation guide:\n- Vozobnovlyayemyye istochniki energii effektivno sokrashchayut uglerodnyye vybrosy.",
+    "translation": "Возобновляемые источники энергии эффективно сокращают углеродные выбросы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -200,7 +200,7 @@
   {
     "id": "quality_en-ru_22",
     "source": "Genetic engineering modifies organism DNA sequences.",
-    "translation": "Here's the translation in Russian:\n\nГенетическая инженерия модифицирует ДНК-последовательности организмов.\n\nPronunciation (transliteration):\nGeneticheskaya inzheneriya modificiruet DNK-posledovatel'nosti organizmov.",
+    "translation": "Генетическая инженерия модифицирует ДНК-последовательности организмов.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -209,7 +209,7 @@
   {
     "id": "quality_en-ru_23",
     "source": "Space exploration expands human knowledge of universe.",
-    "translation": "Here's the translation in Russian:\n\nИсследование космоса расширяет человеческое знание о вселенной.\n\nPronunciation guide:\n- Issledovaniye kosmosa rasshiryayet chelovecheskoye znaniye o vselennoy.",
+    "translation": "Исследование космоса расширяет человеческое знание о вселенной.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -218,7 +218,7 @@
   {
     "id": "quality_en-ru_24",
     "source": "Nanotechnology manipulates matter at atomic scale.",
-    "translation": "Here's the translation in Russian:\n\nНанотехнология манипулирует материей на атомном уровне.\n\nPronunciation guide:\nNanotekhnologiya manipuliruyet materiyey na atomnom urovne.",
+    "translation": "Нанотехнология манипулирует материей на атомном уровне.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -227,7 +227,7 @@
   {
     "id": "quality_en-ru_25",
     "source": "Ocean acidification threatens marine ecosystem balance.",
-    "translation": "Here's the translation in Russian:\n\nОкисление океана угрожает балансу морской экосистемы.\n\nPronunciation guide:\n- Okisleniye okeana ugrozhayет balansu morskoy ekosistemy.",
+    "translation": "Окисление океана угрожает балансу морской экосистемы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -236,7 +236,7 @@
   {
     "id": "quality_en-ru_26",
     "source": "Biodiversity loss endangers planetary ecological stability.",
-    "translation": "Here's the translation in Russian:\n\nПотеря биоразнообразия угрожает экологической стабильности планеты.\n\nPronunciation guide:\n- Poteria bioraznoobraziya ugrozhaet ekologicheskoy stabil'nosti planety.",
+    "translation": "Потеря биоразнообразия угрожает экологической стабильности планеты.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -245,7 +245,7 @@
   {
     "id": "quality_en-ru_27",
     "source": "Particle physics studies fundamental universe building blocks.",
-    "translation": "Here's the translation in Russian:\n\nФизика элементарных частиц изучает фундаментальные строительные блоки вселенной.\n\nPronunciation (transliteration):\nFizika elementarnykh chastits izuchaet fundamentalnye stroitelnye bloki vselennoy.",
+    "translation": "Физика элементарных частиц изучает фундаментальные строительные блоки вселенной.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -254,7 +254,7 @@
   {
     "id": "quality_en-ru_28",
     "source": "Stem cell research offers regenerative medicine potential.",
-    "translation": "Here's the translation to Russian:\n\nИсследования стволовых клеток открывают потенциал регенеративной медицины.\n\nPronunciation guide:\n- Issledovaniya stvolovykh kletok otkryvayut potentsial regenerativnoy meditsiny.",
+    "translation": "Исследования стволовых клеток открывают потенциал регенеративной медицины.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -263,7 +263,7 @@
   {
     "id": "quality_en-ru_29",
     "source": "Fusion energy could provide clean unlimited power.",
-    "translation": "Here's the translation in Russian:\n\nТермоядерная энергия могла бы обеспечить чистую неограниченную энергию.\n\nPronunciation guide:\n- Termoyadernya energiya mogla by obespechit' chistuyu neogranichennuyu energiyu.",
+    "translation": "Термоядерная энергия могла бы обеспечить чистую неограниченную энергию.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -272,7 +272,7 @@
   {
     "id": "quality_en-ru_30",
     "source": "CRISPR technology enables precise genome editing.",
-    "translation": "Here's the translation to Russian:\n\nТехнология CRISPR позволяет точно редактировать геном.\n\nPronunciation (transliteration):\nTekhnologiya CRISPR pozvolyaet tochno redaktirovat' genom.",
+    "translation": "Технология CRISPR позволяет точно редактировать геном.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -281,7 +281,7 @@
   {
     "id": "quality_en-ru_31",
     "source": "Microplastics contaminate water sources worldwide.",
-    "translation": "Here's the translation in Russian:\n\nМикропластик загрязняет водные источники по всему миру.",
+    "translation": "Микропластик загрязняет водные источники по всему миру.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -290,7 +290,7 @@
   {
     "id": "quality_en-ru_32",
     "source": "Gravitational waves confirm Einstein's relativity predictions.",
-    "translation": "Here's the translation in Russian:\n\nГравитационные волны подтверждают предсказания Эйнштейна о теории относительности.",
+    "translation": "Гравитационные волны подтверждают предсказания Эйнштейна о теории относительности.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -299,7 +299,7 @@
   {
     "id": "quality_en-ru_33",
     "source": "Dark matter comprises majority of universe mass.",
-    "translation": "Here's the translation to Russian:\n\nТёмная материя составляет большинство массы вселенной.\n\nPronunciation (transliteration):\nTyomnaya materiya sostav-lyayet bol-shinstvo massy vselennoye.",
+    "translation": "Тёмная материя составляет большинство массы вселенной.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -308,7 +308,7 @@
   {
     "id": "quality_en-ru_34",
     "source": "Antibiotic resistance threatens public health systems.",
-    "translation": "Here's the translation to Russian:\n\nАнтибиотикорезистентность угрожает системам здравоохранения.\n\nPronunciation guide:\n- Антибиотикорезистентность (Antibiotikoresistentnost') - antibiotic resistance\n- угрожает (ugrozhayet) - threatens\n- системам (sistemam) - to systems\n- здравоохранения (zdravookhraneniya) - of public health",
+    "translation": "Антибиотикорезистентность угрожает системам здравоохранения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -317,7 +317,7 @@
   {
     "id": "quality_en-ru_35",
     "source": "Solar panels convert sunlight into electricity.",
-    "translation": "Here's the translation in Russian:\n\nСолнечные панели преобразуют солнечный свет в электричество.\n\nPronunciation (transliteration):\nSolnechnye paneli preobrazuyut solnechnyy svet v elektrichestvo.",
+    "translation": "Солнечные панели преобразуют солнечный свет в электричество.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -326,7 +326,7 @@
   {
     "id": "quality_en-ru_36",
     "source": "Carbon capture technology removes greenhouse gases.",
-    "translation": "Here's the translation in Russian:\n\nТехнология улавливания углерода удаляет парниковые газы.\n\nPronunciation guide:\n- Tekhnologiya ulavlivaniya ugleroda udalyaet parnikovyye gaza.",
+    "translation": "Технология улавливания углерода удаляет парниковые газы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -335,7 +335,7 @@
   {
     "id": "quality_en-ru_37",
     "source": "Quantum entanglement enables secure communications.",
-    "translation": "Here's the translation in Russian:\n\nКвантовая запутанность позволяет осуществлять защищённую связь.\n\nPronunciation (transliteration):\nKvantovaya zaputannost' pozvolyaet osushchestvlyat' zashchishchyonnuyu svyaz'.",
+    "translation": "Квантовая запутанность позволяет осуществлять защищённую связь.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -344,7 +344,7 @@
   {
     "id": "quality_en-ru_38",
     "source": "Exoplanets orbit stars beyond our solar system.",
-    "translation": "Here's the translation in Russian:\n\nЭкзопланеты обращаются вокруг звезд за пределами нашей солнечной системы.\n\nPronunciation guide:\n- Экзопланеты (Ekzoplanety) - Exoplanets\n- обращаются (obrashchayutsya) - orbit\n- вокруг (vokrug) - around\n- звезд (zvezd) - stars\n- за пределами (za predelami) - beyond\n- нашей (nashey) - our\n- солнечной системы (solnechnoy sistemy) - solar system",
+    "translation": "Экзопланеты обращаются вокруг звезд за пределами нашей солнечной системы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -353,7 +353,7 @@
   {
     "id": "quality_en-ru_39",
     "source": "Synthetic biology creates new biological systems.",
-    "translation": "Here's the translation in Russian:\n\nСинтетическая биология создаёт новые биологические системы.\n\nPronunciation (transliteration):\nSinteticheskaya biologiya sozdayot novyye biologicheskiye sistemy.",
+    "translation": "Синтетическая биология создаёт новые биологические системы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -362,7 +362,7 @@
   {
     "id": "quality_en-ru_40",
     "source": "Market research identifies consumer preferences and trends.",
-    "translation": "Here's the translation in Russian:\n\nМаркетинговое исследование выявляет потребительские предпочтения и тренды.\n\nPronunciation guide:\nMarketingovoye issledovaniye vyyavlyayet potrebitel'skiye predpochteniya i trendy.",
+    "translation": "Маркетинговое исследование выявляет потребительские предпочтения и тренды.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -371,7 +371,7 @@
   {
     "id": "quality_en-ru_41",
     "source": "Supply chain optimization reduces operational costs.",
-    "translation": "Here's the translation to Russian:\n\nОптимизация цепочки поставок снижает операционные расходы.\n\nPronunciation guide:\n- Оптимизация (Optimizatsiya): optimization\n- цепочки (tsepochki): chain\n- поставок (postavok): of supplies\n- снижает (snizhayet): reduces\n- операционные (operatsionnyye): operational\n- расходы (raskhody): costs",
+    "translation": "Оптимизация цепочки поставок снижает операционные расходы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -380,7 +380,7 @@
   {
     "id": "quality_en-ru_42",
     "source": "Digital transformation modernizes traditional business models.",
-    "translation": "Here's the translation in Russian:\n\nЦифровая трансформация модернизирует традиционные бизнес-модели.\n\nPronunciation guide:\n- Tsifrovaya transformatsiya moderniziryet traditsionniye biznes-modeli.",
+    "translation": "Цифровая трансформация модернизирует традиционные бизнес-модели.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -389,7 +389,7 @@
   {
     "id": "quality_en-ru_43",
     "source": "Customer relationship management improves client satisfaction.",
-    "translation": "Here's the translation:\n\nУправление взаимоотношениями с клиентами улучшает удовлетворенность клиентов.",
+    "translation": "Управление взаимоотношениями с клиентами улучшает удовлетворенность клиентов.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -398,7 +398,7 @@
   {
     "id": "quality_en-ru_44",
     "source": "E-commerce platforms facilitate online shopping transactions.",
-    "translation": "Here's the translation in Russian:\n\nПлатформы электронной коммерции облегчают онлайн-покупки.\n\nPronunciation (transliteration):\nPlatformy elektronnoy kommertsii oblegchayut onlayn-pokupki.",
+    "translation": "Платформы электронной коммерции облегчают онлайн-покупки.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -407,7 +407,7 @@
   {
     "id": "quality_en-ru_45",
     "source": "Financial technology innovations disrupt banking services.",
-    "translation": "Here's the translation in Russian:\n\nФинансовые технологические инновации нарушают банковские услуги.\n\nPronunciation guide:\n- Финансовые (Finansovyye) - Financial\n- технологические (tekhnologicheskiye) - technological\n- инновации (innovatsii) - innovations\n- нарушают (narushayut) - disrupt\n- банковские (bankovskiye) - banking\n- услуги (uslugi) - services",
+    "translation": "Финансовые технологические инновации нарушают банковские услуги.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -416,7 +416,7 @@
   {
     "id": "quality_en-ru_46",
     "source": "Venture capital funds support startup companies.",
-    "translation": "Here's the translation in Russian:\n\nВенчурные фонды поддерживают стартап-компании.\n\nPronunciation guide:\n- Venture capital funds: Venchurnye fondy\n- support: podderzhivayut\n- startup companies: startap-kompanii",
+    "translation": "Венчурные фонды поддерживают стартап-компании.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -425,7 +425,7 @@
   {
     "id": "quality_en-ru_47",
     "source": "Business intelligence tools analyze organizational data.",
-    "translation": "Here's the translation in Russian:\n\nИнструменты бизнес-аналитики анализируют организационные данные.\n\nPronunciation guide:\n- Инструменты (Instrumenty): tools\n- бизнес-аналитики (biznes-analitiki): business intelligence\n- анализируют (analiziruyut): analyze\n- организационные (organizatsionnye): organizational\n- данные (dannye): data",
+    "translation": "Инструменты бизнес-аналитики анализируют организационные данные.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -434,7 +434,7 @@
   {
     "id": "quality_en-ru_48",
     "source": "Brand awareness campaigns increase product visibility.",
-    "translation": "Here's the translation in Russian:\n\nКампании по повышению узнаваемости бренда увеличивают видимость продукта.\n\nPronunciation guide:\n- Kampanii po povysheniyu uznavayemosti brenda uvelichivayut vidimost' produkta.",
+    "translation": "Кампании по повышению узнаваемости бренда увеличивают видимость продукта.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -443,7 +443,7 @@
   {
     "id": "quality_en-ru_49",
     "source": "Agile methodology enables flexible project management.",
-    "translation": "Here's the translation in Russian:\n\nМетодология Agile обеспечивает гибкое управление проектами.\n\nPronunciation guide:\n- Metodologiya Agile obespechivayet gibkoye upravleniye proyektami.",
+    "translation": "Методология Agile обеспечивает гибкое управление проектами.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -452,7 +452,7 @@
   {
     "id": "quality_en-ru_50",
     "source": "Corporate social responsibility demonstrates ethical commitment.",
-    "translation": "Here's the translation:\n\nКорпоративная социальная ответственность демонстрирует этическую приверженность.",
+    "translation": "Корпоративная социальная ответственность демонстрирует этическую приверженность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -461,7 +461,7 @@
   {
     "id": "quality_en-ru_51",
     "source": "Competitive analysis evaluates market positioning strategies.",
-    "translation": "Here's the translation in Russian:\n\nКонкурентный анализ оценивает стратегии рыночного позиционирования.\n\nBreakdown:\n- Конкурентный (Konkurentnyy) = Competitive\n- анализ (analiz) = analysis\n- оценивает (otsenivayet) = evaluates\n- стратегии (strategii) = strategies\n- рыночного (rynochnogo) = market\n- позиционирования (pozitsionirovaniya) = positioning",
+    "translation": "Конкурентный анализ оценивает стратегии рыночного позиционирования.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -470,7 +470,7 @@
   {
     "id": "quality_en-ru_52",
     "source": "Revenue streams diversify company income sources.",
-    "translation": "Here's the translation in Russian:\n\nПотоки доходов диверсифицируют источники дохода компании.\n\nPronunciation guide:\n- Potoki dokhodov diversifitsiruyut istochniki dokhoda kompanii.",
+    "translation": "Потоки доходов диверсифицируют источники дохода компании.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -479,7 +479,7 @@
   {
     "id": "quality_en-ru_53",
     "source": "Risk management frameworks protect business assets.",
-    "translation": "Here's the translation:\n\nСтруктуры управления рисками защищают активы бизнеса.\n\nBreakdown:\n- Структуры (struktury) = frameworks\n- управления рисками (upravleniya riskami) = risk management\n- защищают (zashchishchayut) = protect\n- активы (aktivy) = assets\n- бизнеса (biznesa) = business (genitive case)",
+    "translation": "Структуры управления рисками защищают активы бизнеса.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -488,7 +488,7 @@
   {
     "id": "quality_en-ru_54",
     "source": "Intellectual property rights safeguard innovations.",
-    "translation": "Here's the translation in Russian:\n\nПрава интеллектуальной собственности защищают инновации.\n\nPronunciation guide:\n- Prava intellektual'noy sobstvennosti zashchishchayut innovatsii.\n\nBreakdown:\n- Права (Prava) = rights\n- интеллектуальной (intellektual'noy) = intellectual\n- собственности (sobstvennosti) = property\n- защищают (zashchishchayut) = safeguard/protect\n- инновации (innovatsii) = innovations",
+    "translation": "Права интеллектуальной собственности защищают инновации.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -497,7 +497,7 @@
   {
     "id": "quality_en-ru_55",
     "source": "Merger acquisitions consolidate market share.",
-    "translation": "Here's the translation in Russian:\n\nСлияния и поглощения консолидируют долю рынка.\n\nPronunciation (transliteration):\nSliyaniya i pogloshcheniya konsolidiruyut dolyu rynka.\n\nBreakdown:\n- Слияния и поглощения (Sliyaniya i pogloshcheniya) = Mergers and acquisitions\n- консолидируют (konsolidiruyut) = consolidate\n- долю рынка (dolyu rynka) = market share",
+    "translation": "Слияния и поглощения консолидируют долю рынка.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -506,7 +506,7 @@
   {
     "id": "quality_en-ru_56",
     "source": "Quarterly earnings reports inform investor decisions.",
-    "translation": "Here's the translation in Russian:\n\nКвартальные отчеты о прибыли информируют инвесторов о принятии решений.",
+    "translation": "Квартальные отчеты о прибыли информируют инвесторов о принятии решений.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -515,7 +515,7 @@
   {
     "id": "quality_en-ru_57",
     "source": "Business process automation increases efficiency.",
-    "translation": "Here's the translation in Russian:\n\nАвтоматизация бизнес-процессов повышает эффективность.\n\nPronunciation guide:\n- Avtomatizatsiya biznes-protsessov povyshaet effektivnost'",
+    "translation": "Автоматизация бизнес-процессов повышает эффективность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -524,7 +524,7 @@
   {
     "id": "quality_en-ru_58",
     "source": "Customer retention strategies build long-term loyalty.",
-    "translation": "Here's the translation in Russian:\n\nСтратегии удержания клиентов формируют долгосрочную лояльность.\n\nPronunciation guide:\n- Strategii uderzhaniia klientov formiruiut dolgosrochnuiu loial'nost'",
+    "translation": "Стратегии удержания клиентов формируют долгосрочную лояльность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -533,7 +533,7 @@
   {
     "id": "quality_en-ru_59",
     "source": "Market segmentation targets specific consumer groups.",
-    "translation": "Here's the translation in Russian:\n\nСегментация рынка нацелена на определенные группы потребителей.\n\nBreakdown:\n- Сегментация рынка (Market segmentation)\n- нацелена на (targets)\n- определенные группы (specific groups)\n- потребителей (consumers)",
+    "translation": "Сегментация рынка нацелена на определенные группы потребителей.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -542,7 +542,7 @@
   {
     "id": "quality_en-ru_60",
     "source": "Morning exercise improves overall health significantly.",
-    "translation": "Here's the translation in Russian:\n\nУтренняя зарядка значительно улучшает общее состояние здоровья.\n\nPronunciation guide:\n- Utrennyaya zaryadka znachitel'no uluchshayet obshcheye sostoyaniye zdorov'ya.",
+    "translation": "Утренняя зарядка значительно улучшает общее состояние здоровья.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -551,7 +551,7 @@
   {
     "id": "quality_en-ru_61",
     "source": "Balanced diet provides essential nutrients daily.",
-    "translation": "Here's the translation in Russian:\n\nСбалансированное питание обеспечивает ежедневное поступление необходимых питательных веществ.\n\nPronunciation guide:\n- Sbalansirovannoye pitaniye obespechivayет yezhednevnoye postupleniye neobkhodimykh pitatel'nykh veshchestv.",
+    "translation": "Сбалансированное питание обеспечивает ежедневное поступление необходимых питательных веществ.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -560,7 +560,7 @@
   {
     "id": "quality_en-ru_62",
     "source": "Quality sleep enhances cognitive function performance.",
-    "translation": "Here's the translation in Russian:\n\nКачественный сон улучшает производительность когнитивных функций.\n\nPronunciation (transliteration):\nKachestvennyy son uluchshayet proizvoditel'nost' kognitivnykh funktsiy.",
+    "translation": "Качественный сон улучшает производительность когнитивных функций.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -569,7 +569,7 @@
   {
     "id": "quality_en-ru_63",
     "source": "Regular meditation reduces stress levels effectively.",
-    "translation": "Here's the translation in Russian:\n\nРегулярная медитация эффективно снижает уровень стресса.\n\nPronunciation guide:\n- Regulyarnaya meditatsiya effektivno snizhayet uroven' stressa.",
+    "translation": "Регулярная медитация эффективно снижает уровень стресса.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -578,7 +578,7 @@
   {
     "id": "quality_en-ru_64",
     "source": "Social connections strengthen mental wellbeing.",
-    "translation": "Here's the translation in Russian:\n\nСоциальные связи укрепляют психическое благополучие.\n\nPronunciation guide:\n- Sotsialniye svyazi ukrepplyayut psikhicheskoye blagopoluchiye.",
+    "translation": "Социальные связи укрепляют психическое благополучие.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -587,7 +587,7 @@
   {
     "id": "quality_en-ru_65",
     "source": "Time management skills increase productivity.",
-    "translation": "Here's the translation in Russian:\n\nНавыки управления временем повышают производительность.\n\nPronunciation guide:\nNavyki upravleniya vremenem povyshayut produktivnost'.",
+    "translation": "Навыки управления временем повышают производительность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -596,7 +596,7 @@
   {
     "id": "quality_en-ru_66",
     "source": "Lifelong learning expands knowledge and skills.",
-    "translation": "Here's the translation in Russian:\n\nНепрерывное обучение расширяет знания и навыки.\n\nPronunciation guide:\n- Nepreryvnoye obucheniye rasshiryayet znaniya i navyki.",
+    "translation": "Непрерывное обучение расширяет знания и навыки.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -605,7 +605,7 @@
   {
     "id": "quality_en-ru_67",
     "source": "Financial planning ensures future security.",
-    "translation": "Here's the translation in Russian:\n\nФинансовое планирование обеспечивает будущую безопасность.\n\nPronunciation guide:\n- Финансовое (Finansovoye) - Financial\n- планирование (planirovaniye) - planning\n- обеспечивает (obespecchivayet) - ensures\n- будущую (budushchuyu) - future\n- безопасность (bezopasnost') - security",
+    "translation": "Финансовое планирование обеспечивает будущую безопасность.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -614,7 +614,7 @@
   {
     "id": "quality_en-ru_68",
     "source": "Sustainable lifestyle choices protect environment.",
-    "translation": "Here's the translation in Russian:\n\nУстойчивый образ жизни защищает окружающую среду.\n\nPronunciation guide:\n- Ustóychivyy óbraz zhízni zashchishcháet okruzhájushchuyu sredu.\n\nBreakdown:\n- Устойчивый (Ustóychivyy) = Sustainable\n- образ жизни (óbraz zhízni) = lifestyle\n- защищает (zashchishcháet) = protects\n- окружающую среду (okruzhájushchuyu sredu) = environment",
+    "translation": "Устойчивый образ жизни защищает окружающую среду.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -623,7 +623,7 @@
   {
     "id": "quality_en-ru_69",
     "source": "Creative hobbies foster personal expression.",
-    "translation": "Here's the translation in Russian:\n\nТворческие хобби способствуют самовыражению.\n\nPronunciation (transliteration):\nTvorcheskiye khobbi sposobstvuyut samovyrazheniyu.",
+    "translation": "Творческие хобби способствуют самовыражению.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -632,7 +632,7 @@
   {
     "id": "quality_en-ru_70",
     "source": "Public transportation reduces traffic congestion.",
-    "translation": "Here's the translation to Russian:\n\nОбщественный транспорт уменьшает дорожные заторы.\n\nPronunciation guide:\n- Obshchestvennyi transport umen'shaet dorozhnye zatory.",
+    "translation": "Общественный транспорт уменьшает дорожные заторы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -641,7 +641,7 @@
   {
     "id": "quality_en-ru_71",
     "source": "Recycling programs minimize waste production.",
-    "translation": "Here's the translation in Russian:\n\nПрограммы по переработке отходов минимизируют производство мусора.\n\nBreakdown:\n- Программы (programmy) = programs\n- по переработке отходов (po pererabotke otkhodov) = recycling\n- минимизируют (minimiziruyut) = minimize\n- производство (proizvodstvo) = production\n- мусора (musora) = waste",
+    "translation": "Программы по переработке отходов минимизируют производство мусора.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -650,7 +650,7 @@
   {
     "id": "quality_en-ru_72",
     "source": "Volunteering activities benefit local communities.",
-    "translation": "Here's the translation in Russian:\n\nВолонтёрская деятельность приносит пользу местным сообществам.\n\nPronunciation guide:\n- Volontérskaya deyátel'nost' prinósit pol'zu místnym soobshchestvam.",
+    "translation": "Волонтёрская деятельность приносит пользу местным сообществам.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -659,7 +659,7 @@
   {
     "id": "quality_en-ru_73",
     "source": "Cultural experiences broaden worldview perspectives.",
-    "translation": "Here's the translation in Russian:\n\nКультурные experiences расширяют перспективы мировоззрения.\n\nOr a slightly more natural Russian phrasing:\n\nКультурный опыт расширяет взгляд на мир.",
+    "translation": "Культурные experiences расширяют перспективы мировоззрения. Культурный опыт расширяет взгляд на мир.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -668,7 +668,7 @@
   {
     "id": "quality_en-ru_74",
     "source": "Pet ownership provides companionship and joy.",
-    "translation": "Here's the translation in Russian:\n\nВладение домашним животным дарит companionship и радость.\n\nOr alternatively:\n\nСодержание домашних животных обеспечивает companionship и радость.\n\nBoth translations convey the same meaning. The first one uses \"владение\" (ownership), while the second uses \"содержание\" (keeping/having).",
+    "translation": "Владение домашним животным дарит companionship и радость. Содержание домашних животных обеспечивает companionship и радость.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -677,7 +677,7 @@
   {
     "id": "quality_en-ru_75",
     "source": "Home organization creates peaceful living space.",
-    "translation": "Here's the translation:\n\nОрганизация дома создает мирное жилое пространство.\n\nPronunciation guide:\n- Organizatsiya doma sozdayet mirnoye zhiloye prostranstvo.",
+    "translation": "Организация дома создает мирное жилое пространство.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -686,7 +686,7 @@
   {
     "id": "quality_en-ru_76",
     "source": "Cooking healthy meals saves money regularly.",
-    "translation": "Here's the translation to Russian:\n\nПриготовление здоровой пищи регулярно экономит деньги.\n\nPronunciation guide:\n- Prigotovleniye zdorovoy pishchi regulyarno ekonomit den'gi.",
+    "translation": "Приготовление здоровой пищи регулярно экономит деньги.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -695,7 +695,7 @@
   {
     "id": "quality_en-ru_77",
     "source": "Reading books stimulates imagination and intellect.",
-    "translation": "Here's the translation in Russian:\n\nЧтение книг стимулирует воображение и интеллект.\n\nPronunciation guide:\n- Chteniye knig stimuliruyet voobrazheniye i intellekt.",
+    "translation": "Чтение книг стимулирует воображение и интеллект.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -704,7 +704,7 @@
   {
     "id": "quality_en-ru_78",
     "source": "Outdoor activities connect people with nature.",
-    "translation": "Here's the translation in Russian:\n\nЗанятия на свежем воздухе соединяют людей с природой.\n\nPronunciation guide:\n- Zanyatiya na svezhem vozdukhe soyedinyayut lyudey s prirodoy.",
+    "translation": "Занятия на свежем воздухе соединяют людей с природой.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -713,7 +713,7 @@
   {
     "id": "quality_en-ru_79",
     "source": "Family traditions strengthen generational bonds.",
-    "translation": "Here's the translation in Russian:\n\nСемейные традиции укрепляют связи между поколениями.\n\nPronunciation guide:\n- Semeynyye traditsii ukreplyayut svyazi mezhdu pokoleniyami.",
+    "translation": "Семейные традиции укрепляют связи между поколениями.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -722,7 +722,7 @@
   {
     "id": "quality_en-ru_80",
     "source": "Online learning platforms democratize education access.",
-    "translation": "Here's the translation to Russian:\n\nОнлайн-платформы обучения демократизируют доступ к образованию.\n\nPronunciation (transliteration):\nOnlayn-platformy obucheniya demokratiziruyut dostup k obrazovaniyu.",
+    "translation": "Онлайн-платформы обучения демократизируют доступ к образованию.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -731,7 +731,7 @@
   {
     "id": "quality_en-ru_81",
     "source": "Critical thinking skills evaluate information objectively.",
-    "translation": "Here's the translation:\n\nНавыки критического мышления позволяют объективно оценивать информацию.\n\nBreakdown:\n- Навыки критического мышления = Critical thinking skills\n- позволяют = evaluate/enable\n- объективно = objectively\n- оценивать = to evaluate\n- информацию = information",
+    "translation": "Навыки критического мышления позволяют объективно оценивать информацию.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -740,7 +740,7 @@
   {
     "id": "quality_en-ru_82",
     "source": "Collaborative projects develop teamwork abilities.",
-    "translation": "Here's the translation in Russian:\n\nСовместные проекты развивают навыки командной работы.\n\nPronunciation (transliteration):\nSovmestnye proekty razvivayut navyki komandnoy raboty.",
+    "translation": "Совместные проекты развивают навыки командной работы.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -749,7 +749,7 @@
   {
     "id": "quality_en-ru_83",
     "source": "Educational technology enhances classroom instruction.",
-    "translation": "Here's the translation in Russian:\n\nОбразовательные технологии улучшают учебный процесс.\n\nPronunciation guide:\n- Obrazovatel'nyye tekhnologii uluchshayut uchebnyy protsess.",
+    "translation": "Образовательные технологии улучшают учебный процесс.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -758,7 +758,7 @@
   {
     "id": "quality_en-ru_84",
     "source": "Curriculum design addresses diverse learning needs.",
-    "translation": "Here's the translation in Russian:\n\nПроектирование учебной программы учитывает разнообразные образовательные потребности.\n\nPronunciation guide:\n- Proyektirovaniye uchebnoy programmy uchityvayet raznoobraznyye obrazovatel'nyye potrebnosti.",
+    "translation": "Проектирование учебной программы учитывает разнообразные образовательные потребности.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -767,7 +767,7 @@
   {
     "id": "quality_en-ru_85",
     "source": "Assessment methods measure student achievement.",
-    "translation": "Here's the translation in Russian:\n\nМетоды оценивания измеряют успеваемость студентов.\n\nBreakdown:\n- Методы (metody) = methods\n- оценивания (otsenivaniya) = assessment\n- измеряют (izmeryayut) = measure\n- успеваемость (uspevaemost') = student achievement\n- студентов (studentov) = of students",
+    "translation": "Методы оценивания измеряют успеваемость студентов.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -776,7 +776,7 @@
   {
     "id": "quality_en-ru_86",
     "source": "Teacher training programs improve instruction quality.",
-    "translation": "Here's the translation to Russian:\n\nПрограммы подготовки учителей повышают качество обучения.\n\nPronunciation guide:\n- Programmy podgotovki uchiteley povyshayut kachestvo obucheniya.",
+    "translation": "Программы подготовки учителей повышают качество обучения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -785,7 +785,7 @@
   {
     "id": "quality_en-ru_87",
     "source": "Special education supports students with disabilities.",
-    "translation": "Here's the translation in Russian:\n\nСпециальное образование поддерживает учащихся с ограниченными возможностями.\n\nPronunciation guide:\n- Spetsial'noye obrazovaniye podderzhivayet uchashchikhsya s ogranichennymi vozmozhnostyami.",
+    "translation": "Специальное образование поддерживает учащихся с ограниченными возможностями.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -794,7 +794,7 @@
   {
     "id": "quality_en-ru_88",
     "source": "Literacy programs empower disadvantaged communities.",
-    "translation": "Here's the translation in Russian:\n\nПрограммы грамотности расширяют возможности социально незащищенных сообществ.\n\nPronunciation (transliteration):\nProgrammy gramotnosti rasshiryayut vozmozhnosti sotsial'no nezashchishchennykh soobshchestv.",
+    "translation": "Программы грамотности расширяют возможности социально незащищенных сообществ.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -803,7 +803,7 @@
   {
     "id": "quality_en-ru_89",
     "source": "Higher education prepares workforce for careers.",
-    "translation": "Here's the translation to Russian:\n\nВысшее образование готовит рабочую силу к карьере.\n\nPronunciation guide:\n- Vysshee obrazovanie gotovit rabochuyu silu k kar'ere.",
+    "translation": "Высшее образование готовит рабочую силу к карьере.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -812,7 +812,7 @@
   {
     "id": "quality_en-ru_90",
     "source": "Preventive care reduces chronic disease occurrence.",
-    "translation": "Here's the translation in Russian:\n\nПрофилактическая помощь снижает возникновение хронических заболеваний.\n\nPronunciation guide:\n- Profilakticheskaya pomoshch' snizhaet vozniknoveniye khronicheskikh zabolevaniy.",
+    "translation": "Профилактическая помощь снижает возникновение хронических заболеваний.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -821,7 +821,7 @@
   {
     "id": "quality_en-ru_91",
     "source": "Telemedicine expands healthcare access remotely.",
-    "translation": "Here's the translation in Russian:\n\nТелемедицина расширяет доступ к медицинской помощи на расстоянии.",
+    "translation": "Телемедицина расширяет доступ к медицинской помощи на расстоянии.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -830,7 +830,7 @@
   {
     "id": "quality_en-ru_92",
     "source": "Vaccination programs protect against infectious diseases.",
-    "translation": "Here's the translation in Russian:\n\nПрограммы вакцинации защищают от инфекционных заболеваний.\n\nPronunciation guide:\n- Programmy vaksinatsii zashchishchayut ot infektsionnykh zabolevaniy.",
+    "translation": "Программы вакцинации защищают от инфекционных заболеваний.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -839,7 +839,7 @@
   {
     "id": "quality_en-ru_93",
     "source": "Medical imaging diagnostics detect health conditions early.",
-    "translation": "Here's the translation in Russian:\n\nМедицинская диагностическая визуализация позволяет обнаруживать заболевания на ранних стадиях.\n\nPronunciation (transliteration):\nMeditsinskaya diagnosticheskaya vizualizatsiya pozvolyaet obnaruzhivat' zabolevaniya na rannikh stadiyakh.",
+    "translation": "Медицинская диагностическая визуализация позволяет обнаруживать заболевания на ранних стадиях.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -848,7 +848,7 @@
   {
     "id": "quality_en-ru_94",
     "source": "Personalized medicine tailors treatments to individuals.",
-    "translation": "Here's the translation to Russian:\n\nПерсонализированная медицина подбирает лечение индивидуально.\n\nPronunciation guide:\n- Персонализированная (personalizirovannaya): personalized\n- медицина (meditsina): medicine\n- подбирает (podbirayет): tailors/selects\n- лечение (lecheniye): treatment\n- индивидуально (individual'no): individually",
+    "translation": "Персонализированная медицина подбирает лечение индивидуально.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -857,7 +857,7 @@
   {
     "id": "quality_en-ru_95",
     "source": "Mental health services address psychological wellbeing.",
-    "translation": "Here's the translation to Russian:\n\nСлужбы психического здоровья занимаются психологическим благополучием.\n\nBreakdown:\n- Службы (Sluzhby) = Services\n- психического (psikhicheskogo) = mental\n- здоровья (zdorov'ya) = health\n- занимаются (zanimayutsya) = address/deal with\n- психологическим (psikhologicheskim) = psychological\n- благополучием (blagopoluchiem) = wellbeing",
+    "translation": "Службы психического здоровья занимаются психологическим благополучием.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -866,7 +866,7 @@
   {
     "id": "quality_en-ru_96",
     "source": "Emergency response systems save critical lives.",
-    "translation": "Here's the translation in Russian:\n\nСистемы экстренного реагирования спасают критически важные жизни.\n\nPronunciation guide:\n- Sistemy ekstrennogo reagirovaniya spasayut kriticheski vazhnye zhizni.",
+    "translation": "Системы экстренного реагирования спасают критически важные жизни.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -875,7 +875,7 @@
   {
     "id": "quality_en-ru_97",
     "source": "Clinical trials evaluate new treatment efficacy.",
-    "translation": "Here's the translation in Russian:\n\nКлинические испытания оценивают эффективность нового лечения.\n\nPronunciation guide:\n- Klini'cheskie ispytaniya otse'nivayut effek'tivnost' novogo lecheniya.",
+    "translation": "Клинические испытания оценивают эффективность нового лечения.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -884,7 +884,7 @@
   {
     "id": "quality_en-ru_98",
     "source": "Health insurance provides financial protection.",
-    "translation": "Here's the translation in Russian:\n\nМедицинское страхование обеспечивает финансовую защиту.\n\nPronunciation guide:\n- Медицинское (Meditsinskoe) - medical\n- страхование (strakhovaniye) - insurance\n- обеспечивает (obespecchivayet) - provides\n- финансовую (finansovuyu) - financial\n- защиту (zashchitu) - protection",
+    "translation": "Медицинское страхование обеспечивает финансовую защиту.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",
@@ -893,7 +893,7 @@
   {
     "id": "quality_en-ru_99",
     "source": "Pharmaceutical research develops life-saving medications.",
-    "translation": "Here's the translation in Russian:\n\nФармацевтические исследования разрабатывают жизненно важные лекарства.\n\nPronunciation guide:\n- Farmatsevticheskiye issledovaniya razrabatyvayut zhiznenno vazhniye lekarstva.",
+    "translation": "Фармацевтические исследования разрабатывают жизненно важные лекарства.",
     "source_lang": "en",
     "target_lang": "ru",
     "domain": "diverse",

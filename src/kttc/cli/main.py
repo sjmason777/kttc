@@ -291,6 +291,12 @@ def check(
         "-g",
         help="Glossaries to use (comma-separated, e.g., 'base,medical'), 'auto' to auto-detect, or 'none' to disable",
     ),
+    reference: str | None = typer.Option(
+        None,
+        "--reference",
+        "-r",
+        help="Reference translation file path for metric calculation (optional)",
+    ),
     verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
     demo: bool = typer.Option(
         False, "--demo", help="Demo mode (no API calls, simulated responses)"
@@ -383,6 +389,7 @@ def check(
                     simple_threshold,
                     complex_threshold,
                     detected_glossary,
+                    reference,
                     verbose,
                     demo,
                 )
@@ -540,6 +547,7 @@ async def _check_async(
     simple_threshold: float,
     complex_threshold: float,
     glossary: str | None,
+    reference: str | None,
     verbose: bool,
     demo: bool = False,
 ) -> None:
@@ -721,6 +729,58 @@ async def _check_async(
     console.print("[green]✓[/green] Step 3/3: Report ready")
     console.print()
 
+    # Calculate lightweight metrics and rule-based errors
+    from kttc.cli.ui import print_lightweight_metrics, print_rule_based_errors
+    from kttc.evaluation import ErrorDetector, LightweightMetrics
+
+    metrics_calculator = LightweightMetrics()
+    error_detector = ErrorDetector()
+
+    # Load reference translation if provided
+    reference_text = None
+    if reference:
+        try:
+            reference_path = Path(reference)
+            if not reference_path.exists():
+                console.print(f"[yellow]⚠ Reference file not found: {reference}[/yellow]")
+            else:
+                reference_text = reference_path.read_text(encoding="utf-8").strip()
+                if verbose:
+                    console.print(f"[dim]Loaded {len(reference_text)} chars from reference[/dim]")
+        except Exception as e:
+            console.print(f"[yellow]⚠ Failed to load reference: {e}[/yellow]")
+
+    try:
+        # Calculate lightweight metrics
+        # If reference is provided, use it; otherwise use translation itself (baseline)
+        reference_for_metrics = reference_text if reference_text else translation_text
+
+        lightweight_scores = metrics_calculator.evaluate(
+            translation=translation_text,
+            reference=reference_for_metrics,
+            source=source_text,
+        )
+
+        # Detect rule-based errors (source vs translation)
+        rule_based_errors = error_detector.detect_all_errors(
+            source=source_text, translation=translation_text
+        )
+        rule_based_score = error_detector.calculate_rule_based_score(rule_based_errors)
+
+        # Show warning if no reference provided
+        if not reference_text and verbose:
+            console.print(
+                "[dim]ℹ️  No reference translation provided. "
+                "Metrics show baseline (self-comparison). "
+                "Use --reference for meaningful scores.[/dim]\n"
+            )
+    except Exception as e:
+        if verbose:
+            console.print(f"[dim]⚠ Lightweight metrics calculation failed: {e}[/dim]")
+        lightweight_scores = None
+        rule_based_errors = None
+        rule_based_score = None
+
     # Display unified results
     print_qa_report(
         report,
@@ -728,6 +788,11 @@ async def _check_async(
         verbose=verbose,
         api_errors=api_errors if api_errors else None,
     )
+
+    # Display lightweight metrics and rule-based errors
+    if lightweight_scores and rule_based_errors is not None and rule_based_score is not None:
+        print_lightweight_metrics(lightweight_scores, verbose=verbose)
+        print_rule_based_errors(rule_based_errors, rule_based_score, verbose=verbose)
 
     # Auto-correct if requested and errors found
     if auto_correct and len(report.errors) > 0:

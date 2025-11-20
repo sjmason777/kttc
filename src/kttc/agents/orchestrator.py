@@ -48,6 +48,8 @@ from .base import AgentEvaluationError, BaseAgent
 from .consensus import WeightedConsensus
 from .domain_profiles import DomainDetector, get_domain_profile
 from .fluency import FluencyAgent
+from .fluency_hindi import HindiFluencyAgent
+from .fluency_persian import PersianFluencyAgent
 from .fluency_russian import RussianFluencyAgent
 from .terminology import TerminologyAgent
 
@@ -175,13 +177,57 @@ class AgentOrchestrator:
                 )
             )
 
-        # Future: Add more language-specific agents here
-        # elif task.target_lang == "zh":
-        #     helper = get_helper_for_language("zh")
-        #     language_agents.append(ChineseFluencyAgent(..., helper=helper))
-        # elif task.target_lang == "en":
-        #     helper = get_helper_for_language("en")
-        #     language_agents.append(EnglishFluencyAgent(..., helper=helper))
+        # Hindi-specific fluency agent with Indic NLP + Stanza + Spello
+        elif task.target_lang == "hi":
+            # Try to get Hindi NLP helper
+            from kttc.helpers.hindi import HindiLanguageHelper
+
+            helper = get_helper_for_language("hi")
+
+            # Cast to HindiLanguageHelper or None
+            hindi_helper: HindiLanguageHelper | None = None
+            if isinstance(helper, HindiLanguageHelper):
+                hindi_helper = helper
+
+            if hindi_helper and hindi_helper.is_available():
+                logger.info("Using HindiFluencyAgent with Indic NLP + Stanza + Spello")
+            else:
+                logger.info("Using HindiFluencyAgent in LLM-only mode (helpers not available)")
+
+            language_agents.append(
+                HindiFluencyAgent(
+                    self.llm_provider,
+                    temperature=self.agent_temperature,
+                    max_tokens=self.agent_max_tokens,
+                    helper=hindi_helper,  # Pass properly typed helper
+                )
+            )
+
+        # Persian-specific fluency agent with DadmaTools
+        elif task.target_lang == "fa":
+            # Try to get Persian NLP helper
+            from kttc.helpers.persian import PersianLanguageHelper
+
+            helper = get_helper_for_language("fa")
+
+            # Cast to PersianLanguageHelper or None
+            persian_helper: PersianLanguageHelper | None = None
+            if isinstance(helper, PersianLanguageHelper):
+                persian_helper = helper
+
+            if persian_helper and persian_helper.is_available():
+                logger.info("Using PersianFluencyAgent with DadmaTools v2 (spaCy-based all-in-one)")
+            else:
+                logger.info("Using PersianFluencyAgent in LLM-only mode (DadmaTools not available)")
+
+            language_agents.append(
+                PersianFluencyAgent(
+                    self.llm_provider,
+                    temperature=self.agent_temperature,
+                    max_tokens=self.agent_max_tokens,
+                    helper=persian_helper,  # Pass properly typed helper
+                )
+            )
 
         return language_agents
 

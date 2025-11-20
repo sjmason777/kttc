@@ -1,0 +1,46 @@
+# Include essential files
+include README.md
+include LICENSE
+include NOTICE
+include pyproject.toml
+
+# Include Python source and typed marker
+recursive-include src *.py
+recursive-include src *.typed
+
+# Exclude everything else
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude *.pyd
+global-exclude __pycache__
+global-exclude *.so
+global-exclude .DS_Store
+
+# Explicitly exclude development files
+exclude .env
+exclude .env.*
+exclude .gitignore
+exclude .pre-commit-config.yaml
+exclude .bandit
+exclude .vulture
+exclude .secrets.baseline
+prune .git
+prune .github
+prune .vscode
+prune .mypy_cache
+prune .pytest_cache
+prune .ruff_cache
+
+# Exclude tests, examples, and documentation
+prune tests
+prune examples
+prune docs
+exclude *.md
+include README.md  # But keep the main README
+
+# Exclude other development files
+exclude CONTRIBUTING.*
+exclude CODE_OF_CONDUCT.*
+exclude SECURITY.*
+exclude CHANGELOG.*
+exclude CNAME

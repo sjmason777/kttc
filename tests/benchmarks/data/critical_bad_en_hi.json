@@ -1,0 +1,82 @@
+[
+  {
+    "id": "critical_en-hi_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "यह बिल्कुल गलत अनुवाद है जो मूल अर्थ को बदल देता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "critical_errors",
+    "quality": "critical",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      0,
+      30
+    ]
+  },
+  {
+    "id": "critical_en-hi_1",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "यह बिल्कुल गलत अनुवाद है जो मूल अर्थ को बदल देता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "critical_errors",
+    "quality": "critical",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      0,
+      30
+    ]
+  },
+  {
+    "id": "critical_en-hi_2",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "यह बिल्कुल गलत अनुवाद है जो मूल अर्थ को बदल देता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "critical_errors",
+    "quality": "critical",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      0,
+      30
+    ]
+  },
+  {
+    "id": "critical_en-hi_3",
+    "source": "Deep learning models process vast amounts of data.",
+    "translation": "यह बिल्कुल गलत अनुवाद है जो मूल अर्थ को बदल देता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "critical_errors",
+    "quality": "critical",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      0,
+      30
+    ]
+  },
+  {
+    "id": "critical_en-hi_4",
+    "source": "Neural networks mimic human brain structure.",
+    "translation": "यह बिल्कुल गलत अनुवाद है जो मूल अर्थ को बदल देता है।",
+    "source_lang": "en",
+    "target_lang": "hi",
+    "domain": "general",
+    "dataset": "critical_errors",
+    "quality": "critical",
+    "error_type": "complete_mistranslation",
+    "error_severity": "critical",
+    "expected_mqm_range": [
+      0,
+      30
+    ]
+  }
+]

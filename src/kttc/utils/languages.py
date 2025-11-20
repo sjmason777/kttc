@@ -103,6 +103,20 @@ class LanguageRegistry:
             "specialization": False,
             "iso639_3": "ara",
         },
+        "hi": {
+            "name": "Hindi",
+            "native_name": "हिन्दी",
+            "resource_level": "high",
+            "specialization": True,  # Has HindiFluencyAgent
+            "iso639_3": "hin",
+        },
+        "fa": {
+            "name": "Persian",
+            "native_name": "فارسی",
+            "resource_level": "high",
+            "specialization": True,  # Has PersianFluencyAgent
+            "iso639_3": "fas",
+        },
         "pt": {
             "name": "Portuguese",
             "native_name": "Português",
@@ -267,6 +281,10 @@ class LanguageRegistry:
             return "gpt-4.5"  # Strong Chinese support
         elif lang_code == "ja":
             return "claude-3.5-sonnet"  # Good Japanese support
+        elif lang_code == "hi":
+            return "claude-3.5-sonnet"  # Good Hindi support
+        elif lang_code == "fa":
+            return "claude-3.5-sonnet"  # Good Persian support
 
         # General recommendations by resource level
         if resource_level == "low":

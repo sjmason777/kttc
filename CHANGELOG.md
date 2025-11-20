@@ -1,5 +1,82 @@
 # Changelog
 
+## [0.3.0] - 2025-11-20
+
+### New Language Support
+
+- **Hindi language support**
+  - New `HindiFluencyAgent` for Hindi-specific quality checks
+  - Hindi language helper with comprehensive NLP capabilities
+  - Indic NLP library for tokenization and normalization
+  - Stanza integration for POS tagging, NER, and lemmatization
+  - Spello for spell checking
+  - Language detection and auto-routing support
+
+- **Persian (Farsi) language support**
+  - New `PersianFluencyAgent` for Persian-specific quality checks
+  - Persian language helper with comprehensive NLP capabilities
+  - DadmaTools integration for complete Persian NLP toolkit
+  - Support for tokenization, POS tagging, NER, and spell checking
+  - Language detection and auto-routing support
+
+### Evaluation Infrastructure
+
+- **New evaluation module** (`src/kttc/evaluation/`)
+  - Lightweight metrics (chrF, BLEU, TER) for CPU-based evaluation
+  - Rule-based error detection framework
+  - Metrics module with comprehensive scoring capabilities
+  - Error detection module for linguistic analysis
+
+- **Benchmark datasets**
+  - FLORES200 integration: 8 new benchmark files (dev/devtest for en-hi, hi-en, en-fa, fa-en)
+  - Quality benchmark datasets for Hindi and Persian
+  - Critical bad translation datasets for error detection testing
+  - Synthetic bad translation datasets for validation
+
+### CLI Improvements
+
+- **Enhanced output formatting**
+  - New `print_lightweight_metrics()` function for displaying translation metrics
+  - New `print_rule_based_errors()` function for error visualization
+  - Color-coded score display with quality thresholds
+  - Improved readability for metrics and errors
+
+### Development Tools
+
+- **Benchmark generation and validation**
+  - `generate_hindi_persian_benchmarks.py` - Generate benchmark data from FLORES200
+  - `validate_benchmark_data.py` - Validate benchmark file integrity
+  - `clean_quality_files.py` - Clean up and format benchmark data
+  - Comprehensive unit tests for Hindi and Persian components
+  - Integration test documentation
+
+### Configuration Updates
+
+- **Enhanced language registry**
+  - Hindi and Persian added to language registry with metadata
+  - Recommended LLM models for Hindi and Persian
+  - ISO 639-3 codes and native names
+  - Resource level classification
+
+- **Updated dependencies**
+  - Optional `hindi` extra for Hindi-specific NLP libraries
+  - Optional `persian` extra for Persian-specific NLP libraries
+  - Optional `metrics` extra for semantic similarity tools
+  - Optional `all-languages` extra for all language helpers
+  - Added MANIFEST.in for proper package distribution
+
+### Core Improvements
+
+- **Orchestrator updates**
+  - Support for Hindi and Persian language pairs
+  - Enhanced language detection for new languages
+  - Improved routing logic for specialized agents
+
+- **Benchmark data quality**
+  - Reformatted existing benchmark files (en-ru, ru-en, en-zh, zh-en, ru-zh, zh-ru)
+  - Consistent JSON formatting across all benchmark files
+  - Validated data integrity
+
 ## [0.2.0] - 2025-11-14
 
 ### Internationalization

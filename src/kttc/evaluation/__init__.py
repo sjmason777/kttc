@@ -12,32 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-KTTC - Knowledge Translation Transmutation Core
+"""Lightweight evaluation metrics and error detection for translation quality.
 
-Transforming translations into gold-standard quality.
-
-An autonomous multi-agent platform that transmutes raw translations into
-certified quality through AI-powered quality assurance.
+This module provides CPU-based metrics (chrF, BLEU, TER) and rule-based
+error detection that don't require GPU or heavy neural models.
 """
 
-__version__ = "0.3.0"
-__author__ = "KTTC Development"
-__email__ = "dev@kt.tc"
-
-from kttc.core.models import (
-    ErrorAnnotation,
-    ErrorSeverity,
-    QAReport,
-    TranslationTask,
-)
-from kttc.core.mqm import MQMScorer
+from kttc.evaluation.error_detection import ErrorDetector, RuleBasedError
+from kttc.evaluation.metrics import LightweightMetrics, MetricScores
 
 __all__ = [
-    "ErrorAnnotation",
-    "ErrorSeverity",
-    "MQMScorer",
-    "QAReport",
-    "TranslationTask",
-    "__version__",
+    "LightweightMetrics",
+    "MetricScores",
+    "ErrorDetector",
+    "RuleBasedError",
 ]

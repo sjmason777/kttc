@@ -1,0 +1,92 @@
+[
+  {
+    "id": "fallback_en-fa_0",
+    "source": "Artificial intelligence is transforming the world.",
+    "translation": "هوش مصنوعی در حال تغییر جهان است.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_1",
+    "source": "Machine translation quality has improved significantly.",
+    "translation": "کیفیت ترجمه ماشینی به طور قابل توجهی بهبود یافته است.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_2",
+    "source": "Natural language processing enables human-computer interaction.",
+    "translation": "پردازش زبان طبیعی تعامل انسان و کامپیوتر را امکان‌پذیر می‌سازد.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_3",
+    "source": "Deep learning models process vast amounts of data.",
+    "translation": "مدل‌های یادگیری عمیق مقادیر عظیمی از داده‌ها را پردازش می‌کنند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_4",
+    "source": "Neural networks mimic human brain structure.",
+    "translation": "شبکه‌های عصبی ساختار مغز انسان را تقلید می‌کنند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_5",
+    "source": "Cloud computing provides scalable infrastructure.",
+    "translation": "رایانش ابری زیرساخت مقیاس‌پذیر را فراهم می‌کند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_6",
+    "source": "Cybersecurity protects sensitive information.",
+    "translation": "امنیت سایبری از اطلاعات حساس محافظت می‌کند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_7",
+    "source": "Blockchain technology ensures data integrity.",
+    "translation": "فناوری بلاکچین یکپارچگی داده‌ها را تضمین می‌کند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_8",
+    "source": "Quantum computing promises exponential speedup.",
+    "translation": "محاسبات کوانتومی سرعت نمایی را وعده می‌دهد.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  },
+  {
+    "id": "fallback_en-fa_9",
+    "source": "Internet of Things connects everyday devices.",
+    "translation": "اینترنت اشیا دستگاه‌های روزمره را به هم متصل می‌کند.",
+    "source_lang": "en",
+    "target_lang": "fa",
+    "domain": "general",
+    "dataset": "fallback"
+  }
+]

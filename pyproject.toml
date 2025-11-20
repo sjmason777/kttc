@@ -2,21 +2,29 @@
 requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+# Include only source code, exclude tests and dev files
+packages = ["kttc"]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+kttc = ["py.typed"]
+
 [project]
 name = "kttc"
-version = "0.2.2"
+version = "0.3.0"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 authors = [
     {name = "KTTC AI", email = "dev@kt.tc"}
 ]
+license-files = ["LICENSE", "NOTICE"]
 keywords = ["translation", "qa", "quality-assurance", "llm", "agents", "automation"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Quality Assurance",
@@ -58,9 +66,25 @@ chinese = [
     "hanlp>=2.1.3",
 ]
 
+# Hindi language helpers - Indic NLP + Stanza + Spello
+hindi = [
+    "indic-nlp-library>=0.92",  # Tokenization, normalization for Hindi
+    "stanza>=1.11.0",  # POS tagging, NER, lemmatization
+    "spello>=1.3.0",  # Spell checking for Hindi
+]
+
+# Persian/Farsi language helpers - DadmaTools (all-in-one solution)
+persian = [
+    "dadmatools[full]>=2.0.9",  # Complete Persian NLP toolkit (spaCy-based)
+]
+
 # All language-specific helpers
 all-languages = [
     "hanlp>=2.1.3",  # Chinese
+    "indic-nlp-library>=0.92",  # Hindi tokenization
+    "stanza>=1.11.0",  # Hindi POS/NER/lemma
+    "spello>=1.3.0",  # Hindi spell checking
+    "dadmatools[full]>=2.0.9",  # Persian (all-in-one)
 ]
 
 # Development tools
@@ -117,7 +141,8 @@ warn_unused_ignores = true
 strict_equality = true
 show_error_codes = true
 cache_fine_grained = true
-files = ["src/kttc", "scripts"]
+files = ["src/kttc"]
+exclude = ["scripts/"]
 
 # Ignore missing imports for optional dependencies without type stubs
 [[tool.mypy.overrides]]
@@ -142,6 +167,22 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["conftest"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["indicnlp", "indicnlp.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["stanza", "stanza.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["spello", "spello.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["dadmatools", "dadmatools.*"]
 ignore_missing_imports = true
 
 # Pytest configuration
