@@ -20,7 +20,7 @@ Guides help you accomplish specific goals. Each guide assumes you know the basic
 
 - **[Glossary Management](glossary-management.md)** - Use custom terminology
 - **[Translation Memory](translation-memory.md)** - Leverage previous translations
-- **[Language-Specific Features](language-features.md)** - English, Chinese, Russian enhancements
+- **[Language-Specific Features](language-features.md)** - English, Chinese, Russian, Hindi, Persian enhancements
 
 ## Output & Reporting
 

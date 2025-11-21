@@ -6,7 +6,7 @@
     </picture>
 </p>
 
-[English](README.md) · [Русский](README.ru.md) · **中文**
+[English](README.md) · [Русский](README.ru.md) · **中文** · [हिन्दी](README.hi.md) · [فارسی](README.fa.md)
 
 # KTTC - Knowledge Translation Transmutation Core
 
@@ -26,7 +26,7 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 - **MQM 评分** - WMT 基准测试中使用的行业标准质量指标
 - **智能路由** - 基于文本复杂度自动选择最优模型（节省 60% 成本）
 - **自动修正** - 基于大语言模型（LLM）的错误修复与迭代优化（TEaR 循环）
-- **特定语言智能体** - 为英语、中文和俄语提供母语级检查
+- **特定语言智能体** - 为英语、中文、俄语、印地语和波斯语提供母语级检查
 - **翻译记忆库** - 具有质量跟踪和重用的语义搜索
 - **术语表管理** - 自定义术语验证和一致性
 - **批量处理** - 并行处理数千个翻译
@@ -50,6 +50,8 @@ pip install kttc
 ```bash
 pip install kttc[english]        # 英语: LanguageTool（5,000+ 语法规则）
 pip install kttc[chinese]        # 中文: HanLP（量词、语气助词）
+pip install kttc[hindi]          # 印地语: Indic NLP + Stanza + Spello
+pip install kttc[persian]        # 波斯语: DadmaTools（基于 spaCy）
 pip install kttc[all-languages]  # 所有语言助手
 ```
 

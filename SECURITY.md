@@ -1,4 +1,4 @@
-**English** · [Русский](SECURITY.ru.md) · [中文](SECURITY.zh.md)
+**English** · [Русский](SECURITY.ru.md) · [中文](SECURITY.zh.md) · [हिन्दी](SECURITY.hi.md) · [فارسی](SECURITY.fa.md)
 
 # Security Policy
 

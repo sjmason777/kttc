@@ -1,4 +1,4 @@
-**English** · [Русский](CONTRIBUTING.ru.md) · [中文](CONTRIBUTING.zh.md)
+**English** · [Русский](CONTRIBUTING.ru.md) · [中文](CONTRIBUTING.zh.md) · [हिन्दी](CONTRIBUTING.hi.md) · [فارسی](CONTRIBUTING.fa.md)
 
 # Contributing to KTTC
 

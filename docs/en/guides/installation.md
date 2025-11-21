@@ -106,6 +106,34 @@ Features:
 - High-accuracy POS tagging (~95%)
 - ~300MB model download on first use
 
+### Hindi Language Support
+
+Adds advanced Hindi NLP with Indic NLP + Stanza + Spello:
+
+```bash
+pip install kttc[hindi]
+```
+
+Features:
+- Devanagari script processing
+- Hindi POS tagging and NER
+- Spelling checking
+- Grammar validation
+
+### Persian Language Support
+
+Adds advanced Persian NLP with DadmaTools:
+
+```bash
+pip install kttc[persian]
+```
+
+Features:
+- Persian script processing
+- POS tagging and NER
+- Spelling checking
+- Grammar validation
+
 ### All Language Helpers
 
 Install all language-specific enhancements:
@@ -117,7 +145,7 @@ pip install kttc[all-languages]
 Equivalent to:
 
 ```bash
-pip install kttc[english,chinese]
+pip install kttc[english,chinese,hindi,persian]
 ```
 
 ### Full Installation (Development + All Features)

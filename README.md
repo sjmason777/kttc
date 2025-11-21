@@ -6,7 +6,7 @@
     </picture>
 </p>
 
-**English** · [Русский](README.ru.md) · [中文](README.zh.md)
+**English** · [Русский](README.ru.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [فارسی](README.fa.md)
 
 # KTTC - Knowledge Translation Transmutation Core
 
@@ -28,7 +28,7 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 - **MQM Scoring** - Industry-standard quality metrics used in WMT benchmarks
 - **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
 - **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
-- **Language-Specific Agents** - Native-level checks for English, Chinese, and Russian
+- **Language-Specific Agents** - Native-level checks for English, Chinese, Russian, Hindi, and Persian
 - **Translation Memory** - Semantic search with quality tracking and reuse
 - **Glossary Management** - Custom terminology validation and consistency
 - **Batch Processing** - Process thousands of translations in parallel
@@ -52,6 +52,8 @@ Optional language enhancements:
 ```bash
 pip install kttc[english]        # English: LanguageTool (5,000+ grammar rules)
 pip install kttc[chinese]        # Chinese: HanLP (measure words, particles)
+pip install kttc[hindi]          # Hindi: Indic NLP + Stanza + Spello
+pip install kttc[persian]        # Persian: DadmaTools (spaCy-based)
 pip install kttc[all-languages]  # All language helpers
 ```
 
@@ -163,12 +165,14 @@ Following the [Diátaxis](https://diataxis.fr/) framework:
 
 ### Translations
 
-**Languages:** 🇺🇸 [English](docs/en/) (primary) · 🇷🇺 [Русский](README.ru.md) · 🇨🇳 [中文](README.zh.md)
+**Languages:** 🇺🇸 [English](docs/en/) (primary) · 🇷🇺 [Русский](README.ru.md) · 🇨🇳 [中文](README.zh.md) · 🇮🇳 [हिन्दी](README.hi.md) · 🇮🇷 [فارسی](README.fa.md)
 
 Full documentation available in:
 - 🇺🇸 **[English](docs/en/README.md)** - Complete (primary source)
-- 🇷🇺 **[Русский](docs/ru/README.md)** - In progress
-- 🇨🇳 **[中文](docs/zh/README.md)** - In progress
+- 🇷🇺 **[Русский](docs/ru/README.md)** - Complete
+- 🇨🇳 **[中文](docs/zh/README.md)** - Complete
+- 🇮🇳 **[हिन्दी](docs/hi/README.md)** - Complete
+- 🇮🇷 **[فارسی](docs/fa/README.md)** - Complete
 
 ---
 
