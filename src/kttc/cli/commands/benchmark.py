@@ -24,16 +24,12 @@ from typing import Any
 import typer
 
 from kttc.agents import AgentOrchestrator
+from kttc.cli.formatters import ConsoleFormatter
 from kttc.cli.ui import (
     console,
     create_progress,
-    print_benchmark_summary,
-    print_comparison_table,
     print_error,
-    print_header,
     print_info,
-    print_startup_info,
-    print_success,
 )
 from kttc.core import TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, GigaChatProvider, OpenAIProvider
@@ -144,16 +140,10 @@ async def run_benchmark(
 
     settings = get_settings()
 
-    # Print header
-    print_header(
-        "🏆 KTTC Provider Benchmark",
-        "Compare translation quality across multiple LLM providers",
-    )
-
-    # Show available extensions status
+    # Show available extensions status (verbose mode only)
     missing_any = not has_benchmark() or not has_webui()
 
-    if missing_any:
+    if missing_any and verbose:
         print_available_extensions()
         console.print("[dim]You can continue, but some features require extensions.[/dim]")
         console.print()
@@ -168,17 +158,6 @@ async def run_benchmark(
         raise typer.Exit(code=1)
 
     source_text = source_path.read_text(encoding="utf-8").strip()
-
-    # Display configuration
-    config_info = {
-        "Source Language": source_lang,
-        "Target Language": target_lang,
-        "Providers": ", ".join(providers),
-        "Quality Threshold": f"{threshold}",
-        "Source Length": f"{len(source_text)} chars",
-    }
-
-    print_startup_info(config_info)
 
     # Initialize providers
     provider_instances: dict[str, BaseLLMProvider] = {}
@@ -220,17 +199,52 @@ async def run_benchmark(
         print_error("No providers available for benchmarking")
         raise typer.Exit(code=1)
 
-    print_info(f"Initialized {len(provider_instances)} provider(s)")
-    console.print()
+    if verbose:
+        print_info(f"Initialized {len(provider_instances)} provider(s)")
+        console.print()
 
     # Run benchmarks
     results = []
-    with create_progress() as progress:
-        task_id = progress.add_task("Benchmarking providers...", total=len(provider_instances))
+    if verbose:
+        with create_progress() as progress:
+            task_id = progress.add_task("Benchmarking providers...", total=len(provider_instances))
 
+            for provider_name, provider in provider_instances.items():
+                progress.update(task_id, description=f"Testing {provider_name}...")
+
+                result = await benchmark_provider(
+                    provider=provider,
+                    provider_name=provider_name,
+                    source_text=source_text,
+                    source_lang=source_lang,
+                    target_lang=target_lang,
+                    threshold=threshold,
+                )
+
+                results.append(result)
+
+                # Show result
+                if result["success"]:
+                    status_icon = "✓" if result["status"] == "pass" else "✗"
+                    status_color = "green" if result["status"] == "pass" else "red"
+                    errors = f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+                    progress.console.print(
+                        f"  [{status_color}]{status_icon}[/{status_color}] "
+                        f"{provider_name}: MQM {result['mqm_score']:.2f}, "
+                        f"Errors: {errors} "
+                        f"({result['duration']:.2f}s)"
+                    )
+                else:
+                    progress.console.print(
+                        f"  [red]✗[/red] {provider_name}: Failed - {result.get('error', 'Unknown error')}"
+                    )
+
+                progress.advance(task_id)
+
+        console.print()
+    else:
+        # Compact mode: simple benchmarking
         for provider_name, provider in provider_instances.items():
-            progress.update(task_id, description=f"Testing {provider_name}...")
-
             result = await benchmark_provider(
                 provider=provider,
                 provider_name=provider_name,
@@ -239,62 +253,15 @@ async def run_benchmark(
                 target_lang=target_lang,
                 threshold=threshold,
             )
-
             results.append(result)
 
-            # Show result
-            if result["success"]:
-                status_icon = "✓" if result["status"] == "pass" else "✗"
-                status_color = "green" if result["status"] == "pass" else "red"
-                errors = (
-                    f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
-                )
-                progress.console.print(
-                    f"  [{status_color}]{status_icon}[/{status_color}] "
-                    f"{provider_name}: MQM {result['mqm_score']:.2f}, "
-                    f"Errors: {errors} "
-                    f"({result['duration']:.2f}s)"
-                )
-            else:
-                progress.console.print(
-                    f"  [red]✗[/red] {provider_name}: Failed - {result.get('error', 'Unknown error')}"
-                )
-
-            progress.advance(task_id)
-
-    console.print()
-
-    # Display comparison table
-    print_comparison_table(results)
-    console.print()
-
-    # Calculate and display summary
-    successful_results = [r for r in results if r["success"]]
-    if successful_results:
-        avg_mqm = sum(r["mqm_score"] for r in successful_results) / len(successful_results)
-        avg_duration = sum(r["duration"] for r in successful_results) / len(successful_results)
-        best_provider = max(successful_results, key=lambda r: r["mqm_score"])
-        fastest_provider = min(successful_results, key=lambda r: r["duration"])
-        pass_count = sum(1 for r in successful_results if r["status"] == "pass")
-
-        summary = {
-            "total_providers": len(results),
-            "test_sentences": 1,
-            "avg_mqm": avg_mqm,
-            "avg_duration": avg_duration,
-            "best_provider": best_provider["name"],
-            "fastest_provider": fastest_provider["name"],
-            "pass_rate": f"{pass_count}/{len(successful_results)}",
-        }
-
-        print_benchmark_summary(summary)
-
-        # Recommendation
-        console.print()
-        print_success(
-            f"Recommendation: Use {best_provider['name']} "
-            f"(MQM: {best_provider['mqm_score']:.2f})"
-        )
+    # Display benchmark results using compact formatter
+    ConsoleFormatter.print_benchmark_result(
+        source_lang=source_lang,
+        target_lang=target_lang,
+        results=results,
+        verbose=verbose,
+    )
 
     # Save results if requested
     if output:

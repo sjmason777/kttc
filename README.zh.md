@@ -37,6 +37,20 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 
 ---
 
+## 🚀 在线试用 KTTC
+
+无需安装即可体验 KTTC：
+
+[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
+[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
+
+- **Google Colab** - 带有示例的交互式教程（5 分钟，无需设置）
+- **Streamlit 演示** - 测试您自己的翻译的网页界面（无需编码）
+- **GitHub Codespaces** - 浏览器中的完整开发环境（适合贡献者）
+
+---
+
 ## 快速开始
 
 ### 1. 安装

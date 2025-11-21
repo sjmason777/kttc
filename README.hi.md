@@ -37,6 +37,20 @@ KTTC विशेष बहु-एजेंट सिस्टम का उप�
 
 ---
 
+## 🚀 KTTC को ऑनलाइन आज़माएं
+
+बिना स्थापना के KTTC का अनुभव करें:
+
+[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
+[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
+
+- **Google Colab** - उदाहरणों के साथ इंटरैक्टिव ट्यूटोरियल (5 मिनट, सेटअप की आवश्यकता नहीं)
+- **Streamlit Demo** - अपने अनुवादों का परीक्षण करने के लिए वेब UI (कोड की आवश्यकता नहीं)
+- **GitHub Codespaces** - ब्राउज़र में पूर्ण विकास वातावरण (योगदानकर्ताओं के लिए)
+
+---
+
 ## त्वरित शुरुआत
 
 ### 1. स्थापना

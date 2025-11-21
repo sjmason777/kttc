@@ -37,14 +37,13 @@ from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare as _run_compare_command
 from kttc.cli.commands.glossary import glossary_app
 from kttc.cli.commands.terminology import terminology_app
-from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter
+from kttc.cli.formatters import ConsoleFormatter, HTMLFormatter, MarkdownFormatter
 from kttc.cli.ui import (
     console,
     create_step_progress,
     get_nlp_insights,
     print_header,
     print_info,
-    print_qa_report,
     print_startup_info,
     print_translation_preview,
 )
@@ -573,24 +572,26 @@ async def _check_async(
     # Load settings
     settings = get_settings()
 
-    # Display header
-    print_header(
-        "✓ Translation Quality Check", "Evaluating translation quality with multi-agent AI system"
-    )
+    # Display header (verbose mode only)
+    if verbose:
+        print_header(
+            "✓ Translation Quality Check",
+            "Evaluating translation quality with multi-agent AI system",
+        )
 
-    # Prepare configuration info
-    config_info = {
-        "Source File": source,
-        "Translation File": translation,
-        "Languages": f"{source_lang} → {target_lang}",
-        "Quality Threshold": f"{threshold}",
-    }
-    if auto_select_model:
-        config_info["Model Selection"] = "Automatic (intelligent)"
-    if auto_correct:
-        config_info["Auto-Correct"] = f"Enabled ({correction_level})"
+        # Prepare configuration info
+        config_info = {
+            "Source File": source,
+            "Translation File": translation,
+            "Languages": f"{source_lang} → {target_lang}",
+            "Quality Threshold": f"{threshold}",
+        }
+        if auto_select_model:
+            config_info["Model Selection"] = "Automatic (intelligent)"
+        if auto_correct:
+            config_info["Auto-Correct"] = f"Enabled ({correction_level})"
 
-    print_startup_info(config_info)
+        print_startup_info(config_info)
 
     # Load files
     try:
@@ -684,11 +685,11 @@ async def _check_async(
     except Exception as e:
         raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
 
-    # Show translation preview if verbose
+    # Show translation preview (verbose mode only)
     if verbose:
         print_translation_preview(source_text, translation_text)
 
-    # Run evaluation with step-by-step progress
+    # Run evaluation
     nlp_insights = None
     api_errors = []
 
@@ -697,24 +698,51 @@ async def _check_async(
 
     helper = get_helper_for_language(task.target_lang)
     if helper and helper.is_available():
-        with create_step_progress() as progress:
-            progress.add_task("[cyan]Step 1/3: Analyzing linguistic features...[/cyan]", total=None)
+        if verbose:
+            with create_step_progress() as progress:
+                progress.add_task(
+                    "[cyan]Step 1/3: Analyzing linguistic features...[/cyan]", total=None
+                )
+                try:
+                    nlp_insights = get_nlp_insights(task, helper)
+                except Exception as e:
+                    if verbose:
+                        api_errors.append(f"NLP analysis failed: {str(e)}")
+            console.print("[green]✓[/green] Step 1/3: Linguistic analysis complete")
+        else:
+            # Compact mode: no progress output
             try:
                 nlp_insights = get_nlp_insights(task, helper)
-            except Exception as e:
-                if verbose:
-                    api_errors.append(f"NLP analysis failed: {str(e)}")
-        console.print("[green]✓[/green] Step 1/3: Linguistic analysis complete")
-    else:
+            except Exception:
+                pass
+    elif verbose:
         console.print(
             "[dim]⊘ Step 1/3: Linguistic analysis (not available for this language)[/dim]"
         )
 
     # Step 2: Quality Evaluation
-    with create_step_progress() as progress:
-        progress.add_task(
-            "[cyan]Step 2/3: Running multi-agent quality assessment...[/cyan]", total=None
-        )
+    if verbose:
+        with create_step_progress() as progress:
+            progress.add_task(
+                "[cyan]Step 2/3: Running multi-agent quality assessment...[/cyan]", total=None
+            )
+            try:
+                orchestrator = AgentOrchestrator(
+                    llm_provider,
+                    quality_threshold=threshold,
+                    agent_temperature=settings.default_temperature,
+                    agent_max_tokens=settings.default_max_tokens,
+                )
+                report = await orchestrator.evaluate(task)
+            except Exception as e:
+                console.print("[red]✗[/red] Step 2/3: Quality assessment failed")
+                api_errors.append(f"Quality assessment failed: {str(e)}")
+                raise RuntimeError(f"Evaluation failed: {e}") from e
+        console.print("[green]✓[/green] Step 2/3: Quality assessment complete")
+        console.print("[green]✓[/green] Step 3/3: Report ready")
+        console.print()
+    else:
+        # Compact mode: simple spinner
         try:
             orchestrator = AgentOrchestrator(
                 llm_provider,
@@ -724,17 +752,10 @@ async def _check_async(
             )
             report = await orchestrator.evaluate(task)
         except Exception as e:
-            console.print("[red]✗[/red] Step 2/3: Quality assessment failed")
             api_errors.append(f"Quality assessment failed: {str(e)}")
             raise RuntimeError(f"Evaluation failed: {e}") from e
-    console.print("[green]✓[/green] Step 2/3: Quality assessment complete")
-
-    # Step 3: Finalizing results
-    console.print("[green]✓[/green] Step 3/3: Report ready")
-    console.print()
 
     # Calculate lightweight metrics and rule-based errors
-    from kttc.cli.ui import print_lightweight_metrics, print_rule_based_errors
     from kttc.evaluation import ErrorDetector, LightweightMetrics
 
     metrics_calculator = LightweightMetrics()
@@ -771,7 +792,7 @@ async def _check_async(
         )
         rule_based_score = error_detector.calculate_rule_based_score(rule_based_errors)
 
-        # Show warning if no reference provided
+        # Show warning if no reference provided (verbose mode only)
         if not reference_text and verbose:
             console.print(
                 "[dim]ℹ️  No reference translation provided. "
@@ -785,18 +806,17 @@ async def _check_async(
         rule_based_errors = None
         rule_based_score = None
 
-    # Display unified results
-    print_qa_report(
-        report,
+    # Display results using compact formatter
+    ConsoleFormatter.print_check_result(
+        report=report,
+        source_lang=source_lang,
+        target_lang=target_lang,
+        lightweight_scores=lightweight_scores,
+        rule_based_score=rule_based_score,
+        rule_based_errors=rule_based_errors,
         nlp_insights=nlp_insights,
         verbose=verbose,
-        api_errors=api_errors if api_errors else None,
     )
-
-    # Display lightweight metrics and rule-based errors
-    if lightweight_scores and rule_based_errors is not None and rule_based_score is not None:
-        print_lightweight_metrics(lightweight_scores, verbose=verbose)
-        print_rule_based_errors(rule_based_errors, rule_based_score, verbose=verbose)
 
     # Auto-correct if requested and errors found
     if auto_correct and len(report.errors) > 0:
@@ -1435,18 +1455,15 @@ def _display_batch_summary(results: list[tuple[str, QAReport]], threshold: float
     avg_score = sum(report.mqm_score for _, report in results) / total if total > 0 else 0.0
     total_errors = sum(len(report.errors) for _, report in results)
 
-    console.print("[bold]Batch Processing Summary[/bold]\n")
-    console.print(f"Total files:     [cyan]{total}[/cyan]")
-    console.print(f"Passed:          [green]{passed}[/green]")
-    console.print(f"Failed:          [red]{failed}[/red]")
-    console.print(f"Average score:   [cyan]{avg_score:.2f}[/cyan]")
-    console.print(f"Total errors:    [cyan]{total_errors}[/cyan]")
-
-    # Overall status
-    if failed == 0:
-        console.print("\n[bold green]✓ ALL PASS[/bold green]")
-    else:
-        console.print(f"\n[bold red]✗ {failed} FILE(S) FAILED[/bold red]")
+    # Use compact formatter
+    ConsoleFormatter.print_batch_result(
+        total=total,
+        passed=passed,
+        failed=failed,
+        avg_score=avg_score,
+        total_errors=total_errors,
+        verbose=False,  # Batch command doesn't have verbose mode here
+    )
 
 
 def _save_batch_report(results: list[tuple[str, QAReport]], output: str, threshold: float) -> None:

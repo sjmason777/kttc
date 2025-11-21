@@ -23,14 +23,12 @@ import typer
 from rich.table import Table
 
 from kttc.agents import AgentOrchestrator
+from kttc.cli.formatters import ConsoleFormatter
 from kttc.cli.ui import (
     console,
     create_progress,
     print_error,
-    print_header,
     print_info,
-    print_startup_info,
-    print_success,
 )
 from kttc.core import TranslationTask
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
@@ -107,12 +105,6 @@ async def run_compare(
     """
     settings = get_settings()
 
-    # Print header
-    print_header(
-        "🔍 KTTC Translation Comparison",
-        "Compare multiple translations side by side",
-    )
-
     # Load source text
     source_path = Path(source)
     if not source_path.exists():
@@ -142,17 +134,6 @@ async def run_compare(
         print_error("No valid translation files found")
         raise typer.Exit(code=1)
 
-    # Display configuration
-    config_info = {
-        "Source Language": source_lang,
-        "Target Language": target_lang,
-        "Translations": str(len(translation_data)),
-        "Quality Threshold": f"{threshold}",
-        "Source Length": f"{len(source_text)} chars",
-    }
-
-    print_startup_info(config_info)
-
     # Setup LLM provider
     try:
         provider_name = provider or settings.default_llm_provider
@@ -168,8 +149,9 @@ async def run_compare(
             print_error(f"Unknown provider: {provider_name}")
             raise typer.Exit(code=1)
 
-        print_info(f"Using {provider_name} for evaluation")
-        console.print()
+        if verbose:
+            print_info(f"Using {provider_name} for evaluation")
+            console.print()
 
     except Exception as e:
         print_error(f"Failed to setup LLM provider: {e}")
@@ -177,12 +159,42 @@ async def run_compare(
 
     # Evaluate all translations
     results = []
-    with create_progress() as progress:
-        task_id = progress.add_task("Evaluating translations...", total=len(translation_data))
+    if verbose:
+        with create_progress() as progress:
+            task_id = progress.add_task("Evaluating translations...", total=len(translation_data))
 
+            for trans_data in translation_data:
+                progress.update(task_id, description=f"Evaluating {trans_data['name']}...")
+
+                result = await evaluate_translation(
+                    source_text=source_text,
+                    translation=trans_data["text"],
+                    translation_name=trans_data["name"],
+                    source_lang=source_lang,
+                    target_lang=target_lang,
+                    provider=llm_provider,
+                    threshold=threshold,
+                )
+
+                results.append(result)
+
+                # Show result
+                status_icon = "✓" if result["status"] == "pass" else "✗"
+                status_color = "green" if result["status"] == "pass" else "red"
+                errors = (
+                    f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+                )
+                progress.console.print(
+                    f"  [{status_color}]{status_icon}[/{status_color}] "
+                    f"{trans_data['name']}: MQM {result['mqm_score']:.2f}, Errors: {errors}"
+                )
+
+                progress.advance(task_id)
+
+        console.print()
+    else:
+        # Compact mode: simple evaluation
         for trans_data in translation_data:
-            progress.update(task_id, description=f"Evaluating {trans_data['name']}...")
-
             result = await evaluate_translation(
                 source_text=source_text,
                 translation=trans_data["text"],
@@ -192,31 +204,15 @@ async def run_compare(
                 provider=llm_provider,
                 threshold=threshold,
             )
-
             results.append(result)
 
-            # Show result
-            status_icon = "✓" if result["status"] == "pass" else "✗"
-            status_color = "green" if result["status"] == "pass" else "red"
-            errors = (
-                f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
-            )
-            progress.console.print(
-                f"  [{status_color}]{status_icon}[/{status_color}] "
-                f"{trans_data['name']}: MQM {result['mqm_score']:.2f}, Errors: {errors}"
-            )
-
-            progress.advance(task_id)
-
-    console.print()
-
-    # Display comparison table
-    _display_comparison_results(results, verbose)
-
-    # Show best translation
-    best = max(results, key=lambda r: r["mqm_score"])
-    console.print()
-    print_success(f"Best translation: {best['name']} (MQM: {best['mqm_score']:.2f})")
+    # Display comparison results using compact formatter
+    ConsoleFormatter.print_compare_result(
+        source_lang=source_lang,
+        target_lang=target_lang,
+        results=results,
+        verbose=verbose,
+    )
 
 
 def _display_comparison_results(results: list[dict[str, Any]], verbose: bool) -> None:

@@ -37,6 +37,20 @@ KTTC использует специализированные мультиаг�
 
 ---
 
+## 🚀 Попробуйте KTTC Онлайн
+
+Протестируйте KTTC без установки:
+
+[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
+[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
+
+- **Google Colab** - Интерактивное руководство с примерами (5 мин, без настройки)
+- **Streamlit Demo** - Веб-интерфейс для тестирования ваших переводов (код не требуется)
+- **GitHub Codespaces** - Полноценная среда разработки в браузере (для контрибьюторов)
+
+---
+
 ## Быстрый Старт
 
 ### 1. Установка

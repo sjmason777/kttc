@@ -37,6 +37,20 @@ KTTC از سیستم‌های چند عامله تخصصی برای تشخیص،
 
 ---
 
+## 🚀 KTTC را به صورت آنلاین امتحان کنید
+
+KTTC را بدون نصب تجربه کنید:
+
+[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
+[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
+
+- **Google Colab** - آموزش تعاملی با مثال‌ها (5 دقیقه، بدون نیاز به تنظیمات)
+- **Streamlit Demo** - رابط وب برای آزمایش ترجمه‌های خود (بدون نیاز به کد)
+- **GitHub Codespaces** - محیط توسعه کامل در مرورگر (برای مشارکت‌کنندگان)
+
+---
+
 ## شروع سریع
 
 ### 1. نصب

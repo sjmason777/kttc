@@ -14,7 +14,8 @@
 
 """Output formatters for translation quality reports."""
 
+from .console import ConsoleFormatter
 from .html import HTMLFormatter
 from .markdown import MarkdownFormatter
 
-__all__ = ["HTMLFormatter", "MarkdownFormatter"]
+__all__ = ["ConsoleFormatter", "HTMLFormatter", "MarkdownFormatter"]

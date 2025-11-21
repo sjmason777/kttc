@@ -1,0 +1,6 @@
+source_text,translation,source_lang,target_lang,domain,reference
+"The quick brown fox jumps over the lazy dog.","Быстрая коричневая лиса прыгает через ленивую собаку.",en,ru,general,
+"Machine learning is a subset of artificial intelligence.","Машинное обучение является подмножеством искусственного интеллекта.",en,ru,technology,
+"The patient presented with acute abdominal pain.","Пациент предъявлял жалобы на острую боль в животе.",en,ru,medical,
+"Please ensure all safety protocols are followed.","Пожалуйста убедитесь что все протоколы безопасности соблюдаются.",en,ru,general,
+"The algorithm achieves 95% accuracy on the test dataset.","Алгоритм достигает 95% точности на тестовом датасете.",en,ru,technology,

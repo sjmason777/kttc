@@ -142,7 +142,7 @@ class TestCheckCommand:
 
                     # Assert
                     assert result.exit_code == 0
-                    assert "MQM Score" in result.stdout
+                    assert "MQM:" in result.stdout or "MQM Score" in result.stdout
 
 
 @pytest.mark.unit

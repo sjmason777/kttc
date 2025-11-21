@@ -1,0 +1,6 @@
+# Requirements for Streamlit Cloud deployment
+# This file is used when deploying the Streamlit app to Streamlit Cloud
+# Local development can use: pip install -e ".[dev]"
+
+streamlit>=1.30.0
+kttc>=0.3.2

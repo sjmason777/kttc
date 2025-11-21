@@ -39,6 +39,20 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 
 ---
 
+## 🚀 Try KTTC Online
+
+Experience KTTC without installation:
+
+[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
+[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
+[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
+
+- **Google Colab** - Interactive tutorial with examples (5 min, no setup)
+- **Streamlit Demo** - Web UI to test your own translations (no code required)
+- **GitHub Codespaces** - Full dev environment in browser (for contributors)
+
+---
+
 ## Quick Start
 
 ### 1. Install
