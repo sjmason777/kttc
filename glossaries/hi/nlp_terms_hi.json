@@ -1,0 +1,572 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "NLP and Computational Linguistics Terms (Hindi)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "हिन्दी प्राकृतिक भाषा प्रसंस्करण और संगणकीय भाषाविज्ञान शब्दावली - Hindi NLP/CL terminology with focus on Hindi-specific challenges",
+    "sources": [
+      "CSTT (वैज्ञानिक तथा तकनीकी शब्दावली आयोग) - Govt of India",
+      "Indic NLP Library Documentation",
+      "IIT Bombay CFILT (Center for Indian Language Technology)",
+      "Hindi Wikipedia - प्राकृतिक भाषा संसाधन",
+      "NLTK Hindi Resources",
+      "Stanza Hindi Documentation"
+    ],
+    "total_terms": 80
+  },
+  "core_nlp_concepts_hi": {
+    "प्राकृतिक_भाषा_प्रसंस्करण": {
+      "term_hi": "प्राकृतिक भाषा प्रसंस्करण",
+      "term_en": "Natural Language Processing (NLP)",
+      "abbreviation": "NLP",
+      "definition": "कंप्यूटर विज्ञान, कृत्रिम बुद्धिमत्ता और भाषाविज्ञान का अंतःविषय क्षेत्र जो मानव भाषा के कंप्यूटर प्रसंस्करण से संबंधित है",
+      "hindi_term_cstt": "प्राकृतिक भाषा संसाधन (CSTT approved)",
+      "related_terms": ["संगणकीय भाषाविज्ञान", "मशीन अनुवाद", "सूचना निष्कर्षण"]
+    },
+    "संगणकीय_भाषाविज्ञान": {
+      "term_hi": "संगणकीय भाषाविज्ञान",
+      "term_en": "Computational Linguistics (CL)",
+      "abbreviation": "CL",
+      "definition": "भाषा का संगणकीय दृष्टिकोण से अध्ययन",
+      "related_terms": ["प्राकृतिक भाषा प्रसंस्करण", "कॉर्पस भाषाविज्ञान", "सैद्धांतिक भाषाविज्ञान"]
+    },
+    "कॉर्पस": {
+      "term_hi": "कॉर्पस / भाषा संग्रह",
+      "term_en": "Corpus",
+      "plural_en": "Corpora",
+      "plural_hi": "कॉर्पस / भाषा संग्रह",
+      "definition": "पाठ या वाक् का बड़ा संग्रह जो भाषाविज्ञान अनुसंधान और NLP प्रशिक्षण के लिए उपयोग होता है",
+      "examples": [
+        "EMILLE Corpus (हिन्दी भाग)",
+        "Hindi Dependency Treebank",
+        "FIRE Hindi Corpus",
+        "IIT Bombay Hindi Corpus",
+        "Hindi WordNet"
+      ]
+    },
+    "टैग_किया_कॉर्पस": {
+      "term_hi": "टैग किया हुआ कॉर्पस / भाष्यित कॉर्पस",
+      "term_en": "Annotated Corpus",
+      "definition": "भाषाई टैग्स (जैसे शब्दभेद, वाक्यविन्यास संरचना, अर्थ भूमिका) के साथ चिह्नित कॉर्पस",
+      "examples": [
+        "Hindi Dependency Treebank (HDTB)",
+        "Hindi POS Tagged Corpus",
+        "Hindi Named Entity Corpus"
+      ]
+    },
+    "हिन्दी_प्रसंस्करण": {
+      "term_hi": "हिन्दी प्रसंस्करण",
+      "term_en": "Hindi Processing",
+      "definition": "हिन्दी भाषा की विशिष्ट विशेषताओं को ध्यान में रखते हुए सूचना प्रसंस्करण",
+      "challenges": [
+        "देवनागरी लिपि की जटिलता",
+        "मुक्त शब्द क्रम (relatively free word order)",
+        "समृद्ध आकृति विज्ञान (rich morphology)",
+        "कोड-मिक्सिंग (Hinglish)",
+        "कम-संसाधन भाषा (low-resource compared to English)",
+        "विभिन्न बोलियाँ और क्षेत्रीय विविधताएँ"
+      ]
+    }
+  },
+  "hindi_specific_nlp": {
+    "टोकनीकरण": {
+      "term_hi": "टोकनीकरण / शब्द विभाजन",
+      "term_en": "Tokenization / Word Segmentation",
+      "definition": "पाठ को व्यक्तिगत शब्दों या टोकन में विभाजित करना",
+      "hindi_challenges": [
+        "रिक्त स्थान हमेशा शब्द सीमा नहीं दर्शाता",
+        "संयुक्त शब्द (compound words)",
+        "संधि (sandhi) - ध्वनि संयोजन",
+        "विराम चिह्नों का असंगत उपयोग"
+      ],
+      "tools": ["Indic NLP Library", "iNLTK", "Stanza", "NLTK (Hindi)"],
+      "examples": [
+        "राम और सीता → राम, और, सीता",
+        "स्कूल में → स्कूल, में",
+        "किताबें पढ़ता है → किताबें, पढ़ता, है"
+      ]
+    },
+    "शब्दभेद_टैगिंग": {
+      "term_hi": "शब्दभेद टैगिंग / POS टैगिंग",
+      "term_en": "Part-of-Speech Tagging (POS Tagging)",
+      "abbreviation": "POS",
+      "definition": "प्रत्येक शब्द को उसके व्याकरणिक वर्ग (संज्ञा, क्रिया, विशेषण आदि) के साथ टैग करना",
+      "hindi_pos_tags": {
+        "N": "संज्ञा (Noun)",
+        "V": "क्रिया (Verb)",
+        "ADJ": "विशेषण (Adjective)",
+        "ADV": "क्रिया विशेषण (Adverb)",
+        "PSP": "परसर्ग (Postposition)",
+        "CONJ": "संयोजक (Conjunction)",
+        "PRON": "सर्वनाम (Pronoun)",
+        "NUM": "संख्यावाचक (Numeral)",
+        "DET": "निर्धारक (Determiner)",
+        "AUX": "सहायक क्रिया (Auxiliary)"
+      },
+      "tagsets": [
+        "BIS (Bureau of Indian Standards) Tagset",
+        "IIIT-H Tagset",
+        "Universal Dependencies Tagset"
+      ],
+      "challenge": "हिन्दी में समृद्ध रूप विज्ञान POS टैगिंग को जटिल बनाता है"
+    },
+    "नामित_इकाई_पहचान": {
+      "term_hi": "नामित इकाई पहचान",
+      "term_en": "Named Entity Recognition (NER)",
+      "abbreviation": "NER",
+      "definition": "पाठ में व्यक्ति नाम, स्थान, संगठन आदि की पहचान",
+      "hindi_challenges": [
+        "देवनागरी में बड़े अक्षर नहीं होते",
+        "व्यक्ति नाम-स्थान नाम अस्पष्टता",
+        "विविध नामकरण परंपराएँ",
+        "कोड-मिक्सिंग (अंग्रेज़ी नाम)",
+        "संदर्भ पर निर्भरता"
+      ],
+      "entity_types": {
+        "PER": "व्यक्ति (Person)",
+        "LOC": "स्थान (Location)",
+        "ORG": "संगठन (Organization)",
+        "DATE": "तिथि (Date)",
+        "TIME": "समय (Time)",
+        "MONEY": "धन (Money)",
+        "PERCENT": "प्रतिशत (Percent)"
+      },
+      "tools": ["Stanza NER", "SpaCy Hindi", "Indic NLP NER"]
+    },
+    "निर्भरता_पार्सिंग": {
+      "term_hi": "निर्भरता पार्सिंग / व्याश्रय विश्लेषण",
+      "term_en": "Dependency Parsing",
+      "definition": "वाक्य में शब्दों के बीच व्याश्रय संबंधों का विश्लेषण",
+      "hindi_characteristics": [
+        "अपेक्षाकृत मुक्त शब्द क्रम",
+        "SOV (कर्ता-कर्म-क्रिया) मूल क्रम",
+        "समृद्ध कारक चिह्नक प्रणाली",
+        "संयुक्त क्रियाएँ",
+        "कर्तृकारकी (ergative) पैटर्न"
+      ],
+      "dependency_relations": {
+        "nsubj": "कर्ता (Subject)",
+        "obj": "कर्म (Object)",
+        "iobj": "संप्रदान कर्म (Indirect Object)",
+        "obl": "तिर्यक (Oblique)",
+        "nmod": "संज्ञा संशोधक (Nominal Modifier)",
+        "amod": "विशेषण संशोधक (Adjectival Modifier)",
+        "case": "कारक चिह्न (Case marker)",
+        "compound": "संयुक्त (Compound)"
+      },
+      "resources": ["Hindi Dependency Treebank (HDTB)", "Universal Dependencies Hindi"]
+    },
+    "अर्थ_भूमिका_लेबलिंग": {
+      "term_hi": "अर्थ भूमिका लेबलिंग",
+      "term_en": "Semantic Role Labeling (SRL)",
+      "abbreviation": "SRL",
+      "definition": "वाक्य में क्रिया के अर्थ भूमिकाओं की पहचान",
+      "semantic_roles": {
+        "ARG0": "कर्ता (Agent)",
+        "ARG1": "कर्म/विषय (Patient/Theme)",
+        "ARG2": "प्राप्तकर्ता (Recipient)",
+        "ARGM-LOC": "स्थान (Location)",
+        "ARGM-TMP": "समय (Temporal)",
+        "ARGM-MNR": "तरीका (Manner)"
+      },
+      "hindi_resource": "Hindi PropBank (विकास में)"
+    },
+    "रूपविज्ञान_विश्लेषण": {
+      "term_hi": "रूपविज्ञान विश्लेषण / आकृति विश्लेषण",
+      "term_en": "Morphological Analysis",
+      "definition": "शब्दों की आंतरिक संरचना का विश्लेषण",
+      "hindi_morphology": {
+        "inflection": "विभक्ति (gender, number, case marking)",
+        "derivation": "व्युत्पत्ति (prefixes, suffixes)",
+        "compounding": "समास (compound word formation)"
+      },
+      "challenges": [
+        "जटिल क्रिया रूप विज्ञान",
+        "लिंग और वचन समझौता",
+        "कारक चिह्नक (postpositions)",
+        "संयुक्त क्रियाएँ"
+      ],
+      "tools": ["Indic NLP Morphology Analyzer", "Hindi Shallow Parser"]
+    },
+    "वर्तनी_जाँच": {
+      "term_hi": "वर्तनी जाँच",
+      "term_en": "Spell Checking",
+      "definition": "पाठ में वर्तनी की त्रुटियों की पहचान और सुधार",
+      "hindi_challenges": [
+        "देवनागरी मात्राओं की त्रुटियाँ",
+        "संयुक्ताक्षर त्रुटियाँ",
+        "अनुस्वार (ं) और चंद्रबिंदु (ँ) भ्रम",
+        "नुक़्ता (़) उपयोग",
+        "अंग्रेज़ी-हिन्दी वर्तनी मिश्रण"
+      ],
+      "common_errors": {
+        "matra_confusion": "ि vs ी, ु vs ू, े vs ै",
+        "conjunct_errors": "संयुक्ताक्षर गलत निर्माण",
+        "anusvara": "अनुस्वार की जगह पंचमाक्षर (न्, म्, etc.)"
+      },
+      "tools": ["Spello", "Aspell Hindi", "Hunspell Hindi"]
+    },
+    "मूल_शब्द_निर्धारण": {
+      "term_hi": "मूल शब्द निर्धारण / लेम्मेटाइज़ेशन",
+      "term_en": "Lemmatization",
+      "definition": "शब्द को उसके मूल रूप में बदलना",
+      "examples": [
+        "किताबें → किताब (books → book)",
+        "गया → जाना (went → to go)",
+        "अच्छे → अच्छा (good.OBL → good)",
+        "लड़कों → लड़का (boys → boy)"
+      ],
+      "tools": ["Indic NLP Lemmatizer", "Stanza Lemmatizer"],
+      "importance": "सूचना पुनर्प्राप्ति और पाठ विश्लेषण के लिए महत्वपूर्ण"
+    },
+    "मुख्य_शब्द_निष्कर्षण": {
+      "term_hi": "मुख्य शब्द निष्कर्षण / कीवर्ड एक्सट्रैक्शन",
+      "term_en": "Keyword Extraction",
+      "definition": "पाठ से सबसे महत्वपूर्ण शब्दों या वाक्यांशों का स्वचालित निष्कर्षण",
+      "methods": [
+        "TF-IDF",
+        "TextRank",
+        "RAKE",
+        "BERT-आधारित विधियाँ"
+      ],
+      "hindi_consideration": "संयुक्त क्रियाओं को एक इकाई के रूप में मानना चाहिए"
+    }
+  },
+  "hindi_nlp_tools": {
+    "Indic_NLP_Library": {
+      "name": "Indic NLP Library",
+      "name_hi": "भारतीय NLP पुस्तकालय",
+      "type": "भारतीय भाषाओं के लिए NLP पुस्तकालय",
+      "description": "भारतीय भाषाओं के लिए पायथन आधारित NLP पुस्तकालय",
+      "developer": "IIT Bombay, Anoop Kunchukuttan",
+      "features": [
+        "टोकनीकरण (Tokenization)",
+        "लिप्यंतरण (Transliteration)",
+        "लिपि रूपांतरण (Script Conversion)",
+        "रूपविज्ञान विश्लेषण (Morphological Analysis)",
+        "शब्द विभाजन (Word Segmentation)",
+        "सामान्यीकरण (Normalization)"
+      ],
+      "supported_languages": "हिन्दी, बंगाली, तमिल, तेलुगु, मराठी, गुजराती, उड़िया, पंजाबी, मलयालम, कन्नड़",
+      "github": "anoopkunchukuttan/indic_nlp_library",
+      "importance": "भारतीय भाषाओं के लिए सबसे व्यापक उपकरण"
+    },
+    "iNLTK": {
+      "name": "iNLTK (Indian Natural Language Toolkit)",
+      "name_hi": "भारतीय प्राकृतिक भाषा टूलकिट",
+      "type": "भारतीय भाषाओं के लिए NLP टूलकिट",
+      "description": "ULMFiT पर आधारित भारतीय भाषाओं के लिए गहन शिक्षण मॉडल",
+      "features": [
+        "टोकनीकरण",
+        "एम्बेडिंग्स (Embeddings)",
+        "भावना विश्लेषण (Sentiment Analysis)",
+        "पाठ वर्गीकरण (Text Classification)",
+        "प्रश्न उत्तर (Question Answering)"
+      ],
+      "supported_languages": "हिन्दी सहित 11 भारतीय भाषाएँ",
+      "github": "goru001/inltk",
+      "model_type": "ULMFiT (Universal Language Model Fine-tuning)"
+    },
+    "Stanza": {
+      "name": "Stanza (Stanford NLP)",
+      "name_hi": "स्टैंज़ा",
+      "type": "बहुभाषी NLP पुस्तकालय",
+      "description": "Stanford NLP Group का बहुभाषी NLP टूलकिट जो हिन्दी का समर्थन करता है",
+      "developer": "Stanford NLP Group",
+      "features": [
+        "टोकनीकरण",
+        "POS टैगिंग",
+        "लेम्मेटाइज़ेशन",
+        "निर्भरता पार्सिंग",
+        "NER (Named Entity Recognition)"
+      ],
+      "hindi_models": "Universal Dependencies Hindi Treebank पर प्रशिक्षित",
+      "website": "stanfordnlp.github.io/stanza",
+      "advantages": ["अत्याधुनिक सटीकता", "आसान उपयोग", "बहुभाषी समर्थन"]
+    },
+    "Hindi_Shallow_Parser": {
+      "name": "Hindi Shallow Parser",
+      "name_hi": "हिन्दी शैलो पार्सर",
+      "type": "हिन्दी पार्सर",
+      "description": "हिन्दी के लिए उथला पार्सर (chunk parser)",
+      "developer": "IIIT Hyderabad",
+      "features": [
+        "POS टैगिंग",
+        "चंकिंग (Chunking)",
+        "विभक्ति विश्लेषण (Morphological Analysis)"
+      ],
+      "output": "BIS (Bureau of Indian Standards) format",
+      "use_case": "हिन्दी वाक्य संरचना विश्लेषण"
+    },
+    "Hindi_WordNet": {
+      "name": "Hindi WordNet (IndoWordNet)",
+      "name_hi": "हिन्दी शब्दतंत्र",
+      "type": "शब्दार्थ नेटवर्क",
+      "description": "हिन्दी शब्दों के बीच अर्थ संबंधों का नेटवर्क",
+      "developer": "IIT Bombay CFILT",
+      "purpose": "शब्द अर्थ संबंध",
+      "relations": [
+        "समानार्थी (Synonymy)",
+        "विलोम (Antonymy)",
+        "हाइपरनिमी (Hypernymy)",
+        "हाइपोनिमी (Hyponymy)",
+        "मेरोनिमी (Meronymy)"
+      ],
+      "synsets": "Hindi synsets (पर्यायवाची समूह)",
+      "connection": "Princeton WordNet से जुड़ा",
+      "use_cases": ["पर्यायवाची पहचान", "अर्थ अनुमान", "मशीन लर्निंग सुधार"],
+      "website": "www.cfilt.iitb.ac.in/indowordnet"
+    },
+    "IndicBERT": {
+      "name": "IndicBERT",
+      "name_hi": "इंडिकबर्ट",
+      "type": "पूर्व-प्रशिक्षित भाषा मॉडल",
+      "description": "भारतीय भाषाओं के लिए बहुभाषी BERT मॉडल",
+      "developer": "AI4Bharat (IIT Madras)",
+      "training_data": "12 भारतीय भाषाओं के डेटा पर प्रशिक्षित",
+      "languages": "हिन्दी, बंगाली, तमिल, तेलुगु, मराठी, गुजराती, उड़िया, पंजाबी, मलयालम, कन्नड़, असमिया, उर्दू",
+      "use_cases": [
+        "पाठ वर्गीकरण",
+        "NER",
+        "भावना विश्लेषण",
+        "प्रश्न उत्तर"
+      ],
+      "huggingface": "ai4bharat/indic-bert",
+      "advantage": "भारतीय भाषाओं के लिए विशेष रूप से अनुकूलित"
+    },
+    "mBERT": {
+      "name": "multilingual BERT (mBERT)",
+      "abbreviation": "mBERT",
+      "description": "Google का बहुभाषी BERT मॉडल जो हिन्दी का समर्थन करता है",
+      "developer": "Google",
+      "languages": "104 भाषाएँ जिनमें हिन्दी शामिल है",
+      "limitation": "हिन्दी-विशिष्ट कार्यों के लिए IndicBERT से कम प्रभावी"
+    },
+    "MuRIL": {
+      "name": "MuRIL (Multilingual Representations for Indian Languages)",
+      "name_hi": "म्यूरिल",
+      "type": "बहुभाषी पूर्व-प्रशिक्षित मॉडल",
+      "description": "Google द्वारा विकसित भारतीय भाषाओं के लिए BERT-आधारित मॉडल",
+      "developer": "Google Research India",
+      "languages": "17 भारतीय भाषाएँ",
+      "training": "transliteration augmentation के साथ प्रशिक्षित",
+      "advantage": "code-mixed text और transliteration को बेहतर ढंग से संभालता है"
+    }
+  },
+  "hindi_corpora": {
+    "HDTB": {
+      "name_hi": "हिन्दी निर्भरता ट्रीबैंक",
+      "name_en": "Hindi Dependency Treebank (HDTB)",
+      "description": "निर्भरता व्याश्रय संरचना के साथ भाष्यित हिन्दी कॉर्पस",
+      "size": "लगभग 16,000 वाक्य",
+      "annotation": "निर्भरता पार्सिंग, POS टैग, morphological features",
+      "format": "CoNLL-U format",
+      "developer": "IIIT Hyderabad",
+      "significance": "हिन्दी निर्भरता पार्सर प्रशिक्षण के लिए मानक",
+      "availability": "Universal Dependencies के भाग के रूप में सार्वजनिक"
+    },
+    "EMILLE_Corpus": {
+      "name_hi": "EMILLE कॉर्पस (हिन्दी भाग)",
+      "name_en": "EMILLE Corpus (Hindi portion)",
+      "description": "दक्षिण एशियाई भाषाओं का बहुभाषी कॉर्पस",
+      "hindi_size": "लगभग 2 मिलियन शब्द",
+      "domains": ["साहित्य", "समाचार", "धार्मिक पाठ", "तकनीकी दस्तावेज़"],
+      "annotation": "POS tagged",
+      "developer": "Lancaster University",
+      "availability": "शैक्षणिक अनुसंधान के लिए उपलब्ध"
+    },
+    "FIRE_Hindi_Corpus": {
+      "name_hi": "FIRE हिन्दी कॉर्पस",
+      "name_en": "FIRE (Forum for Information Retrieval Evaluation) Hindi Corpus",
+      "description": "सूचना पुनर्प्राप्ति के लिए हिन्दी समाचार लेख",
+      "size": "लगभग 125,000 समाचार लेख",
+      "period": "2004-2010",
+      "domain": "हिन्दी समाचार पत्र",
+      "use_cases": [
+        "सूचना पुनर्प्राप्ति",
+        "पाठ वर्गीकरण",
+        "दस्तावेज़ क्लस्टरिंग"
+      ],
+      "availability": "FIRE workshop के माध्यम से"
+    },
+    "IIT_Bombay_Hindi_Corpus": {
+      "name_hi": "IIT बॉम्बे हिन्दी कॉर्पस",
+      "name_en": "IIT Bombay Hindi Corpus",
+      "description": "वेब से एकत्रित बड़ा हिन्दी कॉर्पस",
+      "size": "लगभग 45 मिलियन वाक्य",
+      "developer": "IIT Bombay CFILT",
+      "domain": "वेब पाठ (विभिन्न विषय)",
+      "use_case": "भाषा मॉडलिंग, मशीन अनुवाद",
+      "availability": "अनुरोध पर उपलब्ध"
+    },
+    "Hindi_NER_Corpus": {
+      "name_hi": "हिन्दी NER कॉर्पस",
+      "name_en": "Hindi Named Entity Recognition Corpus",
+      "description": "नामित इकाइयों के साथ टैग किया गया हिन्दी कॉर्पस",
+      "annotation": "व्यक्ति, स्थान, संगठन, तिथि, समय आदि",
+      "size": "विभिन्न (कई छोटे डेटासेट उपलब्ध)",
+      "sources": ["FIRE NER shared task", "IIIT-H NER corpus"],
+      "use_case": "NER मॉडल प्रशिक्षण"
+    },
+    "HindiWordNet": {
+      "name_hi": "हिन्दी वर्डनेट",
+      "name_en": "Hindi WordNet",
+      "description": "हिन्दी के लिए लेक्सिकल डेटाबेस",
+      "synsets": "लगभग 30,000+ synsets",
+      "relations": "अर्थ संबंध (समानार्थी, विलोम, आदि)",
+      "connection": "Princeton WordNet और अन्य इंडो-वर्डनेट भाषाओं से जुड़ा",
+      "developer": "IIT Bombay CFILT",
+      "use_cases": ["शब्द अर्थ विविधीकरण", "अर्थ समानता", "शब्द पर्यायवाची"]
+    }
+  },
+  "machine_translation_hi": {
+    "मशीन_अनुवाद": {
+      "term_hi": "मशीन अनुवाद / यंत्र अनुवाद",
+      "term_en": "Machine Translation (MT)",
+      "abbreviation": "MT",
+      "definition": "कंप्यूटर द्वारा एक भाषा से दूसरी भाषा में स्वचालित अनुवाद",
+      "types": {
+        "सांख्यिकीय": "SMT (Statistical Machine Translation)",
+        "न्यूरल": "NMT (Neural Machine Translation)",
+        "नियम-आधारित": "RBMT (Rule-Based Machine Translation)"
+      }
+    },
+    "न्यूरल_मशीन_अनुवाद": {
+      "term_hi": "न्यूरल मशीन अनुवाद",
+      "term_en": "Neural Machine Translation (NMT)",
+      "abbreviation": "NMT",
+      "definition": "गहरे न्यूरल नेटवर्क पर आधारित अनुवाद विधि",
+      "architectures": [
+        "Sequence-to-Sequence (क्रम से क्रम)",
+        "Attention Mechanism (ध्यान तंत्र)",
+        "Transformer",
+        "mBERT/mT5 (बहुभाषी मॉडल)"
+      ],
+      "hindi_challenges": [
+        "हिन्दी-अंग्रेज़ी समानांतर डेटा की कमी",
+        "शब्द क्रम अंतर (SOV vs SVO)",
+        "लिंग और वचन समझौता",
+        "सम्मान स्तर बनाए रखना",
+        "मुहावरों और कहावतों का अनुवाद",
+        "code-mixed text (Hinglish)"
+      ]
+    },
+    "अनुवाद_गुणवत्ता_मूल्यांकन": {
+      "term_hi": "अनुवाद गुणवत्ता मूल्यांकन",
+      "term_en": "Translation Quality Assessment (TQA)",
+      "abbreviation": "TQA",
+      "types": {
+        "मैनुअल": "Human Evaluation",
+        "स्वचालित": "Automatic Evaluation"
+      },
+      "automatic_metrics": {
+        "BLEU": "BLEU स्कोर",
+        "METEOR": "METEOR स्कोर",
+        "TER": "Translation Edit Rate (अनुवाद संपादन दर)",
+        "chrF": "Character n-gram F-score",
+        "BERTScore": "BERT-आधारित स्कोर"
+      },
+      "hindi_note": "हिन्दी के लिए, character-based metrics (chrF) अक्सर BLEU से बेहतर काम करते हैं"
+    },
+    "अनुवाद_के_बाद_संपादन": {
+      "term_hi": "मशीन अनुवाद के बाद संपादन",
+      "term_en": "Machine Translation Post-Editing (MTPE)",
+      "abbreviation": "MTPE",
+      "definition": "मशीन अनुवाद आउटपुट का मैनुअल संपादन",
+      "levels": {
+        "हल्का_संपादन": "Light PE - केवल गंभीर त्रुटियाँ",
+        "पूर्ण_संपादन": "Full PE - मानव गुणवत्ता तक संपादन"
+      }
+    }
+  },
+  "pretrained_models_hi": {
+    "IndicBERT": {
+      "name": "IndicBERT",
+      "full_name": "Indic Language BERT",
+      "type": "पूर्व-प्रशिक्षित भाषा मॉडल",
+      "developer": "AI4Bharat (IIT Madras)",
+      "description": "12 भारतीय भाषाओं पर प्रशिक्षित बहुभाषी BERT",
+      "use_cases": ["पाठ वर्गीकरण", "NER", "भावना विश्लेषण", "Q&A"],
+      "huggingface": "ai4bharat/indic-bert"
+    },
+    "MuRIL": {
+      "name": "MuRIL",
+      "full_name": "Multilingual Representations for Indian Languages",
+      "type": "बहुभाषी BERT मॉडल",
+      "developer": "Google Research India",
+      "languages": "17 भारतीय भाषाएँ",
+      "advantage": "transliteration और code-mixing को बेहतर ढंग से संभालता है"
+    },
+    "mBART": {
+      "name": "mBART (Hindi)",
+      "description": "बहुभाषी denoising autoencoder",
+      "developer": "Facebook AI",
+      "use_case": "मशीन अनुवाद, पाठ जनरेशन"
+    }
+  },
+  "evaluation_metrics": {
+    "BLEU": {
+      "full_name": "Bilingual Evaluation Understudy",
+      "type": "मशीन अनुवाद मूल्यांकन मीट्रिक",
+      "definition": "n-gram overlap के माध्यम से अनुवाद गुणवत्ता मूल्यांकन",
+      "range": "0-100",
+      "hindi_limitation": "हिन्दी के समृद्ध रूप विज्ञान के कारण कम उपयुक्त हो सकता है"
+    },
+    "chrF": {
+      "full_name": "Character n-gram F-score",
+      "type": "character-based मूल्यांकन",
+      "definition": "character n-gram आधारित F-score",
+      "advantage_for_hindi": "हिन्दी जैसी जटिल रूप विज्ञान वाली भाषाओं के लिए बेहतर"
+    }
+  },
+  "rare_advanced_terms": {
+    "संधि": {
+      "term_hi": "संधि",
+      "term_en": "Sandhi (phonological fusion)",
+      "definition": "दो शब्दों या रूपिमों के मिलने से ध्वनि परिवर्तन",
+      "types": ["स्वर संधि", "व्यंजन संधि", "विसर्ग संधि"],
+      "example": "राम + आगमन = रामागमन",
+      "nlp_challenge": "sandhi विभाजन (sandhi splitting) कठिन है"
+    },
+    "समास_विग्रह": {
+      "term_hi": "समास विग्रह",
+      "term_en": "Compound Decomposition",
+      "definition": "संयुक्त शब्द को उसके घटक भागों में विभाजित करना",
+      "example": "राजपुत्र = राजा का पुत्र",
+      "importance": "अर्थ समझ के लिए आवश्यक"
+    },
+    "लिप्यंतरण": {
+      "term_hi": "लिप्यंतरण",
+      "term_en": "Transliteration",
+      "definition": "एक लिपि से दूसरी लिपि में ध्वन्यात्मक रूपांतरण",
+      "examples": [
+        "Hindi (देवनागरी) → Roman: राम → Rama",
+        "English → Hindi: computer → कंप्यूटर"
+      ],
+      "tools": ["Indic NLP Transliteration", "Google Transliterate"],
+      "use_case": "code-mixed text processing, keyboard input"
+    },
+    "कोड-मिक्सिंग_पहचान": {
+      "term_hi": "कोड-मिक्सिंग पहचान",
+      "term_en": "Code-Mixing Detection",
+      "definition": "मिश्रित भाषा पाठ (जैसे Hinglish) में भाषाओं की पहचान",
+      "example": "मैं market जा रहा हूँ (Hindi + English)",
+      "challenges": [
+        "शब्द-स्तर भाषा पहचान",
+        "transliterated शब्द",
+        "nonce borrowings"
+      ],
+      "importance": "भारतीय सोशल मीडिया पाठ के लिए महत्वपूर्ण"
+    },
+    "शैलो_पार्सिंग": {
+      "term_hi": "शैलो पार्सिंग / उथला विश्लेषण",
+      "term_en": "Shallow Parsing / Chunking",
+      "definition": "वाक्य को वाक्यांश खंडों में विभाजित करना बिना पूर्ण पार्स ट्री के",
+      "chunks": ["NP (Noun Phrase)", "VP (Verb Phrase)", "PP (Postpositional Phrase)"],
+      "example": "[NP राम ने] [NP किताब] [VP पढ़ी]",
+      "tool": "Hindi Shallow Parser (IIIT-H)"
+    }
+  }
+}

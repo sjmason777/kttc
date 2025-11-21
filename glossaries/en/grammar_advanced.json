@@ -1,0 +1,282 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Advanced Grammar",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Advanced and rare English grammar terminology for translation quality assessment",
+    "total_terms": 45
+  },
+  "articles_determiners": {
+    "definite_article": {
+      "form": "the",
+      "usage": "Refers to specific, known entities",
+      "errors": ["omission_with_specific_nouns", "overuse_with_abstract_nouns"],
+      "examples_correct": ["the sun", "the book I mentioned"],
+      "examples_incorrect": ["*the love is beautiful", "*I went to school"]
+    },
+    "indefinite_article": {
+      "forms": ["a", "an"],
+      "usage": "Refers to non-specific entities",
+      "rule": "Use 'an' before vowel sounds, 'a' before consonant sounds",
+      "errors": ["a/an confusion", "omission_with_countable_nouns"],
+      "examples": ["a university (consonant sound)", "an hour (vowel sound)"]
+    },
+    "zero_article": {
+      "definition": "Absence of article with specific noun types",
+      "cases": [
+        "plural_countable_nouns_general",
+        "uncountable_nouns_general",
+        "proper_nouns",
+        "abstract_nouns_general"
+      ],
+      "examples": ["Books are valuable", "Water is essential", "London is big"]
+    }
+  },
+  "verb_forms": {
+    "phrasal_verb": {
+      "definition": "Verb combined with particle(s) creating idiomatic meaning",
+      "types": {
+        "transitive_separable": "Can separate verb and particle (turn off the light / turn the light off)",
+        "transitive_inseparable": "Cannot separate (look after children *NOT* look children after)",
+        "intransitive": "No object (The plane took off)"
+      },
+      "translation_challenge": "Often non-compositional - literal translation fails"
+    },
+    "modal_verb": {
+      "definition": "Auxiliary verbs expressing necessity, possibility, permission, ability",
+      "modals": ["can", "could", "may", "might", "must", "shall", "should", "will", "would"],
+      "features": ["no_s_in_third_person", "followed_by_bare_infinitive", "no_do_support"],
+      "translation_errors": ["modal_meaning_confusion", "tense_in_modals"]
+    },
+    "subjunctive_mood": {
+      "definition": "Verb form expressing hypothetical, wished, or contrary-to-fact situations",
+      "forms": {
+        "present_subjunctive": "that he be (not 'is'), that they arrive (not 'arrives')",
+        "past_subjunctive": "if I were (not 'was')"
+      },
+      "usage": ["formal_demands", "suggestions", "hypothetical_conditions"],
+      "examples": ["I suggest that he be present", "If I were rich..."]
+    },
+    "aspect": {
+      "definition": "Grammatical category expressing temporal flow of action",
+      "types": {
+        "simple": "States general facts (She works)",
+        "progressive_continuous": "Ongoing action (She is working)",
+        "perfect": "Completed action with present relevance (She has worked)",
+        "perfect_progressive": "Ongoing action with duration (She has been working)"
+      }
+    }
+  },
+  "sentence_structure": {
+    "cleft_sentence": {
+      "definition": "Sentence split into two clauses for emphasis",
+      "types": {
+        "it_cleft": "It was John who broke the window",
+        "wh_cleft": "What I need is sleep"
+      },
+      "purpose": "Emphasizing specific information"
+    },
+    "inversion": {
+      "definition": "Non-standard word order placing verb before subject",
+      "contexts": [
+        "questions",
+        "negative_adverbials",
+        "conditional_without_if",
+        "literary_style"
+      ],
+      "examples": [
+        "Never have I seen such beauty",
+        "Had I known, I would have come",
+        "Only then did he realize..."
+      ]
+    },
+    "ellipsis": {
+      "definition": "Omission of words that can be understood from context",
+      "types": ["verb_ellipsis", "noun_ellipsis", "clause_ellipsis"],
+      "examples": [
+        "I can swim faster than you [can swim]",
+        "She likes coffee but I don't [like coffee]"
+      ],
+      "translation_issue": "Some languages require full forms"
+    },
+    "extraposition": {
+      "definition": "Moving a clause to end of sentence, using placeholder 'it'",
+      "pattern": "It + be + adjective + that-clause",
+      "examples": [
+        "It is important that we attend (vs. That we attend is important)",
+        "It seems that he left"
+      ]
+    }
+  },
+  "noun_phrases": {
+    "head_noun": {
+      "definition": "Core noun in noun phrase that other modifiers describe",
+      "modification": ["pre_modification", "post_modification"],
+      "example": "The [very old] book [on the table] [that I bought]"
+    },
+    "appositive": {
+      "definition": "Noun phrase that renames or explains another noun",
+      "punctuation": "Usually set off by commas",
+      "examples": [
+        "My brother, a doctor, lives in Paris",
+        "The author Mark Twain wrote..."
+      ]
+    },
+    "gerund": {
+      "definition": "Verb form ending in -ing used as a noun",
+      "functions": ["subject", "object", "complement"],
+      "examples": ["Swimming is healthy", "I enjoy reading"],
+      "vs_participle": "Gerund is noun, participle is adjective/verb form"
+    },
+    "partitive": {
+      "definition": "Expression indicating part of a whole",
+      "patterns": ["quantifier + of + noun"],
+      "examples": ["some of the students", "a piece of cake", "a cup of coffee"],
+      "agreement": "Verb agrees with 'of' phrase: 'One of the books is...' / 'Some of the books are...'"
+    }
+  },
+  "clause_types": {
+    "relative_clause": {
+      "definition": "Subordinate clause modifying a noun",
+      "types": {
+        "defining_restrictive": "Essential to meaning, no commas (The book that I read was good)",
+        "non_defining_non_restrictive": "Additional info, with commas (My car, which is red, is fast)"
+      },
+      "pronouns": ["who", "whom", "whose", "which", "that"],
+      "errors": ["that_vs_which", "omission_in_defining_clauses"]
+    },
+    "nominal_clause": {
+      "definition": "Clause functioning as a noun",
+      "types": ["that_clause", "wh_clause", "if_whether_clause"],
+      "examples": [
+        "That he left surprised me",
+        "I know what you did",
+        "Whether we go depends on weather"
+      ]
+    },
+    "adverbial_clause": {
+      "definition": "Clause functioning as adverb, expressing time, place, reason, etc.",
+      "types": {
+        "time": "when, while, before, after, since, until",
+        "place": "where, wherever",
+        "reason": "because, since, as",
+        "condition": "if, unless, provided that",
+        "concession": "although, though, even though",
+        "purpose": "so that, in order that",
+        "result": "so... that, such... that"
+      }
+    }
+  },
+  "advanced_topics": {
+    "dummy_subject": {
+      "definition": "Placeholder subject 'it' or 'there' with no semantic meaning",
+      "it_subject": ["weather (It's raining)", "time (It's 3pm)", "extraposition (It's clear that...)"],
+      "there_subject": "Existential (There is a problem)",
+      "translation_issue": "Some languages don't require dummy subjects"
+    },
+    "cataphora": {
+      "definition": "Reference forward to something mentioned later",
+      "contrast_to": "anaphora (reference backward)",
+      "example": "Before he left, John called his mother ('he' refers forward to 'John')"
+    },
+    "antecedent": {
+      "definition": "Word or phrase that a pronoun refers to",
+      "example": "John lost his wallet ('John' is antecedent of 'his')",
+      "errors": ["unclear_antecedent", "agreement_errors"]
+    },
+    "agreement": {
+      "types": {
+        "subject_verb": "The dog runs / The dogs run",
+        "pronoun_antecedent": "Each student must bring his or her book",
+        "determiner_noun": "This book / These books"
+      },
+      "difficult_cases": [
+        "collective_nouns",
+        "compound_subjects",
+        "indefinite_pronouns",
+        "subjects_with_prepositional_phrases"
+      ]
+    },
+    "voice": {
+      "active": {
+        "definition": "Subject performs action",
+        "example": "The cat caught the mouse"
+      },
+      "passive": {
+        "definition": "Subject receives action",
+        "formation": "be + past participle",
+        "example": "The mouse was caught by the cat",
+        "uses": ["unknown_agent", "unimportant_agent", "formal_writing"],
+        "errors": ["overuse_in_translation", "inappropriate_use"]
+      }
+    },
+    "mood": {
+      "indicative": "States facts or asks questions",
+      "imperative": "Commands or requests",
+      "subjunctive": "Hypothetical or contrary-to-fact (rare in modern English)"
+    }
+  },
+  "problematic_areas": {
+    "countable_vs_uncountable": {
+      "definition": "Distinction affecting article use, quantifiers, and verb agreement",
+      "countable": {
+        "properties": "Can be pluralized, use a/an",
+        "examples": ["book/books", "idea/ideas"],
+        "quantifiers": ["many", "few", "several", "a number of"]
+      },
+      "uncountable": {
+        "properties": "No plural, no a/an",
+        "examples": ["water", "information", "furniture"],
+        "quantifiers": ["much", "little", "a great deal of", "amount of"]
+      },
+      "dual_usage": {
+        "coffee_countable": "two coffees (= cups of coffee)",
+        "coffee_uncountable": "I like coffee",
+        "translation_trap": "Some languages differ (e.g., 'information' is countable in some languages)"
+      }
+    },
+    "false_friends_grammar": {
+      "definition": "Grammatical structures that look similar across languages but function differently",
+      "examples": {
+        "present_perfect": "English requires 'have been' for continuing states, some languages use present tense",
+        "articles": "Article usage varies drastically across languages",
+        "word_order": "English SVO may correspond to different orders in other languages"
+      }
+    },
+    "preposition_usage": {
+      "definition": "Idiomatic preposition selection",
+      "common_errors": [
+        "depend_on_not_from",
+        "interested_in_not_about",
+        "arrive_at_small_arrive_in_large",
+        "in_the_morning_at_night_on_Monday"
+      ],
+      "no_logic": "Preposition choice is often arbitrary and must be memorized"
+    }
+  },
+  "discourse_features": {
+    "cohesion": {
+      "definition": "Grammatical and lexical linking within text",
+      "devices": [
+        "reference (pronouns, demonstratives)",
+        "substitution (one, do so)",
+        "ellipsis",
+        "conjunction (and, but, however)",
+        "lexical_cohesion (synonyms, collocations)"
+      ]
+    },
+    "coherence": {
+      "definition": "Logical and semantic connection between ideas",
+      "vs_cohesion": "Cohesion is surface structure, coherence is deep meaning",
+      "requires": "Shared knowledge, logical relationships, appropriate organization"
+    },
+    "information_structure": {
+      "given_new": "Given information first, new information later",
+      "topic_comment": "Topic (what the sentence is about) + Comment (what is said about topic)",
+      "theme_rheme": "Theme (starting point) + Rheme (development)",
+      "translation_impact": "Information flow may differ across languages"
+    }
+  }
+}

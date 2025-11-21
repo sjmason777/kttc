@@ -1,0 +1,322 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "NLP Terms",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Natural Language Processing and Computational Linguistics terminology",
+    "sources": [
+      "MIT Press Computational Linguistics (2025)",
+      "KDnuggets NLP Key Terms",
+      "Academic publications 2024-2025"
+    ],
+    "total_terms": 65
+  },
+  "core_nlp_concepts": {
+    "natural_language_processing": {
+      "abbreviation": "NLP",
+      "definition": "A subset of artificial intelligence, computer science and linguistics focused on making human communication comprehensible to computers",
+      "subfields": [
+        "text_processing",
+        "speech_recognition",
+        "machine_translation",
+        "sentiment_analysis",
+        "question_answering"
+      ]
+    },
+    "computational_linguistics": {
+      "abbreviation": "CL",
+      "definition": "An interdisciplinary field concerned with the computational modelling of natural language and the study of appropriate computational approaches to linguistic questions",
+      "relationship_to_nlp": "CL focuses on linguistic theory, NLP focuses on practical applications"
+    },
+    "relies_framework": {
+      "full_name": "Resources, Evaluation, Low-resource, Interpretability, Explanation, Study",
+      "definition": "2025 framework encapsulating six major facets where linguistics contributes to NLP",
+      "year_introduced": 2025,
+      "source": "MIT Press Computational Linguistics",
+      "components": {
+        "resources": "Linguistic resources for NLP systems",
+        "evaluation": "Linguistic criteria for evaluation",
+        "low_resource": "Linguistics for low-resource languages",
+        "interpretability": "Making NLP models interpretable",
+        "explanation": "Explaining NLP outputs",
+        "study": "Using NLP to study language"
+      }
+    }
+  },
+  "text_preprocessing": {
+    "tokenization": {
+      "definition": "Process of breaking text into individual tokens (words, punctuation, or other meaningful elements)",
+      "types": ["word_tokenization", "sentence_tokenization", "subword_tokenization"],
+      "challenges": {
+        "chinese": "No spaces between words",
+        "german": "Compound words",
+        "arabic": "Diacritics and ligatures"
+      }
+    },
+    "normalization": {
+      "definition": "Converting text to a standard, canonical form",
+      "techniques": [
+        "lowercasing",
+        "unicode_normalization",
+        "accent_removal",
+        "whitespace_normalization"
+      ]
+    },
+    "stemming": {
+      "definition": "Reduction to base form by affix removal - simpler than lemmatization",
+      "algorithms": ["porter_stemmer", "snowball_stemmer", "lancaster_stemmer"],
+      "drawback": "May produce non-words (e.g., 'running' → 'run', 'studies' → 'studi')"
+    },
+    "lemmatization": {
+      "definition": "Reduction to dictionary form (lemma) with context awareness",
+      "requires": "morphological_analysis",
+      "advantage_over_stemming": "Always produces valid words",
+      "examples": {
+        "am_is_are": "be",
+        "better": "good",
+        "running": "run"
+      }
+    },
+    "stop_words": {
+      "definition": "Words filtered out before processing as they contribute little to overall meaning",
+      "examples": ["the", "a", "an", "is", "are", "in", "on", "at"],
+      "caution": "May be important in some tasks (e.g., 'to be or not to be')"
+    }
+  },
+  "linguistic_analysis": {
+    "pos_tagging": {
+      "full_name": "Part-of-Speech Tagging",
+      "definition": "Assigning grammatical categories (noun, verb, adjective, etc.) to each word",
+      "tagsets": ["universal_dependencies", "penn_treebank", "brown_corpus"],
+      "applications": ["parsing", "named_entity_recognition", "machine_translation"]
+    },
+    "named_entity_recognition": {
+      "abbreviation": "NER",
+      "definition": "Identification of proper nouns and entities in text",
+      "entity_types": [
+        "PERSON",
+        "ORGANIZATION",
+        "LOCATION",
+        "DATE",
+        "TIME",
+        "MONEY",
+        "PERCENT",
+        "PRODUCT",
+        "EVENT"
+      ],
+      "challenges": ["entity_boundaries", "nested_entities", "context_dependency"]
+    },
+    "dependency_parsing": {
+      "definition": "Analyzing grammatical structure by identifying dependencies between words",
+      "output": "directed_graph",
+      "relations": ["nsubj", "obj", "det", "amod", "advmod", "case", "punct"]
+    },
+    "constituency_parsing": {
+      "definition": "Analyzing grammatical structure by organizing words into nested constituents",
+      "output": "tree_structure",
+      "node_types": ["S", "NP", "VP", "PP", "ADJP", "ADVP"]
+    },
+    "combinatory_categorial_grammar": {
+      "abbreviation": "CCG",
+      "definition": "A computational grammar formalism used in wide-coverage parsing and generation",
+      "advantage": "Transparent syntax-semantics interface",
+      "used_in": "advanced_parsing_systems"
+    }
+  },
+  "semantic_analysis": {
+    "word_embeddings": {
+      "definition": "Dense vector representations of words that capture semantic meaning",
+      "models": {
+        "word2vec": "CBOW and Skip-gram algorithms",
+        "glove": "Global Vectors for Word Representation",
+        "fasttext": "Subword-based embeddings"
+      },
+      "properties": ["king - man + woman ≈ queen"]
+    },
+    "contextual_embeddings": {
+      "definition": "Word representations that change based on context",
+      "models": ["ELMo", "BERT", "GPT", "T5"],
+      "advantage": "Captures polysemy (e.g., 'bank' as financial institution vs. river bank)"
+    },
+    "sentiment_analysis": {
+      "alternative_names": ["opinion_mining"],
+      "definition": "Identifies the emotional tone behind a body of text",
+      "levels": ["document_level", "sentence_level", "aspect_level"],
+      "scales": ["binary_positive_negative", "multi_class", "continuous_score"]
+    },
+    "semantic_similarity": {
+      "definition": "Measuring how similar two pieces of text are in meaning",
+      "metrics": ["cosine_similarity", "euclidean_distance", "jaccard_similarity"],
+      "applications": ["duplicate_detection", "paraphrase_identification", "translation_quality"]
+    },
+    "semantic_role_labeling": {
+      "abbreviation": "SRL",
+      "definition": "Identifying semantic relationships in sentences (who did what to whom, where, when)",
+      "roles": ["agent", "patient", "instrument", "location", "time", "manner"]
+    }
+  },
+  "advanced_nlp_tasks": {
+    "machine_translation": {
+      "abbreviation": "MT",
+      "definition": "Automatic translation of text from one language to another",
+      "approaches": {
+        "rule_based": "Using linguistic rules and dictionaries",
+        "statistical": "Using statistical models trained on parallel corpora",
+        "neural": "Using deep neural networks (encoder-decoder, transformer)"
+      }
+    },
+    "question_answering": {
+      "abbreviation": "QA",
+      "definition": "Automatically answering questions posed in natural language",
+      "types": ["extractive", "abstractive", "multiple_choice", "open_domain"],
+      "datasets": ["SQuAD", "Natural Questions", "TriviaQA"]
+    },
+    "text_summarization": {
+      "definition": "Creating a concise summary of a longer text",
+      "approaches": {
+        "extractive": "Selecting important sentences from source",
+        "abstractive": "Generating new sentences that capture meaning"
+      }
+    },
+    "information_extraction": {
+      "abbreviation": "IE",
+      "definition": "Extracting structured information from unstructured text",
+      "subtasks": ["named_entity_recognition", "relation_extraction", "event_extraction"]
+    },
+    "argument_mining": {
+      "definition": "Automatic extraction and identification of argumentative structures from natural language text",
+      "components": ["claim_detection", "premise_detection", "argumentation_scheme_classification"],
+      "applications": ["debate_analysis", "essay_scoring", "fact_checking"]
+    },
+    "text_generation": {
+      "definition": "Automatically producing natural language text",
+      "tasks": ["machine_translation", "summarization", "dialogue", "story_generation"],
+      "models": ["GPT", "T5", "BART", "mT5"]
+    }
+  },
+  "corpus_linguistics": {
+    "corpus": {
+      "definition": "A collection of texts (singular: corpus, plural: corpora) used for statistical linguistic analysis",
+      "types": {
+        "monolingual": "Single language corpus",
+        "parallel": "Aligned source-target translation pairs",
+        "comparable": "Similar texts in different languages",
+        "learner": "Texts produced by language learners"
+      }
+    },
+    "concordance": {
+      "definition": "A list of all occurrences of a word or phrase in a corpus with surrounding context",
+      "format": "KWIC (Key Word In Context)",
+      "uses": ["studying_word_usage", "finding_collocations", "lexicography"]
+    },
+    "collocation": {
+      "definition": "Words that frequently appear together",
+      "examples": ["strong tea (not powerful tea)", "make a decision (not do a decision)"],
+      "statistical_measures": ["pointwise_mutual_information", "t_score", "log_likelihood"]
+    },
+    "n_gram": {
+      "definition": "Sequence of n consecutive words",
+      "types": {
+        "unigram": "Single word (n=1)",
+        "bigram": "Two words (n=2)",
+        "trigram": "Three words (n=3)"
+      },
+      "uses": ["language_modeling", "text_generation", "spelling_correction"]
+    },
+    "phraseology": {
+      "definition": "Study of multi-word expressions and collocations",
+      "importance": "Critical for idiomaticity in translation",
+      "types": ["idioms", "fixed_expressions", "collocations", "proverbs"]
+    }
+  },
+  "machine_learning_for_nlp": {
+    "language_model": {
+      "abbreviation": "LM",
+      "definition": "Probabilistic model that assigns probabilities to sequences of words",
+      "types": {
+        "n_gram": "Based on n-gram statistics",
+        "neural": "Based on neural networks",
+        "transformer": "Based on attention mechanisms"
+      }
+    },
+    "large_language_model": {
+      "abbreviation": "LLM",
+      "definition": "Neural network language model with billions to trillions of parameters",
+      "examples": ["GPT-4", "Claude", "Gemini", "LLaMA"],
+      "capabilities": ["text_generation", "translation", "summarization", "reasoning"]
+    },
+    "transfer_learning": {
+      "definition": "Using a model trained on one task as starting point for another task",
+      "in_nlp": "Pre-training on large corpus, fine-tuning on specific task",
+      "models": ["BERT", "GPT", "T5", "RoBERTa"]
+    },
+    "fine_tuning": {
+      "definition": "Adapting a pre-trained model to a specific task or domain",
+      "approaches": ["full_fine_tuning", "parameter_efficient_fine_tuning", "prompt_tuning"],
+      "benefits": ["reduced_training_time", "better_performance_with_less_data"]
+    },
+    "zero_shot_learning": {
+      "definition": "Model performs task without task-specific training examples",
+      "mechanism": "Leverages pre-training knowledge and task description",
+      "example": "GPT models translating languages not in training data"
+    },
+    "few_shot_learning": {
+      "definition": "Model learns from a small number of examples",
+      "in_context_learning": "Providing examples in the prompt",
+      "typical_range": "1-10 examples"
+    }
+  },
+  "evaluation_metrics": {
+    "bleu": {
+      "full_name": "Bilingual Evaluation Understudy",
+      "definition": "Metric for evaluating machine translation quality by comparing n-gram overlap with reference translations",
+      "range": "0 to 1 (or 0 to 100)",
+      "limitation": "Does not capture semantic similarity well"
+    },
+    "rouge": {
+      "full_name": "Recall-Oriented Understudy for Gisting Evaluation",
+      "definition": "Metric for evaluating text summarization by comparing n-gram overlap",
+      "variants": ["ROUGE-N", "ROUGE-L", "ROUGE-S"],
+      "focus": "Recall (coverage of reference text)"
+    },
+    "meteor": {
+      "full_name": "Metric for Evaluation of Translation with Explicit ORdering",
+      "definition": "MT evaluation metric that aligns words based on exact match, stems, and synonyms",
+      "advantage": "Better correlation with human judgment than BLEU"
+    },
+    "bert_score": {
+      "definition": "Semantic similarity metric using contextual embeddings from BERT",
+      "components": ["precision", "recall", "f1"],
+      "advantage": "Captures semantic meaning beyond surface form"
+    },
+    "perplexity": {
+      "definition": "Measure of how well a language model predicts a sample",
+      "formula": "2^(average negative log probability)",
+      "interpretation": "Lower is better - indicates less surprise"
+    }
+  },
+  "special_topics": {
+    "coreference_resolution": {
+      "definition": "Identifying all expressions in a text that refer to the same entity",
+      "example": "'John went to the store. He bought milk.' - 'He' refers to 'John'",
+      "challenges": ["pronoun_resolution", "named_entity_variation", "implicit_references"]
+    },
+    "discourse_analysis": {
+      "definition": "Analysis of language use beyond the sentence level",
+      "aspects": ["coherence", "cohesion", "discourse_structure", "pragmatics"],
+      "applications": ["document_understanding", "dialogue_systems"]
+    },
+    "pragmatics": {
+      "definition": "Study of how context influences meaning",
+      "phenomena": ["implicature", "presupposition", "speech_acts", "deixis"],
+      "importance": "Understanding intended meaning vs. literal meaning"
+    },
+    "multimodal_nlp": {
+      "definition": "NLP that combines text with other modalities (images, audio, video)",
+      "tasks": ["image_captioning", "visual_question_answering", "video_understanding"],
+      "models": ["CLIP", "DALL-E", "Flamingo"]
+    }
+  }
+}

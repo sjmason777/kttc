@@ -12,6 +12,8 @@ exclude_docs: |
   en/
   ru/
   zh/
+  fa/
+  hi/
 
 theme:
   name: material

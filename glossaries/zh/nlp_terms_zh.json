@@ -1,0 +1,532 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "NLP and Computational Linguistics Terms (Chinese)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "中文自然语言处理与计算语言学术语 - Chinese NLP/CL terminology with focus on Chinese-specific challenges and tools",
+    "sources": [
+      "52nlp.cn (我爱自然语言处理)",
+      "Chinese Computational Linguistics (Springer)",
+      "HanLP Documentation",
+      "Jieba Documentation",
+      "Chinese Lexical Analysis Workshop (CIPS-SIGHAN)",
+      "Peking University Computational Linguistics",
+      "Xiamen University NLP Lab"
+    ],
+    "total_terms": 85
+  },
+  "core_nlp_concepts_zh": {
+    "自然语言处理": {
+      "term_zh": "自然语言处理",
+      "term_en": "Natural Language Processing (NLP)",
+      "abbreviation": "NLP",
+      "definition": "计算机科学、人工智能和语言学的交叉领域，研究如何让计算机处理和理解人类语言",
+      "related_terms": ["计算语言学", "机器翻译", "信息抽取"]
+    },
+    "计算语言学": {
+      "term_zh": "计算语言学",
+      "term_en": "Computational Linguistics (CL)",
+      "abbreviation": "CL",
+      "definition": "使用计算方法研究语言的学科",
+      "related_terms": ["自然语言处理", "语料库语言学", "理论语言学"]
+    },
+    "中文信息处理": {
+      "term_zh": "中文信息处理",
+      "term_en": "Chinese Information Processing",
+      "definition": "专门针对中文的信息处理技术，包括分词、词性标注、句法分析等",
+      "note": "中文处理有其独特挑战：无空格分词、量词系统、意合语法等",
+      "related_terms": ["中文分词", "汉字识别", "中文语义分析"]
+    },
+    "语料库": {
+      "term_zh": "语料库",
+      "term_en": "Corpus",
+      "plural_en": "Corpora",
+      "definition": "大规模的文本或语音集合，用于语言学研究和NLP训练",
+      "examples": [
+        "北京大学现代汉语语料库 (PKU corpus)",
+        "人民日报语料库 (People's Daily corpus)",
+        "CCL语料库 (Center for Chinese Linguistics)",
+        "BCC语料库 (BLCU Chinese Corpus)"
+      ]
+    },
+    "标注语料库": {
+      "term_zh": "标注语料库",
+      "term_en": "Annotated Corpus",
+      "definition": "带有语言学标注（如词性、句法结构、语义角色）的语料库",
+      "examples": [
+        "Penn Chinese Treebank (CTB)",
+        "Chinese Dependency Treebank",
+        "OntoNotes (Chinese portion)"
+      ]
+    }
+  },
+  "chinese_specific_nlp": {
+    "中文分词": {
+      "term_zh": "中文分词",
+      "term_en": "Chinese Word Segmentation",
+      "abbreviation": "CWS",
+      "definition": "将连续的中文文本分割成有意义的词语序列的过程",
+      "challenge": "中文没有天然的词边界标记（空格），分词是中文NLP的基础任务",
+      "methods": [
+        "基于词典的方法 (Dictionary-based)",
+        "基于统计的方法 (Statistical methods)",
+        "基于深度学习的方法 (Deep learning: BiLSTM-CRF, BERT)"
+      ],
+      "ambiguity_examples": [
+        "结婚的和尚 → 结婚/的/和尚 or 结/婚的/和尚",
+        "乒乓球拍卖 → 乒乓球/拍卖 or 乒乓/球拍/卖",
+        "他说的确实在理 → 的确/实在 or 的/确实/在"
+      ],
+      "tools": ["Jieba", "HanLP", "THULAC", "Stanford CoreNLP", "LTP"],
+      "severity": "critical_for_chinese_nlp"
+    },
+    "词性标注": {
+      "term_zh": "词性标注",
+      "term_en": "Part-of-Speech Tagging (POS Tagging)",
+      "abbreviation": "POS",
+      "definition": "为分词后的每个词标注其词性（名词、动词、形容词等）",
+      "chinese_pos_tagsets": {
+        "PKU标注集": "北京大学词性标注体系",
+        "CTB标注集": "Chinese Treebank标注体系",
+        "ICTCLAS标注集": "中科院计算所标注体系"
+      },
+      "common_tags": {
+        "n": "名词 (noun)",
+        "v": "动词 (verb)",
+        "a": "形容词 (adjective)",
+        "d": "副词 (adverb)",
+        "m": "数词 (numeral)",
+        "q": "量词 (classifier/measure word)",
+        "r": "代词 (pronoun)",
+        "p": "介词 (preposition)",
+        "c": "连词 (conjunction)",
+        "u": "助词 (particle: 的、地、得、着、了、过)"
+      }
+    },
+    "命名实体识别": {
+      "term_zh": "命名实体识别",
+      "term_en": "Named Entity Recognition",
+      "abbreviation": "NER",
+      "definition": "识别文本中的专有名词，如人名、地名、机构名等",
+      "chinese_challenges": [
+        "中文人名没有大写标记",
+        "人名-地名歧义：如'黄山'（人名/地名）",
+        "机构名称长度不定",
+        "新词和缩写频繁出现"
+      ],
+      "entity_types": {
+        "PER": "人名 (Person)",
+        "LOC": "地名 (Location)",
+        "ORG": "机构名 (Organization)",
+        "GPE": "地缘政治实体 (Geo-Political Entity)",
+        "TIME": "时间表达 (Time expression)",
+        "NUM": "数字表达 (Numerical expression)"
+      }
+    },
+    "依存句法分析": {
+      "term_zh": "依存句法分析",
+      "term_en": "Dependency Parsing",
+      "definition": "分析句子中词与词之间的依存关系，构建依存树",
+      "chinese_characteristics": [
+        "中文是意合语言，句法关系更依赖语义",
+        "话题-评述结构频繁",
+        "把字句、被字句等特殊结构",
+        "零代词（省略主语）普遍"
+      ],
+      "dependency_relations": {
+        "SBV": "主谓关系 (Subject-Verb)",
+        "VOB": "动宾关系 (Verb-Object)",
+        "ATT": "定中关系 (Attribute)",
+        "ADV": "状中关系 (Adverbial)",
+        "CMP": "动补关系 (Complement)"
+      }
+    },
+    "语义角色标注": {
+      "term_zh": "语义角色标注",
+      "term_en": "Semantic Role Labeling",
+      "abbreviation": "SRL",
+      "definition": "标注句子中谓词的语义角色（施事、受事、工具等）",
+      "semantic_roles": {
+        "A0": "施事 (Agent)",
+        "A1": "受事 (Patient/Theme)",
+        "A2": "接受者 (Recipient)",
+        "LOC": "地点 (Location)",
+        "TMP": "时间 (Temporal)",
+        "MNR": "方式 (Manner)"
+      },
+      "chinese_resource": "Chinese PropBank - 中文语义角色标注语料库"
+    },
+    "关键词提取": {
+      "term_zh": "关键词提取",
+      "term_en": "Keyword Extraction",
+      "definition": "从文本中自动提取最重要的关键词或短语",
+      "methods": [
+        "TF-IDF (词频-逆文档频率)",
+        "TextRank (基于图的排序算法)",
+        "RAKE (Rapid Automatic Keyword Extraction)",
+        "基于BERT的方法"
+      ]
+    }
+  },
+  "chinese_nlp_tools": {
+    "Jieba": {
+      "name": "Jieba (结巴中文分词)",
+      "type": "中文分词工具",
+      "description": "最流行的Python中文分词库，支持三种分词模式",
+      "modes": {
+        "精确模式": "试图将句子最精确地切开，适合文本分析",
+        "全模式": "把句子中所有可能的词语都扫描出来，速度快",
+        "搜索引擎模式": "在精确模式基础上，对长词再次切分"
+      },
+      "features": ["支持自定义词典", "支持词性标注", "支持关键词提取"],
+      "github": "fxsjy/jieba",
+      "popularity": "GitHub 30k+ stars"
+    },
+    "HanLP": {
+      "name": "HanLP (汉语言处理包)",
+      "type": "综合NLP工具包",
+      "description": "功能完备的中文NLP工具包，包括分词、词性标注、命名实体识别、依存句法分析等",
+      "features": [
+        "中文分词 (CWS)",
+        "词性标注 (POS)",
+        "命名实体识别 (NER)",
+        "依存句法分析 (Dependency Parsing)",
+        "语义依存分析 (Semantic Dependency Parsing)",
+        "文本分类",
+        "情感分析"
+      ],
+      "models": {
+        "传统模型": "基于HMM、CRF等统计模型",
+        "深度学习模型": "基于BERT、RoBERTa等预训练模型"
+      },
+      "github": "hankcs/HanLP",
+      "note": "支持多种中文NLP任务的一站式解决方案"
+    },
+    "THULAC": {
+      "name": "THULAC (清华大学中文词法分析工具包)",
+      "developer": "清华大学自然语言处理与社会人文计算实验室",
+      "type": "中文词法分析",
+      "features": ["中文分词", "词性标注"],
+      "characteristics": ["准确率高", "速度快", "支持多种编程语言"],
+      "github": "thunlp/THULAC-Python"
+    },
+    "LTP": {
+      "name": "LTP (Language Technology Platform)",
+      "developer": "哈尔滨工业大学社会计算与信息检索研究中心",
+      "type": "语言技术平台",
+      "description": "提供中文分词、词性标注、命名实体识别、依存句法分析、语义角色标注等功能",
+      "features": [
+        "分词 (Word Segmentation)",
+        "词性标注 (POS Tagging)",
+        "命名实体识别 (NER)",
+        "依存句法分析 (Dependency Parsing)",
+        "语义角色标注 (SRL)",
+        "语义依存分析 (Semantic Dependency Parsing)"
+      ],
+      "versions": {
+        "LTP3": "传统机器学习模型",
+        "LTP4": "深度学习模型（PyTorch）"
+      }
+    },
+    "SnowNLP": {
+      "name": "SnowNLP",
+      "type": "中文文本处理库",
+      "description": "受TextBlob启发的中文文本处理库",
+      "features": [
+        "中文分词",
+        "词性标注",
+        "情感分析 (Sentiment Analysis)",
+        "文本分类",
+        "关键词提取",
+        "繁简转换"
+      ],
+      "use_case": "适合快速原型开发和情感分析"
+    },
+    "pkuseg": {
+      "name": "pkuseg (北京大学多领域中文分词工具)",
+      "developer": "北京大学语言计算与机器学习研究组",
+      "type": "多领域中文分词",
+      "description": "支持不同领域的中文分词，在多个数据集上F1-score达到97%以上",
+      "domains": ["新闻", "网络文本", "医药", "旅游", "混合领域"],
+      "advantage": "针对不同领域优化，准确率高"
+    },
+    "Stanford_CoreNLP_Chinese": {
+      "name": "Stanford CoreNLP (Chinese models)",
+      "developer": "Stanford NLP Group",
+      "type": "多语言NLP工具包（含中文）",
+      "features": [
+        "中文分词",
+        "词性标注",
+        "命名实体识别",
+        "句法分析 (Constituency Parsing)",
+        "依存句法分析",
+        "共指消解 (Coreference Resolution)"
+      ],
+      "training_data": "Penn Chinese Treebank",
+      "note": "国际学术界广泛使用"
+    }
+  },
+  "chinese_corpora": {
+    "CCL语料库": {
+      "name_zh": "CCL语料库",
+      "name_en": "CCL Corpus (Center for Chinese Linguistics)",
+      "developer": "北京大学中国语言学研究中心",
+      "size": "约7亿字",
+      "description": "古代汉语和现代汉语语料库",
+      "url": "ccl.pku.edu.cn",
+      "types": ["古代汉语", "现代汉语", "汉语史语料"]
+    },
+    "BCC语料库": {
+      "name_zh": "BCC语料库",
+      "name_en": "BCC Corpus (BLCU Chinese Corpus)",
+      "developer": "北京语言大学",
+      "size": "约150亿字",
+      "description": "大规模中文语料库，包含多个领域",
+      "domains": ["报刊", "文学", "微博", "科技", "古汉语"],
+      "url": "bcc.blcu.edu.cn",
+      "note": "中国最大的汉语语料库之一"
+    },
+    "人民日报语料库": {
+      "name_zh": "人民日报语料库",
+      "name_en": "People's Daily Corpus",
+      "description": "人民日报新闻文本语料库，常用于NLP训练",
+      "period": "1946年至今",
+      "characteristics": ["标准书面语", "政治、经济、文化新闻", "已分词标注"],
+      "use_case": "中文分词、词性标注的标准训练数据"
+    },
+    "CTB": {
+      "name_zh": "宾州中文树库",
+      "name_en": "Penn Chinese Treebank (CTB)",
+      "developer": "University of Pennsylvania",
+      "description": "标注了句法结构的中文语料库",
+      "size": "约100万词",
+      "annotation": ["分词", "词性标注", "句法树结构"],
+      "versions": "CTB 5.0, CTB 6.0, CTB 7.0, CTB 8.0, CTB 9.0",
+      "significance": "中文句法分析的标准评测数据集"
+    },
+    "OntoNotes": {
+      "name": zh": "OntoNotes中文部分",
+      "name_en": "OntoNotes Chinese",
+      "description": "大规模多语言语料库（包含中文）",
+      "annotation_layers": [
+        "分词",
+        "词性标注",
+        "句法分析",
+        "命名实体",
+        "共指消解",
+        "语义角色标注"
+      ],
+      "use_case": "多任务中文NLP模型训练"
+    },
+    "SIGHAN_Bakeoff": {
+      "name_zh": "SIGHAN中文分词评测语料",
+      "name_en": "SIGHAN Bakeoff",
+      "description": "国际中文分词评测比赛使用的标准数据集",
+      "datasets": ["PKU", "MSR", "AS (Academia Sinica)", "CityU"],
+      "significance": "中文分词算法的标准基准测试",
+      "years": "2003, 2005, 2006, 2007, 2008"
+    }
+  },
+  "machine_translation_zh": {
+    "机器翻译": {
+      "term_zh": "机器翻译",
+      "term_en": "Machine Translation",
+      "abbreviation": "MT",
+      "definition": "使用计算机自动将一种自然语言翻译成另一种自然语言",
+      "types": {
+        "统计机器翻译": "SMT (Statistical Machine Translation)",
+        "神经机器翻译": "NMT (Neural Machine Translation)",
+        "规则机器翻译": "RBMT (Rule-Based Machine Translation)"
+      }
+    },
+    "神经机器翻译": {
+      "term_zh": "神经机器翻译",
+      "term_en": "Neural Machine Translation",
+      "abbreviation": "NMT",
+      "definition": "基于深度神经网络的机器翻译方法",
+      "architectures": [
+        "Seq2Seq (序列到序列)",
+        "Attention Mechanism (注意力机制)",
+        "Transformer",
+        "BERT/mBERT (multilingual)",
+        "GPT系列"
+      ],
+      "chinese_nmt_challenges": [
+        "中英语序差异大（SVO vs 多种语序）",
+        "文化特定概念的翻译（成语、典故）",
+        "量词的正确生成",
+        "零代词恢复"
+      ]
+    },
+    "翻译质量评估": {
+      "term_zh": "翻译质量评估",
+      "term_en": "Translation Quality Assessment",
+      "abbreviation": "TQA",
+      "types": {
+        "人工评估": "Human Evaluation",
+        "自动评估": "Automatic Evaluation"
+      },
+      "automatic_metrics": {
+        "BLEU": "基于n-gram精确度",
+        "chrF": "基于字符n-gram",
+        "TER": "翻译编辑率 (Translation Edit Rate)",
+        "METEOR": "考虑同义词和词干",
+        "BERTScore": "基于BERT的语义相似度",
+        "COMET": "基于神经网络的质量评估"
+      }
+    },
+    "后编辑": {
+      "term_zh": "后编辑",
+      "term_en": "Post-Editing",
+      "abbreviation": "PE / MTPE",
+      "definition": "人工修改机器翻译输出以达到可用质量",
+      "types": {
+        "轻度后编辑": "Light PE - 仅修正关键错误",
+        "全面后编辑": "Full PE - 修改到人工翻译质量"
+      },
+      "metrics": {
+        "编辑距离": "Edit Distance",
+        "TER": "Translation Edit Rate",
+        "HTER": "Human-targeted TER"
+      }
+    }
+  },
+  "pretrained_models_zh": {
+    "BERT中文": {
+      "name": "BERT (Chinese)",
+      "full_name": "Bidirectional Encoder Representations from Transformers",
+      "type": "预训练语言模型",
+      "developer": "Google",
+      "chinese_versions": [
+        "BERT-Base, Chinese (Google官方)",
+        "Chinese-BERT-wwm (全词遮罩)",
+        "RoBERTa-wwm-ext (哈工大讯飞联合实验室)",
+        "MacBERT (MLM as correction BERT)"
+      ],
+      "training_data": "中文维基百科、其他中文语料",
+      "use_cases": ["文本分类", "命名实体识别", "问答系统", "语义相似度"]
+    },
+    "ERNIE": {
+      "name": "ERNIE (Enhanced Representation through kNowledge IntEgration)",
+      "developer": "百度",
+      "description": "百度开发的中文预训练模型，整合知识图谱",
+      "versions": ["ERNIE 1.0", "ERNIE 2.0", "ERNIE 3.0", "ERNIE-Gram"],
+      "advantage": "整合实体级和短语级知识，对中文理解更好"
+    },
+    "ChatGLM": {
+      "name": "ChatGLM (清华GLM团队)",
+      "developer": "清华大学KEG实验室、智谱AI",
+      "type": "开源双语对话模型",
+      "versions": ["ChatGLM-6B", "ChatGLM2-6B", "ChatGLM3-6B"],
+      "characteristics": ["中英双语", "可本地部署", "对话优化"],
+      "parameters": "6B (60亿参数)"
+    },
+    "Qwen": {
+      "name": "Qwen (通义千问)",
+      "developer": "阿里巴巴",
+      "type": "大语言模型",
+      "versions": ["Qwen-7B", "Qwen-14B", "Qwen-72B"],
+      "multilingual": "支持中文、英文等多语言",
+      "features": ["长文本理解", "多轮对话", "工具使用"]
+    }
+  },
+  "evaluation_metrics": {
+    "BLEU": {
+      "full_name": "Bilingual Evaluation Understudy",
+      "type": "机器翻译评估指标",
+      "definition": "通过比较n-gram重叠度评估翻译质量",
+      "chinese_consideration": "中文BLEU通常使用字符级n-gram，而非词级",
+      "range": "0-100 (或0-1)",
+      "limitation": "对语义理解能力有限，只看表面形式匹配"
+    },
+    "chrF": {
+      "full_name": "Character n-gram F-score",
+      "type": "机器翻译评估指标",
+      "definition": "基于字符n-gram的F值",
+      "advantage_for_chinese": "更适合中文等非空格分隔语言",
+      "variants": ["chrF", "chrF++"]
+    },
+    "BERTScore": {
+      "full_name": "BERTScore",
+      "type": "语义相似度评估",
+      "definition": "使用BERT计算参考译文和机器译文的语义相似度",
+      "chinese_models": "使用中文BERT模型计算",
+      "advantage": "能捕捉语义层面的相似性，而非仅表面形式"
+    }
+  },
+  "rare_advanced_terms": {
+    "零代词": {
+      "term_zh": "零代词",
+      "term_en": "Zero Pronoun / Pro-drop",
+      "definition": "中文句子中经常省略主语或宾语的现象",
+      "example": "（我）吃了饭，（我）就去睡觉 - 主语省略",
+      "nlp_challenge": "零代词恢复 (Zero Pronoun Resolution) 是中文NLP难题",
+      "importance": "对机器翻译成英语很重要，因为英语不允许省略主语"
+    },
+    "话题-评述结构": {
+      "term_zh": "话题-评述结构",
+      "term_en": "Topic-Comment Structure",
+      "definition": "中文句子的基本结构，与主谓结构不同",
+      "example": "这本书，我看过了 (This book, I have read)",
+      "contrast": "英语是Subject-Predicate结构",
+      "nlp_challenge": "识别话题和评述的边界"
+    },
+    "意合": {
+      "term_zh": "意合",
+      "term_en": "Parataxis",
+      "definition": "中文通过意义关联而非形式标记连接句子成分",
+      "contrast_with": "形合 (Hypotaxis) - 西方语言使用连词等形式标记",
+      "example": "他来我去 (He came, I left) - 没有明确连词",
+      "translation_challenge": "翻译成英语时需要添加适当的连接词"
+    },
+    "离合词": {
+      "term_zh": "离合词",
+      "term_en": "Separable Word / Verb-Object Compound",
+      "definition": "可以拆开使用的词，通常是动宾结构",
+      "examples": [
+        "见面 → 见了一次面",
+        "洗澡 → 洗了个澡",
+        "睡觉 → 睡了一个好觉",
+        "游泳 → 游了两个小时泳"
+      ],
+      "nlp_challenge": "需要识别离合词并正确处理其分离形式",
+      "pos_tagging_issue": "拆开后各部分的词性标注"
+    },
+    "多义词消歧": {
+      "term_zh": "多义词消歧",
+      "term_en": "Word Sense Disambiguation",
+      "abbreviation": "WSD",
+      "definition": "确定多义词在特定上下文中的具体含义",
+      "chinese_examples": {
+        "打": "打人 (hit), 打球 (play), 打水 (fetch), 打字 (type)",
+        "开": "开门 (open), 开车 (drive), 开会 (hold meeting), 开药 (prescribe)"
+      },
+      "methods": ["基于词典", "监督学习", "BERT等预训练模型"]
+    },
+    "新词发现": {
+      "term_zh": "新词发现",
+      "term_en": "New Word Discovery / Neologism Detection",
+      "definition": "自动从文本中发现未登录词（OOV词）",
+      "chinese_challenge": "中文网络语言新词频出，如'内卷'、'躺平'、'YYDS'",
+      "methods": [
+        "互信息 (Mutual Information)",
+        "左右熵 (Left/Right Entropy)",
+        "基于统计的n-gram方法"
+      ],
+      "importance": "对于保持分词词典的时效性很重要"
+    },
+    "繁简转换": {
+      "term_zh": "繁简转换",
+      "term_en": "Traditional-Simplified Chinese Conversion",
+      "definition": "繁体中文和简体中文之间的转换",
+      "challenge": "一对多映射问题",
+      "examples": {
+        "一对多": "后 → 後/后, 里 → 裏/里, 发 → 發/髮",
+        "词义区分": "皇后(empress) vs 后面(behind)"
+      },
+      "tools": ["OpenCC", "HanLP", "繁化姬"]
+    }
+  }
+}

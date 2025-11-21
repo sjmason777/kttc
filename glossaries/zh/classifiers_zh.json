@@ -1,0 +1,417 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Chinese Classifiers (量词)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "汉语量词/分类词完整分类 - Chinese Measure Words/Classifiers taxonomy",
+    "note": "量词是汉语的重要特征，与数词结合使用表示计量单位",
+    "sources": [
+      "Zhihu '汉语太学|【现代汉语】语法知识汇总'",
+      "Baidu Baike '汉语词类'",
+      "Academic Chinese Grammar Resources"
+    ],
+    "total_classifiers": 150
+  },
+  "classifier_overview": {
+    "definition_zh": "量词表示计量单位，一般与数词结合构成数量短语",
+    "definition_en": "Measure words/classifiers express counting units and generally combine with numerals to form quantity phrases",
+    "uniqueness": "汉语特色！English and many other languages don't have this elaborate classifier system",
+    "usage": "数词 + 量词 + 名词 (Numeral + Classifier + Noun)",
+    "example": "三 本 书 (three [classifier] books)"
+  },
+  "individual_classifiers": {
+    "name_zh": "个体量词",
+    "name_en": "Individual Classifiers",
+    "definition": "表示人或事物个体的量词",
+    "classifiers": {
+      "个": {
+        "pinyin": "gè",
+        "usage": "通用量词，最常用",
+        "examples": ["一个人 (one person)", "两个苹果 (two apples)", "三个问题 (three questions)"],
+        "note": "当不确定用什么量词时，'个'通常可以接受"
+      },
+      "只": {
+        "pinyin": "zhī",
+        "usage": "动物、某些器具",
+        "examples": ["一只狗 (one dog)", "两只鸡 (two chickens)", "三只手 (three hands)"],
+        "note": "主要用于动物和成对的物品之一"
+      },
+      "条": {
+        "pinyin": "tiáo",
+        "usage": "长条形物品、河流、道路、鱼",
+        "examples": ["一条河 (one river)", "两条鱼 (two fish)", "三条裤子 (three pants)", "一条路 (one road)"]
+      },
+      "张": {
+        "pinyin": "zhāng",
+        "usage": "平面物品、纸、桌子、床、嘴",
+        "examples": ["一张纸 (one piece of paper)", "两张桌子 (two tables)", "三张嘴 (three mouths)"]
+      },
+      "本": {
+        "pinyin": "běn",
+        "usage": "书籍、杂志",
+        "examples": ["一本书 (one book)", "两本杂志 (two magazines)", "三本词典 (three dictionaries)"]
+      },
+      "支": {
+        "pinyin": "zhī",
+        "usage": "细长物品、笔、枪、队伍",
+        "examples": ["一支笔 (one pen)", "两支枪 (two guns)", "三支队伍 (three teams)"]
+      },
+      "件": {
+        "pinyin": "jiàn",
+        "usage": "衣服、事情、物品",
+        "examples": ["一件衣服 (one piece of clothing)", "两件事 (two matters)", "三件行李 (three pieces of luggage)"]
+      },
+      "台": {
+        "pinyin": "tái",
+        "usage": "机器、设备",
+        "examples": ["一台电脑 (one computer)", "两台机器 (two machines)", "三台电视 (three TVs)"]
+      },
+      "把": {
+        "pinyin": "bǎ",
+        "usage": "有把手的物品、椅子、伞、刀",
+        "examples": ["一把椅子 (one chair)", "两把伞 (two umbrellas)", "三把刀 (three knives)"]
+      },
+      "颗": {
+        "pinyin": "kē",
+        "usage": "小而圆的物品、牙齿、心",
+        "examples": ["一颗牙 (one tooth)", "两颗心 (two hearts)", "三颗珍珠 (three pearls)"]
+      },
+      "粒": {
+        "pinyin": "lì",
+        "usage": "颗粒状物品",
+        "examples": ["一粒米 (one grain of rice)", "两粒药 (two pills)", "三粒种子 (three seeds)"]
+      },
+      "棵": {
+        "pinyin": "kē",
+        "usage": "植物",
+        "examples": ["一棵树 (one tree)", "两棵草 (two blades of grass)", "三棵白菜 (three cabbages)"]
+      },
+      "朵": {
+        "pinyin": "duǒ",
+        "usage": "花、云",
+        "examples": ["一朵花 (one flower)", "两朵云 (two clouds)", "三朵玫瑰 (three roses)"]
+      },
+      "辆": {
+        "pinyin": "liàng",
+        "usage": "车辆",
+        "examples": ["一辆车 (one car)", "两辆自行车 (two bicycles)", "三辆卡车 (three trucks)"]
+      },
+      "架": {
+        "pinyin": "jià",
+        "usage": "飞机、大型机械",
+        "examples": ["一架飞机 (one airplane)", "两架钢琴 (two pianos)", "三架相机 (three cameras)"]
+      },
+      "座": {
+        "pinyin": "zuò",
+        "usage": "建筑物、山",
+        "examples": ["一座桥 (one bridge)", "两座山 (two mountains)", "三座城市 (three cities)"]
+      },
+      "栋": {
+        "pinyin": "dòng",
+        "usage": "建筑物（较大）",
+        "examples": ["一栋楼 (one building)", "两栋房子 (two houses)"]
+      },
+      "扇": {
+        "pinyin": "shàn",
+        "usage": "门、窗",
+        "examples": ["一扇门 (one door)", "两扇窗 (two windows)"]
+      },
+      "块": {
+        "pinyin": "kuài",
+        "usage": "块状物品、钱（口语）",
+        "examples": ["一块石头 (one stone)", "两块钱 (two yuan)", "三块蛋糕 (three pieces of cake)"]
+      },
+      "片": {
+        "pinyin": "piàn",
+        "usage": "薄片状物品、区域",
+        "examples": ["一片面包 (one slice of bread)", "两片叶子 (two leaves)", "一片森林 (a forest area)"]
+      }
+    }
+  },
+  "collective_classifiers": {
+    "name_zh": "集合量词",
+    "name_en": "Collective Classifiers",
+    "definition": "表示事物集合的量词",
+    "classifiers": {
+      "双": {
+        "pinyin": "shuāng",
+        "usage": "成对的物品",
+        "examples": ["一双鞋 (one pair of shoes)", "两双筷子 (two pairs of chopsticks)", "三双手套 (three pairs of gloves)"]
+      },
+      "对": {
+        "pinyin": "duì",
+        "usage": "成对的人或物",
+        "examples": ["一对夫妻 (one couple)", "两对父母 (two pairs of parents)", "一对耳环 (one pair of earrings)"]
+      },
+      "副": {
+        "pinyin": "fù",
+        "usage": "成套的物品",
+        "examples": ["一副眼镜 (one pair of glasses)", "两副手套 (two pairs of gloves)", "一副对联 (one couplet)"]
+      },
+      "套": {
+        "pinyin": "tào",
+        "usage": "成套的物品",
+        "examples": ["一套房子 (one suite/apartment)", "两套衣服 (two sets of clothes)", "一套书 (one set of books)"]
+      },
+      "群": {
+        "pinyin": "qún",
+        "usage": "成群的人或动物",
+        "examples": ["一群人 (a group of people)", "两群羊 (two flocks of sheep)", "一群孩子 (a group of children)"]
+      },
+      "批": {
+        "pinyin": "pī",
+        "usage": "批次",
+        "examples": ["一批货 (one batch of goods)", "两批学生 (two batches of students)"]
+      },
+      "帮": {
+        "pinyin": "bāng",
+        "usage": "一伙人（常带贬义）",
+        "examples": ["一帮人 (a gang/bunch of people)", "一帮强盗 (a band of robbers)"]
+      },
+      "伙": {
+        "pinyin": "huǒ",
+        "usage": "一群人",
+        "examples": ["一伙人 (a group of people)", "一伙儿 (together)"]
+      },
+      "队": {
+        "pinyin": "duì",
+        "usage": "队伍",
+        "examples": ["一队士兵 (one troop of soldiers)", "一队学生 (one line of students)"]
+      }
+    }
+  },
+  "container_classifiers": {
+    "name_zh": "容器量词",
+    "name_en": "Container Classifiers",
+    "definition": "表示容器的量词",
+    "classifiers": {
+      "杯": {
+        "pinyin": "bēi",
+        "usage": "杯子装的液体",
+        "examples": ["一杯水 (one cup of water)", "两杯咖啡 (two cups of coffee)", "三杯茶 (three cups of tea)"]
+      },
+      "碗": {
+        "pinyin": "wǎn",
+        "usage": "碗装的食物",
+        "examples": ["一碗饭 (one bowl of rice)", "两碗面 (two bowls of noodles)"]
+      },
+      "盘": {
+        "pinyin": "pán",
+        "usage": "盘子装的食物",
+        "examples": ["一盘菜 (one plate of food)", "两盘水果 (two plates of fruit)"]
+      },
+      "瓶": {
+        "pinyin": "píng",
+        "usage": "瓶子装的液体",
+        "examples": ["一瓶水 (one bottle of water)", "两瓶酒 (two bottles of wine)"]
+      },
+      "桶": {
+        "pinyin": "tǒng",
+        "usage": "桶装的物品",
+        "examples": ["一桶水 (one bucket of water)", "两桶油 (two barrels of oil)"]
+      },
+      "箱": {
+        "pinyin": "xiāng",
+        "usage": "箱子装的物品",
+        "examples": ["一箱书 (one box of books)", "两箱苹果 (two boxes of apples)"]
+      },
+      "袋": {
+        "pinyin": "dài",
+        "usage": "袋子装的物品",
+        "examples": ["一袋米 (one bag of rice)", "两袋面粉 (two bags of flour)"]
+      },
+      "包": {
+        "pinyin": "bāo",
+        "usage": "包装的物品",
+        "examples": ["一包烟 (one pack of cigarettes)", "两包糖 (two bags of candy)"]
+      },
+      "罐": {
+        "pinyin": "guàn",
+        "usage": "罐子装的物品",
+        "examples": ["一罐啤酒 (one can of beer)", "两罐果酱 (two jars of jam)"]
+      },
+      "壶": {
+        "pinyin": "hú",
+        "usage": "壶装的液体",
+        "examples": ["一壶茶 (one pot of tea)", "两壶水 (two kettles of water)"]
+      }
+    }
+  },
+  "measurement_classifiers": {
+    "name_zh": "度量量词",
+    "name_en": "Measurement Classifiers",
+    "definition": "表示度量单位的量词",
+    "classifiers": {
+      "米": {
+        "pinyin": "mǐ",
+        "usage": "长度单位（meter）",
+        "examples": ["一米长 (one meter long)", "两米高 (two meters tall)"]
+      },
+      "斤": {
+        "pinyin": "jīn",
+        "usage": "重量单位（500g）",
+        "examples": ["一斤苹果 (one jin of apples)", "两斤肉 (two jin of meat)"]
+      },
+      "克": {
+        "pinyin": "kè",
+        "usage": "重量单位（gram）",
+        "examples": ["一克盐 (one gram of salt)"]
+      },
+      "公斤": {
+        "pinyin": "gōngjīn",
+        "usage": "重量单位（kilogram）",
+        "examples": ["一公斤大米 (one kilogram of rice)"]
+      },
+      "升": {
+        "pinyin": "shēng",
+        "usage": "容量单位（liter）",
+        "examples": ["一升水 (one liter of water)"]
+      },
+      "度": {
+        "pinyin": "dù",
+        "usage": "温度、角度",
+        "examples": ["三十度 (30 degrees)", "九十度角 (90-degree angle)"]
+      },
+      "元": {
+        "pinyin": "yuán",
+        "usage": "货币单位",
+        "examples": ["一元钱 (one yuan)"]
+      }
+    }
+  },
+  "temporal_classifiers": {
+    "name_zh": "时量词",
+    "name_en": "Temporal Classifiers",
+    "definition": "表示时间的量词",
+    "classifiers": {
+      "年": {
+        "pinyin": "nián",
+        "usage": "年",
+        "examples": ["一年 (one year)", "三年时间 (three years)"]
+      },
+      "月": {
+        "pinyin": "yuè",
+        "usage": "月",
+        "examples": ["一个月 (one month)", "两个月 (two months)"]
+      },
+      "天": {
+        "pinyin": "tiān",
+        "usage": "天",
+        "examples": ["一天 (one day)", "三天 (three days)"]
+      },
+      "日": {
+        "pinyin": "rì",
+        "usage": "日（正式）",
+        "examples": ["一日 (one day - formal)"]
+      },
+      "小时": {
+        "pinyin": "xiǎoshí",
+        "usage": "小时",
+        "examples": ["一小时 (one hour)", "两小时 (two hours)"]
+      },
+      "分钟": {
+        "pinyin": "fēnzhōng",
+        "usage": "分钟",
+        "examples": ["一分钟 (one minute)", "十分钟 (ten minutes)"]
+      },
+      "秒": {
+        "pinyin": "miǎo",
+        "usage": "秒",
+        "examples": ["一秒 (one second)", "五秒 (five seconds)"]
+      },
+      "刻": {
+        "pinyin": "kè",
+        "usage": "一刻钟（15分钟）",
+        "examples": ["一刻钟 (a quarter hour)"]
+      }
+    }
+  },
+  "verbal_classifiers": {
+    "name_zh": "动量词",
+    "name_en": "Verbal Classifiers",
+    "definition": "表示动作次数的量词",
+    "classifiers": {
+      "次": {
+        "pinyin": "cì",
+        "usage": "次数",
+        "examples": ["去一次 (go once)", "见两次 (see twice)", "试三次 (try three times)"]
+      },
+      "遍": {
+        "pinyin": "biàn",
+        "usage": "从头到尾的次数",
+        "examples": ["读一遍 (read once through)", "说两遍 (say twice)", "看三遍 (watch three times)"]
+      },
+      "回": {
+        "pinyin": "huí",
+        "usage": "次数（口语）",
+        "examples": ["去一回 (go once)", "来两回 (come twice)"]
+      },
+      "趟": {
+        "pinyin": "tàng",
+        "usage": "往返次数",
+        "examples": ["跑一趟 (make a trip)", "走两趟 (make two trips)"]
+      },
+      "场": {
+        "pinyin": "chǎng",
+        "usage": "活动、比赛、演出",
+        "examples": ["一场雨 (one rain)", "两场球赛 (two games)", "三场电影 (three movie showings)"]
+      },
+      "顿": {
+        "pinyin": "dùn",
+        "usage": "餐、打、骂",
+        "examples": ["一顿饭 (one meal)", "挨一顿打 (get a beating)", "骂一顿 (scold once)"]
+      },
+      "阵": {
+        "pinyin": "zhèn",
+        "usage": "持续一段时间的动作",
+        "examples": ["一阵风 (a gust of wind)", "一阵掌声 (a round of applause)"]
+      },
+      "下": {
+        "pinyin": "xià",
+        "usage": "短促的动作",
+        "examples": ["看一下 (take a look)", "敲两下 (knock twice)", "想一下 (think for a moment)"]
+      }
+    }
+  },
+  "special_usage_notes": {
+    "reduplication": {
+      "name_zh": "量词重叠",
+      "definition": "量词可以重叠表示'每一个'",
+      "examples": [
+        "个个都好 (each and every one is good)",
+        "天天开心 (happy every day)",
+        "人人平等 (everyone is equal)"
+      ]
+    },
+    "omission": {
+      "name_zh": "量词省略",
+      "definition": "某些情况下量词可以省略",
+      "cases": [
+        "数词是'一'且语境明确时",
+        "概数表达（几十、几百）",
+        "时间表达（三月、五点）"
+      ]
+    },
+    "flexibility": {
+      "name_zh": "量词灵活性",
+      "note": "有些名词可以用多个量词，语义略有不同",
+      "examples": {
+        "书": "一本书（general）, 一部书（formal/literary work）, 一套书（set）",
+        "车": "一辆车（general）, 一部车（formal/expensive car）",
+        "花": "一朵花（single flower）, 一束花（bouquet）, 一盆花（potted）"
+      }
+    },
+    "translation_challenges": {
+      "challenge": "量词是中文翻译质量的关键指标",
+      "issues": [
+        "英语等语言没有对应的分类词系统",
+        "选择错误的量词是典型的机器翻译错误",
+        "文化差异导致量词使用习惯不同",
+        "某些量词有地域差异（大陆vs台湾vs香港）"
+      ],
+      "importance_for_kttc": "KTTC的ChineseFluencyAgent应该验证量词使用的正确性"
+    }
+  }
+}

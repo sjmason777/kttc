@@ -1,0 +1,486 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "فارسی (Persian/Farsi)",
+    "glossary_type": "MQM Core (Persian)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "MQM (معیارهای چندبعدی کیفیت) - اصطلاحات ارزیابی کیفیت ترجمه فارسی",
+    "sources": [
+      "W3C MQM Community Group",
+      "Wikipedia فارسی (fa.wikipedia.org)",
+      "فرهنگستان زبان و ادب فارسی (Academy of Persian Language and Literature)",
+      "Persian Computational Linguistics Research"
+    ],
+    "total_terms": 70
+  },
+  "error_dimensions": [
+    {
+      "id": "terminology",
+      "name_fa": "اصطلاح‌شناسی",
+      "name_en": "Terminology",
+      "definition": "خطاهایی که هنگام عدم انطباق اصطلاحات با استانداردهای حوزه یا سازمان رخ می‌دهد",
+      "severity_weight": 1.0,
+      "subtypes": [
+        "عدم انطباق با منابع اصطلاحی",
+        "ناسازگاری در استفاده از اصطلاحات",
+        "اصطلاح نادرست",
+        "همایندی اصطلاحی"
+      ]
+    },
+    {
+      "id": "accuracy",
+      "name_fa": "دقت",
+      "name_en": "Accuracy",
+      "definition": "خطاهایی که متن هدف با محتوای گزاره‌ای متن مبدأ مطابقت ندارد",
+      "severity_weight": 1.5,
+      "subtypes": [
+        "ترجمه‌ نادرست",
+        "حذف",
+        "افزودن",
+        "ترجمه‌ بیش از حد",
+        "ترجمه‌ ناقص",
+        "توهم ماشین ترجمه",
+        "دوستان دروغین",
+        "ترجمه‌نشده",
+        "نباید ترجمه می‌شد"
+      ]
+    },
+    {
+      "id": "completeness",
+      "name_fa": "کامل بودن",
+      "name_en": "Completeness",
+      "definition": "فاصله در متن مبدأ که باعث عدم وجود محتوا می‌شود",
+      "severity_weight": 1.3,
+      "subtypes": [
+        "فهرست ناکامل",
+        "دستورالعمل ناکامل"
+      ]
+    },
+    {
+      "id": "linguistic_conventions",
+      "name_fa": "قراردادهای زبانی",
+      "name_en": "Linguistic Conventions",
+      "definition": "خطاهای مربوط به صحت زبان شناختی متن",
+      "severity_weight": 0.8,
+      "subtypes": [
+        "دستور زبان",
+        "املا",
+        "نشانه‌گذاری",
+        "حروف بزرگ و کوچک",
+        "واژگانی",
+        "ترتیب کلمات",
+        "کلمات عملکردی",
+        "رمزگذاری نویسه"
+      ]
+    },
+    {
+      "id": "style",
+      "name_fa": "سبک",
+      "name_en": "Style",
+      "definition": "متن از نظر دستور زبان قابل قبول است اما انتخاب واژگان یا عبارات برای زمینه مناسب نیست",
+      "severity_weight": 0.7,
+      "subtypes": [
+        "سبک ناشیانه",
+        "ناهمخوان با اصطلاح",
+        "ناسازگاری سبک",
+        "حوزه کاربرد",
+        "سبک سازمانی",
+        "سبک شخص ثالث"
+      ]
+    }
+  ],
+  "quality_metrics": {
+    "evaluation_word_count": {
+      "abbreviation_fa": "تعداد کلمات ارزیابی",
+      "abbreviation_en": "EWC",
+      "name_fa": "تعداد کلمات ارزیابی",
+      "definition": "تعداد واقعی کلمات در محصول متن مبدأ یا هدف ترجمه",
+      "note": "در فارسی، واحد شمارش کلمه است نه نویسه"
+    },
+    "reference_word_count": {
+      "abbreviation_fa": "تعداد کلمات مرجع",
+      "abbreviation_en": "RWC",
+      "name_fa": "تعداد کلمات مرجع",
+      "definition": "تعداد دلخواه کلمات فرض شده در متن مرجع، معمولاً ۱۰۰۰",
+      "note": "استاندارد برای نرمال‌سازی نمره کیفیت"
+    },
+    "overall_quality_score": {
+      "abbreviation_fa": "نمره کیفیت کلی",
+      "abbreviation_en": "OQS",
+      "name_fa": "نمره کیفیت کلی",
+      "definition": "معیار نهایی کیفیت محاسبه شده از مجموع جریمه‌های نرمال شده",
+      "thresholds": {
+        "excellent": 95,
+        "good": 85,
+        "acceptable": 75,
+        "poor": 60
+      }
+    },
+    "mqm_metric": {
+      "name_fa": "معیار MQM",
+      "name_en": "MQM metric",
+      "definition": "معیار کیفیت ترجمه بر اساس انواع خطای سازگار با MQM",
+      "status": "از سال ۲۰۲۱ در WMT Metrics Shared Task به عنوان 'استاندارد طلایی' ارزیابی کیفیت ترجمه انسانی پذیرفته شده است"
+    }
+  },
+  "severity_levels": {
+    "neutral": {
+      "name_fa": "خنثی",
+      "name_en": "Neutral",
+      "definition": "سطح شدتی برای خطاهایی که با ترجیح ارزیاب متفاوت است اما ترجمه قابل قبول را نشان می‌دهد",
+      "penalty_multiplier": 0
+    },
+    "minor": {
+      "name_fa": "جزئی",
+      "name_en": "Minor",
+      "definition": "سطح شدتی که به طور جدی مانع کاربرد نمی‌شود",
+      "penalty_multiplier": 1,
+      "examples": [
+        "خطای املایی جزئی",
+        "مشکل نشانه‌گذاری جزئی",
+        "عبارت کمی ناشیانه"
+      ]
+    },
+    "major": {
+      "name_fa": "اساسی",
+      "name_en": "Major",
+      "definition": "سطح شدتی که به طور قابل توجهی بر فهم‌پذیری، قابلیت اعتماد یا کاربرد محتوا تأثیر می‌گذارد",
+      "penalty_multiplier": 5,
+      "examples": [
+        "ترجمه نادرست اصطلاح کلیدی",
+        "حذف محتوای مهم",
+        "خطای دستوری جدی"
+      ]
+    },
+    "critical": {
+      "name_fa": "حیاتی",
+      "name_en": "Critical",
+      "definition": "سطح شدتی که کل محتوا را برای استفاده نامناسب می‌کند یا خطر آسیب جدی ایجاد می‌کند",
+      "penalty_multiplier": 10,
+      "examples": [
+        "ترجمه نادرست هشدارهای ایمنی",
+        "نقض انطباق قانونی",
+        "محتوای توهین‌آمیز یا مضر"
+      ]
+    }
+  },
+  "persian_specific_errors": {
+    "ezafe_errors": {
+      "name_fa": "خطاهای اضافه",
+      "name_en": "Ezafe Errors",
+      "definition": "استفاده نادرست از اضافه (ـِ / ـیِ)، که در فارسی نویسه نوشته نمی‌شود اما در تلفظ وجود دارد",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "اضافه یک حرف اضافه است که بین اسم و صفت، اسم و اسم، یا صفت و اسم قرار می‌گیرد",
+      "types": {
+        "missing_ezafe": "فقدان اضافه (مثال نادرست: 'کتاب بزرگ' → صحیح: 'کتابِ بزرگ')",
+        "extra_ezafe": "اضافه زائد (مثال: افزودن اضافه در جایی که نیاز نیست)",
+        "wrong_form": "شکل نادرست اضافه (ـِ vs ـیِ)"
+      },
+      "examples": [
+        "صحیح: کتابِ بزرگ (book-EZAFE big = the big book)",
+        "صحیح: خانه‌یِ پدر (house-EZAFE father = father's house)",
+        "نادرست: کتاب بزرگ (missing ezafe in formal writing)",
+        "نادرست: کتابِ (ezafe without following element)"
+      ],
+      "note": "در نوشتار فارسی معاصر، اضافه اغلب نوشته نمی‌شود، اما در متون رسمی و ادبی باید حفظ شود",
+      "translation_impact": "ترجمه به انگلیسی اغلب نیاز به تبدیل ساخت اضافه به 'of' یا صفت-اسم دارد"
+    },
+    "compound_verb_errors": {
+      "name_fa": "خطاهای فعل مرکب",
+      "name_en": "Compound Verb Errors",
+      "definition": "مشکلات در فعل‌های مرکب فارسی که از یک جزء غیرفعلی + فعل کمکی تشکیل می‌شوند",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "اکثر افعال فارسی مرکب هستند (اسم/صفت + فعل کمکی)",
+      "structure": "جزء اسمی/صفتی + فعل کمکی (کردن، شدن، زدن، etc.)",
+      "types": {
+        "wrong_light_verb": "استفاده از فعل کمکی نادرست",
+        "separated_compound": "جداسازی نادرست اجزای فعل مرکب",
+        "literal_translation": "ترجمه تحت‌اللفظی بدون در نظر گرفتن ماهیت مرکب"
+      },
+      "examples": [
+        "صحیح: کار کردن (work do = to work)",
+        "صحیح: خوب شدن (good become = to get better)",
+        "صحیح: گوش دادن (ear give = to listen)",
+        "نادرست: کار شدن (باید 'کار کردن' باشد)",
+        "نادرست: قبول زدن (باید 'قبول کردن' باشد)"
+      ],
+      "common_compounds": {
+        "با 'کردن'": "کار کردن، صحبت کردن، فکر کردن، نگاه کردن",
+        "با 'شدن'": "خوب شدن، بزرگ شدن، تمام شدن",
+        "با 'زدن'": "حرف زدن، تلفن زدن، قدم زدن",
+        "با 'دادن'": "گوش دادن، نشان دادن، توضیح دادن"
+      },
+      "translation_challenge": "یک فعل مرکب فارسی اغلب به یک فعل ساده انگلیسی ترجمه می‌شود (مثلاً 'گوش دادن' → 'listen')"
+    },
+    "sov_word_order_errors": {
+      "name_fa": "خطاهای ترتیب کلمات فاعل-مفعول-فعل",
+      "name_en": "SOV Word Order Errors",
+      "definition": "مشکلات مربوط به ترتیب کلمات SOV (Subject-Object-Verb) در فارسی",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "فارسی یک زبان SOV است، برخلاف انگلیسی که SVO است",
+      "persian_order": "فاعل + مفعول + فعل",
+      "english_order": "Subject + Verb + Object",
+      "examples": [
+        "فارسی: من کتاب را خواندم (I book-OBJ read-PAST) - SOV",
+        "انگلیسی: I read the book (I read book) - SVO",
+        "فارسی: او غذا می‌خورد (He food eat-PRES) - SOV",
+        "انگلیسی: He eats food (He eats food) - SVO"
+      ],
+      "translation_errors": [
+        "حفظ ترتیب SOV در ترجمه به انگلیسی",
+        "قرار دادن فعل در اول جمله فارسی",
+        "قرار دادن فعل در میانه جمله فارسی (جز در سؤالات)"
+      ],
+      "flexibility": "فارسی انعطاف‌پذیری نسبی در ترتیب کلمات دارد، اما SOV ترتیب پیش‌فرض و طبیعی است"
+    },
+    "formality_register_errors": {
+      "name_fa": "خطاهای سطح رسمیت",
+      "name_en": "Formality Register Errors",
+      "definition": "استفاده نامناسب از سطوح رسمی و غیررسمی زبان فارسی",
+      "category": "style",
+      "severity": "major",
+      "types": {
+        "pronoun_mismatch": "استفاده نادرست از 'تو' (غیررسمی) vs 'شما' (رسمی/جمع)",
+        "verb_form_mismatch": "اشکال فعلی رسمی/غیررسمی نامناسب",
+        "vocabulary_mismatch": "واژگان رسمی در متون غیررسمی یا برعکس"
+      },
+      "examples": {
+        "pronouns": {
+          "informal_singular": "تو (to) - you (singular, informal)",
+          "formal_plural": "شما (shomā) - you (formal/plural)"
+        },
+        "verb_conjugation": {
+          "informal": "می‌خوری (you eat - informal)",
+          "formal": "می‌خورید (you eat - formal/plural)"
+        },
+        "vocabulary": {
+          "informal_word": "خوردن (khordan - to eat, neutral)",
+          "formal_word": "صرف کردن (sarf kardan - to consume, formal)"
+        }
+      },
+      "context_importance": "انتخاب سطح رسمیت به زمینه، مخاطب و نوع متن بستگی دارد"
+    },
+    "object_marking_errors": {
+      "name_fa": "خطاهای نشانه مفعول (را)",
+      "name_en": "Object Marker (rā) Errors",
+      "definition": "استفاده نادرست از نشانه مفعول 'را' در فارسی",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "'را' یک نشانه مفعول است که مفاعیل معین را علامت‌گذاری می‌کند",
+      "usage_rules": {
+        "definite_objects": "با مفاعیل معین استفاده می‌شود",
+        "proper_nouns": "با اسامی خاص",
+        "pronouns": "با ضمایر"
+      },
+      "types": {
+        "missing_ra": "فقدان 'را' با مفعول معین",
+        "extra_ra": "استفاده از 'را' با مفعول نامعین",
+        "wrong_position": "قرار گرفتن 'را' در جای نادرست"
+      },
+      "examples": [
+        "صحیح: کتاب را خواندم (I read the book) - مفعول معین",
+        "صحیح: علی را دیدم (I saw Ali) - اسم خاص",
+        "نادرست: کتاب خواندم (باید: کتاب را خواندم)",
+        "نادرست: یک کتاب را خواندم (باید: یک کتاب خواندم) - مفعول نامعین",
+        "مجاز بدون 'را': کتاب خواندم (I read books / did book-reading) - عمل عام"
+      ],
+      "note": "در گفتار روزمره، 'را' اغلب به 'رو' کوتاه می‌شود"
+    },
+    "arabic_loanword_errors": {
+      "name_fa": "خطاهای واژه‌های عربی",
+      "name_en": "Arabic Loanword Errors",
+      "definition": "مشکلات در استفاده از واژه‌های قرض گرفته شده از عربی در فارسی",
+      "category": "terminology",
+      "severity": "minor_to_major",
+      "description": "فارسی واژگان زیادی از عربی قرض گرفته که باید طبق قواعد فارسی استفاده شوند",
+      "types": {
+        "broken_plurals": "استفاده از جمع‌های مکسر عربی به جای جمع فارسی",
+        "wrong_pronunciation": "تلفظ نادرست واژه‌های عربی",
+        "overly_formal": "استفاده بیش از حد از واژگان عربی رسمی"
+      },
+      "examples": {
+        "singular_to_plural": {
+          "کتاب (book)": "کتاب‌ها (Persian plural) vs کتب (Arabic broken plural)",
+          "معلم (teacher)": "معلم‌ها (Persian) vs معلمین (Arabic)",
+          "preference": "در فارسی معاصر، جمع فارسی (-ها/-ان) ترجیح داده می‌شود"
+        },
+        "formality": {
+          "neutral": "کتاب (book)",
+          "formal_arabic": "مؤلف (author - more formal, Arabic origin)",
+          "persian_alternative": "نویسنده (writer - Persian compound)"
+        }
+      },
+      "style_guide": "در متون غیررسمی و معاصر، معادل‌های فارسی را به واژگان عربی ترجیح دهید"
+    },
+    "verb_conjugation_errors": {
+      "name_fa": "خطاهای صرف فعل",
+      "name_en": "Verb Conjugation Errors",
+      "definition": "اشتباهات در صرف افعال فارسی",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "فعل فارسی دارای بن ماضی و مضارع، پیشوند و پسوند شخص است",
+      "components": {
+        "past_stem": "بن ماضی (e.g., خورد- from خوردن)",
+        "present_stem": "بن مضارع (e.g., خور- from خوردن)",
+        "personal_endings": "پسوندهای شخصی (-م، -ی، -د، -یم، -ید، -ند)",
+        "tense_markers": "نشانه‌های زمان (می-, ب-, خواه-)"
+      },
+      "tenses": {
+        "present": "حال (می- + بن مضارع + پسوند)",
+        "past": "گذشته (بن ماضی + پسوند)",
+        "future": "آینده (خواه- + بن ماضی + پسوند)",
+        "present_perfect": "ماضی نقلی (بن ماضی + ه + پسوند کوپولا)",
+        "subjunctive": "التزامی (ب- + بن مضارع + پسوند)"
+      },
+      "examples": [
+        "حال: می‌خورم (I eat)",
+        "گذشته: خوردم (I ate)",
+        "آینده: خواهم خورد (I will eat)",
+        "ماضی نقلی: خورده‌ام (I have eaten)",
+        "التزامی: بخورم (that I eat / may I eat)"
+      ],
+      "common_errors": [
+        "اشتباه در انتخاب بن (استفاده از بن ماضی برای زمان حال)",
+        "پسوند شخصی نادرست",
+        "فقدان یا استفاده نادرست از پیشوند می- در زمان حال"
+      ]
+    }
+  },
+  "translation_specific_fa": {
+    "idioms_proverbs": {
+      "name_fa": "ضرب‌المثل‌ها و اصطلاحات",
+      "name_en": "Idioms and Proverbs",
+      "definition": "عبارات ثابت فارسی که ترجمه تحت‌اللفظی آنها معنی ندارد",
+      "category": "terminology",
+      "severity": "major",
+      "examples": {
+        "از کوره در رفتن": {
+          "literal": "to go out of the furnace",
+          "idiomatic_meaning": "to get very angry / to lose one's temper",
+          "english_equivalent": "to fly off the handle / to blow one's top"
+        },
+        "گربه رو نشونش دادن": {
+          "literal": "to show someone the cat",
+          "idiomatic_meaning": "to deceive someone / to trick someone",
+          "english_equivalent": "to pull the wool over someone's eyes"
+        },
+        "دست رو کردن": {
+          "literal": "to open one's hand",
+          "idiomatic_meaning": "to be generous / to spend freely"
+        },
+        "آب از آب تکان نخوردن": {
+          "literal": "water not moving from water",
+          "idiomatic_meaning": "nothing suspicious happened / everything is calm",
+          "english_equivalent": "still waters run deep (somewhat similar)"
+        }
+      },
+      "challenge": "اصطلاحات نباید تحت‌اللفظی ترجمه شوند بلکه باید معادل معنایی پیدا شود"
+    },
+    "poetry_classical_references": {
+      "name_fa": "شعر و ارجاعات کلاسیک",
+      "name_en": "Poetry and Classical References",
+      "definition": "ارجاعات به شعر کلاسیک فارسی (حافظ، سعدی، فردوسی، مولانا) در متون معاصر",
+      "category": "style",
+      "severity": "major",
+      "description": "فارسی‌زبانان اغلب از اشعار کلاسیک در گفتار و نوشتار روزمره استفاده می‌کنند",
+      "poets": {
+        "حافظ": "Hafez (14th century) - غزلیات عاشقانه و عارفانه",
+        "سعدی": "Saadi (13th century) - گلستان و بوستان",
+        "فردوسی": "Ferdowsi (10th century) - شاهنامه (حماسه ملی)",
+        "مولانا": "Rumi (13th century) - مثنوی معنوی"
+      },
+      "translation_challenge": "مترجم باید با فرهنگ فارسی آشنا باشد تا ارجاعات ادبی را تشخیص دهد",
+      "example": "عبارت 'صبر کن تا صبح' ممکن است ارجاع به شعر حافظ باشد، نه فقط یک جمله ساده"
+    },
+    "formal_informal_distinction": {
+      "name_fa": "تمایز رسمی-غیررسمی",
+      "name_en": "Formal-Informal Distinction",
+      "definition": "تفاوت‌های قابل توجه بین فارسی رسمی نوشتاری و فارسی محاوره‌ای",
+      "category": "style",
+      "severity": "major",
+      "distinctions": {
+        "pronouns": {
+          "formal": "او، ایشان (he/she, they - formal)",
+          "informal": "اون (he/she - colloquial)"
+        },
+        "verbs": {
+          "formal": "می‌روم (I go - written)",
+          "informal": "میرم (I go - spoken)"
+        },
+        "vocabulary": {
+          "formal": "غذا (food - standard)",
+          "informal": "خوراک (food - more colloquial in some contexts)"
+        }
+      },
+      "translation_impact": "متن باید سطح رسمیت متن مبدأ را حفظ کند"
+    }
+  },
+  "rare_advanced_terms_fa": [
+    {
+      "term_fa": "مضاف و مضاف‌الیه",
+      "term_en": "Ezafe Construction (possessive/attributive)",
+      "definition": "ساختار اضافه که دو اسم یا اسم و صفت را به هم متصل می‌کند",
+      "category": "linguistic_conventions",
+      "example": "کتابِ علی (Ali's book) - کتاب=مضاف، علی=مضاف‌الیه"
+    },
+    {
+      "term_fa": "واژه پیوندی",
+      "term_en": "Conjunctions",
+      "definition": "کلماتی که جملات یا عبارات را به هم وصل می‌کنند",
+      "examples": ["و (and)", "یا (or)", "اما (but)", "چون (because)", "اگر (if)"]
+    },
+    {
+      "term_fa": "پیشوند و پسوند",
+      "term_en": "Prefix and Suffix",
+      "definition": "افزودنی‌هایی که به ابتدا یا انتهای کلمه می‌چسبند",
+      "examples": {
+        "prefix": "نا- (na- = un-/in-): ناممکن (impossible)",
+        "suffix": "-ی (-i = -ness): خوبی (goodness)"
+      }
+    },
+    {
+      "term_fa": "حرف ربط",
+      "term_en": "Conjunction",
+      "definition": "کلماتی مانند 'و'، 'یا'، 'اما' که جملات را به هم وصل می‌کنند",
+      "category": "linguistic_conventions"
+    },
+    {
+      "term_fa": "فعل کمکی",
+      "term_en": "Light Verb / Auxiliary Verb",
+      "definition": "افعالی مانند 'کردن'، 'شدن'، 'زدن' که در فعل‌های مرکب استفاده می‌شوند",
+      "examples": ["کردن (to do/make)", "شدن (to become)", "زدن (to hit/strike)"]
+    }
+  ],
+  "mt_quality_assessment_fa": {
+    "machine_translation_post_editing": {
+      "abbreviation_fa": "MTPE",
+      "name_fa": "ویرایش پس از ترجمه ماشینی",
+      "definition": "فرایند ویرایش دستی خروجی ترجمه ماشینی برای رسیدن به کیفیت قابل استفاده",
+      "quality_levels": {
+        "عالی": "Excellent quality",
+        "خوب": "Good quality",
+        "قابل قبول": "Acceptable quality",
+        "ضعیف": "Poor quality"
+      }
+    },
+    "quality_estimation": {
+      "abbreviation_fa": "QE",
+      "name_fa": "تخمین کیفیت",
+      "definition": "ارزیابی کیفیت ترجمه بدون نیاز به ترجمه مرجع",
+      "methods": {
+        "manual": "ارزیابی دستی - دقیق‌تر اما زمان‌بر",
+        "automatic": "ارزیابی خودکار - سریع‌تر اما کمتر قابل اعتماد"
+      }
+    },
+    "neural_machine_translation": {
+      "abbreviation_fa": "NMT",
+      "name_fa": "ترجمه ماشینی عصبی",
+      "definition": "روش ترجمه ماشینی بر اساس شبکه‌های عصبی عمیق",
+      "note": "NMT روش غالب ترجمه ماشینی شده، برتر از SMT"
+    }
+  }
+}

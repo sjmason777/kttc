@@ -1,0 +1,331 @@
+{
+  "metadata": {
+    "language": "ru",
+    "language_name": "Русский",
+    "glossary_type": "NLP Terms (Russian)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Терминология обработки естественного языка и компьютерной лингвистики",
+    "sources": [
+      "Habr.com NLP терминологический словарь",
+      "NEERC Wiki (Викиконспекты)",
+      "SkillFactory NLP Glossary"
+    ],
+    "total_terms": 55
+  },
+  "core_nlp_ru": {
+    "natural_language_processing": {
+      "term_ru": "Обработка естественного языка",
+      "abbreviation_ru": "ОЕЯ",
+      "abbreviation_en": "NLP",
+      "term_en": "Natural Language Processing",
+      "definition": "Направление машинного обучения, посвященное распознаванию, генерации и обработке устной и письменной человеческой речи",
+      "subfields": [
+        "обработка_текста",
+        "распознавание_речи",
+        "машинный_перевод",
+        "анализ_тональности",
+        "ответы_на_вопросы"
+      ]
+    },
+    "computational_linguistics": {
+      "term_ru": "Компьютерная лингвистика",
+      "term_en": "Computational Linguistics",
+      "definition": "Пересечение машинного обучения и математической лингвистики, изучающее методы анализа и синтеза естественного языка",
+      "relationship": "КЛ фокусируется на лингвистической теории, ОЕЯ - на практических приложениях"
+    },
+    "language_model": {
+      "term_ru": "Языковая модель",
+      "abbreviation_ru": "ЯМ",
+      "abbreviation_en": "LM",
+      "term_en": "Language Model",
+      "definition": "Вероятностная модель, которая назначает вероятности последовательностям слов",
+      "types": {
+        "n_грамма": "Основана на статистике n-грамм",
+        "нейронная": "Основана на нейронных сетях",
+        "трансформер": "Основана на механизмах внимания"
+      }
+    },
+    "large_language_model": {
+      "term_ru": "Большая языковая модель",
+      "abbreviation_ru": "БЯМ",
+      "abbreviation_en": "LLM",
+      "term_en": "Large Language Model",
+      "definition": "Нейросетевая языковая модель с миллиардами-триллионами параметров",
+      "examples": ["GPT-4", "Claude", "Gemini", "YandexGPT", "GigaChat"]
+    }
+  },
+  "text_preprocessing_ru": {
+    "tokenization": {
+      "term_ru": "Токенизация",
+      "term_en": "Tokenization",
+      "definition": "Разбиение текста на токены (слова, предложения)",
+      "russian_specifics": {
+        "challenges": [
+          "дефисные_конструкции (когда-нибудь, кто-то)",
+          "сложные_слова",
+          "аббревиатуры",
+          "энклитики_и_проклитики"
+        ]
+      }
+    },
+    "lemmatization": {
+      "term_ru": "Лемматизация",
+      "term_en": "Lemmatization",
+      "definition": "Приведение слова к его словарной форме (лемме) с учетом морфологии",
+      "russian_example": {
+        "столов_столами_столах": "стол",
+        "хорошего_хорошему": "хороший",
+        "бежал_бегу_бежит": "бежать"
+      },
+      "tools": ["pymorphy2", "mystem", "mawo"]
+    },
+    "stemming": {
+      "term_ru": "Стемминг",
+      "term_en": "Stemming",
+      "definition": "Нахождение основы слова путем последовательного отсечения частей с конца и начала",
+      "russian_algorithms": ["porter_stemmer_ru", "snowball_russian"],
+      "limitation": "Может производить нес лова (читал → чита)"
+    },
+    "stop_words": {
+      "term_ru": "Стоп-слова",
+      "term_en": "Stop Words",
+      "definition": "Слова, фильтруемые перед обработкой, так как вносят малый вклад в общий смысл",
+      "russian_examples": ["в", "и", "на", "с", "по", "для", "не", "что", "это", "быть"]
+    }
+  },
+  "linguistic_analysis_ru": {
+    "pos_tagging": {
+      "term_ru": "Разметка частей речи",
+      "abbreviation_ru": "РЧР",
+      "abbreviation_en": "POS",
+      "term_en": "Part-of-Speech Tagging",
+      "definition": "Присвоение грамматических категорий (существительное, глагол и т.д.) каждому слову",
+      "russian_pos": [
+        "существительное",
+        "прилагательное",
+        "глагол",
+        "наречие",
+        "местоимение",
+        "числительное",
+        "предлог",
+        "союз",
+        "частица",
+        "междометие"
+      ],
+      "tagsets": ["OpenCorpora", "Universal Dependencies Russian"]
+    },
+    "named_entity_recognition": {
+      "term_ru": "Распознавание именованных сущностей",
+      "abbreviation_ru": "РИС",
+      "abbreviation_en": "NER",
+      "term_en": "Named Entity Recognition",
+      "definition": "Выделение имен, организаций, локаций и других сущностей",
+      "entity_types_ru": [
+        "ПЕРСОНА",
+        "ОРГАНИЗАЦИЯ",
+        "ЛОКАЦИЯ",
+        "ДАТА",
+        "ВРЕМЯ",
+        "ДЕНЬГИ",
+        "ПРОЦЕНТ"
+      ],
+      "russian_challenges": [
+        "склонение_имен (Иван → Ивана → Ивану)",
+        "сложные_фамилии",
+        "аббревиатуры_организаций (МГУ, РАН)"
+      ]
+    },
+    "dependency_parsing": {
+      "term_ru": "Синтаксический анализ зависимостей",
+      "term_en": "Dependency Parsing",
+      "definition": "Анализ грамматической структуры путем выявления зависимостей между словами",
+      "russian_relations": [
+        "nsubj (подлежащее)",
+        "obj (дополнение)",
+        "iobj (косвенное дополнение)",
+        "obl (обстоятельство)",
+        "amod (определение)",
+        "advmod (обстоятельственный модификатор)"
+      ]
+    }
+  },
+  "semantic_analysis_ru": {
+    "word_embeddings": {
+      "term_ru": "Векторные представления слов",
+      "term_en": "Word Embeddings",
+      "definition": "Плотные векторные представления слов, захватывающие семантическое значение",
+      "russian_models": {
+        "ruscorpora_upos_skipgram": "word2vec для русского",
+        "rubert": "BERT для русского языка",
+        "rugpt": "GPT для русского языка"
+      },
+      "properties": "король - мужчина + женщина ≈ королева"
+    },
+    "sentiment_analysis": {
+      "term_ru": "Анализ тональности",
+      "alternative_ru": "Анализ настроений",
+      "term_en": "Sentiment Analysis",
+      "definition": "Определение эмоциональной окраски текста",
+      "russian_challenges": [
+        "отрицание_меняет_тональность",
+        "ирония_и_сарказм",
+        "контекстная_зависимость"
+      ],
+      "levels": ["документ", "предложение", "аспект"]
+    }
+  },
+  "machine_translation_ru": {
+    "machine_translation": {
+      "term_ru": "Машинный перевод",
+      "abbreviation_ru": "МП",
+      "abbreviation_en": "MT",
+      "term_en": "Machine Translation",
+      "definition": "Автоматический перевод текста с одного языка на другой",
+      "approaches": {
+        "rule_based": "Основанный на правилах (RBMT)",
+        "statistical": "Статистический (SMT)",
+        "neural": "Нейронный (NMT)"
+      }
+    },
+    "neural_machine_translation": {
+      "term_ru": "Нейронный машинный перевод",
+      "abbreviation_ru": "НМП",
+      "abbreviation_en": "NMT",
+      "term_en": "Neural Machine Translation",
+      "definition": "Машинный перевод на основе глубоких нейронных сетей (encoder-decoder, transformer)",
+      "russian_systems": ["Яндекс.Переводчик", "Google Translate", "DeepL"]
+    },
+    "post_editing": {
+      "term_ru": "Постредактирование",
+      "abbreviation_ru": "ПР",
+      "abbreviation_en": "PE",
+      "term_en": "Post-Editing",
+      "definition": "Редактирование машинного перевода человеком",
+      "types": {
+        "легкое": "Минимальные правки для понимания",
+        "полное": "Доведение до публикационного качества"
+      }
+    }
+  },
+  "corpus_linguistics_ru": {
+    "corpus": {
+      "term_ru": "Корпус",
+      "term_en": "Corpus",
+      "definition": "Большой массив текстов с разметкой",
+      "russian_corpora": {
+        "НКРЯ": "Национальный корпус русского языка (ruscorpora.ru)",
+        "OpenCorpora": "Открытый корпус русского языка",
+        "Taiga": "Корпус интернет-текстов"
+      }
+    },
+    "annotation": {
+      "term_ru": "Разметка / Аннотация",
+      "term_en": "Annotation",
+      "definition": "Лингвистическая информация, добавленная к тексту",
+      "types": [
+        "морфологическая",
+        "синтаксическая",
+        "семантическая",
+        "дискурсивная"
+      ]
+    },
+    "collocation": {
+      "term_ru": "Коллокация",
+      "term_en": "Collocation",
+      "definition": "Устойчивое сочетание слов",
+      "russian_examples": [
+        "сильный дождь (не *мощный дождь)",
+        "крепкий чай (не *сильный чай)",
+        "закадычный друг"
+      ],
+      "detection": "статистические методы"
+    },
+    "concordance": {
+      "term_ru": "Конкорданс",
+      "term_en": "Concordance",
+      "definition": "Список вхождений слова с контекстом",
+      "format": "KWIC (Ключевое слово в контексте)",
+      "usage": "изучение употребления слов, поиск коллокаций"
+    },
+    "frequency": {
+      "term_ru": "Частотность",
+      "term_en": "Frequency",
+      "definition": "Статистическая характеристика употребления слова",
+      "note": "Слова средней частотности: несколько раз на миллион слов"
+    }
+  },
+  "advanced_nlp_ru": {
+    "transfer_learning": {
+      "term_ru": "Трансферное обучение",
+      "term_en": "Transfer Learning",
+      "definition": "Использование модели, обученной на одной задаче, как стартовой точки для другой задачи",
+      "in_nlp": "Предобучение на большом корпусе, дообучение на конкретной задаче"
+    },
+    "fine_tuning": {
+      "term_ru": "Дообучение / Тонкая настройка",
+      "term_en": "Fine-Tuning",
+      "definition": "Адаптация предобученной модели к конкретной задаче или домену"
+    },
+    "zero_shot": {
+      "term_ru": "Обучение с нуля примеров",
+      "term_en": "Zero-Shot Learning",
+      "definition": "Модель выполняет задачу без примеров обучения для этой задачи",
+      "mechanism": "Использует знания из предобучения и описание задачи"
+    },
+    "few_shot": {
+      "term_ru": "Обучение с малым количеством примеров",
+      "term_en": "Few-Shot Learning",
+      "definition": "Модель учится на небольшом количестве примеров",
+      "typical_range": "1-10 примеров"
+    }
+  },
+  "evaluation_metrics_ru": {
+    "bleu": {
+      "term_ru": "BLEU",
+      "full_name_en": "Bilingual Evaluation Understudy",
+      "definition": "Метрика для оценки качества машинного перевода путем сравнения совпадения n-грамм с эталонными переводами",
+      "range": "0 до 1 (или 0 до 100)",
+      "limitation": "Плохо захватывает семантическую схожесть"
+    },
+    "perplexity": {
+      "term_ru": "Перплексия / Недоумение",
+      "term_en": "Perplexity",
+      "definition": "Мера того, насколько хорошо языковая модель предсказывает выборку",
+      "interpretation": "Ниже - лучше"
+    }
+  },
+  "russian_nlp_tools": {
+    "pymorphy2": {
+      "description": "Морфологический анализатор для русского языка",
+      "capabilities": [
+        "лемматизация",
+        "определение_части_речи",
+        "склонение_и_спряжение",
+        "определение_рода_числа_падежа"
+      ]
+    },
+    "mystem": {
+      "description": "Морфологический анализатор от Яндекса",
+      "capabilities": ["лемматизация", "POS_tagging", "снятие_омонимии"]
+    },
+    "mawo": {
+      "full_name": "Mawo Core",
+      "description": "Современный морфологический анализатор для русского языка",
+      "capabilities": [
+        "морфология",
+        "токенизация",
+        "NER",
+        "сегментация_предложений"
+      ]
+    },
+    "natasha": {
+      "description": "Библиотека для извлечения структурированной информации из текстов на русском языке",
+      "capabilities": ["NER", "извлечение_фактов", "нормализация"]
+    },
+    "spacy_ru": {
+      "description": "Русская модель для spaCy",
+      "capabilities": ["токенизация", "POS", "NER", "dependency_parsing"]
+    }
+  }
+}

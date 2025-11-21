@@ -1,0 +1,506 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "MQM Core (Hindi)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "MQM (बहुआयामी गुणवत्ता मेट्रिक्स) - हिन्दी अनुवाद गुणवत्ता मूल्यांकन शब्दावली",
+    "sources": [
+      "W3C MQM Community Group",
+      "CSTT (वैज्ञानिक तथा तकनीकी शब्दावली आयोग) - Commission for Scientific and Technical Terminology, Govt of India",
+      "हिन्दी विकिपीडिया (Hindi Wikipedia)",
+      "Central Hindi Directorate (केन्द्रीय हिन्दी निदेशालय)",
+      "Hindi Computational Linguistics Research"
+    ],
+    "total_terms": 75
+  },
+  "error_dimensions": [
+    {
+      "id": "terminology",
+      "name_hi": "शब्दावली",
+      "name_en": "Terminology",
+      "definition": "जब शब्दावली मानक डोमेन या संगठनात्मक शब्दावली मानकों के अनुरूप नहीं होती है",
+      "severity_weight": 1.0,
+      "subtypes": [
+        "शब्दावली संसाधन असंगति",
+        "शब्दावली उपयोग असंगति",
+        "गलत शब्दावली",
+        "शब्दावली संयोजन"
+      ]
+    },
+    {
+      "id": "accuracy",
+      "name_hi": "सटीकता",
+      "name_en": "Accuracy",
+      "definition": "जब लक्ष्य पाठ स्रोत पाठ की प्रस्तावनात्मक सामग्री से मेल नहीं खाता",
+      "severity_weight": 1.5,
+      "subtypes": [
+        "गलत अनुवाद",
+        "लोप (छूटना)",
+        "योग (अतिरिक्त)",
+        "अति-अनुवाद",
+        "अल्प-अनुवाद",
+        "मशीन अनुवाद मतिभ्रम",
+        "झूठे मित्र",
+        "अनुवादित नहीं",
+        "अनुवाद नहीं होना चाहिए था"
+      ]
+    },
+    {
+      "id": "completeness",
+      "name_hi": "पूर्णता",
+      "name_en": "Completeness",
+      "definition": "स्रोत पाठ में अंतराल जो सामग्री को अनुपस्थित बनाता है",
+      "severity_weight": 1.3,
+      "subtypes": [
+        "अधूरी सूची",
+        "अधूरी प्रक्रिया"
+      ]
+    },
+    {
+      "id": "linguistic_conventions",
+      "name_hi": "भाषाई परंपराएँ",
+      "name_en": "Linguistic Conventions",
+      "definition": "पाठ की भाषाई शुद्धता से संबंधित त्रुटियाँ",
+      "severity_weight": 0.8,
+      "subtypes": [
+        "व्याकरण",
+        "वर्तनी",
+        "विराम चिह्न",
+        "बड़े-छोटे अक्षर",
+        "शाब्दिक",
+        "शब्द क्रम",
+        "कार्यात्मक शब्द",
+        "वर्ण एन्कोडिंग"
+      ]
+    },
+    {
+      "id": "style",
+      "name_hi": "शैली",
+      "name_en": "Style",
+      "definition": "पाठ व्याकरणिक रूप से स्वीकार्य है लेकिन शब्दावली या वाक्यांश चयन संदर्भ के लिए उपयुक्त नहीं है",
+      "severity_weight": 0.7,
+      "subtypes": [
+        "अनाड़ी शैली",
+        "मुहावरेदार नहीं",
+        "शैली असंगति",
+        "रजिस्टर",
+        "संगठनात्मक शैली",
+        "तृतीय-पक्ष शैली"
+      ]
+    }
+  ],
+  "quality_metrics": {
+    "evaluation_word_count": {
+      "abbreviation_hi": "मूल्यांकन शब्द गणना",
+      "abbreviation_en": "EWC",
+      "name_hi": "मूल्यांकन शब्द गणना",
+      "definition": "अनुवाद स्रोत या लक्ष्य पाठ उत्पाद में वास्तविक शब्द गणना",
+      "note": "हिन्दी में, शब्द गणना आमतौर पर रिक्त स्थान से विभाजित इकाइयों पर आधारित होती है"
+    },
+    "reference_word_count": {
+      "abbreviation_hi": "संदर्भ शब्द गणना",
+      "abbreviation_en": "RWC",
+      "name_hi": "संदर्भ शब्द गणना",
+      "definition": "संदर्भ पाठ में मानी गई मनमानी शब्द गणना, आमतौर पर 1000",
+      "note": "गुणवत्ता स्कोर को सामान्यीकृत करने के लिए मानक"
+    },
+    "overall_quality_score": {
+      "abbreviation_hi": "समग्र गुणवत्ता स्कोर",
+      "abbreviation_en": "OQS",
+      "name_hi": "समग्र गुणवत्ता स्कोर",
+      "definition": "सामान्यीकृत दंड और अधिकतम स्कोर मूल्य से गणना की गई अंतिम गुणवत्ता माप",
+      "thresholds": {
+        "excellent": 95,
+        "good": 85,
+        "acceptable": 75,
+        "poor": 60
+      }
+    },
+    "mqm_metric": {
+      "name_hi": "MQM मेट्रिक",
+      "name_en": "MQM metric",
+      "definition": "MQM-संगत त्रुटि प्रकारों पर आधारित अनुवाद गुणवत्ता मेट्रिक",
+      "status": "2021 से WMT मेट्रिक्स शेयर्ड टास्क में मानव अनुवाद गुणवत्ता मूल्यांकन के 'गोल्ड स्टैंडर्ड' के रूप में अपनाया गया"
+    }
+  },
+  "severity_levels": {
+    "neutral": {
+      "name_hi": "तटस्थ",
+      "name_en": "Neutral",
+      "definition": "त्रुटियों के लिए गंभीरता स्तर जो मूल्यांकनकर्ता की प्राथमिकता से भिन्न है लेकिन स्वीकार्य अनुवाद का प्रतिनिधित्व करता है",
+      "penalty_multiplier": 0
+    },
+    "minor": {
+      "name_hi": "मामूली",
+      "name_en": "Minor",
+      "definition": "गंभीरता स्तर जो उपयोगिता को गंभीर रूप से बाधित नहीं करता",
+      "penalty_multiplier": 1,
+      "examples": [
+        "मामूली वर्तनी त्रुटि",
+        "मामूली विराम चिह्न समस्या",
+        "थोड़ा अनाड़ी शब्दांकन"
+      ]
+    },
+    "major": {
+      "name_hi": "प्रमुख",
+      "name_en": "Major",
+      "definition": "गंभीरता स्तर जो सामग्री की समझ, विश्वसनीयता या उपयोगिता को महत्वपूर्ण रूप से प्रभावित करता है",
+      "penalty_multiplier": 5,
+      "examples": [
+        "प्रमुख शब्द का गलत अनुवाद",
+        "महत्वपूर्ण सामग्री का लोप",
+        "गंभीर व्याकरण त्रुटि"
+      ]
+    },
+    "critical": {
+      "name_hi": "गंभीर",
+      "name_en": "Critical",
+      "definition": "गंभीरता स्तर जो संपूर्ण सामग्री को उपयोग के लिए अनुपयुक्त बनाता है या गंभीर जोखिम पैदा करता है",
+      "penalty_multiplier": 10,
+      "examples": [
+        "सुरक्षा चेतावनी का गलत अनुवाद",
+        "कानूनी अनुपालन उल्लंघन",
+        "आपत्तिजनक या हानिकारक सामग्री"
+      ]
+    }
+  },
+  "hindi_specific_errors": {
+    "case_marking_errors": {
+      "name_hi": "कारक चिह्न त्रुटियाँ",
+      "name_en": "Case Marking Errors",
+      "definition": "परसर्ग (postpositions) और कारक चिह्नों का गलत उपयोग",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "हिन्दी में 8 कारक हैं जो परसर्गों के साथ चिह्नित होते हैं",
+      "cases": [
+        "कर्ता कारक (Nominative) - ने (ergative marker)",
+        "कर्म कारक (Accusative) - को",
+        "करण कारक (Instrumental) - से",
+        "संप्रदान कारक (Dative) - को, के लिए",
+        "अपादान कारक (Ablative) - से",
+        "संबंध कारक (Genitive) - का/की/के",
+        "अधिकरण कारक (Locative) - में, पर",
+        "संबोधन कारक (Vocative) - हे, अरे"
+      ],
+      "types": {
+        "wrong_postposition": "गलत परसर्ग (e.g., 'को' की जगह 'से')",
+        "missing_postposition": "परसर्ग गायब",
+        "ergative_error": "कर्ता कारक 'ने' का गलत उपयोग"
+      },
+      "examples": [
+        "सही: राम ने किताब पढ़ी (Ram-ERG book-FEM read-FEM.PAST)",
+        "गलत: राम किताब पढ़ा (missing ergative 'ने', wrong verb agreement)",
+        "सही: मैं स्कूल को जाता हूँ (I to school go)",
+        "गलत: मैं स्कूल में जाता हूँ (wrong postposition for 'go to')"
+      ],
+      "note": "'ने' का उपयोग सकर्मक क्रियाओं के साथ पूर्ण भूतकाल में किया जाता है (ergative pattern)"
+    },
+    "gender_agreement_errors": {
+      "name_hi": "लिंग सामंजस्य त्रुटियाँ",
+      "name_en": "Gender Agreement Errors",
+      "definition": "संज्ञा, विशेषण, और क्रिया के लिंग में असंगति",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "हिन्दी में दो लिंग हैं: पुल्लिंग और स्त्रीलिंग",
+      "genders": {
+        "masculine": "पुल्लिंग (लड़का, घर, पेड़)",
+        "feminine": "स्त्रीलिंग (लड़की, किताब, मेज़)"
+      },
+      "agreement_required": [
+        "विशेषण-संज्ञा सामंजस्य",
+        "क्रिया-कर्ता सामंजस्य",
+        "क्रिया-कर्म सामंजस्य (ergative constructions में)"
+      ],
+      "examples": [
+        "सही: अच्छा लड़का (good-MASC boy-MASC)",
+        "गलत: अच्छी लड़का (good-FEM boy-MASC)",
+        "सही: लड़का गया (boy-MASC went-MASC)",
+        "गलत: लड़का गई (boy-MASC went-FEM)",
+        "सही: लड़की ने किताब पढ़ी (girl-ERG book-FEM read-FEM)",
+        "गलत: लड़की ने किताब पढ़ा (wrong verb agreement with object)"
+      ],
+      "challenge": "संज्ञा का लिंग अक्सर अप्रत्याशित होता है और याद रखना पड़ता है"
+    },
+    "honorific_errors": {
+      "name_hi": "सम्मानसूचक त्रुटियाँ",
+      "name_en": "Honorific Errors",
+      "definition": "सम्मान के स्तरों (आप/तुम/तू) और संबंधित क्रिया रूपों का गलत उपयोग",
+      "category": "style",
+      "severity": "major",
+      "description": "हिन्दी में तीन स्तर के सर्वनाम हैं जो सम्मान दर्शाते हैं",
+      "honorific_levels": {
+        "आप": "सम्मानसूचक (आप, वे) - आप जाते हैं",
+        "तुम": "साधारण (तुम) - तुम जाते हो",
+        "तू": "अनौपचारिक/अपमानजनक (तू) - तू जाता है"
+      },
+      "verb_agreement": {
+        "आप": "बहुवचन क्रिया रूप (आप जाते हैं, आप हैं)",
+        "तुम": "मध्यम रूप (तुम जाते हो, तुम हो)",
+        "तू": "एकवचन रूप (तू जाता है, तू है)"
+      },
+      "examples": [
+        "सही: आप कहाँ जाते हैं? (Where are you going? - honorific)",
+        "गलत: आप कहाँ जाता है? (wrong verb agreement)",
+        "सही: तुम क्या कर रहे हो? (What are you doing? - informal)",
+        "गलत: तुम क्या कर रहे हैं? (mixing honorific and informal)"
+      ],
+      "social_importance": "गलत सम्मान स्तर का उपयोग सामाजिक रूप से अपमानजनक हो सकता है"
+    },
+    "compound_verb_errors": {
+      "name_hi": "संयुक्त क्रिया त्रुटियाँ",
+      "name_en": "Compound Verb Errors",
+      "definition": "संयुक्त क्रियाओं (मुख्य क्रिया + सहायक क्रिया) का गलत निर्माण",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "हिन्दी संयुक्त क्रियाओं का व्यापक उपयोग करती है जो पहलू और दिशा दर्शाते हैं",
+      "structure": "मुख्य क्रिया (stem) + सहायक क्रिया",
+      "common_auxiliaries": {
+        "देना": "दूसरे के लिए कार्य (e.g., पढ़ देना - to read for someone)",
+        "लेना": "अपने लिए कार्य (e.g., पढ़ लेना - to read for oneself)",
+        "जाना": "पूर्णता/दूर (e.g., चला जाना - to go away)",
+        "आना": "निकटता/यहाँ (e.g., आ जाना - to come here)",
+        "रहना": "निरंतरता (e.g., बैठा रहना - to keep sitting)",
+        "डालना": "अचानकपन (e.g., कह डालना - to blurt out)"
+      },
+      "examples": [
+        "सही: मैंने किताब पढ़ ली (I read the book - for myself)",
+        "सही: मैंने उसे किताब पढ़ दी (I read the book to him/her)",
+        "सही: वह चला गया (He went away)",
+        "गलत: वह चला दिया (wrong auxiliary for intransitive verb)"
+      ],
+      "semantic_importance": "सहायक क्रिया का चयन अर्थ बदल देता है"
+    },
+    "devanagari_script_errors": {
+      "name_hi": "देवनागरी लिपि त्रुटियाँ",
+      "name_en": "Devanagari Script Errors",
+      "definition": "देवनागरी लेखन में त्रुटियाँ",
+      "category": "linguistic_conventions",
+      "severity": "minor_to_major",
+      "types": {
+        "matra_errors": "मात्रा त्रुटियाँ (vowel diacritic errors)",
+        "conjunct_errors": "संयुक्ताक्षर त्रुटियाँ (consonant cluster errors)",
+        "halant_errors": "हलन्त (virama) गलत उपयोग",
+        "nuqta_errors": "नुक़्ता (dot) उपयोग (उर्दू/अरबी शब्दों में)"
+      },
+      "examples": {
+        "matra": "गलत: पानी की जगह पनी (missing matra)",
+        "conjunct": "गलत: विद्या की जगह विदया (wrong conjunct)",
+        "halant": "गलत: विद्यालय की जगह विदयालय"
+      },
+      "note": "देवनागरी में मात्राओं और संयुक्ताक्षरों का सही उपयोग आवश्यक है"
+    },
+    "hinglish_code_mixing_errors": {
+      "name_hi": "हिंग्लिश/कोड-मिक्सिंग त्रुटियाँ",
+      "name_en": "Hinglish / Code-Mixing Errors",
+      "definition": "हिन्दी और अंग्रेज़ी के अनुचित मिश्रण से संबंधित मुद्दे",
+      "category": "style",
+      "severity": "minor_to_major",
+      "description": "भारत में हिन्दी-अंग्रेज़ी कोड-मिक्सिंग आम है, लेकिन औपचारिक अनुवाद में अनुपयुक्त हो सकता है",
+      "issues": [
+        "औपचारिक पाठ में अनावश्यक अंग्रेज़ी शब्द",
+        "जब हिन्दी समकक्ष मौजूद हो तो अंग्रेज़ी शब्दों का उपयोग",
+        "अंग्रेज़ी और हिन्दी व्याकरण का मिश्रण"
+      ],
+      "examples": [
+        "Hinglish: मैं market जा रहा हूँ",
+        "Pure Hindi: मैं बाज़ार जा रहा हूँ",
+        "Hinglish: यह very important है",
+        "Pure Hindi: यह बहुत महत्वपूर्ण है"
+      ],
+      "context_dependent": "कोड-मिक्सिंग की स्वीकार्यता संदर्भ पर निर्भर करती है (अनौपचारिक vs औपचारिक)"
+    },
+    "tense_aspect_errors": {
+      "name_hi": "काल और पहलू त्रुटियाँ",
+      "name_en": "Tense and Aspect Errors",
+      "definition": "हिन्दी क्रिया प्रणाली में काल और पहलू का गलत उपयोग",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "हिन्दी में जटिल काल-पहलू प्रणाली है",
+      "tenses": [
+        "वर्तमान (Present)",
+        "भूत (Past)",
+        "भविष्य (Future)"
+      ],
+      "aspects": [
+        "पूर्ण (Perfective)",
+        "अपूर्ण (Imperfective)",
+        "आदतन (Habitual)",
+        "प्रगतिशील (Progressive)"
+      ],
+      "examples": [
+        "Simple present: मैं जाता हूँ (I go - habitual)",
+        "Present progressive: मैं जा रहा हूँ (I am going - ongoing)",
+        "Simple past: मैं गया (I went)",
+        "Past perfective: मैं जा चुका हूँ (I have gone)",
+        "Future: मैं जाऊँगा (I will go)"
+      ],
+      "common_error": "अंग्रेज़ी tenses को सीधे हिन्दी में मैप करना गलत हो सकता है"
+    },
+    "word_order_errors": {
+      "name_hi": "शब्द क्रम त्रुटियाँ",
+      "name_en": "Word Order Errors",
+      "definition": "हिन्दी SOV शब्द क्रम का उल्लंघन",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "description": "हिन्दी Subject-Object-Verb (SOV) भाषा है",
+      "basic_order": "कर्ता + कर्म + क्रिया",
+      "examples": [
+        "सही: राम ने किताब पढ़ी (Ram-ERG book-FEM read-FEM) - SOV",
+        "अंग्रेज़ी: Ram read the book (SVO)",
+        "सही: मैं खाना खाता हूँ (I food eat) - SOV",
+        "गलत: मैं खाता हूँ खाना (I eat food - SVO, unnatural)"
+      ],
+      "flexibility": "हिन्दी में शब्द क्रम में कुछ लचीलापन है, लेकिन SOV सामान्य है",
+      "note": "अंग्रेज़ी SVO से अनुवाद करते समय शब्द क्रम बदलना आवश्यक है"
+    }
+  },
+  "translation_specific_hi": {
+    "idioms_proverbs": {
+      "name_hi": "मुहावरे और कहावतें",
+      "name_en": "Idioms and Proverbs",
+      "definition": "हिन्दी मुहावरे और कहावतें जिनका शाब्दिक अनुवाद अर्थ नहीं रखता",
+      "category": "terminology",
+      "severity": "major",
+      "examples": {
+        "अंधे की लाठी": {
+          "literal": "stick of the blind",
+          "meaning": "sole support / only hope",
+          "usage": "वह अपने माता-पिता की अंधे की लाठी है"
+        },
+        "आसमान से गिरा, खजूर में अटका": {
+          "literal": "fell from sky, stuck in date palm",
+          "meaning": "out of the frying pan into the fire",
+          "usage": "नौकरी छोड़ी और बीमार पड़ गए - आसमान से गिरे, खजूर में अटके"
+        },
+        "दूध का दूध, पानी का पानी": {
+          "literal": "milk as milk, water as water",
+          "meaning": "to separate right from wrong / to do justice",
+          "usage": "न्यायाधीश ने दूध का दूध, पानी का पानी कर दिया"
+        },
+        "हाथी के दाँत खाने के और, दिखाने के और": {
+          "literal": "elephant has teeth for eating and teeth for showing",
+          "meaning": "actions differ from words / hypocrisy",
+          "usage": "राजनेताओं के हाथी के दाँत होते हैं"
+        }
+      },
+      "challenge": "मुहावरों का सांस्कृतिक संदर्भ समझना और समकक्ष ढूँढना कठिन है"
+    },
+    "sanskrit_influence": {
+      "name_hi": "संस्कृत प्रभाव",
+      "name_en": "Sanskrit Influence",
+      "definition": "औपचारिक हिन्दी में संस्कृत शब्दावली और संरचनाओं का उपयोग",
+      "category": "style",
+      "severity": "minor",
+      "description": "हिन्दी पर संस्कृत का गहरा प्रभाव है, विशेष रूप से औपचारिक/साहित्यिक भाषा में",
+      "vocabulary_levels": {
+        "तत्सम": "सीधे संस्कृत से (e.g., सूर्य, चन्द्र, जल)",
+        "तद्भव": "संस्कृत से विकसित (e.g., सूरज, चाँद, पानी)",
+        "देशज": "स्वदेशी हिन्दी (e.g., लोटा, पगड़ी)",
+        "विदेशी": "अरबी, फ़ारसी, अंग्रेज़ी से (e.g., किताब, मेज़, स्कूल)"
+      },
+      "formality": "तत्सम शब्द अधिक औपचारिक, तद्भव अधिक बोलचाल के",
+      "examples": {
+        "formal": "जल (water - Sanskrit)",
+        "informal": "पानी (water - evolved)",
+        "formal": "वायु (air - Sanskrit)",
+        "informal": "हवा (air - Perso-Arabic)"
+      }
+    },
+    "register_variation": {
+      "name_hi": "रजिस्टर विविधता",
+      "name_en": "Register Variation",
+      "definition": "औपचारिक और अनौपचारिक हिन्दी के बीच अंतर",
+      "category": "style",
+      "severity": "major",
+      "formal_informal": {
+        "pronouns": {
+          "formal": "आप (you - honorific)",
+          "informal": "तुम, तू (you - informal)"
+        },
+        "vocabulary": {
+          "formal": "भोजन (meal - Sanskrit)",
+          "informal": "खाना (food - common)"
+        },
+        "sentence_structure": {
+          "formal": "लंबे, जटिल वाक्य",
+          "informal": "छोटे, सरल वाक्य"
+        }
+      }
+    }
+  },
+  "rare_advanced_terms_hi": [
+    {
+      "term_hi": "परसर्ग",
+      "term_en": "Postposition",
+      "definition": "संज्ञा के बाद आने वाले कार्यात्मक शब्द जो केस संबंध दर्शाते हैं",
+      "category": "linguistic_conventions",
+      "examples": ["ने, को, से, में, पर, का/की/के"]
+    },
+    {
+      "term_hi": "सकर्मक क्रिया",
+      "term_en": "Transitive Verb",
+      "definition": "क्रिया जिसमें कर्म की आवश्यकता होती है",
+      "examples": ["पढ़ना, खाना, देखना"]
+    },
+    {
+      "term_hi": "अकर्मक क्रिया",
+      "term_en": "Intransitive Verb",
+      "definition": "क्रिया जिसमें कर्म की आवश्यकता नहीं होती",
+      "examples": ["जाना, आना, सोना"]
+    },
+    {
+      "term_hi": "कर्तृवाच्य",
+      "term_en": "Active Voice",
+      "definition": "वाक्य जहाँ कर्ता क्रिया करता है",
+      "example": "राम ने किताब पढ़ी"
+    },
+    {
+      "term_hi": "कर्मवाच्य",
+      "term_en": "Passive Voice",
+      "definition": "वाक्य जहाँ कर्म पर जोर है",
+      "example": "राम द्वारा किताब पढ़ी गई"
+    },
+    {
+      "term_hi": "समास",
+      "term_en": "Compound Word",
+      "definition": "दो या अधिक शब्दों से बना एक शब्द",
+      "types": ["तत्पुरुष, द्वंद्व, कर्मधारय, द्विगु, बहुव्रीहि, अव्ययीभाव"]
+    },
+    {
+      "term_hi": "सर्वनाम",
+      "term_en": "Pronoun",
+      "definition": "संज्ञा के स्थान पर प्रयुक्त शब्द",
+      "types": ["पुरुषवाचक, निश्चयवाचक, अनिश्चयवाचक, प्रश्नवाचक, संबंधवाचक, निजवाचक"]
+    }
+  ],
+  "mt_quality_assessment_hi": {
+    "machine_translation_post_editing": {
+      "abbreviation_hi": "MTPE",
+      "name_hi": "मशीन अनुवाद के बाद संपादन",
+      "definition": "मशीन अनुवाद आउटपुट का मैनुअल संपादन",
+      "quality_levels": {
+        "उत्कृष्ट": "Excellent quality",
+        "अच्छा": "Good quality",
+        "स्वीकार्य": "Acceptable quality",
+        "खराब": "Poor quality"
+      }
+    },
+    "quality_estimation": {
+      "abbreviation_hi": "QE",
+      "name_hi": "गुणवत्ता अनुमान",
+      "definition": "संदर्भ अनुवाद के बिना गुणवत्ता का आकलन",
+      "methods": {
+        "manual": "मैनुअल मूल्यांकन - अधिक सटीक लेकिन समय लेने वाला",
+        "automatic": "स्वचालित मूल्यांकन - तेज़ लेकिन कम विश्वसनीय"
+      }
+    },
+    "neural_machine_translation": {
+      "abbreviation_hi": "NMT",
+      "name_hi": "न्यूरल मशीन अनुवाद",
+      "definition": "गहरे न्यूरल नेटवर्क पर आधारित मशीन अनुवाद",
+      "note": "NMT प्रमुख मशीन अनुवाद विधि बन गई है, SMT से बेहतर"
+    }
+  }
+}

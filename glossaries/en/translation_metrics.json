@@ -1,0 +1,552 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Translation Quality Metrics and Evaluation Methods",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Comprehensive glossary of automated and human translation quality metrics including BLEU, COMET, TER, and evaluation methodologies",
+    "sources": [
+      "ACL Anthology 2024-2025 - Translation Evaluation Papers",
+      "COLING 2025 - Machine Translation Research",
+      "EMNLP 2024 - Findings on Translation Evaluation",
+      "WMT (Workshop on Machine Translation) 2024 Shared Tasks",
+      "ISO 5060:2024 Translation Quality Standard"
+    ],
+    "total_terms": 32,
+    "usage": "Reference for translation evaluation, benchmarking, and quality assessment"
+  },
+  "evaluation_overview": {
+    "definition": "Translation quality evaluation measures how well a translation preserves source meaning and reads naturally in target language",
+    "dimensions": ["Accuracy/Adequacy", "Fluency", "Terminology", "Style", "Overall Quality"],
+    "approaches": {
+      "human_evaluation": "Gold standard but expensive and time-consuming",
+      "automated_metrics": "Fast, reproducible, but imperfect correlation with human judgment",
+      "hybrid_approaches": "Combine automated metrics with human validation"
+    },
+    "challenges": [
+      "Multiple valid translations for same source",
+      "Subjectivity in quality judgments",
+      "Context-dependent appropriateness",
+      "Language-pair specific phenomena",
+      "Idiomatic vs literal translation tradeoffs"
+    ]
+  },
+  "core_concepts": {
+    "adequacy": {
+      "term": "Adequacy",
+      "definition": "Degree to which translation preserves the meaning and information of the source text",
+      "focus": "Content preservation, completeness, accuracy",
+      "scale": "Typically 1-5 scale (1=none, 5=all)",
+      "evaluation": "How much of source meaning is conveyed in target?",
+      "examples": [
+        {
+          "rating": 5,
+          "description": "All source meaning preserved perfectly"
+        },
+        {
+          "rating": 3,
+          "description": "Most meaning preserved, some omissions"
+        },
+        {
+          "rating": 1,
+          "description": "Little or no meaning preserved"
+        }
+      ],
+      "related_terms": ["accuracy", "fidelity", "semantic equivalence"]
+    },
+    "fluency": {
+      "term": "Fluency",
+      "definition": "Degree to which translation sounds natural and grammatically correct in target language",
+      "focus": "Grammaticality, naturalness, readability",
+      "scale": "Typically 1-5 scale (1=incomprehensible, 5=perfect)",
+      "evaluation": "How natural and error-free is the target text?",
+      "examples": [
+        {
+          "rating": 5,
+          "description": "Perfect grammar, reads like native text"
+        },
+        {
+          "rating": 3,
+          "description": "Understandable but with grammatical errors"
+        },
+        {
+          "rating": 1,
+          "description": "Incomprehensible or severely broken grammar"
+        }
+      ],
+      "related_terms": ["naturalness", "grammaticality", "readability"]
+    },
+    "reference_translation": {
+      "term": "Reference Translation",
+      "definition": "Human-created gold-standard translation used as comparison basis for automatic metrics",
+      "also_known_as": ["gold standard", "human reference", "ground truth"],
+      "limitations": [
+        "Multiple valid translations exist",
+        "Reference may not be perfect",
+        "High-quality MT can differ from reference but still be good",
+        "Expensive to create"
+      ],
+      "best_practices": [
+        "Use multiple references when possible",
+        "Professional translators preferred",
+        "Domain expertise important"
+      ]
+    },
+    "source_based_evaluation": {
+      "term": "Source-based Evaluation",
+      "definition": "Evaluation by comparing translation to source text (tests adequacy)",
+      "approach": "Bilingual evaluators compare source and target",
+      "advantages": ["Tests accuracy directly", "Catches omissions/additions"],
+      "disadvantages": ["Requires bilingual evaluators", "Time-consuming"]
+    },
+    "target_based_evaluation": {
+      "term": "Target-based Evaluation",
+      "definition": "Evaluation of translation quality in target language only (tests fluency)",
+      "approach": "Monolingual evaluators assess target text naturalness",
+      "advantages": ["Native speaker judgment", "Easier to recruit evaluators"],
+      "disadvantages": ["Cannot detect accuracy errors", "May miss mistranslations"]
+    }
+  },
+  "automated_metrics": {
+    "bleu": {
+      "acronym": "BLEU",
+      "full_name": "Bilingual Evaluation Understudy",
+      "year_introduced": 2002,
+      "authors": "Papineni et al.",
+      "definition": "Measures n-gram precision between machine translation and reference translation(s)",
+      "formula": "BP × exp(Σ(wn × log pn)) where pn is n-gram precision, wn is weight, BP is brevity penalty",
+      "range": "0 to 1 (or 0 to 100 when expressed as percentage)",
+      "interpretation": {
+        "0-10": "Almost useless",
+        "10-20": "Hard to get the gist",
+        "20-30": "Clear gist, significant grammatical errors",
+        "30-40": "Understandable to good translations",
+        "40-50": "High quality translations",
+        "50-60": "Very high quality, adequate, fluent",
+        "60+": "Quality often better than human"
+      },
+      "advantages": [
+        "Simple and fast to compute",
+        "Language-independent",
+        "Widely used, good for comparison",
+        "Correlates reasonably with human judgment"
+      ],
+      "limitations": [
+        "Only measures precision, not recall",
+        "Requires reference translations",
+        "Insensitive to meaning if different words used",
+        "Favors shorter translations (brevity penalty)",
+        "Poor for single sentence evaluation",
+        "No semantic understanding"
+      ],
+      "variants": [
+        "BLEU-1: Unigram precision",
+        "BLEU-2: Up to bigram precision",
+        "BLEU-4: Up to 4-gram precision (standard)",
+        "Smoothed BLEU: Better for sentence-level"
+      ],
+      "usage_notes": [
+        "Best for corpus-level evaluation",
+        "Use multiple references when available",
+        "Compare same language pairs and domains",
+        "Not suitable as only metric"
+      ],
+      "related_terms": ["n-gram overlap", "precision", "brevity penalty"]
+    },
+    "ter": {
+      "acronym": "TER",
+      "full_name": "Translation Error Rate (or Translation Edit Rate)",
+      "year_introduced": 2006,
+      "definition": "Measures number of edits needed to change hypothesis translation into reference",
+      "formula": "TER = (# edits) / (# words in reference) × 100",
+      "edit_types": [
+        "Insertion (add word)",
+        "Deletion (remove word)",
+        "Substitution (replace word)",
+        "Shift (move word sequence)"
+      ],
+      "range": "0 to ∞ (0 = perfect match, higher = more errors)",
+      "advantages": [
+        "Intuitive (number of edits)",
+        "Considers word order (shifts)",
+        "Easy to interpret"
+      ],
+      "limitations": [
+        "Requires reference translation",
+        "All edits weighted equally",
+        "Multiple valid translations penalized",
+        "No semantic similarity"
+      ],
+      "variants": [
+        "HTER: Human-targeted TER (human post-edits)",
+        "CharacTER: Character-level TER"
+      ],
+      "related_terms": ["edit distance", "Levenshtein distance", "post-editing effort"]
+    },
+    "meteor": {
+      "acronym": "METEOR",
+      "full_name": "Metric for Evaluation of Translation with Explicit ORdering",
+      "year_introduced": 2005,
+      "definition": "Harmonic mean of precision and recall based on unigram matching with WordNet synonyms and stemming",
+      "features": [
+        "Considers synonyms (WordNet)",
+        "Stemming for morphological variants",
+        "Precision and recall (not just precision)",
+        "Word order via chunk matching"
+      ],
+      "advantages": [
+        "Better correlation with human judgment than BLEU",
+        "Handles synonyms and paraphrases",
+        "Balances precision and recall"
+      ],
+      "limitations": [
+        "Language-specific resources needed (WordNet)",
+        "Slower than BLEU",
+        "Not available for all languages"
+      ],
+      "related_terms": ["synonym matching", "recall", "F-score"]
+    },
+    "comet": {
+      "acronym": "COMET",
+      "full_name": "Crosslingual Optimized Metric for Evaluation of Translation",
+      "year_introduced": 2020,
+      "definition": "Neural metric using multilingual pre-trained models to score translation quality",
+      "approach": "Trained on human quality assessments using cross-lingual embeddings",
+      "versions": {
+        "comet_20": "COMET-20: Original 2020 version",
+        "comet_22": "COMET-22: 2022 version with improved correlation, skewed towards accuracy over fluency",
+        "comet_kiwi": "COMET-Kiwi: Quality estimation without references (QE mode)",
+        "cometkiwi_xxl": "COMETKiwi-XXL: Larger model, state-of-the-art QE"
+      },
+      "range": "Typically 0 to 1 (higher is better)",
+      "advantages": [
+        "State-of-the-art correlation with human judgment",
+        "Captures semantic similarity",
+        "Works across many language pairs",
+        "Can run without references (QE mode)",
+        "Detects nuanced quality differences"
+      ],
+      "limitations": [
+        "Requires GPU for reasonable speed",
+        "Black box (hard to interpret)",
+        "Can be gaming-prone",
+        "Resource-intensive",
+        "COMET-22 biased towards accuracy vs fluency"
+      ],
+      "usage_notes": [
+        "Use COMET-22 for accuracy-focused evaluation",
+        "Use COMET-Kiwi when no reference available",
+        "Best for ranking translations, not absolute scores"
+      ],
+      "related_terms": ["neural metrics", "learned metrics", "embedding-based metrics"]
+    },
+    "bertscore": {
+      "term": "BERTScore",
+      "year_introduced": 2019,
+      "definition": "Computes similarity between reference and candidate using BERT contextual embeddings",
+      "approach": "Token-level matching using cosine similarity of BERT embeddings",
+      "components": {
+        "precision": "What fraction of candidate tokens match reference?",
+        "recall": "What fraction of reference tokens match candidate?",
+        "f1": "Harmonic mean of precision and recall"
+      },
+      "advantages": [
+        "Captures semantic similarity",
+        "Handles paraphrases well",
+        "Contextual understanding",
+        "Good correlation with human judgment"
+      ],
+      "limitations": [
+        "Requires reference translation",
+        "Computationally expensive",
+        "BERT model choice affects scores"
+      ],
+      "related_terms": ["contextual embeddings", "semantic similarity", "BERT"]
+    },
+    "chrf": {
+      "acronym": "chrF / chrF++",
+      "full_name": "Character n-gram F-score",
+      "definition": "F-score based on character n-grams instead of words",
+      "advantages": [
+        "Better for morphologically rich languages",
+        "No tokenization required",
+        "Handles agglutinative languages well",
+        "Works well for sentence-level evaluation"
+      ],
+      "limitations": [
+        "Still requires reference",
+        "Less intuitive than BLEU"
+      ],
+      "related_terms": ["character-level metrics", "morphology-aware metrics"]
+    },
+    "bleurt": {
+      "term": "BLEURT",
+      "full_name": "Bilingual Evaluation Understudy with Representations from Transformers",
+      "year_introduced": 2020,
+      "definition": "BERT-based learned metric trained on synthetic data and human ratings",
+      "approach": "Fine-tunes BERT on translation quality assessment",
+      "advantages": [
+        "High correlation with human judgment",
+        "Robust to diverse translation phenomena",
+        "Pre-trained on large synthetic corpus"
+      ],
+      "limitations": [
+        "Requires reference",
+        "Computationally expensive",
+        "Less interpretable than n-gram metrics"
+      ]
+    },
+    "gemba": {
+      "acronym": "GEMBA",
+      "full_name": "GPT Estimation Metric Based Assessment",
+      "year_introduced": 2023,
+      "definition": "Uses GPT models (LLMs) to evaluate translation quality via prompting",
+      "approach": "Prompts GPT-3.5/4 to score or rank translations",
+      "advantages": [
+        "Leverages LLM world knowledge",
+        "Can provide explanations",
+        "Flexible evaluation criteria",
+        "High correlation with human judgment"
+      ],
+      "limitations": [
+        "Expensive (API costs)",
+        "Non-deterministic",
+        "Requires careful prompt engineering",
+        "May have biases from training data"
+      ],
+      "variants": [
+        "GEMBA-MQM: Produces MQM-style error annotations",
+        "GEMBA-DA: Direct assessment scores"
+      ],
+      "related_terms": ["LLM-based evaluation", "GPT-4 evaluation"]
+    }
+  },
+  "evaluation_approaches": {
+    "direct_assessment": {
+      "acronym": "DA",
+      "term": "Direct Assessment",
+      "definition": "Human raters score translation quality on continuous scale (typically 0-100)",
+      "introduced": "WMT 2017",
+      "approach": "Raters shown source + translation, rate overall quality",
+      "advantages": [
+        "More reliable than ranking",
+        "Captures fine-grained quality differences",
+        "Standardized across WMT"
+      ],
+      "limitations": [
+        "Inter-rater variability",
+        "Requires many judgments for stability",
+        "Expensive and time-consuming"
+      ],
+      "normalization": "z-score normalization to account for rater bias",
+      "related_terms": ["absolute scoring", "quality estimation"]
+    },
+    "mqm": {
+      "acronym": "MQM",
+      "full_name": "Multidimensional Quality Metrics",
+      "definition": "Framework for fine-grained error annotation and scoring",
+      "approach": "Annotators mark errors by type and severity, score calculated from error counts",
+      "error_dimensions": ["Accuracy", "Fluency", "Terminology", "Style", "Locale Convention", "Verity"],
+      "severity_levels": ["Minor (1)", "Major (5)", "Critical (10)"],
+      "advantages": [
+        "Detailed diagnostic information",
+        "Standardized error taxonomy",
+        "Actionable feedback for improvement",
+        "Used in industry and research"
+      ],
+      "limitations": [
+        "Expensive (requires trained annotators)",
+        "Time-consuming",
+        "Inter-annotator agreement challenges"
+      ],
+      "formula": "MQM Score = 100 - (Σ(error_weight × severity) / word_count × 100)",
+      "related_terms": ["error annotation", "analytic evaluation"]
+    },
+    "sqm": {
+      "acronym": "SQM",
+      "full_name": "Scalar Quality Metric",
+      "definition": "Simplified MQM with only three error categories",
+      "categories": ["Accuracy", "Fluency", "Style"],
+      "purpose": "Faster annotation than full MQM while maintaining detail",
+      "related_terms": ["simplified MQM", "lightweight error annotation"]
+    },
+    "comparative_evaluation": {
+      "term": "Comparative Evaluation / Ranking",
+      "definition": "Raters compare two or more translations and rank them",
+      "approaches": {
+        "pairwise": "Compare two translations, choose better one",
+        "multi_way": "Rank 3+ translations"
+      },
+      "advantages": [
+        "Easier for humans than absolute scoring",
+        "More consistent judgments",
+        "Detects quality differences reliably"
+      ],
+      "limitations": [
+        "Doesn't provide absolute quality scores",
+        "Requires many comparisons for full ranking",
+        "Ties difficult to handle"
+      ],
+      "related_terms": ["ranking evaluation", "pairwise comparison"]
+    },
+    "quality_estimation": {
+      "acronym": "QE",
+      "term": "Quality Estimation",
+      "definition": "Predicting translation quality without reference translations",
+      "use_cases": [
+        "Real-time MT quality prediction",
+        "Post-editing effort estimation",
+        "MT system selection",
+        "Low-resource language pairs"
+      ],
+      "approaches": {
+        "feature_based": "QuEst++ (handcrafted features)",
+        "neural": "Predictor-estimator models, COMET-Kiwi"
+      },
+      "prediction_targets": {
+        "sentence_level": "HTER, DA scores",
+        "word_level": "OK/BAD tags for each word",
+        "document_level": "Overall document quality"
+      },
+      "advantages": [
+        "No reference needed",
+        "Applicable to any translation",
+        "Useful for production MT systems"
+      ],
+      "limitations": [
+        "Lower correlation than reference-based metrics",
+        "Requires training data",
+        "Domain-dependent"
+      ],
+      "related_terms": ["reference-free evaluation", "HTER prediction"]
+    }
+  },
+  "specialized_metrics": {
+    "semantic_similarity": {
+      "term": "Semantic Similarity Metrics",
+      "definition": "Metrics that measure meaning overlap beyond surface form",
+      "examples": [
+        "BERTScore (BERT embeddings)",
+        "Sentence embeddings cosine similarity",
+        "LASER (Language-Agnostic SEntence Representations)"
+      ],
+      "advantages": [
+        "Captures paraphrases",
+        "Language-independent (some)",
+        "Semantic focus"
+      ],
+      "related_terms": ["meaning preservation", "paraphrase detection"]
+    },
+    "terminology_consistency": {
+      "term": "Terminology Consistency Metrics",
+      "definition": "Measures consistent translation of domain-specific terms",
+      "approach": "Extract terms, check translation consistency across document",
+      "importance": "Critical in technical, medical, legal translation",
+      "tools": ["TermCheck", "QA Distiller"],
+      "related_terms": ["term extraction", "glossary compliance"]
+    },
+    "named_entity_preservation": {
+      "term": "Named Entity (NE) Preservation",
+      "definition": "Checks if named entities translated/preserved correctly",
+      "entities": ["Person names", "Organizations", "Locations", "Dates", "Numbers"],
+      "approach": "NER on source and target, compare entities",
+      "critical_for": ["News translation", "Legal documents", "Medical records"],
+      "related_terms": ["NER accuracy", "entity translation"]
+    },
+    "formality_register": {
+      "term": "Formality and Register Metrics",
+      "definition": "Evaluates appropriateness of formality level",
+      "dimensions": [
+        "Formal vs informal",
+        "Polite vs casual",
+        "Technical vs lay"
+      ],
+      "evaluation": "Often requires human judgment or specialized classifiers",
+      "related_terms": ["politeness", "style appropriateness"]
+    }
+  },
+  "meta_evaluation": {
+    "correlation_analysis": {
+      "term": "Metric Correlation Analysis",
+      "definition": "Measures how well automatic metric agrees with human judgment",
+      "correlation_types": {
+        "pearson": "Linear correlation (-1 to 1)",
+        "spearman": "Rank correlation (better for ordinal data)",
+        "kendall_tau": "Pairwise concordance"
+      },
+      "levels": {
+        "system_level": "Correlation across different MT systems",
+        "segment_level": "Correlation at sentence level (harder)"
+      },
+      "interpretation": {
+        "0.9+": "Excellent correlation",
+        "0.7-0.9": "Good correlation",
+        "0.5-0.7": "Moderate correlation",
+        "below_0.5": "Weak correlation"
+      },
+      "gold_standard": "Human DA or MQM scores from WMT",
+      "related_terms": ["inter-rater agreement", "metric validity"]
+    },
+    "statistical_significance": {
+      "term": "Statistical Significance Testing",
+      "definition": "Determines if observed metric differences are meaningful or due to chance",
+      "methods": [
+        "Bootstrap resampling",
+        "Approximate randomization",
+        "Paired t-test (with caution)"
+      ],
+      "importance": "0.5 BLEU difference may not be statistically significant",
+      "best_practices": [
+        "Report confidence intervals",
+        "Use multiple test sets",
+        "Consider practical significance vs statistical"
+      ],
+      "related_terms": ["p-value", "confidence interval", "effect size"]
+    }
+  },
+  "best_practices": {
+    "multi_metric_evaluation": {
+      "recommendation": "Always use multiple metrics, never rely on single metric",
+      "rationale": "Different metrics capture different quality aspects",
+      "typical_combination": [
+        "BLEU or chrF (baseline)",
+        "COMET or BERTScore (semantic)",
+        "Human evaluation sample"
+      ],
+      "interpretation": "Metrics agree = robust conclusion; Metrics disagree = investigate"
+    },
+    "test_set_quality": {
+      "recommendation": "Invest in high-quality test sets with multiple references",
+      "characteristics": [
+        "Representative of target domain",
+        "Sufficient size (typically 1000+ segments)",
+        "Professional translations",
+        "Multiple references when possible"
+      ]
+    },
+    "reporting_standards": {
+      "recommendations": [
+        "Report exact metric version (e.g., SacreBLEU signature)",
+        "Include tokenization method",
+        "Report statistical significance",
+        "Provide test set details",
+        "Make test sets and outputs available"
+      ],
+      "sacreBLEU": "Standard tool ensuring reproducible BLEU scores with version signatures"
+    }
+  },
+  "wmt_shared_tasks": {
+    "definition": "Annual Workshop on Machine Translation evaluation campaigns",
+    "evaluation_tracks": [
+      "News translation",
+      "Biomedical translation",
+      "Metrics task (evaluate metrics)",
+      "Quality estimation",
+      "Automatic post-editing"
+    ],
+    "gold_standard": "WMT human evaluations considered gold standard for metric validation",
+    "access": "Test sets and human scores publicly available",
+    "related_terms": ["shared task", "benchmark", "evaluation campaign"]
+  }
+}

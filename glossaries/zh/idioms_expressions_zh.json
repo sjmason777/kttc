@@ -1,0 +1,537 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Chinese Idioms and Special Expressions (成语、惯用语、歇后语、谚语)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "汉语熟语系统完整分类 - Comprehensive taxonomy of Chinese set phrases including chengyu, common expressions, allegorical sayings, and proverbs",
+    "sources": [
+      "Wikipedia '熟语', '成语'",
+      "汉程汉语 熟语大全",
+      "普宁市政府门户网站 '成语、谚语、歇后语、惯用语'",
+      "Zhihu linguistic discussions",
+      "Academic Chinese linguistics resources"
+    ],
+    "total_terms": 120,
+    "usage": "Translation quality assessment, idiom verification, cultural adaptation, fluency evaluation"
+  },
+  "overview": {
+    "set_phrases": {
+      "term_zh": "熟语",
+      "term_en": "Set Phrases / Idioms (General Category)",
+      "pinyin": "shúyǔ",
+      "definition": "人们长期以来习惯使用的固定的词组或句子，具有基本固定的结构",
+      "definition_en": "Fixed phrases or sentences with stable structures that have been habitually used by people for a long time",
+      "components": ["成语 (chengyu)", "惯用语 (common phrases)", "歇后语 (allegorical sayings)", "谚语 (proverbs)"],
+      "characteristics": [
+        "固定性 - Fixed structure",
+        "整体性 - Holistic meaning",
+        "习用性 - Conventional usage",
+        "形象性 - Figurative imagery"
+      ],
+      "importance_for_translation": "Essential for natural, idiomatic Chinese - literal translation often fails"
+    }
+  },
+  "chengyu": {
+    "definition": {
+      "term_zh": "成语",
+      "term_en": "Chengyu (Chinese Idioms)",
+      "pinyin": "chéngyǔ",
+      "description": "汉字文化圈特有的固定短语，表达固定含义，多数由四个汉字组成",
+      "description_en": "Fixed phrases unique to Chinese character cultural sphere, expressing fixed meanings, mostly consisting of four characters",
+      "typical_structure": "四字格 (four-character format)",
+      "origins": [
+        "Historical stories (历史故事)",
+        "Classical literature (古典文学)",
+        "Philosophical concepts (哲学思想)",
+        "Folk wisdom (民间智慧)"
+      ]
+    },
+    "characteristics": {
+      "structure": "Most commonly 4 characters (四字格), occasionally 3, 5, or more",
+      "meaning": "Non-compositional - meaning not derivable from individual characters",
+      "register": "Literary, formal, elevated",
+      "usage": "Add sophistication and cultural depth to writing and speech",
+      "learning_challenge": "Must learn as whole units with historical/cultural context"
+    },
+    "examples": {
+      "historical_origin": [
+        {
+          "chengyu": "画蛇添足",
+          "pinyin": "huà shé tiān zú",
+          "literal": "draw snake add feet",
+          "meaning": "Ruin something by adding unnecessary details",
+          "meaning_zh": "做多余的事，反而弄巧成拙",
+          "origin": "战国时期故事：画蛇比赛，有人画完蛇又给它添上脚，结果失败了",
+          "translation_note": "Cannot translate literally; use equivalent like 'gild the lily' or explain"
+        },
+        {
+          "chengyu": "守株待兔",
+          "pinyin": "shǒu zhū dài tù",
+          "literal": "guard tree wait rabbit",
+          "meaning": "Wait for unexpected good fortune; foolish passivity",
+          "meaning_zh": "不劳而获的侥幸心理；死守经验不知变通",
+          "origin": "农夫等待兔子再次撞树的故事"
+        },
+        {
+          "chengyu": "刻舟求剑",
+          "pinyin": "kè zhōu qiú jiàn",
+          "literal": "carve boat seek sword",
+          "meaning": "Stubborn adherence to outdated methods",
+          "meaning_zh": "拘泥固执，不知变通",
+          "origin": "人在船上掉了剑，在船上刻记号，船停后在刻痕处找剑"
+        }
+      ],
+      "common_usage": [
+        {
+          "chengyu": "一举两得",
+          "pinyin": "yī jǔ liǎng dé",
+          "literal": "one act two gains",
+          "meaning": "Kill two birds with one stone",
+          "meaning_zh": "做一件事得到两种好处",
+          "usage": "Very common in modern Chinese"
+        },
+        {
+          "chengyu": "一丝不苟",
+          "pinyin": "yī sī bù gǒu",
+          "literal": "one thread not careless",
+          "meaning": "Extremely meticulous and careful",
+          "meaning_zh": "形容办事认真，连最细微的地方也不马虎"
+        },
+        {
+          "chengyu": "不言而喻",
+          "pinyin": "bù yán ér yù",
+          "literal": "not speak but understand",
+          "meaning": "Self-evident, goes without saying",
+          "meaning_zh": "不用说就可以明白"
+        },
+        {
+          "chengyu": "半途而废",
+          "pinyin": "bàn tú ér fèi",
+          "literal": "halfway then abandon",
+          "meaning": "Give up halfway",
+          "meaning_zh": "事情没做完就停止，不能坚持到底"
+        },
+        {
+          "chengyu": "画龙点睛",
+          "pinyin": "huà lóng diǎn jīng",
+          "literal": "draw dragon dot eyes",
+          "meaning": "Add the finishing touch",
+          "meaning_zh": "比喻在关键地方加上一笔，使内容更加生动"
+        }
+      ],
+      "philosophical": [
+        {
+          "chengyu": "知己知彼",
+          "pinyin": "zhī jǐ zhī bǐ",
+          "literal": "know self know other",
+          "meaning": "Know yourself and your opponent",
+          "meaning_zh": "了解自己也了解对方（孙子兵法：知己知彼，百战不殆）",
+          "origin": "《孙子兵法》"
+        },
+        {
+          "chengyu": "水滴石穿",
+          "pinyin": "shuǐ dī shí chuān",
+          "literal": "water drop stone penetrate",
+          "meaning": "Persistence pays off (lit. water drops penetrate stone)",
+          "meaning_zh": "持之以恒，必有成效"
+        },
+        {
+          "chengyu": "因材施教",
+          "pinyin": "yīn cái shī jiào",
+          "literal": "according-to material apply teaching",
+          "meaning": "Teach according to student's ability",
+          "meaning_zh": "根据学生的能力和特点进行教育",
+          "origin": "孔子教育思想"
+        }
+      ]
+    },
+    "structure_variations": {
+      "three_character": {
+        "description": "三字格成语 - Less common",
+        "examples": [
+          "马后炮 (mǎ hòu pào) - hindsight criticism",
+          "破天荒 (pò tiān huāng) - unprecedented",
+          "莫须有 (mò xū yǒu) - trumped-up charge"
+        ]
+      },
+      "five_plus_character": {
+        "description": "五字或更多 - Longer chengyu",
+        "examples": [
+          "无风不起浪 (wú fēng bù qǐ làng) - no smoke without fire",
+          "一寸光阴一寸金 (yī cùn guāng yīn yī cùn jīn) - time is precious"
+        ]
+      }
+    },
+    "translation_strategies": {
+      "equivalent_idiom": "Use English equivalent when exists ('kill two birds with one stone' for 一举两得)",
+      "literal_plus_explanation": "Literal translation with explanatory note",
+      "functional_translation": "Convey meaning without idiom structure",
+      "keep_chinese": "Sometimes keep in Chinese with explanation for cultural effect"
+    }
+  },
+  "guanyongyu": {
+    "definition": {
+      "term_zh": "惯用语",
+      "term_en": "Common Phrases / Habitual Expressions",
+      "pinyin": "guànyòngyǔ",
+      "description": "口语性较强的固定短语，具有引申意义，多为三字格",
+      "description_en": "Colloquial fixed phrases with extended meanings, typically in three-character format",
+      "typical_structure": "三字格 (three-character format)",
+      "characteristics": [
+        "口语化 - Colloquial",
+        "形象生动 - Vivid imagery",
+        "简洁有力 - Concise and powerful"
+      ]
+    },
+    "structure_patterns": {
+      "verb_object": {
+        "pattern": "动宾结构 (Verb-Object)",
+        "description": "Most common pattern",
+        "examples": [
+          {
+            "phrase": "走后门",
+            "pinyin": "zǒu hòu mén",
+            "literal": "walk back door",
+            "meaning": "Use connections/pull strings (get unfair advantage)",
+            "meaning_zh": "通过不正当关系办事"
+          },
+          {
+            "phrase": "拍马屁",
+            "pinyin": "pāi mǎ pì",
+            "literal": "pat horse bottom",
+            "meaning": "Flatter, kiss up to someone",
+            "meaning_zh": "阿谀奉承"
+          },
+          {
+            "phrase": "开绿灯",
+            "pinyin": "kāi lǜ dēng",
+            "literal": "open green light",
+            "meaning": "Give the green light, approve",
+            "meaning_zh": "准许，批准"
+          },
+          {
+            "phrase": "穿小鞋",
+            "pinyin": "chuān xiǎo xié",
+            "literal": "wear small shoes",
+            "meaning": "Make things difficult for someone (petty revenge)",
+            "meaning_zh": "暗中报复，为难某人"
+          },
+          {
+            "phrase": "吃闭门羹",
+            "pinyin": "chī bì mén gēng",
+            "literal": "eat closed door soup",
+            "meaning": "Be refused admittance, get the door slammed",
+            "meaning_zh": "被拒绝，吃闭门羹"
+          }
+        ]
+      },
+      "modifier_head": {
+        "pattern": "偏正结构 (Modifier-Head)",
+        "description": "Less common pattern",
+        "examples": [
+          {
+            "phrase": "替罪羊",
+            "pinyin": "tì zuì yáng",
+            "literal": "substitute crime sheep",
+            "meaning": "Scapegoat",
+            "meaning_zh": "代人受过者"
+          },
+          {
+            "phrase": "井底蛙",
+            "pinyin": "jǐng dǐ wā",
+            "literal": "well bottom frog",
+            "meaning": "Narrow-minded person (frog in a well)",
+            "meaning_zh": "见识短浅的人"
+          },
+          {
+            "phrase": "纸老虎",
+            "pinyin": "zhǐ lǎo hǔ",
+            "literal": "paper tiger",
+            "meaning": "Paper tiger (appears threatening but is ineffectual)",
+            "meaning_zh": "外强中干，虚有其表"
+          }
+        ]
+      }
+    },
+    "additional_examples": [
+      {
+        "phrase": "碰钉子",
+        "pinyin": "pèng dīng zi",
+        "meaning": "Hit a snag, meet with a rebuff",
+        "meaning_zh": "遭到拒绝或失败"
+      },
+      {
+        "phrase": "钻空子",
+        "pinyin": "zuān kòng zi",
+        "meaning": "Exploit a loophole",
+        "meaning_zh": "利用漏洞"
+      },
+      {
+        "phrase": "打马虎眼",
+        "pinyin": "dǎ mǎ hu yǎn",
+        "meaning": "Be evasive, act dumb",
+        "meaning_zh": "故意含糊其辞，欺骗蒙混"
+      },
+      {
+        "phrase": "翻老账",
+        "pinyin": "fān lǎo zhàng",
+        "meaning": "Dig up old grievances",
+        "meaning_zh": "重提旧事"
+      }
+    ],
+    "vs_chengyu": {
+      "differences": [
+        "惯用语更口语化 - Guanyongyu more colloquial",
+        "成语更书面化 - Chengyu more literary",
+        "惯用语多为三字 - Guanyongyu typically 3 characters",
+        "成语多为四字 - Chengyu typically 4 characters",
+        "惯用语多动宾结构 - Guanyongyu often verb-object",
+        "成语结构多样 - Chengyu varied structures"
+      ]
+    }
+  },
+  "xiehouyu": {
+    "definition": {
+      "term_zh": "歇后语",
+      "term_en": "Xiehouyu (Allegorical Sayings / Two-Part Allegorical Sayings)",
+      "pinyin": "xiēhòuyǔ",
+      "description": "由两部分组成的表达方式，前一部分是形象的比喻，后一部分是解释或说明",
+      "description_en": "Expressions structured in two parts with vivid imagery that can easily highlight the essence of content",
+      "structure": "前半部分（比喻） + 后半部分（说明）",
+      "usage": "Often only first part spoken, second part implied"
+    },
+    "characteristics": {
+      "humor": "幽默风趣 - Humorous and witty",
+      "imagery": "形象生动 - Vivid imagery",
+      "folk_wisdom": "民间智慧 - Folk wisdom",
+      "punchline": "类似谜语 - Like riddles with punchlines"
+    },
+    "examples": {
+      "homophone_type": [
+        {
+          "xiehouyu": "外甥打灯笼",
+          "pinyin": "wài shēng dǎ dēng lóng",
+          "literal_part1": "nephew carries lantern",
+          "part2": "照舅（旧）",
+          "part2_pinyin": "zhào jiù",
+          "wordplay": "照舅 (light for uncle) sounds like 照旧 (as before)",
+          "meaning": "Same as always, as before",
+          "type": "谐音型 (homophone pun)"
+        },
+        {
+          "xiehouyu": "葱拌豆腐",
+          "pinyin": "cōng bàn dòu fu",
+          "literal_part1": "scallions mixed with tofu",
+          "part2": "一清（青）二白",
+          "part2_pinyin": "yī qīng èr bái",
+          "wordplay": "清 (clear) sounds like 青 (green)",
+          "meaning": "Crystal clear, completely innocent",
+          "type": "谐音型"
+        }
+      ],
+      "metaphor_type": [
+        {
+          "xiehouyu": "竹篮打水",
+          "pinyin": "zhú lán dǎ shuǐ",
+          "literal_part1": "bamboo basket fetch water",
+          "part2": "一场空",
+          "part2_pinyin": "yī chǎng kōng",
+          "part2_meaning": "all in vain",
+          "meaning": "Futile effort, all for nothing",
+          "type": "比喻型 (metaphor type)"
+        },
+        {
+          "xiehouyu": "泥菩萨过河",
+          "pinyin": "ní pú sà guò hé",
+          "literal_part1": "clay Buddha crosses river",
+          "part2": "自身难保",
+          "part2_pinyin": "zì shēn nán bǎo",
+          "part2_meaning": "cannot protect oneself",
+          "meaning": "Cannot even save oneself (let alone help others)",
+          "type": "比喻型"
+        },
+        {
+          "xiehouyu": "猫哭耗子",
+          "pinyin": "māo kū hào zi",
+          "literal_part1": "cat cries for mouse",
+          "part2": "假慈悲",
+          "part2_pinyin": "jiǎ cí bēi",
+          "part2_meaning": "fake mercy",
+          "meaning": "Crocodile tears, hypocritical sympathy",
+          "type": "比喻型"
+        },
+        {
+          "xiehouyu": "哑巴吃黄连",
+          "pinyin": "yǎ ba chī huáng lián",
+          "literal_part1": "mute person eats bitter herb",
+          "part2": "有苦说不出",
+          "part2_pinyin": "yǒu kǔ shuō bù chū",
+          "part2_meaning": "have bitterness cannot express",
+          "meaning": "Suffer in silence",
+          "type": "比喻型"
+        }
+      ],
+      "story_based": [
+        {
+          "xiehouyu": "周瑜打黄盖",
+          "pinyin": "zhōu yú dǎ huáng gài",
+          "literal_part1": "Zhou Yu beats Huang Gai",
+          "part2": "一个愿打，一个愿挨",
+          "part2_pinyin": "yī gè yuàn dǎ, yī gè yuàn ái",
+          "part2_meaning": "one willing to beat, one willing to be beaten",
+          "meaning": "Both parties willing (referring to a scheme)",
+          "origin": "《三国演义》story",
+          "type": "故事型 (story-based)"
+        },
+        {
+          "xiehouyu": "诸葛亮借东风",
+          "pinyin": "zhū gě liàng jiè dōng fēng",
+          "literal_part1": "Zhuge Liang borrows east wind",
+          "part2": "巧用天时",
+          "part2_pinyin": "qiǎo yòng tiān shí",
+          "meaning": "Skillfully use favorable timing",
+          "origin": "《三国演义》赤壁之战",
+          "type": "故事型"
+        }
+      ]
+    },
+    "translation_challenge": {
+      "difficulty": "Very difficult to translate - relies on Chinese cultural knowledge, puns, metaphors",
+      "strategies": [
+        "Translate both parts with explanation",
+        "Find equivalent English saying if exists",
+        "Use footnote to explain cultural context",
+        "Sometimes just explain the meaning without attempting literal translation"
+      ]
+    }
+  },
+  "yanyu": {
+    "definition": {
+      "term_zh": "谚语",
+      "term_en": "Proverbs",
+      "pinyin": "yànyǔ",
+      "description": "在民众中间流传的通俗语句，言简意赅地总结生活经验或道理",
+      "description_en": "Popular statements circulated among people that concisely summarize life experiences or truths",
+      "characteristics": [
+        "流传广泛 - Widely circulated",
+        "简明扼要 - Concise and to the point",
+        "经验总结 - Experience summary",
+        "教育意义 - Educational value"
+      ]
+    },
+    "examples": {
+      "life_wisdom": [
+        {
+          "yanyu": "一分耕耘，一分收获",
+          "pinyin": "yī fēn gēng yún, yī fēn shōu huò",
+          "literal": "one part plowing, one part harvest",
+          "meaning": "You reap what you sow",
+          "meaning_zh": "付出多少努力，就会有多少回报"
+        },
+        {
+          "yanyu": "熟能生巧",
+          "pinyin": "shú néng shēng qiǎo",
+          "literal": "familiarity can generate skill",
+          "meaning": "Practice makes perfect",
+          "meaning_zh": "做得多了就会熟练灵巧"
+        },
+        {
+          "yanyu": "失败是成功之母",
+          "pinyin": "shī bài shì chéng gōng zhī mǔ",
+          "literal": "failure is success's mother",
+          "meaning": "Failure is the mother of success",
+          "meaning_zh": "失败是成功的基础"
+        },
+        {
+          "yanyu": "三个臭皮匠，顶个诸葛亮",
+          "pinyin": "sān gè chòu pí jiàng, dǐng gè zhū gě liàng",
+          "literal": "three stinky cobblers equal one Zhuge Liang",
+          "meaning": "Many heads are better than one",
+          "meaning_zh": "集体的智慧超过个人"
+        }
+      ],
+      "weather_agriculture": [
+        {
+          "yanyu": "一场秋雨一场寒",
+          "pinyin": "yī chǎng qiū yǔ yī chǎng hán",
+          "literal": "one autumn rain one cold",
+          "meaning": "Each autumn rain brings colder weather",
+          "meaning_zh": "秋天每下一次雨，天气就冷一些"
+        },
+        {
+          "yanyu": "春雨贵如油",
+          "pinyin": "chūn yǔ guì rú yóu",
+          "literal": "spring rain precious as oil",
+          "meaning": "Spring rain is precious (for agriculture)",
+          "meaning_zh": "春天的雨水很宝贵"
+        }
+      ],
+      "social_relations": [
+        {
+          "yanyu": "在家靠父母，出门靠朋友",
+          "pinyin": "zài jiā kào fù mǔ, chū mén kào péng you",
+          "literal": "at home rely on parents, outside rely on friends",
+          "meaning": "At home rely on parents, outside rely on friends",
+          "meaning_zh": "在家里依靠父母，在外面要依靠朋友"
+        },
+        {
+          "yanyu": "远亲不如近邻",
+          "pinyin": "yuǎn qīn bù rú jìn lín",
+          "literal": "distant relative not as good as near neighbor",
+          "meaning": "A near neighbor is better than a distant cousin",
+          "meaning_zh": "邻居比远方的亲戚更能帮忙"
+        }
+      ]
+    },
+    "vs_chengyu": {
+      "differences": [
+        "谚语更通俗易懂 - Proverbs more accessible",
+        "成语更精炼典雅 - Chengyu more refined and elegant",
+        "谚语是完整句子 - Proverbs are complete sentences",
+        "成语多为短语 - Chengyu are phrases",
+        "谚语重在说理 - Proverbs focus on principles",
+        "成语重在表意 - Chengyu focus on meaning"
+      ]
+    }
+  },
+  "usage_in_translation": {
+    "challenges": [
+      "成语和惯用语难以直译 - Chengyu and guanyongyu hard to translate literally",
+      "文化背景知识必不可少 - Cultural background knowledge essential",
+      "找到对应表达不容易 - Finding equivalent expressions difficult",
+      "保持语言风格和语体 - Maintaining style and register",
+      "歇后语的双关和谐音无法对应 - Xiehouyu puns and homophones cannot be matched"
+    ],
+    "best_practices": [
+      "Understand cultural/historical context",
+      "Use equivalent English idioms when available",
+      "Provide explanatory notes when necessary",
+      "Adapt to target audience's cultural knowledge",
+      "Consider whether to domesticate or foreignize",
+      "Maintain appropriate register (formal/informal)"
+    ],
+    "common_errors": [
+      "Literal translation without explanation",
+      "Mixing formal and informal styles",
+      "Ignoring cultural connotations",
+      "Using obscure English equivalents",
+      "Over-explaining obvious meanings"
+    ]
+  },
+  "internet_slang_note": {
+    "term_zh": "网络用语",
+    "term_en": "Internet Slang / Buzzwords",
+    "note": "现代汉语网络流行语有效期短（平均3-7个月），具有强烈的缩略、幽默、替换特征",
+    "note_en": "Modern Chinese internet buzzwords have short lifespan (average 3-7 months), showing strong abbreviation, humor, and substitution characteristics",
+    "examples_2025": [
+      "YYDS (永远的神 - eternal god - the GOAT)",
+      "XIMO (谐音笑模 - various meanings based on context)",
+      "绝绝子 (amazing, incredible)",
+      "打工人 (working person - office worker)",
+      "内卷 (involution - intense competition)"
+    ],
+    "caveat": "网络流行语变化快，需持续更新 - Internet slang changes rapidly, requires continuous updates"
+  }
+}

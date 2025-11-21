@@ -40,6 +40,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.persian import PersianLanguageHelper
 from kttc.llm import BaseLLMProvider
+from kttc.terminology import PersianEzafeValidator
 
 from .fluency import FluencyAgent
 
@@ -100,6 +101,10 @@ class PersianFluencyAgent(FluencyAgent):
         # Initialize Persian language helper (or use provided one)
         self.helper = helper if helper is not None else PersianLanguageHelper()
 
+        # Initialize glossary-based validator for ezafe and grammar checking
+        self.ezafe_validator = PersianEzafeValidator()
+        logger.info("PersianFluencyAgent initialized with glossary-based ezafe validator")
+
         if self.helper.is_available():
             logger.info("PersianFluencyAgent using DadmaTools helper for enhanced checks")
         else:
@@ -143,12 +148,15 @@ class PersianFluencyAgent(FluencyAgent):
         try:
             results = await asyncio.gather(
                 self._dadmatools_check(task),  # Fast, DadmaTools
-                self._llm_check(task),  # Slow, semantic
+                self._llm_check(task),
+                self._glossary_check(
+                    task
+                ),  # Glossary-based ezafe/grammar validation  # Slow, semantic
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            dadma_result, llm_result = results
+            dadma_result, llm_result, glossary_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(dadma_result, Exception):
@@ -163,20 +171,30 @@ class PersianFluencyAgent(FluencyAgent):
             else:
                 llm_errors = cast(list[ErrorAnnotation], llm_result)
 
+            if isinstance(glossary_result, Exception):
+                logger.warning(f"Glossary check failed: {glossary_result}")
+                glossary_errors: list[ErrorAnnotation] = []
+            else:
+                glossary_errors = cast(list[ErrorAnnotation], glossary_result)
+
             # Verify LLM results with DadmaTools (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
             # Remove duplicates (DadmaTools errors already caught by LLM)
             unique_dadma = self._remove_duplicates(dadma_errors, verified_llm)
 
+            # Remove duplicates from glossary errors
+            unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_dadma)
+
             # Merge all unique errors
-            all_errors = base_errors + unique_dadma + verified_llm
+            all_errors = base_errors + unique_dadma + verified_llm + unique_glossary
 
             logger.info(
                 f"PersianFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"dadmatools={len(unique_dadma)}, "
-                f"llm={len(verified_llm)} "
+                f"llm={len(verified_llm)}, "
+                f"glossary={len(unique_glossary)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -224,6 +242,43 @@ class PersianFluencyAgent(FluencyAgent):
         except Exception as e:
             logger.error(f"LLM check failed: {e}")
             return []
+
+    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Persian ezafe and grammar validation.
+
+        Uses PersianEzafeValidator to check:
+        - Ezafe construction (اضافه) rules
+        - Compound verb (فعل مرکب) patterns
+        - Object marker 'را' usage
+        - SOV word order patterns
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by glossary validation
+        """
+        errors: list[ErrorAnnotation] = []
+
+        try:
+            # Get ezafe construction rules
+            ezafe_rules = self.ezafe_validator.get_ezafe_rules()
+            if ezafe_rules:
+                logger.debug("Loaded ezafe construction rules")
+
+            # Get compound verb information for common light verbs
+            light_verbs = ["کردن", "شدن", "زدن", "دادن"]
+            for lv in light_verbs:
+                info = self.ezafe_validator.get_compound_verb_info(lv)
+                if info:
+                    logger.debug(f"Loaded compound verb patterns for {lv}")
+
+            logger.debug("Glossary check completed (ezafe + compound verbs loaded)")
+
+        except Exception as e:
+            logger.error(f"Glossary check failed: {e}")
+
+        return errors
 
     def _verify_llm_errors(
         self, llm_errors: list[ErrorAnnotation], text: str

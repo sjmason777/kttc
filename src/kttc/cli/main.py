@@ -36,6 +36,7 @@ from kttc.agents import AgentOrchestrator
 from kttc.cli.commands.benchmark import run_benchmark
 from kttc.cli.commands.compare import run_compare as _run_compare_command
 from kttc.cli.commands.glossary import glossary_app
+from kttc.cli.commands.terminology import terminology_app
 from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter
 from kttc.cli.ui import (
     console,
@@ -66,6 +67,9 @@ app = typer.Typer(
 
 # Add glossary subcommands
 app.add_typer(glossary_app, name="glossary")
+
+# Add terminology subcommands
+app.add_typer(terminology_app, name="terminology")
 
 
 def version_callback(value: bool) -> None:

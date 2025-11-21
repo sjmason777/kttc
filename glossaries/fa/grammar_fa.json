@@ -1,0 +1,666 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "فارسی (Persian/Farsi)",
+    "glossary_type": "Persian Grammar and Linguistic Features",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "دستور زبان و ویژگی‌های زبان‌شناختی فارسی - Comprehensive Persian grammar terms and unique linguistic features",
+    "sources": [
+      "فرهنگستان زبان و ادب فارسی (Academy of Persian Language and Literature)",
+      "دستور زبان فارسی - دکتر خانلری",
+      "Persian Grammar - John Mace",
+      "Wikipedia فارسی - دستور زبان",
+      "A Grammar of Contemporary Persian - Gilbert Lazard"
+    ],
+    "total_terms": 80
+  },
+  "word_order": {
+    "ترتیب_کلمات_SOV": {
+      "term_fa": "ترتیب کلمات فاعل-مفعول-فعل",
+      "term_en": "SOV Word Order (Subject-Object-Verb)",
+      "definition": "فارسی یک زبان SOV است که فعل معمولاً در انتهای جمله قرار می‌گیرد",
+      "basic_pattern": "فاعل + مفعول + فعل",
+      "examples": [
+        "من کتاب را خواندم (I book-OBJ read-PAST)",
+        "علی غذا می‌خورد (Ali food eat-PRES)",
+        "ما فیلم دیدیم (We movie saw)"
+      ],
+      "flexibility": "فارسی انعطاف‌پذیری نسبی دارد، اما SOV ترتیب طبیعی است",
+      "marked_orders": {
+        "OSV": "کتاب را من خواندم (emphasis on object)",
+        "SVO": "من خواندم کتاب را (rare, marked)"
+      },
+      "contrast": "انگلیسی: SVO (Subject-Verb-Object)"
+    },
+    "انعطاف‌پذیری_ترتیب": {
+      "term_fa": "انعطاف‌پذیری ترتیب کلمات",
+      "term_en": "Word Order Flexibility",
+      "definition": "فارسی نسبت به انگلیسی انعطاف‌پذیری بیشتری در ترتیب کلمات دارد",
+      "factors": [
+        "نشانه مفعول 'را' مفعول را مشخص می‌کند",
+        "پسوندهای فعل فاعل را نشان می‌دهند",
+        "زمینه معمولاً معنی را روشن می‌کند"
+      ],
+      "pragmatic_function": "تغییر ترتیب برای تأکید یا کانون اطلاعات استفاده می‌شود"
+    }
+  },
+  "ezafe_construction": {
+    "اضافه": {
+      "term_fa": "اضافه",
+      "term_en": "Ezafe / Kasre-ye Ezafe",
+      "phonetic": "/-e/ or /-ye/",
+      "definition": "عنصر ربطی که اسم را به صفت یا اسم دیگر متصل می‌کند",
+      "pronunciation": "/-e/ بعد از همخوان، /-ye/ بعد از مصوت",
+      "functions": [
+        "اتصال اسم به صفت",
+        "اتصال اسم به اسم (ملکیت)",
+        "اتصال صفت به اسم (نادر)"
+      ],
+      "examples": {
+        "noun_adjective": "کتابِ بزرگ (book-EZAFE big = the big book)",
+        "noun_noun": "خانه‌یِ پدر (house-EZAFE father = father's house)",
+        "multiple_ezafe": "کتابِ بزرگِ قدیمیِ من (my old big book)"
+      },
+      "writing_convention": "در نوشتار معاصر غیررسمی اغلب نوشته نمی‌شود، اما در گفتار تلفظ می‌شود",
+      "formal_writing": "در متون رسمی و ادبی باید نوشته شود",
+      "note": "یکی از ویژگی‌های منحصر به فرد فارسی که در بیشتر زبان‌ها وجود ندارد"
+    },
+    "زنجیره_اضافه": {
+      "term_fa": "زنجیره اضافه",
+      "term_en": "Ezafe Chain",
+      "definition": "استفاده پی‌درپی از اضافه برای اتصال چندین عنصر",
+      "example": "دیوارِ خانه‌یِ بزرگِ پدرِ من (the wall of my father's big house)",
+      "structure": "N1-EZAFE-N2-EZAFE-ADJ-EZAFE-N3-EZAFE-PRON",
+      "challenge": "برای یادگیرندگان غیر بومی پیچیده است",
+      "parsing_difficulty": "تحلیل خودکار زنجیره‌های طولانی اضافه دشوار است"
+    },
+    "مضاف_و_مضاف‌الیه": {
+      "term_fa": "مضاف و مضاف‌الیه",
+      "term_en": "Possessive Construction (muzaf-muzaf-un-eleyh)",
+      "definition": "ساختار ملکی در فارسی که با اضافه ساخته می‌شود",
+      "components": {
+        "مضاف": "اسم اول (possessed)",
+        "مضاف‌الیه": "اسم دوم (possessor)",
+        "اضافه": "عنصر ربط"
+      },
+      "example": "کتابِ علی (book-EZAFE Ali = Ali's book)",
+      "note": "معادل فارسی 'of' یا 's در انگلیسی"
+    }
+  },
+  "compound_verbs": {
+    "فعل_مرکب": {
+      "term_fa": "فعل مرکب",
+      "term_en": "Compound Verb / Light Verb Construction",
+      "definition": "فعلی متشکل از یک جزء غیرفعلی (اسم/صفت) + فعل کمکی",
+      "structure": "جزء اسمی/صفتی + فعل کمکی",
+      "frequency": "بیش از 70% افعال فارسی مرکب هستند",
+      "light_verbs": [
+        "کردن (to do/make)",
+        "شدن (to become)",
+        "زدن (to hit/strike)",
+        "دادن (to give)",
+        "خوردن (to eat/hit)"
+      ],
+      "examples": {
+        "با_کردن": [
+          "کار کردن (to work) = work + do",
+          "صحبت کردن (to talk) = talk + do",
+          "فکر کردن (to think) = thought + do",
+          "قبول کردن (to accept) = acceptance + do"
+        ],
+        "با_شدن": [
+          "تمام شدن (to finish) = finished + become",
+          "خوب شدن (to get better) = good + become",
+          "بزرگ شدن (to grow up) = big + become"
+        ],
+        "با_زدن": [
+          "حرف زدن (to speak) = word + hit",
+          "تلفن زدن (to call) = telephone + hit",
+          "قدم زدن (to walk) = step + hit"
+        ],
+        "با_دادن": [
+          "گوش دادن (to listen) = ear + give",
+          "نشان دادن (to show) = sign + give",
+          "توضیح دادن (to explain) = explanation + give"
+        ]
+      },
+      "challenge": "انتخاب فعل کمکی صحیح - هر فعل مرکب فقط با یک فعل کمکی خاص می‌آید",
+      "translation_note": "یک فعل مرکب فارسی اغلب به یک فعل ساده در انگلیسی ترجمه می‌شود"
+    },
+    "فعل_کمکی": {
+      "term_fa": "فعل کمکی / فعل سبک",
+      "term_en": "Light Verb / Auxiliary Verb",
+      "definition": "فعلی که معنای اصلی را ندارد و تنها برای ساخت فعل مرکب استفاده می‌شود",
+      "most_common": "کردن (to do/make)",
+      "productivity": "کردن می‌تواند با هزاران اسم ترکیب شود",
+      "examples": [
+        "کردن: کار کردن، مطالعه کردن، بازی کردن",
+        "شدن: شروع شدن، باز شدن، درست شدن",
+        "زدن: حرف زدن، قدم زدن، دست زدن",
+        "دادن: انجام دادن، ادامه دادن، نشان دادن"
+      ]
+    },
+    "فعل_ساده": {
+      "term_fa": "فعل ساده",
+      "term_en": "Simple Verb",
+      "definition": "فعلی که تنها از یک بن فعلی تشکیل شده (غیر مرکب)",
+      "examples": [
+        "رفتن (to go)",
+        "آمدن (to come)",
+        "خوردن (to eat)",
+        "خوابیدن (to sleep)",
+        "نشستن (to sit)",
+        "ایستادن (to stand)"
+      ],
+      "frequency": "کمتر از 30% افعال فارسی",
+      "note": "افعال ساده معمولاً افعال پرکاربرد و قدیمی هستند"
+    }
+  },
+  "verb_system": {
+    "بن_ماضی": {
+      "term_fa": "بن ماضی",
+      "term_en": "Past Stem",
+      "definition": "بن فعلی که برای ساخت زمان‌های گذشته استفاده می‌شود",
+      "formation": "معمولاً با حذف 'ـن' از مصدر: خوردن → خورد-",
+      "usage": [
+        "ماضی ساده (simple past)",
+        "ماضی استمراری (past continuous)",
+        "ماضی بعید (past perfect)",
+        "آینده (future - with prefix خواه-)"
+      ],
+      "examples": {
+        "خوردن": "خورد- (ate)",
+        "رفتن": "رفت- (went)",
+        "دیدن": "دید- (saw)",
+        "نوشتن": "نوشت- (wrote)"
+      },
+      "irregular": "برخی افعال بن ماضی نامنظم دارند (e.g., رفتن → رفت-)"
+    },
+    "بن_مضارع": {
+      "term_fa": "بن مضارع",
+      "term_en": "Present Stem",
+      "definition": "بن فعلی که برای ساخت زمان‌های حال و آینده نزدیک استفاده می‌شود",
+      "usage": [
+        "مضارع اخباری (present indicative)",
+        "مضارع التزامی (present subjunctive)",
+        "آینده نزدیک (near future)"
+      ],
+      "examples": {
+        "خوردن": "خور- (eat)",
+        "رفتن": "رو- (go)",
+        "دیدن": "بین- (see)",
+        "نوشتن": "نویس- (write)"
+      },
+      "formation": "بدون قاعده مشخص - باید به صورت جداگانه یاد گرفته شود",
+      "note": "رابطه بین بن مضارع و ماضی در افعال مختلف متفاوت است"
+    },
+    "پسوندهای_شخصی": {
+      "term_fa": "پسوندهای شخصی فعل",
+      "term_en": "Personal Endings / Verb Suffixes",
+      "definition": "پسوندهایی که فاعل فعل را نشان می‌دهند",
+      "endings": {
+        "singular": {
+          "1st": "-م (I)",
+          "2nd_informal": "-ی (you - informal)",
+          "2nd_formal": "-ید (you - formal)",
+          "3rd": "-د (he/she/it)"
+        },
+        "plural": {
+          "1st": "-یم (we)",
+          "2nd": "-ید (you all)",
+          "3rd": "-ند (they)"
+        }
+      },
+      "examples": [
+        "می‌خورم (I eat)",
+        "می‌خوری (you eat - informal)",
+        "می‌خورد (he/she eats)",
+        "می‌خوریم (we eat)",
+        "می‌خورید (you eat - formal/plural)",
+        "می‌خورند (they eat)"
+      ]
+    },
+    "پیشوند_می": {
+      "term_fa": "پیشوند 'می'",
+      "term_en": "Prefix 'mi-' (Durative/Habitual marker)",
+      "definition": "پیشوند نشان‌دهنده زمان حال اخباری و استمرار",
+      "usage": "بن مضارع + می- + پسوند شخصی",
+      "examples": [
+        "می‌روم (I go)",
+        "می‌خورم (I eat)",
+        "می‌خوانم (I read)"
+      ],
+      "note": "در نوشتار با نیم‌فاصله از فعل جدا می‌شود: می‌"
+    },
+    "پیشوند_ب": {
+      "term_fa": "پیشوند 'ب' (be-)",
+      "term_en": "Prefix 'be-' (Subjunctive marker)",
+      "definition": "پیشوند نشان‌دهنده وجه التزامی (subjunctive)",
+      "usage": "ب + بن مضارع + پسوند شخصی",
+      "examples": [
+        "بروم (may I go / that I go)",
+        "بخورم (may I eat / that I eat)",
+        "بخوانم (may I read / that I read)"
+      ],
+      "contexts": [
+        "بعد از افعال خواستن، امیدوار بودن، etc.",
+        "جملات شرطی",
+        "امر غیرمستقیم"
+      ]
+    },
+    "پیشوند_نفی": {
+      "term_fa": "پیشوند نفی 'ن' / 'نـ'",
+      "term_en": "Negative Prefix 'na-' / 'ne-'",
+      "definition": "پیشوند برای ساخت صورت منفی فعل",
+      "forms": {
+        "past": "ن + بن ماضی (نخوردم - I didn't eat)",
+        "present": "نمی + بن مضارع (نمی‌خورم - I don't eat)",
+        "subjunctive": "ن + ب + بن مضارع (نخورم - that I don't eat)"
+      },
+      "examples": [
+        "نرفتم (I didn't go)",
+        "نمی‌روم (I don't go)",
+        "نروم (that I don't go)"
+      ],
+      "colloquial": "در گفتار، 'نمی' اغلب به 'نمی' یا 'نِم' کوتاه می‌شود"
+    }
+  },
+  "tenses_moods": {
+    "زمان‌های_فعلی": {
+      "term_fa": "زمان‌های فعلی",
+      "term_en": "Verb Tenses",
+      "definition": "سیستم زمانی فارسی",
+      "tenses": {
+        "ماضی_ساده": {
+          "name": "ماضی ساده (Simple Past)",
+          "structure": "بن ماضی + پسوند شخصی",
+          "example": "خوردم (I ate)"
+        },
+        "ماضی_استمراری": {
+          "name": "ماضی استمراری (Past Continuous)",
+          "structure": "می + بن ماضی + پسوند",
+          "example": "می‌خوردم (I was eating)"
+        },
+        "ماضی_نقلی": {
+          "name": "ماضی نقلی (Present Perfect)",
+          "structure": "بن ماضی + ـه + کوپولا",
+          "example": "خورده‌ام (I have eaten)"
+        },
+        "ماضی_بعید": {
+          "name": "ماضی بعید (Past Perfect)",
+          "structure": "بن ماضی + ـه + بود + پسوند",
+          "example": "خورده بودم (I had eaten)"
+        },
+        "مضارع_اخباری": {
+          "name": "مضارع اخباری (Present Indicative)",
+          "structure": "می + بن مضارع + پسوند",
+          "example": "می‌خورم (I eat / I am eating)"
+        },
+        "مضارع_التزامی": {
+          "name": "مضارع التزامی (Present Subjunctive)",
+          "structure": "ب + بن مضارع + پسوند",
+          "example": "بخورم (that I eat / may I eat)"
+        },
+        "آینده": {
+          "name": "آینده (Future)",
+          "structure": "خواه + بن ماضی + پسوند",
+          "example": "خواهم خورد (I will eat)"
+        }
+      }
+    },
+    "وجه_التزامی": {
+      "term_fa": "وجه التزامی",
+      "term_en": "Subjunctive Mood",
+      "definition": "وجهی برای بیان احتمال، امید، خواست، شرط",
+      "marker": "پیشوند 'ب'",
+      "usage_contexts": [
+        "بعد از افعال امیدواری: امیدوارم که بیایی",
+        "بعد از افعال خواستن: می‌خواهم بروم",
+        "جملات شرطی: اگر بیایی، خوشحال می‌شوم",
+        "امر غیرمستقیم"
+      ],
+      "example": "امیدوارم که موفق شوی (I hope that you succeed)"
+    },
+    "صیغه_امر": {
+      "term_fa": "صیغه امر",
+      "term_en": "Imperative Mood",
+      "definition": "صیغه برای دستور دادن",
+      "formation": {
+        "informal_singular": "بن مضارع (بخور - eat!)",
+        "formal_plural": "بن مضارع + ید (بخورید - eat! formal/plural)"
+      },
+      "negative": "ن + بن مضارع (نخور - don't eat!)",
+      "examples": [
+        "برو! (Go!)",
+        "بیا! (Come!)",
+        "بخور! (Eat!)",
+        "نرو! (Don't go!)"
+      ]
+    }
+  },
+  "object_marking": {
+    "نشانه_مفعول_را": {
+      "term_fa": "نشانه مفعول 'را'",
+      "term_en": "Object Marker 'rā'",
+      "definition": "نشانه‌ای که مفاعیل معین را علامت‌گذاری می‌کند",
+      "usage": {
+        "definite_objects": "با مفاعیل معین",
+        "proper_nouns": "با اسامی خاص",
+        "pronouns": "با ضمایر مفعولی"
+      },
+      "examples": [
+        "کتاب را خواندم (I read the book) - definite",
+        "علی را دیدم (I saw Ali) - proper noun",
+        "او را می‌شناسم (I know him/her) - pronoun"
+      ],
+      "no_rā": {
+        "indefinite": "یک کتاب خواندم (I read a book)",
+        "generic_activity": "کتاب می‌خوانم (I read books / do reading)"
+      },
+      "colloquial_form": "رو (in spoken Persian)",
+      "note": "یکی از ویژگی‌های کلیدی برای تشخیص مفعول در فارسی"
+    },
+    "مفعول_مستقیم": {
+      "term_fa": "مفعول مستقیم",
+      "term_en": "Direct Object",
+      "definition": "اسمی که عمل فعل بر آن وارد می‌شود",
+      "marking": "معمولاً با 'را' علامت‌گذاری می‌شود",
+      "example": "من کتاب را خواندم (I read the book - 'کتاب' is direct object)"
+    },
+    "مفعول_غیرمستقیم": {
+      "term_fa": "مفعول غیرمستقیم",
+      "term_en": "Indirect Object",
+      "definition": "اسمی که گیرنده عمل است",
+      "marking": "معمولاً با حرف اضافه 'به' علامت‌گذاری می‌شود",
+      "example": "کتاب را به علی دادم (I gave the book to Ali - 'علی' is indirect object)"
+    }
+  },
+  "pronouns": {
+    "ضمایر_شخصی": {
+      "term_fa": "ضمایر شخصی",
+      "term_en": "Personal Pronouns",
+      "definition": "ضمایر برای اشاره به اشخاص",
+      "pronouns": {
+        "singular": {
+          "1st": "من (man) - I",
+          "2nd_informal": "تو (to) - you (informal)",
+          "2nd_formal": "شما (shomā) - you (formal)",
+          "3rd": "او (u) - he/she, ایشان (īshān) - he/she (formal)"
+        },
+        "plural": {
+          "1st": "ما (mā) - we",
+          "2nd": "شما (shomā) - you (plural/formal)",
+          "3rd": "آن‌ها (ānhā) - they, ایشان (īshān) - they (formal)"
+        }
+      },
+      "formality_note": "'شما' برای مخاطب رسمی یا جمع استفاده می‌شود"
+    },
+    "ضمایر_ملکی": {
+      "term_fa": "ضمایر ملکی / پسوندهای ملکی",
+      "term_en": "Possessive Pronouns / Possessive Suffixes",
+      "definition": "پسوندهایی که مالکیت را نشان می‌دهند",
+      "suffixes": {
+        "1st_sg": "-ام (my): کتابم (my book)",
+        "2nd_sg_informal": "-ات (your): کتابت (your book)",
+        "2nd_sg_formal": "-تان (your): کتابتان (your book)",
+        "3rd_sg": "-اش (his/her): کتابش (his/her book)",
+        "1st_pl": "-مان (our): کتابمان (our book)",
+        "2nd_pl": "-تان (your): کتابتان (your book)",
+        "3rd_pl": "-شان (their): کتابشان (their book)"
+      },
+      "note": "این پسوندها به انتهای اسم می‌چسبند"
+    },
+    "ضمایر_اشاره": {
+      "term_fa": "ضمایر اشاره",
+      "term_en": "Demonstrative Pronouns",
+      "definition": "ضمایر برای اشاره به اشیا",
+      "pronouns": {
+        "proximal": {
+          "singular": "این (īn) - this",
+          "plural": "این‌ها (īnhā) - these"
+        },
+        "distal": {
+          "singular": "آن (ān) - that",
+          "plural": "آن‌ها (ānhā) - those"
+        }
+      },
+      "usage": "می‌توانند به عنوان ضمیر یا تعیین‌کننده استفاده شوند"
+    }
+  },
+  "prepositions_postpositions": {
+    "حروف_اضافه": {
+      "term_fa": "حروف اضافه",
+      "term_en": "Prepositions",
+      "definition": "کلماتی که قبل از اسم می‌آیند و رابطه مکانی، زمانی یا منطقی را نشان می‌دهند",
+      "common_prepositions": {
+        "در": "in, at (place)",
+        "به": "to, at (direction/time)",
+        "از": "from, of, since",
+        "با": "with",
+        "بر": "on (formal/literary)",
+        "برای": "for",
+        "تا": "until, to",
+        "بدون": "without"
+      },
+      "examples": [
+        "در خانه (in the house)",
+        "به مدرسه (to school)",
+        "از تهران (from Tehran)",
+        "با دوستم (with my friend)"
+      ]
+    },
+    "پسایندها": {
+      "term_fa": "پسایندها",
+      "term_en": "Postpositions",
+      "definition": "عناصری که بعد از اسم می‌آیند (شبیه حروف اضافه اما بعد از اسم)",
+      "note": "فارسی عمدتاً از prepositions استفاده می‌کند، اما برخی postpositions دارد",
+      "examples": [
+        "خانه‌ام را (را - object marker, postposition)",
+        "سه روز پیش (پیش - ago, can be postposition)"
+      ]
+    }
+  },
+  "copula": {
+    "فعل_ربطی_بودن": {
+      "term_fa": "فعل ربطی 'بودن'",
+      "term_en": "Copula 'budan' (to be)",
+      "definition": "فعل ربطی برای بیان وجود یا صفت",
+      "forms": {
+        "present_full": "هستم، هستی، است، هستیم، هستید، هستند",
+        "present_enclitic": "ـَم، ـی، (است)، ـیم، ـید، ـند",
+        "past": "بودم، بودی، بود، بودیم، بودید، بودند"
+      },
+      "examples": [
+        "من معلم هستم / من معلمم (I am a teacher)",
+        "او خوب است (He/She is good)",
+        "ما دانشجو بودیم (We were students)"
+      ],
+      "enclitic_usage": "شکل‌های کوپولای کوتاه به انتهای کلمه قبلی می‌چسبند",
+      "note": "در حال حاضر (present tense)، کپولا اغلب اختیاری است یا به صورت enclitic می‌آید"
+    },
+    "جملات_اسمی": {
+      "term_fa": "جملات اسمی",
+      "term_en": "Nominal Sentences",
+      "definition": "جملاتی که بدون فعل ساخته می‌شوند (با کپولا)",
+      "structure": "فاعل + مسند (+ کپولا)",
+      "examples": [
+        "این کتاب است (This is a book)",
+        "او معلم است (He is a teacher)",
+        "من ایرانی هستم (I am Iranian)"
+      ],
+      "present_tense_note": "در زمان حال، کپولا می‌تواند حذف شود: 'او معلم' (informal)"
+    }
+  },
+  "pluralization": {
+    "جمع_بستن": {
+      "term_fa": "جمع‌بستن / پسوند جمع",
+      "term_en": "Pluralization",
+      "definition": "ساخت صورت جمع اسم‌ها",
+      "persian_plurals": {
+        "-ها": "رایج‌ترین پسوند جمع",
+        "-ان": "برای انسان‌ها (رسمی‌تر)"
+      },
+      "examples": {
+        "-ها": "کتاب → کتاب‌ها (books), خانه → خانه‌ها (houses)",
+        "-ان": "دانشجو → دانشجویان (students), معلم → معلمان (teachers)"
+      },
+      "arabic_plurals": {
+        "description": "برخی کلمات عربی جمع مکسر دارند",
+        "examples": "کتاب → کتب (formal, Arabic broken plural)",
+        "modern_usage": "در فارسی معاصر، جمع فارسی (-ها/-ان) ترجیح داده می‌شود"
+      },
+      "note": "جمع اسم در فارسی ساده‌تر از بسیاری زبان‌ها است - فقط پسوند اضافه می‌شود"
+    }
+  },
+  "formality_register": {
+    "سطوح_رسمیت": {
+      "term_fa": "سطوح رسمیت در فارسی",
+      "term_en": "Formality Levels in Persian",
+      "definition": "تمایزات بین فارسی رسمی/نوشتاری و غیررسمی/گفتاری",
+      "dimensions": {
+        "pronouns": {
+          "informal": "تو (you - singular informal)",
+          "formal": "شما (you - formal/plural)"
+        },
+        "verbs": {
+          "informal_conjugation": "می‌روی (you go - informal)",
+          "formal_conjugation": "می‌روید (you go - formal/plural)"
+        },
+        "vocabulary": {
+          "colloquial": "خیلی (very - colloquial)",
+          "formal": "بسیار (very - formal)"
+        },
+        "pronunciation": {
+          "written": "می‌روم (mi-ravam)",
+          "spoken": "میرم (miram)"
+        }
+      },
+      "importance": "انتخاب سطح رسمیت مناسب برای موقعیت اجتماعی و زمینه ضروری است"
+    },
+    "زبان_محاوره": {
+      "term_fa": "زبان محاوره / گفتاری",
+      "term_en": "Colloquial Persian / Spoken Language",
+      "definition": "فارسی روزمره که در گفتار استفاده می‌شود",
+      "characteristics": [
+        "کوتاه شدن کلمات: نمی‌دانم → نمیدونم",
+        "حذف حرکات و حروف: می‌روم → میرم",
+        "استفاده از 'رو' به جای 'را'",
+        "ساده‌سازی ساختارها"
+      ],
+      "difference_from_written": "فارسی گفتاری از نوشتاری قابل توجه متفاوت است"
+    },
+    "زبان_رسمی": {
+      "term_fa": "زبان رسمی / نوشتاری",
+      "term_en": "Formal Persian / Written Language",
+      "definition": "فارسی رسمی که در متون نوشتاری استفاده می‌شود",
+      "characteristics": [
+        "حفظ تلفظ کامل: می‌دانم (not میدونم)",
+        "استفاده از 'را' (not 'رو')",
+        "واژگان رسمی‌تر",
+        "ساختارهای پیچیده‌تر",
+        "حفظ اضافه در نوشتار"
+      ]
+    }
+  },
+  "script_orthography": {
+    "خط_فارسی": {
+      "term_fa": "خط فارسی / الفبای فارسی",
+      "term_en": "Persian Script / Perso-Arabic Alphabet",
+      "definition": "الفبای عربی اصلاح شده برای نوشتن فارسی",
+      "characters": "32 حرف (28 عربی + 4 فارسی: پ، چ، ژ، گ)",
+      "persian_letters": {
+        "پ": "/p/ - not in Arabic",
+        "چ": "/ch/ - not in Arabic",
+        "ژ": "/zh/ - not in Arabic",
+        "گ": "/g/ - not in Arabic"
+      },
+      "direction": "راست به چپ (right-to-left)",
+      "note": "فارسی از الفبای اصلاح شده عربی استفاده می‌کند"
+    },
+    "حرکات": {
+      "term_fa": "حرکات / اِعراب",
+      "term_en": "Diacritics / Short Vowels",
+      "definition": "علائمی که مصوت‌های کوتاه را نشان می‌دهند",
+      "marks": {
+        "َ": "زبر / فتحه - /a/",
+        "ِ": "زیر / کسره - /e/",
+        "ُ": "پیش / ضمه - /o/",
+        "ّ": "تشدید - gemination",
+        "ْ": "سکون - absence of vowel"
+      },
+      "usage": "در نوشتار معاصر عموماً نوشته نمی‌شوند، جز در قرآن، شعر کلاسیک، و کتاب‌های آموزشی",
+      "challenge": "فقدان حرکات موجب ابهام در خواندن کلمات می‌شود"
+    },
+    "نیم‌فاصله": {
+      "term_fa": "نیم‌فاصله / کاراکتر ZWNJ",
+      "term_en": "Half-space / ZWNJ (Zero Width Non-Joiner)",
+      "unicode": "U+200C",
+      "definition": "فاصله‌ای که حروف را از هم جدا می‌کند بدون ایجاد فاصله کامل",
+      "usage": [
+        "جداسازی اجزای فعل مرکب: کار‌می‌کنم",
+        "جدا کردن پیشوند می- از فعل: می‌روم",
+        "جداسازی پسوند جمع: خانه‌ها"
+      ],
+      "importance": "استفاده صحیح نیم‌فاصله برای نوشتار درست فارسی ضروری است",
+      "challenge": "اغلب در تایپ کردن نادیده گرفته می‌شود یا با فاصله معمولی جایگزین می‌شود"
+    }
+  },
+  "rare_advanced_terms": [
+    {
+      "term_fa": "بن فعل",
+      "term_en": "Verb Stem",
+      "definition": "بخش ثابت فعل که پسوندها به آن اضافه می‌شوند",
+      "types": ["بن ماضی (past stem)", "بن مضارع (present stem)"]
+    },
+    {
+      "term_fa": "فعل کمک نما",
+      "term_en": "Periphrastic Verb Construction",
+      "definition": "ساخت فعلی با استفاده از چند کلمه",
+      "example": "داشتم می‌رفتم (I was going - past continuous with 'dāshtan')"
+    },
+    {
+      "term_fa": "صفت مشبهه",
+      "term_en": "Adjective-like Participle",
+      "definition": "صفتی که از فعل مشتق شده",
+      "example": "خوانده (read - past participle used as adjective)"
+    },
+    {
+      "term_fa": "اسم مصدر",
+      "term_en": "Verbal Noun / Infinitive",
+      "definition": "شکل اسمی فعل",
+      "form": "افعال منتهی به -دن (e.g., رفتن - going, خوردن - eating)"
+    },
+    {
+      "term_fa": "جمله‌ موصولی",
+      "term_en": "Relative Clause",
+      "definition": "جمله‌ای که اسم را توصیف می‌کند",
+      "marker": "که (that/which/who)",
+      "example": "کتابی که خواندم (the book that I read)"
+    },
+    {
+      "term_fa": "جمله‌ شرطی",
+      "term_en": "Conditional Clause",
+      "definition": "جمله‌ای که شرط را بیان می‌کند",
+      "marker": "اگر (if)",
+      "structure": "اگر + التزامی، التزامی/آینده",
+      "example": "اگر بیایی، خوشحال می‌شوم (If you come, I will be happy)"
+    },
+    {
+      "term_fa": "واژه‌سازی",
+      "term_en": "Word Formation",
+      "definition": "فرآیند ساخت کلمات جدید",
+      "methods": ["ترکیب (compounding)", "اشتقاق (derivation)", "وام‌گیری (borrowing)"]
+    },
+    {
+      "term_fa": "کپی کلیتیک",
+      "term_en": "Clitic (enclitic/proclitic)",
+      "definition": "عنصری که به کلمه دیگر می‌چسبد",
+      "examples": [
+        "enclitics: -am, -at, -ash (possessive)",
+        "enclitics: -am, -i, -ast (copula)",
+        "proclitics: mi-, be-, na- (verb prefixes)"
+      ]
+    }
+  ]
+}

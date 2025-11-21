@@ -23,6 +23,7 @@ Checks terminology accuracy using MQM framework categories:
 
 from kttc.core import ErrorAnnotation, TranslationTask
 from kttc.llm import BaseLLMProvider, LLMError, PromptTemplate
+from kttc.terminology import GlossaryManager, TermValidator
 
 from .base import AgentEvaluationError, BaseAgent
 from .parser import ErrorParser
@@ -64,6 +65,14 @@ class TerminologyAgent(BaseAgent):
         self.temperature = temperature
         self.max_tokens = max_tokens
         self._prompt_template = PromptTemplate.load("terminology")
+
+        # Initialize glossary-based validators for MQM error validation
+        self.term_validator = TermValidator()
+        self.glossary_manager = GlossaryManager()
+        import logging
+
+        logger = logging.getLogger(__name__)
+        logger.info("TerminologyAgent initialized with glossary-based MQM validator")
 
     @property
     def category(self) -> str:
@@ -110,9 +119,34 @@ class TerminologyAgent(BaseAgent):
             errors = ErrorParser.parse_errors(llm_response)
 
             # Validate that all errors match this agent's category
-            validated_errors = [
+            category_filtered = [
                 error for error in errors if error.category.lower() == self.category.lower()
             ]
+
+            # Validate MQM error types and enrich with glossary data
+            validated_errors = []
+            for error in category_filtered:
+                # Validate error type against MQM glossary
+                is_valid, mqm_info = self.term_validator.validate_mqm_error_type(
+                    error.subcategory, task.target_lang
+                )
+
+                if is_valid and mqm_info:
+                    # Enrich error with glossary information
+                    if "definition" in mqm_info:
+                        error.description = f"{error.description} [MQM: {mqm_info['definition']}]"
+
+                    validated_errors.append(error)
+                else:
+                    # Log invalid error types but still include them
+                    import logging
+
+                    logger = logging.getLogger(__name__)
+                    logger.warning(
+                        f"Invalid or unknown MQM error type '{error.subcategory}' "
+                        f"for language '{task.target_lang}'"
+                    )
+                    validated_errors.append(error)
 
             return validated_errors
 

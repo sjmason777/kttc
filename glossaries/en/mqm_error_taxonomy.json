@@ -1,0 +1,740 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "MQM Error Taxonomy - Complete Classification",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Comprehensive Multidimensional Quality Metrics (MQM) error taxonomy for translation quality assessment following W3C standards",
+    "sources": [
+      "W3C MQM Community Group (themqm.org)",
+      "ISO 5060:2024 Translation Quality Evaluation",
+      "MQM-Chat: Multidimensional Quality Metrics for Chat Translation (2024)",
+      "ACL/EMNLP 2024-2025 Conference Papers on Translation Evaluation"
+    ],
+    "total_terms": 47,
+    "standard": "W3C MQM Framework",
+    "usage": "Use for translation error classification and MQM score calculation"
+  },
+  "mqm_overview": {
+    "definition": "MQM (Multidimensional Quality Metrics) is a comprehensive framework for measuring translation quality using detailed, multidimensional error categorization",
+    "purpose": "Provides standardized approach to translation quality assessment used in WMT benchmarks and industry",
+    "scoring": "Errors weighted by severity (Minor, Major, Critical) and category importance",
+    "dimensions": ["Accuracy", "Fluency", "Terminology", "Style", "Design", "Locale Convention", "Verity"]
+  },
+  "severity_levels": {
+    "minor": {
+      "name": "Minor",
+      "definition": "Errors that do not significantly affect comprehension or usability",
+      "weight": 1,
+      "examples": [
+        "Minor grammatical error that doesn't obscure meaning",
+        "Inconsistent capitalization",
+        "Minor punctuation issues"
+      ],
+      "impact": "Low - readable and understandable with minimal effort"
+    },
+    "major": {
+      "name": "Major",
+      "definition": "Errors that seriously impact comprehension, give wrong impression, or require significant effort to understand",
+      "weight": 5,
+      "examples": [
+        "Significant grammatical error affecting readability",
+        "Partial mistranslation altering meaning",
+        "Wrong terminology in key context"
+      ],
+      "impact": "High - requires re-reading or interpretation effort"
+    },
+    "critical": {
+      "name": "Critical",
+      "definition": "Errors that completely block comprehension, convey opposite meaning, or make text unusable",
+      "weight": 10,
+      "examples": [
+        "Complete mistranslation reversing meaning",
+        "Untranslated critical content",
+        "Dangerous mistranslation in medical/legal context"
+      ],
+      "impact": "Severe - text unusable or dangerous"
+    }
+  },
+  "accuracy": {
+    "category_weight": 1.5,
+    "definition": "How well the translated text reflects the meaning of the source text without adding, omitting, or altering original meaning",
+    "importance": "Most critical dimension - translation must preserve source meaning accurately",
+    "subcategories": {
+      "addition": {
+        "error_code": "ACC-ADD",
+        "name": "Addition",
+        "definition": "Target text contains information not present in source text",
+        "severity_guidelines": "Minor if harmless clarification; Major if substantial; Critical if completely changes meaning",
+        "examples": [
+          {
+            "source": "The meeting is tomorrow.",
+            "target": "The important board meeting is tomorrow at 10am.",
+            "error": "Added 'important', 'board', and '10am' not in source",
+            "severity": "Major"
+          },
+          {
+            "source": "Il pleut.",
+            "target": "It is raining heavily outside.",
+            "error": "Added 'heavily' and 'outside'",
+            "severity": "Minor"
+          }
+        ],
+        "detection_tips": [
+          "Compare sentence length and information density",
+          "Look for explanatory phrases not in source",
+          "Check for interpreter's comments embedded in translation"
+        ],
+        "related_terms": ["over-translation", "explicitation", "amplification"]
+      },
+      "mistranslation": {
+        "error_code": "ACC-MIST",
+        "name": "Mistranslation",
+        "definition": "Source content has been incorrectly translated, altering intended meaning",
+        "severity_guidelines": "Minor if slight distortion; Major if significant change; Critical if opposite meaning",
+        "examples": [
+          {
+            "source": "The drug can reduce symptoms.",
+            "target": "The drug can eliminate symptoms.",
+            "error": "'reduce' mistranslated as 'eliminate'",
+            "severity": "Major"
+          },
+          {
+            "source": "Do not exceed recommended dose.",
+            "target": "Exceed the recommended dose.",
+            "error": "Negation omitted - opposite meaning",
+            "severity": "Critical"
+          },
+          {
+            "source": "The results are promising.",
+            "target": "The results are concerning.",
+            "error": "Wrong sentiment/meaning",
+            "severity": "Major"
+          }
+        ],
+        "common_causes": [
+          "False friends between languages",
+          "Ambiguous source text",
+          "Lack of context understanding",
+          "Machine translation errors",
+          "Misunderstanding of specialized terminology"
+        ],
+        "detection_tips": [
+          "Verify technical terms in context",
+          "Check numerical values and units",
+          "Validate proper nouns and named entities",
+          "Confirm negations preserved correctly"
+        ],
+        "related_terms": ["semantic error", "wrong meaning", "false equivalence"]
+      },
+      "omission": {
+        "error_code": "ACC-OMIT",
+        "name": "Omission",
+        "definition": "Content present in source text has been left out of target text",
+        "severity_guidelines": "Minor if redundant word; Major if key information; Critical if essential for understanding",
+        "examples": [
+          {
+            "source": "Take medication with food and water.",
+            "target": "Take medication with food.",
+            "error": "Omitted 'and water'",
+            "severity": "Major"
+          },
+          {
+            "source": "The red button starts the machine.",
+            "target": "The button starts the machine.",
+            "error": "Omitted 'red' (critical identifier)",
+            "severity": "Major"
+          },
+          {
+            "source": "Do not use if seal is broken.",
+            "target": "Do not use.",
+            "error": "Omitted critical condition",
+            "severity": "Critical"
+          }
+        ],
+        "common_causes": [
+          "Intentional summarization/reduction",
+          "Translator skipping 'redundant' content",
+          "Machine translation errors",
+          "Time pressure in human translation"
+        ],
+        "detection_tips": [
+          "Count major information units in source vs target",
+          "Check for missing clauses or phrases",
+          "Verify all numbers, dates, names present"
+        ],
+        "related_terms": ["under-translation", "implicitation", "reduction"]
+      },
+      "untranslated": {
+        "error_code": "ACC-UNTRANS",
+        "name": "Untranslated Text",
+        "definition": "Source language text left in target translation without translation",
+        "severity_guidelines": "Minor if proper noun appropriate to keep; Major if terminology should be translated; Critical if essential content",
+        "examples": [
+          {
+            "source": "Click the 'Settings' button.",
+            "target": "Click the 'Параметры' button.",
+            "error": "English 'button' left in Russian text",
+            "severity": "Major"
+          },
+          {
+            "source": "Visitez notre site web pour plus d'informations.",
+            "target": "Visit our site web for more information.",
+            "error": "'site web' should be 'website'",
+            "severity": "Minor"
+          }
+        ],
+        "acceptable_cases": [
+          "Proper names (Apple Inc., Microsoft)",
+          "Well-known foreign terms (sushi, feng shui)",
+          "Technical terms without equivalent",
+          "Brand names and trademarks"
+        ],
+        "detection_tips": [
+          "Look for source language words in target",
+          "Check mixed-script text (Latin in Chinese, etc.)",
+          "Verify intentional vs accidental foreign text"
+        ],
+        "related_terms": ["foreignism", "borrowing", "code-mixing"]
+      },
+      "do_not_translate": {
+        "error_code": "ACC-DNT",
+        "name": "Do Not Translate Violation",
+        "definition": "Content marked as 'do not translate' has been translated, or should-be-translated content was not",
+        "severity_guidelines": "Major if brand names changed; Critical if legal/contractual terms altered",
+        "examples": [
+          {
+            "source": "iPhone 15 Pro Max",
+            "target": "айФон 15 Про Макс",
+            "error": "Brand name should not be translated",
+            "severity": "Major"
+          }
+        ],
+        "detection_tips": [
+          "Check brand names and trademarks",
+          "Verify proper nouns unchanged",
+          "Confirm UI element names match source"
+        ],
+        "related_terms": ["brand consistency", "trademark violation"]
+      }
+    }
+  },
+  "fluency": {
+    "category_weight": 1.0,
+    "definition": "Extent to which translation is free of grammatical errors and easily read/understood by target audience",
+    "importance": "Critical for user experience - poor fluency reduces trust and comprehension",
+    "subcategories": {
+      "grammar": {
+        "error_code": "FLU-GRAM",
+        "name": "Grammar",
+        "definition": "Issues with grammatical correctness including morphology, syntax, and sentence structure",
+        "severity_guidelines": "Minor if doesn't impede understanding; Major if requires re-reading; Critical if blocks comprehension",
+        "examples": [
+          {
+            "text": "She go to school yesterday.",
+            "error": "Subject-verb agreement and tense error",
+            "severity": "Major",
+            "correction": "She went to school yesterday."
+          },
+          {
+            "text": "The information are available online.",
+            "error": "Plural verb with singular subject",
+            "severity": "Minor",
+            "correction": "The information is available online."
+          },
+          {
+            "text": "Because the rain we canceled.",
+            "error": "Incomplete subordinate clause",
+            "severity": "Major",
+            "correction": "Because of the rain, we canceled."
+          }
+        ],
+        "grammar_types": [
+          "Subject-verb agreement",
+          "Tense/aspect errors",
+          "Article usage (a/an/the)",
+          "Preposition errors",
+          "Pronoun reference",
+          "Clause structure",
+          "Word order violations"
+        ],
+        "language_specific": {
+          "russian": "Case agreement, aspect selection, gender concordance",
+          "chinese": "Measure word errors, particle misuse",
+          "hindi": "Postposition errors, ergative marking, oblique forms",
+          "persian": "Ezafe construction, compound verb formation"
+        },
+        "detection_tips": [
+          "Run grammar checker",
+          "Check for unnatural word order",
+          "Verify agreement patterns",
+          "Test with native speakers"
+        ],
+        "related_terms": ["syntactic error", "morphological error", "grammaticality"]
+      },
+      "spelling": {
+        "error_code": "FLU-SPELL",
+        "name": "Spelling",
+        "definition": "Incorrect spelling of words in target language",
+        "severity_guidelines": "Minor if obvious typo; Major if changes word meaning; Critical if in critical context (medical, legal)",
+        "examples": [
+          {
+            "text": "recieve the package",
+            "error": "Common misspelling",
+            "severity": "Minor",
+            "correction": "receive"
+          },
+          {
+            "text": "loose the data",
+            "error": "Wrong word (loose vs lose)",
+            "severity": "Major",
+            "correction": "lose"
+          }
+        ],
+        "common_errors": [
+          "Typos and fat-finger errors",
+          "Homophone confusion (their/there/they're)",
+          "Character encoding issues",
+          "Diacritical mark errors (é vs e)"
+        ],
+        "detection_tips": [
+          "Use spell checker",
+          "Check for OCR errors",
+          "Verify proper nouns separately"
+        ],
+        "related_terms": ["orthography", "typo", "misspelling"]
+      },
+      "punctuation": {
+        "error_code": "FLU-PUNCT",
+        "name": "Punctuation",
+        "definition": "Incorrect or missing punctuation marks affecting readability",
+        "severity_guidelines": "Minor if minor comma issue; Major if changes meaning; Critical if creates ambiguity in critical text",
+        "examples": [
+          {
+            "text": "Let's eat grandma!",
+            "error": "Missing comma changes meaning",
+            "severity": "Major",
+            "correction": "Let's eat, grandma!"
+          },
+          {
+            "text": "The project however was successful.",
+            "error": "Missing commas around 'however'",
+            "severity": "Minor",
+            "correction": "The project, however, was successful."
+          }
+        ],
+        "punctuation_types": [
+          "Comma placement",
+          "Quotation marks",
+          "Apostrophes",
+          "Semicolons and colons",
+          "Dashes and hyphens",
+          "Periods and end marks"
+        ],
+        "language_specific": {
+          "chinese": "Chinese punctuation (、。！？《》)",
+          "persian": "Right-to-left punctuation placement",
+          "russian": "Dash usage (— vs -)",
+          "hindi": "Devanagari punctuation (।।)"
+        },
+        "related_terms": ["capitalization", "formatting"]
+      },
+      "inconsistency": {
+        "error_code": "FLU-INCON",
+        "name": "Inconsistency",
+        "definition": "Text contradicts itself or uses different translations for same term",
+        "severity_guidelines": "Minor if minor style inconsistency; Major if terminology inconsistency; Critical if contradictory information",
+        "examples": [
+          {
+            "text_1": "Click the Settings button.",
+            "text_2": "Press the Preferences button.",
+            "error": "Same UI element translated differently",
+            "severity": "Major"
+          },
+          {
+            "text": "The temperature is 20°C (85°F).",
+            "error": "20°C ≠ 85°F (correct: 68°F)",
+            "severity": "Critical"
+          }
+        ],
+        "consistency_types": [
+          "Terminology consistency",
+          "Style consistency",
+          "Number format consistency",
+          "Tone/register consistency",
+          "Spelling variant consistency (US vs UK)"
+        ],
+        "detection_tips": [
+          "Use translation memory to catch variants",
+          "Maintain terminology database",
+          "Check all instances of key terms",
+          "Verify numerical conversions"
+        ],
+        "related_terms": ["variance", "contradiction", "terminology drift"]
+      },
+      "register": {
+        "error_code": "FLU-REG",
+        "name": "Register",
+        "definition": "Inappropriate level of formality for context (too formal, too casual, inconsistent)",
+        "severity_guidelines": "Minor if slightly off; Major if noticeably inappropriate; Critical if offensive or unprofessional",
+        "examples": [
+          {
+            "context": "Legal contract",
+            "text": "You gotta sign this doc, bro.",
+            "error": "Too casual for legal context",
+            "severity": "Critical"
+          },
+          {
+            "context": "Casual blog post",
+            "text": "One must endeavor to ascertain the veracity of said statement.",
+            "error": "Too formal for casual context",
+            "severity": "Major"
+          }
+        ],
+        "register_levels": [
+          "Frozen (liturgical, legal formulas)",
+          "Formal (academic, business)",
+          "Consultative (professional)",
+          "Casual (friends, colleagues)",
+          "Intimate (close relationships)"
+        ],
+        "language_specific": {
+          "russian": "ты vs вы (informal vs formal)",
+          "persian": "Formal vs informal verb forms",
+          "hindi": "आप vs तुम vs तू (respect levels)",
+          "japanese": "Keigo (honorific language)"
+        },
+        "related_terms": ["formality", "tone", "style level"]
+      },
+      "character_encoding": {
+        "error_code": "FLU-CHAR",
+        "name": "Character Encoding",
+        "definition": "Incorrect character encoding causing mojibake or rendering issues",
+        "severity_guidelines": "Major if affects readability; Critical if makes text unreadable",
+        "examples": [
+          {
+            "text": "caf�",
+            "error": "UTF-8 displayed as Windows-1252",
+            "severity": "Major",
+            "correction": "café"
+          },
+          {
+            "text": "Ð¼Ð°ÑˆÐ¸Ð½Ð°",
+            "error": "Cyrillic in wrong encoding",
+            "severity": "Critical",
+            "correction": "машина"
+          }
+        ],
+        "common_causes": [
+          "UTF-8 vs Latin-1 mismatch",
+          "Copy-paste encoding errors",
+          "File format conversion issues"
+        ],
+        "detection_tips": [
+          "Look for � (replacement character)",
+          "Check for garbled diacritics",
+          "Verify non-Latin scripts display correctly"
+        ],
+        "related_terms": ["mojibake", "encoding mismatch", "garbled text"]
+      }
+    }
+  },
+  "terminology": {
+    "category_weight": 1.2,
+    "definition": "Correct use of domain-specific terms and technical vocabulary",
+    "importance": "Critical in specialized domains (medical, legal, technical)",
+    "subcategories": {
+      "inappropriate_term": {
+        "error_code": "TERM-INAP",
+        "name": "Inappropriate for Context",
+        "definition": "Terminology used does not fit the domain, audience, or context",
+        "severity_guidelines": "Minor if slightly imprecise; Major if wrong domain; Critical if dangerous misuse",
+        "examples": [
+          {
+            "domain": "Medical",
+            "source": "myocardial infarction",
+            "target": "heart attack",
+            "error": "Colloquial term in medical professional context",
+            "severity": "Major",
+            "correct": "myocardial infarction (keep technical term)"
+          },
+          {
+            "domain": "Software UI",
+            "source": "username",
+            "target": "user identification nomenclature",
+            "error": "Over-technical for general audience",
+            "severity": "Major"
+          }
+        ],
+        "detection_tips": [
+          "Verify against domain glossaries",
+          "Check client terminology preferences",
+          "Confirm audience appropriateness"
+        ],
+        "related_terms": ["domain mismatch", "register violation"]
+      },
+      "inconsistent_term": {
+        "error_code": "TERM-INCON",
+        "name": "Inconsistent Use",
+        "definition": "Same source term translated differently across text",
+        "severity_guidelines": "Minor if near-synonyms; Major if causes confusion; Critical if safety-critical domain",
+        "examples": [
+          {
+            "source_term": "submit button",
+            "translation_1": "кнопка отправки",
+            "translation_2": "кнопка подтверждения",
+            "translation_3": "кнопка отослать",
+            "error": "Three different translations for same UI element",
+            "severity": "Major"
+          }
+        ],
+        "detection_tips": [
+          "Use terminology extraction tools",
+          "Maintain term base during translation",
+          "QA check all key term occurrences"
+        ],
+        "related_terms": ["terminology variance", "term drift"]
+      },
+      "wrong_term": {
+        "error_code": "TERM-WRONG",
+        "name": "Wrong Term",
+        "definition": "Incorrect technical term used (different concept)",
+        "severity_guidelines": "Major if different concept; Critical if dangerous in medical/legal/safety context",
+        "examples": [
+          {
+            "domain": "Programming",
+            "source": "array",
+            "target": "список (list)",
+            "error": "Array and list are different data structures",
+            "severity": "Major"
+          },
+          {
+            "domain": "Medical",
+            "source": "malignant tumor",
+            "target": "benign tumor",
+            "error": "Opposite meaning - critical error",
+            "severity": "Critical"
+          }
+        ],
+        "related_terms": ["false cognate", "terminology error"]
+      }
+    }
+  },
+  "style": {
+    "category_weight": 0.8,
+    "definition": "Appropriateness of linguistic style for target audience and text type",
+    "importance": "Affects user experience and brand perception",
+    "subcategories": {
+      "awkward": {
+        "error_code": "STY-AWK",
+        "name": "Awkward",
+        "definition": "Phrasing sounds unnatural, non-idiomatic, or difficult to read despite being grammatically correct",
+        "severity_guidelines": "Minor if slightly awkward; Major if noticeably unnatural",
+        "examples": [
+          {
+            "text": "The deadline of the project approaches fastly.",
+            "error": "Unnatural phrasing and non-word 'fastly'",
+            "severity": "Major",
+            "correction": "The project deadline is approaching quickly."
+          },
+          {
+            "text": "We perform an implementation of the solution.",
+            "error": "Unnecessarily complex/formal",
+            "severity": "Minor",
+            "correction": "We implement the solution."
+          }
+        ],
+        "common_causes": [
+          "Word-for-word translation",
+          "Calques from source language",
+          "Over-literal translation",
+          "Machine translation artifacts"
+        ],
+        "detection_tips": [
+          "Read aloud for naturalness",
+          "Compare to native speaker writing",
+          "Check for typical collocations"
+        ],
+        "related_terms": ["unnatural", "non-idiomatic", "stilted", "translationese"]
+      },
+      "unidiomatic": {
+        "error_code": "STY-UNID",
+        "name": "Unidiomatic",
+        "definition": "Does not follow target language conventions and typical expressions",
+        "severity_guidelines": "Minor if understandable; Major if sounds foreign",
+        "examples": [
+          {
+            "source": "It's raining cats and dogs.",
+            "target": "Llueven gatos y perros.",
+            "error": "Literal translation of idiom doesn't work in Spanish",
+            "severity": "Major",
+            "correction": "Llueve a cántaros. (It rains by pitchers)"
+          }
+        ],
+        "related_terms": ["calque", "interference", "literal translation"]
+      }
+    }
+  },
+  "locale_convention": {
+    "category_weight": 0.9,
+    "definition": "Compliance with locale-specific formatting conventions",
+    "importance": "Critical for international audiences - affects credibility",
+    "subcategories": {
+      "currency_format": {
+        "error_code": "LOC-CUR",
+        "name": "Currency Format",
+        "definition": "Currency not formatted according to target locale conventions",
+        "severity_guidelines": "Minor if unconventional but clear; Major if confusing; Critical if wrong currency",
+        "examples": [
+          {
+            "locale": "de_DE (Germany)",
+            "incorrect": "$1,234.56",
+            "correct": "1.234,56 €",
+            "error": "Wrong currency and separator style"
+          },
+          {
+            "locale": "en_US",
+            "incorrect": "£100",
+            "correct": "$100",
+            "error": "Wrong currency for US locale"
+          }
+        ],
+        "related_terms": ["number format", "decimal separator"]
+      },
+      "date_format": {
+        "error_code": "LOC-DATE",
+        "name": "Date/Time Format",
+        "definition": "Date or time not formatted per locale conventions",
+        "severity_guidelines": "Minor if unambiguous; Major if ambiguous (01/02/2025); Critical if causes confusion",
+        "examples": [
+          {
+            "locale": "en_US",
+            "incorrect": "25/12/2025",
+            "correct": "12/25/2025",
+            "error": "European format in US locale"
+          },
+          {
+            "locale": "ISO 8601",
+            "incorrect": "03/04/2025",
+            "correct": "2025-04-03",
+            "error": "Ambiguous (March 4 or April 3?)"
+          }
+        ],
+        "formats": {
+          "US": "MM/DD/YYYY",
+          "EU": "DD/MM/YYYY",
+          "ISO": "YYYY-MM-DD",
+          "China": "YYYY年MM月DD日"
+        },
+        "related_terms": ["time zone", "calendar format"]
+      },
+      "address_format": {
+        "error_code": "LOC-ADDR",
+        "name": "Address Format",
+        "definition": "Address components not ordered per locale conventions",
+        "severity_guidelines": "Major if violates local conventions",
+        "examples": [
+          {
+            "locale": "Japan",
+            "incorrect": "Tokyo, 100-0001, Japan",
+            "correct": "〒100-0001 東京都",
+            "error": "Western format used for Japanese address"
+          }
+        ],
+        "related_terms": ["postal code", "geographic format"]
+      },
+      "name_format": {
+        "error_code": "LOC-NAME",
+        "name": "Name Format",
+        "definition": "Personal names not formatted per cultural conventions",
+        "severity_guidelines": "Major if disrespectful; Critical if causes identification issues",
+        "examples": [
+          {
+            "locale": "China",
+            "incorrect": "Jinping Xi",
+            "correct": "Xi Jinping",
+            "error": "Family name should come first"
+          }
+        ],
+        "related_terms": ["honorifics", "name order"]
+      },
+      "measurement_units": {
+        "error_code": "LOC-UNIT",
+        "name": "Measurement Units",
+        "definition": "Units not converted or formatted for target locale",
+        "severity_guidelines": "Major if not converted; Critical if wrong conversion",
+        "examples": [
+          {
+            "locale": "US",
+            "source": "100 km",
+            "incorrect": "100 km",
+            "correct": "62 miles (or 100 km/62 miles)"
+          }
+        ],
+        "related_terms": ["imperial vs metric", "unit conversion"]
+      }
+    }
+  },
+  "verity": {
+    "category_weight": 1.3,
+    "definition": "Accuracy of factual claims and cultural appropriateness",
+    "importance": "Critical for trust and avoiding misinformation",
+    "subcategories": {
+      "cultural_inappropriateness": {
+        "error_code": "VER-CULT",
+        "name": "Cultural Inappropriateness",
+        "definition": "Content inappropriate for target culture or potentially offensive",
+        "severity_guidelines": "Major if insensitive; Critical if offensive",
+        "examples": [
+          {
+            "context": "Gift recommendation for Chinese audience",
+            "text": "Give a clock as a housewarming gift.",
+            "error": "Clocks symbolize death in Chinese culture",
+            "severity": "Major"
+          }
+        ],
+        "related_terms": ["cultural sensitivity", "localization"]
+      },
+      "legal_violation": {
+        "error_code": "VER-LEGAL",
+        "name": "Legal/Regulatory Violation",
+        "definition": "Content violates legal or regulatory requirements in target locale",
+        "severity_guidelines": "Critical - can expose organization to legal liability",
+        "examples": [
+          {
+            "locale": "EU",
+            "text": "We collect your data automatically.",
+            "error": "Missing GDPR consent notice",
+            "severity": "Critical"
+          }
+        ],
+        "related_terms": ["compliance", "regulation", "GDPR"]
+      }
+    }
+  },
+  "scoring_formula": {
+    "basic_mqm_score": "100 - (Σ(severity_weight × category_weight) / word_count × 100)",
+    "severity_weights": {
+      "minor": 1,
+      "major": 5,
+      "critical": 10
+    },
+    "category_weights": {
+      "accuracy": 1.5,
+      "verity": 1.3,
+      "terminology": 1.2,
+      "fluency": 1.0,
+      "locale_convention": 0.9,
+      "style": 0.8
+    },
+    "quality_thresholds": {
+      "excellent": "≥95",
+      "good": "85-94",
+      "acceptable": "75-84",
+      "poor": "65-74",
+      "unacceptable": "<65"
+    },
+    "normalization": "Scores typically normalized per 100 words for comparison across texts of different lengths"
+  }
+}

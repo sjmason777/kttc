@@ -1,0 +1,510 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Hindi Cases and Postpositions (कारक और परसर्ग)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "हिन्दी कारक प्रणाली - Comprehensive guide to Hindi case system (8 cases) and postpositions",
+    "sources": [
+      "CSTT (वैज्ञानिक तथा तकनीकी शब्दावली आयोग)",
+      "हिन्दी व्याकरण - कामता प्रसाद गुरु",
+      "Modern Hindi Grammar - Omkar N. Koul",
+      "Central Hindi Directorate",
+      "Hindi Wikipedia - कारक"
+    ],
+    "total_terms": 60
+  },
+  "case_system_overview": {
+    "कारक_प्रणाली": {
+      "term_hi": "कारक प्रणाली",
+      "term_en": "Case System",
+      "definition": "हिन्दी में संज्ञा और सर्वनाम का वाक्य में अन्य शब्दों के साथ संबंध दर्शाने की व्याकरणिक प्रणाली",
+      "total_cases": 8,
+      "marking_method": "परसर्ग (postpositions) के माध्यम से",
+      "note": "हिन्दी में कारक परसर्गों द्वारा चिह्नित होते हैं, विभक्तियों द्वारा नहीं (unlike Sanskrit)",
+      "comparison": {
+        "sanskrit": "संस्कृत में विभक्ति प्रत्यय (inflectional suffixes)",
+        "hindi": "हिन्दी में परसर्ग (postpositions - separate words)"
+      }
+    },
+    "परसर्ग": {
+      "term_hi": "परसर्ग",
+      "term_en": "Postposition",
+      "definition": "संज्ञा के बाद आने वाले शब्द जो कारक संबंध दर्शाते हैं",
+      "nature": "स्वतंत्र शब्द (अलग से लिखे जाते हैं)",
+      "contrast_with": "prepositions (जो संज्ञा से पहले आते हैं, जैसे अंग्रेज़ी में)",
+      "examples": ["ने, को, से, में, पर, का/की/के, के लिए"],
+      "note": "परसर्ग हिन्दी की विशिष्टता है - अंग्रेज़ी में prepositions होते हैं"
+    },
+    "तिर्यक_रूप": {
+      "term_hi": "तिर्यक रूप",
+      "term_en": "Oblique Form",
+      "definition": "संज्ञा का वह रूप जो परसर्ग से पहले प्रयुक्त होता है",
+      "formation": {
+        "masculine_singular": "-ा → -े (लड़का → लड़के)",
+        "masculine_plural": "-े → -ों (लड़के → लड़कों)",
+        "feminine": "सामान्यतः अपरिवर्तित (लड़की → लड़की)"
+      },
+      "examples": [
+        "लड़का (direct) → लड़के ने (oblique + postposition)",
+        "घर (direct) → घर में (oblique, no change)",
+        "लड़की (direct) → लड़की ने (oblique, no change)"
+      ],
+      "importance": "परसर्ग से पहले तिर्यक रूप का उपयोग अनिवार्य है"
+    }
+  },
+  "eight_cases": {
+    "1_कर्ता_कारक": {
+      "case_number": 1,
+      "name_hi": "कर्ता कारक",
+      "name_en": "Nominative Case / Agentive Case",
+      "sanskrit_name": "प्रथमा विभक्ति",
+      "definition": "क्रिया को करने वाला (कर्ता) को दर्शाता है",
+      "postposition": "ने (with transitive verbs in perfective aspect)",
+      "usage": {
+        "intransitive_verbs": "कोई परसर्ग नहीं",
+        "transitive_perfective": "'ने' का उपयोग (ergative construction)"
+      },
+      "examples": {
+        "without_ne": [
+          "राम जाता है (Ram goes - intransitive)",
+          "लड़का सोता है (The boy sleeps)",
+          "मैं स्कूल जाता हूँ (I go to school)"
+        ],
+        "with_ne": [
+          "राम ने किताब पढ़ी (Ram-ERG book-FEM read-FEM.PAST)",
+          "लड़की ने खाना खाया (Girl-ERG food ate)",
+          "मैंने पत्र लिखा (I-ERG letter wrote)"
+        ]
+      },
+      "ergative_pattern": {
+        "description": "हिन्दी एक कर्तृकारकी (ergative) भाषा है",
+        "rule": "सकर्मक क्रियाओं के साथ पूर्ण भूतकाल में कर्ता को 'ने' से चिह्नित किया जाता है",
+        "verb_agreement": "'ने' के साथ क्रिया कर्म के लिंग-वचन से मेल खाती है, कर्ता से नहीं",
+        "example": "लड़की ने किताबें (FEM.PL) पढ़ीं (FEM.PL) - verb agrees with object"
+      },
+      "when_to_use_ne": [
+        "सकर्मक क्रिया (transitive verb)",
+        "पूर्ण भूतकाल (perfective past)",
+        "साधारण भूत, पूर्ण भूत, आसन्न भूत"
+      ],
+      "when_not_to_use_ne": [
+        "अकर्मक क्रिया (intransitive verb)",
+        "वर्तमान काल (present tense)",
+        "अपूर्ण भूतकाल (imperfective past)",
+        "भविष्य काल (future tense)"
+      ]
+    },
+    "2_कर्म_कारक": {
+      "case_number": 2,
+      "name_hi": "कर्म कारक",
+      "name_en": "Accusative Case / Object Case",
+      "sanskrit_name": "द्वितीया विभक्ति",
+      "definition": "क्रिया का फल जिस पर पड़ता है (कर्म/मफ़ूल)",
+      "postposition": "को (with definite/animate objects)",
+      "usage": {
+        "definite_animate": "'को' का उपयोग",
+        "indefinite_inanimate": "अक्सर कोई परसर्ग नहीं"
+      },
+      "examples": {
+        "with_ko": [
+          "मैंने राम को देखा (I saw Ram - animate)",
+          "उसने लड़की को बुलाया (He called the girl)",
+          "मैं उसको जानता हूँ (I know him/her)"
+        ],
+        "without_ko": [
+          "मैंने किताब पढ़ी (I read the book - inanimate, some definiteness)",
+          "वह खाना खाता है (He eats food - generic)",
+          "मैं पानी पीता हूँ (I drink water)"
+        ]
+      },
+      "definiteness_hierarchy": {
+        "description": "निश्चितता पदानुक्रम (Differential Object Marking)",
+        "hierarchy": [
+          "सर्वनाम (pronouns) - हमेशा 'को'",
+          "मानव संज्ञा (human nouns) - आमतौर पर 'को'",
+          "चेतन संज्ञा (animate nouns) - अक्सर 'को'",
+          "निर्जीव निश्चित (inanimate definite) - कभी-कभी 'को'",
+          "निर्जीव अनिश्चित (inanimate indefinite) - सामान्यतः बिना 'को'"
+        ],
+        "note": "'को' का उपयोग निश्चितता और चेतनता पर निर्भर करता है"
+      },
+      "question_word": "किसको? क्या? (whom? what?)"
+    },
+    "3_करण_कारक": {
+      "case_number": 3,
+      "name_hi": "करण कारक",
+      "name_en": "Instrumental Case",
+      "sanskrit_name": "तृतीया विभक्ति",
+      "definition": "क्रिया को करने का साधन या उपकरण",
+      "postposition": "से, के द्वारा, के साथ",
+      "meaning": "से (by means of, with)",
+      "examples": [
+        "मैं कलम से लिखता हूँ (I write with a pen)",
+        "वह बस से आता है (He comes by bus)",
+        "उसने चाकू से फल काटा (He cut the fruit with a knife)",
+        "यह मशीन से बना है (This is made by machine)",
+        "राम के द्वारा यह काम हुआ (This work was done by Ram)"
+      ],
+      "semantic_roles": [
+        "साधन (instrument): कलम से",
+        "माध्यम (medium): हिन्दी से",
+        "सहायता (accompaniment): दोस्त के साथ"
+      ],
+      "question_word": "किससे? (by what? with what?)"
+    },
+    "4_संप्रदान_कारक": {
+      "case_number": 4,
+      "name_hi": "संप्रदान कारक",
+      "name_en": "Dative Case / Benefactive Case",
+      "sanskrit_name": "चतुर्थी विभक्ति",
+      "definition": "जिसके लिए कोई क्रिया की जाती है (प्राप्तकर्ता, लाभार्थी)",
+      "postposition": "को, के लिए",
+      "meanings": ["को (to - for recipient)", "के लिए (for - beneficiary)"],
+      "examples": {
+        "recipient": [
+          "मैंने राम को किताब दी (I gave the book to Ram)",
+          "उसने मुझे पत्र भेजा (He sent me a letter)",
+          "गुरु ने शिष्य को ज्ञान दिया (Teacher gave knowledge to student)"
+        ],
+        "beneficiary": [
+          "मैं तुम्हारे लिए खाना बनाऊँगा (I will cook for you)",
+          "यह उपहार आपके लिए है (This gift is for you)",
+          "माँ बच्चों के लिए काम करती है (Mother works for children)"
+        ],
+        "purpose": [
+          "मैं पढ़ने के लिए गया (I went for studying)",
+          "यह खाने के लिए है (This is for eating)"
+        ]
+      },
+      "distinction": {
+        "को": "प्रत्यक्ष प्राप्तकर्ता (direct recipient)",
+        "के_लिए": "लाभार्थी या उद्देश्य (beneficiary or purpose)"
+      },
+      "question_word": "किसके लिए? किसको? (for whom? to whom?)"
+    },
+    "5_अपादान_कारक": {
+      "case_number": 5,
+      "name_hi": "अपादान कारक",
+      "name_en": "Ablative Case / Source Case",
+      "sanskrit_name": "पंचमी विभक्ति",
+      "definition": "जहाँ से अलगाव, दूरी या उत्पत्ति हो",
+      "postposition": "से",
+      "meaning": "से (from, away from)",
+      "examples": [
+        "मैं दिल्ली से आया हूँ (I came from Delhi)",
+        "पेड़ से पत्ते गिरते हैं (Leaves fall from the tree)",
+        "बच्चा माँ से डरता है (Child fears mother)",
+        "वह स्कूल से घर गया (He went home from school)",
+        "नदी पहाड़ से निकलती है (River originates from mountain)"
+      ],
+      "semantic_roles": [
+        "स्रोत (source): दिल्ली से",
+        "पृथक्करण (separation): पेड़ से",
+        "भय का कारण (cause of fear): साँप से"
+      ],
+      "distinction_from_instrumental": {
+        "instrumental": "साधन (means) - कलम से लिखना (write with pen)",
+        "ablative": "स्रोत (source) - दिल्ली से आना (come from Delhi)",
+        "note": "दोनों 'से' का उपयोग करते हैं, लेकिन अर्थ संदर्भ से स्पष्ट होता है"
+      },
+      "question_word": "कहाँ से? किससे? (from where? from whom?)"
+    },
+    "6_संबंध_कारक": {
+      "case_number": 6,
+      "name_hi": "संबंध कारक",
+      "name_en": "Genitive Case / Possessive Case",
+      "sanskrit_name": "षष्ठी विभक्ति",
+      "definition": "स्वामित्व या संबंध दर्शाता है",
+      "postposition": "का, की, के",
+      "agreement": "संबंधी संज्ञा के लिंग-वचन-कारक के अनुसार",
+      "forms": {
+        "का": "पुल्लिंग एकवचन प्रत्यक्ष (masculine singular direct)",
+        "के": "पुल्लिंग एकवचन तिर्यक / बहुवचन (masculine singular oblique / plural)",
+        "की": "स्त्रीलिंग (feminine, all forms)"
+      },
+      "examples": {
+        "masculine_singular": [
+          "राम का घर (Ram's house - MASC.SG)",
+          "राम के घर में (in Ram's house - OBLIQUE)",
+          "लड़के का नाम (boy's name)"
+        ],
+        "masculine_plural": [
+          "लड़कों के घर (boys' houses)",
+          "राम के बच्चे (Ram's children - MASC.PL)"
+        ],
+        "feminine": [
+          "राम की किताब (Ram's book - FEM.SG)",
+          "लड़की की माँ (girl's mother)",
+          "लड़कों की किताबें (boys' books - FEM.PL)"
+        ]
+      },
+      "usage_types": [
+        "स्वामित्व (possession): राम का घर",
+        "संबंध (relation): राम का भाई",
+        "विशेषता (attribute): सुंदर रूप की लड़की",
+        "भाग (part of): पेड़ की शाखा"
+      ],
+      "question_word": "किसका? किसकी? किसके? (whose?)"
+    },
+    "7_अधिकरण_कारक": {
+      "case_number": 7,
+      "name_hi": "अधिकरण कारक",
+      "name_en": "Locative Case",
+      "sanskrit_name": "सप्तमी विभक्ति",
+      "definition": "क्रिया के घटित होने का स्थान या समय",
+      "postposition": "में, पर",
+      "meanings": {
+        "में": "अंदर (inside, in)",
+        "पर": "ऊपर (on, at)"
+      },
+      "examples": {
+        "location_में": [
+          "किताब मेज़ पर है (Book is on the table)",
+          "वह घर में है (He is in the house)",
+          "मछली पानी में रहती है (Fish lives in water)",
+          "बच्चे स्कूल में हैं (Children are in school)"
+        ],
+        "location_पर": [
+          "किताब मेज़ पर है (Book is on the table)",
+          "चिड़िया पेड़ पर बैठी है (Bird is sitting on the tree)",
+          "वह छत पर है (He is on the roof)"
+        ],
+        "time": [
+          "सोमवार को (on Monday)",
+          "दो बजे (at two o'clock)",
+          "सुबह में (in the morning)",
+          "रात को (at night)"
+        ]
+      },
+      "में_vs_पर": {
+        "में": "enclosed space, containment",
+        "पर": "surface, contact",
+        "examples": {
+          "में": "कमरे में (in the room), बॉक्स में (in the box)",
+          "पर": "मेज़ पर (on the table), दीवार पर (on the wall)"
+        }
+      },
+      "question_word": "कहाँ? किसमें? किस पर? (where? in what? on what?)"
+    },
+    "8_संबोधन_कारक": {
+      "case_number": 8,
+      "name_hi": "संबोधन कारक",
+      "name_en": "Vocative Case",
+      "sanskrit_name": "संबोधन (अष्टमी नहीं, Sanskrit में 8th is Ablative)",
+      "definition": "किसी को पुकारने या संबोधित करने के लिए",
+      "postposition": "हे, अरे, ओ, ऐ (interjections, not true postpositions)",
+      "markers": [
+        "हे (formal, literary)",
+        "अरे (informal)",
+        "ओ (calling attention)",
+        "ऐ (casual, can be rude)"
+      ],
+      "examples": [
+        "हे भगवान! (Oh God!)",
+        "अरे राम, यहाँ आओ! (Hey Ram, come here!)",
+        "ओ लड़के, सुनो! (O boy, listen!)",
+        "बच्चो, ध्यान दो! (Children, pay attention!)",
+        "मित्र, कैसे हो? (Friend, how are you?)"
+      ],
+      "note": "संबोधन में संज्ञा आमतौर पर प्रत्यक्ष रूप में होती है",
+      "punctuation": "सामान्यतः विस्मयादिबोधक चिह्न (!) या अल्पविराम (,) के साथ",
+      "question_word": "N/A (यह प्रश्न कारक नहीं है)"
+    }
+  },
+  "postposition_details": {
+    "ने_detailed": {
+      "postposition": "ने",
+      "case": "कर्ता कारक (Ergative marker)",
+      "function": "Marks agent of transitive verb in perfective aspect",
+      "effect_on_agreement": "क्रिया कर्म से सहमत होती है, कर्ता से नहीं",
+      "examples": [
+        "राम ने रोटी (FEM) खाई (FEM) - Ram-ERG bread-FEM ate-FEM",
+        "सीता ने किताब (FEM) पढ़ी (FEM) - Sita-ERG book-FEM read-FEM",
+        "लड़कों ने खाना (MASC) खाया (MASC) - boys-ERG food-MASC ate-MASC"
+      ],
+      "exceptions": "कुछ क्रियाओं के साथ 'ने' नहीं आता (e.g., लाना in some constructions)"
+    },
+    "को_detailed": {
+      "postposition": "को",
+      "cases": ["कर्म कारक (Accusative)", "संप्रदान कारक (Dative)"],
+      "functions": {
+        "accusative": "Direct object marker (animate/definite)",
+        "dative": "Indirect object / recipient marker",
+        "experiencer": "Experiencer in psychological predicates"
+      },
+      "examples": {
+        "accusative": "मैंने उसको देखा (I saw him/her)",
+        "dative": "मैंने उसको किताब दी (I gave him/her a book)",
+        "experiencer": "मुझको भूख लगी है (I am hungry - lit. hunger struck to me)"
+      },
+      "ambiguity": "'को' दो अलग कारकों में प्रयुक्त होता है, अर्थ संदर्भ से स्पष्ट होता है"
+    },
+    "से_detailed": {
+      "postposition": "से",
+      "cases": ["करण कारक (Instrumental)", "अपादान कारक (Ablative)"],
+      "functions": {
+        "instrumental": "Means, instrument, accompaniment",
+        "ablative": "Source, origin, separation",
+        "comparison": "Standard of comparison"
+      },
+      "examples": {
+        "instrumental": "मैं पेन से लिखता हूँ (I write with pen)",
+        "ablative": "मैं दिल्ली से आया (I came from Delhi)",
+        "comparison": "राम श्याम से लंबा है (Ram is taller than Shyam)"
+      },
+      "disambiguation": "संदर्भ और क्रिया से अर्थ स्पष्ट होता है"
+    },
+    "का_की_के_detailed": {
+      "postpositions": "का, की, के",
+      "case": "संबंध कारक (Genitive)",
+      "function": "Possession, relation, attribute",
+      "agreement": "Agrees with possessed noun (not possessor)",
+      "forms": {
+        "का": "MASC.SG direct",
+        "के": "MASC.SG oblique / MASC.PL",
+        "की": "FEM.SG / FEM.PL"
+      },
+      "examples": [
+        "राम का घर (Ram's house - घर is MASC.SG)",
+        "राम के घर में (in Ram's house - घर oblique)",
+        "राम की किताब (Ram's book - किताब is FEM)",
+        "राम की किताबें (Ram's books - किताबें is FEM.PL)"
+      ]
+    },
+    "में_पर_detailed": {
+      "postpositions": "में, पर",
+      "case": "अधिकरण कारक (Locative)",
+      "functions": {
+        "में": "Location inside, containment, time period",
+        "पर": "Location on surface, point in time"
+      },
+      "contrast": {
+        "में": "घर में (in house), बॉक्स में (in box), जनवरी में (in January)",
+        "पर": "मेज़ पर (on table), सोमवार को/पर (on Monday), तीन बजे पर (at 3 o'clock)"
+      }
+    }
+  },
+  "special_topics": {
+    "differential_object_marking": {
+      "term_hi": "विभेदक कर्म चिह्नक",
+      "term_en": "Differential Object Marking (DOM)",
+      "definition": "कर्म को 'को' से चिह्नित करना या न करना कुछ कारकों पर निर्भर करता है",
+      "factors": [
+        "चेतनता (Animacy): चेतन > निर्जीव",
+        "निश्चितता (Definiteness): निश्चित > अनिश्चित",
+        "व्यक्तित्व (Personhood): मानव > पशु > वस्तु"
+      ],
+      "hierarchy": "मैं/तू > नाम > मानव संज्ञा > चेतन > निर्जीव निश्चित > निर्जीव अनिश्चित",
+      "examples": {
+        "high_animacy": "मैंने उसको देखा (I saw him - pronoun, must have को)",
+        "medium": "मैंने लड़के को देखा (I saw the boy - human, usually को)",
+        "low": "मैंने किताब देखी (I saw the book - inanimate indefinite, no को)"
+      }
+    },
+    "ergativity": {
+      "term_hi": "कर्तृकारकीपन",
+      "term_en": "Ergativity",
+      "definition": "सकर्मक क्रियाओं के पूर्ण भूतकाल में विशेष कर्ता चिह्नक",
+      "pattern": "A-ne O V (A = Agent with 'ne', O = Object, V = Verb)",
+      "key_feature": "क्रिया कर्म से सहमत होती है",
+      "examples": [
+        "लड़की (FEM) ने खाना (MASC) खाया (MASC)",
+        "लड़के (MASC) ने रोटी (FEM) खाई (FEM)"
+      ],
+      "split_ergativity": "केवल perfective aspect में ergative, imperfective में accusative",
+      "comparison": {
+        "perfective": "मैंने खाना खाया (I-ERG food ate - ergative)",
+        "imperfective": "मैं खाना खाता हूँ (I food eat - accusative/nominative)"
+      }
+    },
+    "compound_postpositions": {
+      "term_hi": "संयुक्त परसर्ग",
+      "term_en": "Compound Postpositions",
+      "definition": "दो या अधिक शब्दों से बने परसर्ग",
+      "examples": [
+        "के लिए (for)",
+        "के साथ (with)",
+        "के बिना (without)",
+        "के अंदर (inside of)",
+        "के बाहर (outside of)",
+        "के ऊपर (above)",
+        "के नीचे (below)",
+        "के पास (near)",
+        "के सामने (in front of)",
+        "के पीछे (behind)",
+        "की तरफ़ (towards)",
+        "की जगह (instead of)"
+      ],
+      "structure": "का/के/की + स्थान/दिशा संज्ञा",
+      "agreement": "First element (का/के/की) agrees with following noun"
+    },
+    "case_stacking": {
+      "term_hi": "कारक संचय",
+      "term_en": "Case Stacking / Multiple Postpositions",
+      "definition": "एक संज्ञा के साथ एक से अधिक परसर्ग",
+      "examples": [
+        "राम के लिए (for Ram) - genitive + dative",
+        "घर में से (from inside the house) - locative + ablative",
+        "दिल्ली से में (from in Delhi - rare)"
+      ],
+      "note": "हिन्दी में सीमित case stacking होती है"
+    }
+  },
+  "comparison_with_other_languages": {
+    "sanskrit_comparison": {
+      "language": "संस्कृत (Sanskrit)",
+      "difference": "संस्कृत में विभक्ति प्रत्यय (inflectional endings), हिन्दी में परसर्ग (postpositions)",
+      "example": {
+        "sanskrit": "रामः (nominative), रामम् (accusative), रामेण (instrumental)",
+        "hindi": "राम (direct), राम को (accusative), राम से (instrumental)"
+      },
+      "evolution": "हिन्दी ने संस्कृत की विभक्ति प्रणाली को सरल कर परसर्ग प्रणाली विकसित की"
+    },
+    "english_comparison": {
+      "language": "English (अंग्रेज़ी)",
+      "difference": "अंग्रेज़ी में prepositions (पूर्वसर्ग), हिन्दी में postpositions (परसर्ग)",
+      "word_order": {
+        "english": "Preposition + Noun (in the house)",
+        "hindi": "Noun + Postposition (घर में)"
+      },
+      "cases_in_english": "अंग्रेज़ी में केवल सर्वनामों में case: I/me, he/him, who/whom"
+    },
+    "urdu_comparison": {
+      "language": "उर्दू (Urdu)",
+      "similarity": "उर्दू की कारक प्रणाली हिन्दी के समान",
+      "difference": "लिपि भिन्न (देवनागरी vs नस्तालीक़), लेकिन व्याकरण समान",
+      "note": "हिन्दी और उर्दू को अक्सर 'हिन्दुस्तानी' की दो शैलियाँ माना जाता है"
+    }
+  },
+  "learning_tips": {
+    "memorization_tricks": {
+      "tip_1": "राम-कथा विधि: राम ने (कर्ता), सीता को (कर्म), बाण से (करण), रावण को (संप्रदान), लंका से (अपादान), राम का (संबंध), वन में (अधिकरण), हे राम (संबोधन)",
+      "tip_2": "प्रश्न शब्द याद रखें: कौन/किसने? किसको? किससे? किसके लिए? कहाँ से? किसका? कहाँ? हे कौन?",
+      "tip_3": "'ने' केवल transitive perfective में",
+      "tip_4": "'को' = object या recipient",
+      "tip_5": "'से' = from या with/by"
+    },
+    "common_mistakes": {
+      "mistake_1": {
+        "error": "'ने' का गलत उपयोग",
+        "wrong": "मैंने जाता हूँ",
+        "correct": "मैं जाता हूँ",
+        "reason": "'जाना' अकर्मक है, 'ने' नहीं चाहिए"
+      },
+      "mistake_2": {
+        "error": "verb agreement 'ने' के साथ",
+        "wrong": "लड़की ने खाना खाई",
+        "correct": "लड़की ने खाना खाया",
+        "reason": "क्रिया 'खाना' (MASC) से मेल खाए, 'लड़की' से नहीं"
+      },
+      "mistake_3": {
+        "error": "तिर्यक रूप भूलना",
+        "wrong": "लड़का को",
+        "correct": "लड़के को",
+        "reason": "परसर्ग से पहले तिर्यक रूप आवश्यक"
+      }
+    }
+  }
+}

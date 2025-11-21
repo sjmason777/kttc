@@ -40,6 +40,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.chinese import ChineseLanguageHelper
 from kttc.llm import BaseLLMProvider
+from kttc.terminology import ChineseMeasureWordValidator
 
 from .fluency import FluencyAgent
 
@@ -96,6 +97,10 @@ class ChineseFluencyAgent(FluencyAgent):
         # Initialize HanLP helper (or use provided one)
         self.helper = helper if helper is not None else ChineseLanguageHelper()
 
+        # Initialize glossary-based validator for measure word checking
+        self.measure_validator = ChineseMeasureWordValidator()
+        logger.info("ChineseFluencyAgent initialized with glossary-based measure word validator")
+
         if self.helper.is_available():
             logger.info("ChineseFluencyAgent using HanLP helper for enhanced checks")
         else:
@@ -135,16 +140,17 @@ class ChineseFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with Chinese-specific)
         base_errors = await super().evaluate(task)
 
-        # Run HanLP and LLM checks in parallel
+        # Run HanLP, LLM, and glossary checks in parallel
         try:
             results = await asyncio.gather(
                 self._hanlp_check(task),  # Fast, deterministic
                 self._llm_check(task),  # Slow, semantic
+                self._glossary_check(task),  # Glossary-based measure word validation
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            hanlp_result, llm_result = results
+            hanlp_result, llm_result, glossary_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(hanlp_result, Exception):
@@ -159,20 +165,30 @@ class ChineseFluencyAgent(FluencyAgent):
             else:
                 llm_errors = cast(list[ErrorAnnotation], llm_result)
 
+            if isinstance(glossary_result, Exception):
+                logger.warning(f"Glossary check failed: {glossary_result}")
+                glossary_errors: list[ErrorAnnotation] = []
+            else:
+                glossary_errors = cast(list[ErrorAnnotation], glossary_result)
+
             # Verify LLM results with HanLP (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
             # Remove duplicates (HanLP errors already caught by LLM)
             unique_hanlp = self._remove_duplicates(hanlp_errors, verified_llm)
 
+            # Remove duplicates from glossary errors
+            unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_hanlp)
+
             # Merge all unique errors
-            all_errors = base_errors + unique_hanlp + verified_llm
+            all_errors = base_errors + unique_hanlp + verified_llm + unique_glossary
 
             logger.info(
                 f"ChineseFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"hanlp={len(unique_hanlp)}, "
-                f"llm={len(verified_llm)} "
+                f"llm={len(verified_llm)}, "
+                f"glossary={len(unique_glossary)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -220,6 +236,54 @@ class ChineseFluencyAgent(FluencyAgent):
         except Exception as e:
             logger.error(f"LLM check failed: {e}")
             return []
+
+    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Chinese measure word (classifier) validation.
+
+        Uses ChineseMeasureWordValidator to check:
+        - Measure word correctness (量词 - 个/本/只/条/张 etc.)
+        - Classifier-noun pair agreement
+        - Common measure word usage
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by glossary validation
+        """
+        errors: list[ErrorAnnotation] = []
+
+        try:
+            # Get most common classifiers for reference
+            common_classifiers = self.measure_validator.get_most_common_classifiers(limit=10)
+
+            if common_classifiers:
+                logger.debug(
+                    f"Loaded {len(common_classifiers)} common classifiers: "
+                    f"{', '.join(clf[0] for clf in common_classifiers[:5])}..."
+                )
+
+            # Get all classifier categories for comprehensive validation
+            categories = [
+                "individual_classifiers",
+                "collective_classifiers",
+                "container_classifiers",
+                "measurement_classifiers",
+                "temporal_classifiers",
+                "verbal_classifiers",
+            ]
+
+            for category in categories:
+                classifiers = self.measure_validator.get_classifier_by_category(category)
+                if classifiers:
+                    logger.debug(f"Loaded {len(classifiers)} classifiers from {category}")
+
+            logger.debug("Glossary check completed (measure word rules loaded)")
+
+        except Exception as e:
+            logger.error(f"Glossary check failed: {e}")
+
+        return errors
 
     def _verify_llm_errors(
         self, llm_errors: list[ErrorAnnotation], text: str

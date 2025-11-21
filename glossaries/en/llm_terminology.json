@@ -1,0 +1,589 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Large Language Model (LLM) Terminology and Contemporary AI Concepts",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Comprehensive glossary of LLM-specific terminology including hallucinations, prompt engineering, RLHF, alignment, and emerging 2024-2025 concepts",
+    "sources": [
+      "OpenAI GPT-3/4 Documentation",
+      "Anthropic Claude Documentation",
+      "InstructGPT Paper (Ouyang et al. 2022)",
+      "RLHF Literature (Christiano et al. 2017)",
+      "ACL/EMNLP/NeurIPS 2024-2025 Papers",
+      "Industry best practices 2025"
+    ],
+    "total_terms": 45,
+    "usage": "Reference for LLM development, deployment, evaluation, and interaction"
+  },
+  "llm_overview": {
+    "definition": {
+      "term": "Large Language Model (LLM)",
+      "explanation": "Neural network with billions of parameters trained on vast text corpora, capable of understanding and generating human-like text",
+      "characteristics": [
+        "Large scale (billions to trillions of parameters)",
+        "Trained on diverse internet-scale data",
+        "General-purpose language understanding",
+        "Few-shot and zero-shot learning",
+        "Emergent abilities at scale"
+      ],
+      "examples": ["GPT-4", "Claude", "PaLM 2", "LLaMA", "Gemini"]
+    },
+    "emergent_abilities": {
+      "term": "Emergent Abilities",
+      "definition": "Capabilities that appear suddenly at scale, not present in smaller models",
+      "examples": [
+        "Multi-step reasoning",
+        "Chain-of-thought",
+        "In-context learning",
+        "Instruction following"
+      ],
+      "onset": "Typically above certain parameter thresholds (e.g., >10B parameters)",
+      "debate": "Some research questions whether abilities are truly emergent or artifacts of metrics"
+    },
+    "scaling_laws": {
+      "term": "Scaling Laws",
+      "definition": "Predictable relationships between model size, data size, compute, and performance",
+      "key_findings": [
+        "Performance improves as power law with compute",
+        "Larger models are more sample-efficient",
+        "Optimal model size grows with compute budget"
+      ],
+      "implications": "Guide resource allocation in training large models",
+      "references": "Kaplan et al. (2020), Hoffmann et al. (2022)"
+    }
+  },
+  "hallucination": {
+    "definition": {
+      "term": "Hallucination",
+      "explanation": "When LLM generates plausible-sounding but factually incorrect or nonsensical information",
+      "severity": "Major concern for reliability and trustworthiness",
+      "types": [
+        "Factual errors (wrong dates, numbers, facts)",
+        "Fabricated sources (invented citations, URLs)",
+        "Contradictions (inconsistent statements)",
+        "Confabulation (filling gaps with plausible fiction)"
+      ]
+    },
+    "causes": {
+      "training_data": "Incorrect info in training corpus",
+      "distribution_shift": "Query outside training distribution",
+      "context_length": "Lost context in long conversations",
+      "overconfidence": "Model produces fluent but wrong text",
+      "compression": "Model compresses world knowledge lossy"
+    },
+    "mitigation": {
+      "retrieval_augmentation": "RAG - ground responses in retrieved docs",
+      "fact_checking": "Verify claims against knowledge base",
+      "uncertainty_estimation": "Express confidence levels",
+      "human_feedback": "RLHF to reduce hallucinations",
+      "prompt_engineering": "Encourage honesty, say 'I don't know'"
+    },
+    "detection": {
+      "methods": [
+        "Cross-reference with knowledge base",
+        "Consistency checking",
+        "Confidence scoring",
+        "Multiple generation sampling"
+      ],
+      "challenges": "Hallucinations often sound plausible"
+    },
+    "related_terms": ["confabulation", "factuality", "groundedness"]
+  },
+  "prompt_engineering": {
+    "definition": {
+      "term": "Prompt Engineering",
+      "explanation": "Crafting effective inputs (prompts) to elicit desired behavior from LLMs",
+      "importance": "Critical for getting good outputs without fine-tuning",
+      "skill": "Requires understanding model capabilities and limitations"
+    },
+    "techniques": {
+      "zero_shot": {
+        "term": "Zero-Shot Prompting",
+        "definition": "Direct instruction without examples",
+        "example": "'Translate to French: Hello'",
+        "use_case": "Simple tasks, strong models"
+      },
+      "few_shot": {
+        "term": "Few-Shot Prompting (In-Context Learning)",
+        "definition": "Provide examples in prompt",
+        "example": "'Q: 2+2=? A: 4. Q: 3+5=? A: 8. Q: 7+1=? A: '",
+        "advantages": ["Better performance", "Clarifies task format"],
+        "limitations": ["Token budget", "Example selection matters"]
+      },
+      "chain_of_thought": {
+        "acronym": "CoT",
+        "term": "Chain-of-Thought Prompting",
+        "definition": "Encourage model to show reasoning steps",
+        "example": "'Let's think step by step: ...'",
+        "introduced": "Wei et al. (2022)",
+        "advantages": [
+          "Better reasoning on complex tasks",
+          "Interpretable intermediate steps",
+          "Catches errors early"
+        ],
+        "variants": [
+          "Zero-shot CoT ('Let's think step by step')",
+          "Few-shot CoT (examples with reasoning)",
+          "Self-consistency CoT (sample multiple, take majority)"
+        ],
+        "use_cases": ["Math", "Logic", "Multi-step reasoning"]
+      },
+      "system_prompt": {
+        "term": "System Prompt (System Message)",
+        "definition": "Initial instruction defining model's role, tone, and constraints",
+        "example": "'You are a helpful assistant that only answers in French.'",
+        "scope": "Applies to entire conversation",
+        "models": "GPT-4, Claude use system prompts",
+        "best_practices": [
+          "Clear role definition",
+          "Explicit constraints",
+          "Tone and style guidance"
+        ]
+      },
+      "role_prompting": {
+        "term": "Role Prompting (Persona Pattern)",
+        "definition": "Assign specific role/expertise to model",
+        "example": "'You are an expert Python programmer...'",
+        "advantages": ["Primes relevant knowledge", "Consistent tone"],
+        "use_cases": ["Domain expertise", "Specific perspectives"]
+      },
+      "structured_output": {
+        "term": "Structured Output Prompting",
+        "definition": "Request specific output format (JSON, XML, markdown)",
+        "example": "'Output as JSON with keys: name, age, city'",
+        "advantages": ["Parseable output", "Consistent format"],
+        "techniques": ["Format specification", "Example formatting", "JSON mode (GPT-4)"]
+      },
+      "constraint_prompting": {
+        "term": "Constraint Prompting",
+        "definition": "Explicitly state limitations and rules",
+        "examples": [
+          "'In 50 words or less'",
+          "'Without using technical jargon'",
+          "'Only information from the provided context'"
+        ],
+        "use_cases": ["Length control", "Safety", "Grounding"]
+      },
+      "self_consistency": {
+        "term": "Self-Consistency",
+        "definition": "Generate multiple reasoning paths, take majority vote",
+        "approach": "Sample N times with CoT, pick most common answer",
+        "advantages": ["More robust", "Reduces errors"],
+        "cost": "N× API calls"
+      }
+    },
+    "best_practices": [
+      "Be specific and explicit",
+      "Provide context and examples",
+      "Iterate and test variations",
+      "Use delimiters for structure",
+      "State constraints clearly",
+      "Request thinking/reasoning steps",
+      "Specify output format"
+    ],
+    "pitfalls": [
+      "Ambiguous instructions",
+      "Conflicting requirements",
+      "Assuming common sense",
+      "Overly complex prompts",
+      "Not testing edge cases"
+    ]
+  },
+  "rlhf": {
+    "acronym": "RLHF",
+    "full_name": "Reinforcement Learning from Human Feedback",
+    "definition": "Training approach using human preferences to align LLM behavior with human values",
+    "introduced": "Christiano et al. (2017), popularized by InstructGPT (OpenAI 2022)",
+    "motivation": "Pre-trained LLMs not naturally aligned with helpful, honest, harmless behavior",
+    "process": {
+      "step_1": {
+        "name": "Supervised Fine-Tuning (SFT)",
+        "description": "Fine-tune base model on high-quality human demonstrations",
+        "data": "Human-written examples of desired responses",
+        "result": "SFT model (better than base but not optimal)"
+      },
+      "step_2": {
+        "name": "Reward Model Training",
+        "description": "Train model to predict human preferences",
+        "data": "Pairs of responses ranked by humans (A better than B)",
+        "output": "Reward model that scores responses",
+        "size": "Typically smaller model (saves compute)"
+      },
+      "step_3": {
+        "name": "RL Fine-Tuning (PPO)",
+        "description": "Optimize policy to maximize reward model score",
+        "algorithm": "PPO (Proximal Policy Optimization)",
+        "objective": "Maximize reward while staying close to SFT model (KL penalty)",
+        "result": "RLHF model (aligned with human preferences)"
+      }
+    },
+    "advantages": [
+      "Aligns model with human values",
+      "Reduces harmful outputs",
+      "Improves helpfulness",
+      "Captures nuanced preferences"
+    ],
+    "challenges": [
+      "Expensive (human labeling)",
+      "Reward model may be imperfect",
+      "Can over-optimize for reward (reward hacking)",
+      "Reflects labeler biases"
+    ],
+    "variants": [
+      "RLAIF (RL from AI Feedback) - use LLM instead of humans",
+      "DPO (Direct Preference Optimization) - skip reward model",
+      "Constitutional AI (Anthropic) - AI-assisted RLHF"
+    ],
+    "models_using": ["ChatGPT", "GPT-4", "Claude", "Llama 2"],
+    "related_terms": ["alignment", "instruction tuning", "preference learning"]
+  },
+  "alignment": {
+    "definition": {
+      "term": "Alignment (AI Alignment)",
+      "explanation": "Ensuring AI systems behave according to human values and intentions",
+      "goals": [
+        "Helpful (follows instructions, useful)",
+        "Honest (truthful, acknowledges uncertainty)",
+        "Harmless (safe, doesn't cause harm)"
+      ],
+      "aka": "3H framework (Helpful, Honest, Harmless)"
+    },
+    "challenges": {
+      "value_specification": "How to define 'good' behavior?",
+      "value_learning": "How to learn human values from data?",
+      "robustness": "Maintain alignment in new situations",
+      "scalable_oversight": "Humans can't supervise superhuman AI",
+      "deceptive_alignment": "Model appears aligned but isn't"
+    },
+    "approaches": [
+      "RLHF",
+      "Red teaming",
+      "Constitutional AI",
+      "Debate (AI argues both sides)",
+      "Recursive reward modeling"
+    ],
+    "related_terms": ["safety", "control", "robustness"]
+  },
+  "constitutional_ai": {
+    "term": "Constitutional AI",
+    "developer": "Anthropic (2022)",
+    "definition": "Alignment method using AI feedback based on constitutional principles",
+    "approach": [
+      "Define constitution (principles)",
+      "Model critiques own outputs against principles",
+      "Revise outputs based on critiques",
+      "Train on revised outputs (RLAIF)"
+    ],
+    "advantages": [
+      "Scales better than human feedback",
+      "Explicit principles",
+      "Reduces harmful outputs"
+    ],
+    "constitution": "Set of rules/principles for behavior (e.g., 'be helpful and harmless')",
+    "used_in": "Claude models"
+  },
+  "context_window": {
+    "term": "Context Window (Context Length)",
+    "definition": "Maximum number of tokens model can process at once",
+    "importance": "Determines how much text model can 'remember'",
+    "typical_sizes": {
+      "GPT-3.5": "4K or 16K tokens",
+      "GPT-4": "8K, 32K, or 128K tokens",
+      "Claude 2": "100K tokens",
+      "Claude 3": "200K tokens",
+      "Gemini 1.5": "1M tokens"
+    },
+    "limitations": {
+      "quadratic_attention": "Memory grows O(n²) with length",
+      "lost_in_middle": "Model may miss info in middle of long context",
+      "cost": "Longer context = more expensive"
+    },
+    "strategies": {
+      "chunking": "Break long text into pieces",
+      "summarization": "Compress long context",
+      "retrieval": "Fetch only relevant parts",
+      "streaming": "Process incrementally"
+    },
+    "related_terms": ["memory", "attention window", "sequence length"]
+  },
+  "temperature": {
+    "term": "Temperature",
+    "definition": "Hyperparameter controlling randomness of LLM outputs",
+    "range": "Typically 0 to 2 (sometimes higher)",
+    "effect": {
+      "0": "Deterministic (always picks highest probability token)",
+      "0.3-0.7": "Focused, consistent (good for factual tasks)",
+      "0.7-1.0": "Balanced creativity and coherence (default)",
+      "1.0-2.0": "More creative, diverse, but less coherent"
+    },
+    "formula": "Softmax with temperature: P(token) ∝ exp(logit / temperature)",
+    "use_cases": {
+      "low": "Translation, summarization, factual QA",
+      "medium": "General conversation, writing",
+      "high": "Creative writing, brainstorming, exploration"
+    },
+    "related_params": ["top_p", "top_k", "frequency_penalty"],
+    "note": "Higher temperature = flatter distribution = more randomness"
+  },
+  "top_p": {
+    "term": "Top-p (Nucleus Sampling)",
+    "definition": "Sample from smallest set of tokens whose cumulative probability ≥ p",
+    "range": "0 to 1 (typically 0.9-0.95)",
+    "example": "top_p=0.9 → sample from tokens making up top 90% probability",
+    "vs_temperature": "Controls diversity differently - adapts to distribution",
+    "advantages": [
+      "Avoids very low-probability tokens",
+      "Adapts to confidence (high confidence → fewer tokens, low → more)"
+    ],
+    "combined": "Often used with temperature",
+    "aka": "Nucleus sampling"
+  },
+  "few_shot_learning": {
+    "term": "In-Context Learning (ICL)",
+    "definition": "Model learns task from examples in prompt without parameter updates",
+    "mechanism": "Model infers pattern from examples, applies to new instances",
+    "example": "'English: cat, French: chat, English: dog, French: '",
+    "emergence": "Strong ICL emerged with large models (GPT-3)",
+    "advantages": [
+      "No training required",
+      "Fast adaptation",
+      "Flexible task specification"
+    ],
+    "limitations": [
+      "Limited by context window",
+      "Example quality matters",
+      "Not as good as fine-tuning for specialized tasks"
+    ],
+    "related_terms": ["few-shot prompting", "learning from demonstrations"]
+  },
+  "retrieval_augmented_generation": {
+    "acronym": "RAG",
+    "full_name": "Retrieval-Augmented Generation",
+    "definition": "Enhance LLM with external knowledge retrieval before generation",
+    "workflow": [
+      "User query → Retrieve relevant documents",
+      "Add retrieved docs to prompt context",
+      "LLM generates response grounded in docs"
+    ],
+    "advantages": [
+      "Access to up-to-date information",
+      "Reduces hallucinations",
+      "Cites sources",
+      "No retraining needed for new info"
+    ],
+    "components": {
+      "retriever": "Search system (dense retrieval, BM25, vector DB)",
+      "knowledge_base": "Document store (company docs, web, etc.)",
+      "generator": "LLM that uses retrieved context"
+    },
+    "use_cases": [
+      "Question answering over documents",
+      "Customer support (internal docs)",
+      "Research assistants",
+      "Up-to-date factual responses"
+    ],
+    "challenges": [
+      "Retrieval quality critical",
+      "Context window limits",
+      "Retrieval latency"
+    ],
+    "related_terms": ["open-domain QA", "knowledge-grounded generation"]
+  },
+  "fine_tuning": {
+    "types": {
+      "full_fine_tuning": {
+        "term": "Full Fine-Tuning",
+        "definition": "Update all model parameters on task-specific data",
+        "advantages": ["Best performance", "Full adaptation"],
+        "disadvantages": ["Expensive", "Requires many examples", "Can forget pre-trained knowledge"],
+        "use_cases": "When have large task data and need best performance"
+      },
+      "parameter_efficient": {
+        "term": "Parameter-Efficient Fine-Tuning (PEFT)",
+        "definition": "Update only small subset of parameters",
+        "advantages": ["Cheaper", "Faster", "Less data needed", "Preserves base model"],
+        "methods": ["LoRA", "Adapters", "Prefix tuning", "Prompt tuning"]
+      },
+      "lora": {
+        "acronym": "LoRA",
+        "full_name": "Low-Rank Adaptation",
+        "definition": "Add trainable low-rank matrices to frozen model weights",
+        "advantages": [
+          "Tiny number of parameters (<1% of full model)",
+          "Fast training",
+          "Multiple LoRAs for different tasks",
+          "Easy to share/deploy"
+        ],
+        "how_it_works": "W = W_frozen + AB where A and B are low-rank matrices",
+        "popular": "Most popular PEFT method for LLMs"
+      },
+      "instruction_tuning": {
+        "term": "Instruction Tuning (Instruction Fine-Tuning)",
+        "definition": "Fine-tune on diverse tasks phrased as instructions",
+        "data": "Collections of (instruction, output) pairs across many tasks",
+        "result": "Model that follows instructions zero-shot",
+        "examples": ["FLAN", "Tk-Instruct", "InstructGPT (first step)"],
+        "impact": "Dramatically improves instruction-following ability"
+      }
+    }
+  },
+  "tokenization_issues": {
+    "token": {
+      "term": "Token",
+      "definition": "Basic unit of text for LLM (word, subword, or character)",
+      "variability": "Different models use different tokenizers",
+      "count": "Matters for cost (priced per token), context limits",
+      "rule_of_thumb": "~4 characters per token in English, ~1.5 words per token"
+    },
+    "tokenization_bias": {
+      "term": "Tokenization Bias",
+      "definition": "Non-English languages use more tokens for same meaning",
+      "impact": [
+        "Higher cost for non-English",
+        "Shorter effective context",
+        "May affect performance"
+      ],
+      "mitigation": "Multilingual tokenizers (SentencePiece), language-specific models"
+    }
+  },
+  "model_sizes": {
+    "parameters": {
+      "term": "Parameters",
+      "definition": "Trainable weights in neural network",
+      "typical_sizes": [
+        "Small: <1B (BERT-Base 110M)",
+        "Medium: 1-10B (Llama 2 7B)",
+        "Large: 10-100B (GPT-3 175B)",
+        "Very Large: 100B+ (GPT-4 rumored ~1.8T, PaLM 2 340B)"
+      ],
+      "trend": "Models growing larger, but also focus on efficiency"
+    },
+    "dense_vs_sparse": {
+      "dense": "All parameters active for each input (GPT, BERT)",
+      "sparse": "Only subset active (Mixture of Experts)",
+      "trade_off": "Sparse = more parameters with same compute"
+    }
+  },
+  "inference": {
+    "definition": {
+      "term": "Inference",
+      "explanation": "Running trained model to generate predictions/outputs",
+      "vs_training": "Inference = use model; Training = teach model"
+    },
+    "autoregressive_generation": {
+      "term": "Autoregressive Generation",
+      "definition": "Generate text one token at a time, each conditioned on previous",
+      "process": "Token 1 → Token 2 (given 1) → Token 3 (given 1,2) → ...",
+      "implication": "Sequential, cannot parallelize generation",
+      "speed": "Latency grows with output length"
+    },
+    "batch_inference": {
+      "term": "Batch Inference",
+      "definition": "Process multiple requests together for efficiency",
+      "advantage": "Better GPU utilization",
+      "challenge": "Autoregressive generation hard to batch (different lengths)"
+    },
+    "caching": {
+      "term": "KV Cache (Key-Value Cache)",
+      "definition": "Cache previous tokens' keys and values to avoid recomputation",
+      "benefit": "Faster generation (don't recompute attention for past tokens)",
+      "cost": "Memory usage grows with context length"
+    },
+    "speculative_decoding": {
+      "term": "Speculative Decoding",
+      "definition": "Use fast small model to draft tokens, verify with large model",
+      "benefit": "Faster generation without quality loss",
+      "how": "Draft multiple tokens, check in parallel with large model"
+    }
+  },
+  "model_evaluation": {
+    "perplexity": {
+      "term": "Perplexity",
+      "definition": "Measure of how well model predicts text (lower = better)",
+      "formula": "PPL = exp(average negative log-likelihood)",
+      "interpretation": "PPL of 50 = model as uncertain as uniformly choosing from 50 words",
+      "use": "Evaluate language modeling quality",
+      "limitation": "Doesn't capture all aspects of quality (coherence, factuality)"
+    },
+    "benchmarks": {
+      "term": "Benchmarks",
+      "definition": "Standardized test sets for evaluating LLM capabilities",
+      "examples": [
+        "MMLU (Massive Multitask Language Understanding)",
+        "HellaSwag (commonsense reasoning)",
+        "TruthfulQA (truthfulness)",
+        "HumanEval (code generation)",
+        "GSM8K (math)",
+        "BBH (Big Bench Hard)"
+      ],
+      "caveat": "Benchmark performance ≠ real-world usefulness",
+      "contamination": "Risk of test data in training set"
+    }
+  },
+  "safety_and_misuse": {
+    "jailbreaking": {
+      "term": "Jailbreaking",
+      "definition": "Crafting prompts to bypass safety guardrails and elicit harmful outputs",
+      "examples": [
+        "Roleplaying scenarios",
+        "Hypothetical questions",
+        "Encoded requests",
+        "Multi-step manipulation"
+      ],
+      "arms_race": "Ongoing battle between attackers and defenders"
+    },
+    "red_teaming": {
+      "term": "Red Teaming",
+      "definition": "Adversarial testing to find model failures and vulnerabilities",
+      "approach": "Human testers try to elicit harmful, biased, or incorrect outputs",
+      "purpose": "Identify weaknesses before deployment",
+      "use_cases": "Safety evaluation, robustness testing"
+    },
+    "toxicity": {
+      "term": "Toxicity",
+      "definition": "Rude, disrespectful, or offensive language",
+      "concern": "LLMs trained on internet data may generate toxic text",
+      "mitigation": ["RLHF", "Content filtering", "Safety fine-tuning"],
+      "measurement": "Perspective API, toxicity classifiers"
+    },
+    "bias": {
+      "term": "Bias (in LLMs)",
+      "definition": "Systematic unfair treatment of groups based on protected attributes",
+      "sources": ["Training data biases", "Annotation biases", "Algorithmic biases"],
+      "types": ["Gender bias", "Racial bias", "Cultural bias", "Socioeconomic bias"],
+      "mitigation": ["Diverse training data", "Debiasing techniques", "RLHF", "Auditing"],
+      "challenge": "Difficult to fully eliminate, requires ongoing monitoring"
+    }
+  },
+  "emerging_2025_concepts": {
+    "qnlp": {
+      "acronym": "QNLP",
+      "full_name": "Quantum Natural Language Processing",
+      "definition": "Intersection of quantum computing and NLP",
+      "status": "Early research stage, prototype quantum embeddings",
+      "potential": "May transform language modeling with quantum advantages",
+      "timeline": "Long-term (5-10+ years)"
+    },
+    "pragmatics_focus": {
+      "term": "Pragmatics-Focused NLP",
+      "definition": "Shift from syntax to context, tone, and cultural cues",
+      "motivation": "Better emotional intelligence and context awareness",
+      "applications": ["Chatbot empathy", "Cultural adaptation", "Tone detection"],
+      "trend": "2025 focus on nuanced communication"
+    },
+    "multimodal_llms": {
+      "term": "Multimodal LLMs",
+      "definition": "Models that process text, images, audio, video together",
+      "examples": ["GPT-4V (vision)", "Gemini (multimodal)", "Claude 3 (vision)"],
+      "capabilities": [
+        "Image understanding",
+        "Visual question answering",
+        "Diagram interpretation",
+        "Text-to-image generation"
+      ],
+      "trend": "Moving beyond text-only"
+    }
+  }
+}

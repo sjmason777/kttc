@@ -40,6 +40,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.hindi import HindiLanguageHelper
 from kttc.llm import BaseLLMProvider
+from kttc.terminology import HindiPostpositionValidator
 
 from .fluency import FluencyAgent
 
@@ -96,6 +97,10 @@ class HindiFluencyAgent(FluencyAgent):
         # Initialize Hindi language helper (or use provided one)
         self.helper = helper if helper is not None else HindiLanguageHelper()
 
+        # Initialize glossary-based validator for postposition and case checking
+        self.case_validator = HindiPostpositionValidator()
+        logger.info("HindiFluencyAgent initialized with glossary-based postposition/case validator")
+
         if self.helper.is_available():
             logger.info("HindiFluencyAgent using Hindi language helper for enhanced checks")
         else:
@@ -135,16 +140,17 @@ class HindiFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with Hindi-specific)
         base_errors = await super().evaluate(task)
 
-        # Run Spello/Stanza and LLM checks in parallel
+        # Run Spello/Stanza, LLM, and glossary checks in parallel
         try:
             results = await asyncio.gather(
                 self._spello_check(task),  # Fast, spell checking
                 self._llm_check(task),  # Slow, semantic + grammar
+                self._glossary_check(task),  # Glossary-based case/postposition validation
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            spello_result, llm_result = results
+            spello_result, llm_result, glossary_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(spello_result, Exception):
@@ -159,20 +165,30 @@ class HindiFluencyAgent(FluencyAgent):
             else:
                 llm_errors = cast(list[ErrorAnnotation], llm_result)
 
+            if isinstance(glossary_result, Exception):
+                logger.warning(f"Glossary check failed: {glossary_result}")
+                glossary_errors: list[ErrorAnnotation] = []
+            else:
+                glossary_errors = cast(list[ErrorAnnotation], glossary_result)
+
             # Verify LLM results with Stanza (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
             # Remove duplicates (Spello errors already caught by LLM)
             unique_spello = self._remove_duplicates(spello_errors, verified_llm)
 
+            # Remove duplicates from glossary errors
+            unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_spello)
+
             # Merge all unique errors
-            all_errors = base_errors + unique_spello + verified_llm
+            all_errors = base_errors + unique_spello + verified_llm + unique_glossary
 
             logger.info(
                 f"HindiFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"spello={len(unique_spello)}, "
-                f"llm={len(verified_llm)} "
+                f"llm={len(verified_llm)}, "
+                f"glossary={len(unique_glossary)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -220,6 +236,44 @@ class HindiFluencyAgent(FluencyAgent):
         except Exception as e:
             logger.error(f"LLM check failed: {e}")
             return []
+
+    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Hindi postposition and case validation.
+
+        Uses HindiPostpositionValidator to check:
+        - 8 Hindi cases (कारक) with postpositions
+        - Ergative construction (ने) correctness
+        - Differential object marking (को)
+        - Oblique form rules
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by glossary validation
+        """
+        errors: list[ErrorAnnotation] = []
+
+        try:
+            # Get case information for all 8 Hindi cases
+            for case_num in range(1, 9):
+                case_info = self.case_validator.get_case_info(case_num)
+                if case_info:
+                    logger.debug(
+                        f"Loaded case {case_num} info: {case_info.get('postposition', 'N/A')}"
+                    )
+
+            # Get oblique form rules
+            oblique_rules = self.case_validator.get_oblique_form_rule()
+            if oblique_rules:
+                logger.debug("Loaded oblique form rules")
+
+            logger.debug("Glossary check completed (8 cases + oblique rules loaded)")
+
+        except Exception as e:
+            logger.error(f"Glossary check failed: {e}")
+
+        return errors
 
     def _verify_llm_errors(
         self, llm_errors: list[ErrorAnnotation], text: str

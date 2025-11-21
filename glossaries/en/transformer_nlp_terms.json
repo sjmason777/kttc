@@ -1,0 +1,572 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Transformer Models and NLP Architecture Terminology",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "Comprehensive glossary of transformer architecture, attention mechanisms, embeddings, tokenization, and modern NLP concepts (2024-2025)",
+    "sources": [
+      "Attention Is All You Need (Vaswani et al. 2017)",
+      "BERT, GPT, T5 original papers",
+      "GeeksforGeeks NLP Tutorials 2025",
+      "IBM AI Explainers",
+      "Hugging Face Documentation",
+      "ACL/EMNLP 2024-2025 Papers"
+    ],
+    "total_terms": 58,
+    "usage": "Reference for NLP model development, translation systems, and AI research"
+  },
+  "transformer_overview": {
+    "definition": "Neural network architecture based entirely on attention mechanisms, without recurrence or convolution",
+    "introduced": "2017 by Vaswani et al. in 'Attention Is All You Need'",
+    "revolutionary_because": [
+      "Parallel processing (vs sequential in RNNs)",
+      "Better long-range dependencies",
+      "Scalable to massive datasets",
+      "Foundation for GPT, BERT, T5, etc."
+    ],
+    "key_components": ["Self-Attention", "Multi-Head Attention", "Position Embeddings", "Feed-Forward Networks", "Layer Normalization"],
+    "applications": ["Machine Translation", "Text Generation", "Question Answering", "Summarization", "Code Generation"]
+  },
+  "tokenization": {
+    "definition": {
+      "term": "Tokenization",
+      "explanation": "Process of separating text into individual units (tokens) for model processing",
+      "importance": "Critical first step - determines vocabulary size and how model sees text",
+      "token_types": ["Words", "Subwords", "Characters", "Bytes"]
+    },
+    "word_level_tokenization": {
+      "term": "Word-Level Tokenization",
+      "definition": "Splitting text into words (space/punctuation boundaries)",
+      "example": "'Hello world!' → ['Hello', 'world', '!']",
+      "advantages": ["Simple", "Intuitive", "Preserves word boundaries"],
+      "disadvantages": ["Huge vocabulary", "Out-of-vocabulary (OOV) problem", "Ignores morphology"],
+      "use_cases": ["Simple NLP tasks", "Languages with clear word boundaries"]
+    },
+    "subword_tokenization": {
+      "term": "Subword Tokenization",
+      "definition": "Breaking words into smaller meaningful units, balancing vocabulary size and coverage",
+      "rationale": "Handles rare words, morphology, multilingual text efficiently",
+      "advantages": [
+        "Finite vocabulary",
+        "No OOV words",
+        "Handles morphology",
+        "Works across languages"
+      ],
+      "disadvantages": [
+        "Less intuitive",
+        "Longer sequences",
+        "May break linguistic units"
+      ]
+    },
+    "bpe": {
+      "acronym": "BPE",
+      "full_name": "Byte-Pair Encoding",
+      "definition": "Subword tokenization that iteratively merges most frequent character pairs",
+      "algorithm": [
+        "Start with character vocabulary",
+        "Find most frequent adjacent pair",
+        "Merge into new token",
+        "Repeat until desired vocabulary size"
+      ],
+      "example": "'lower' with 'low' + 'er' learned → ['low', 'er']",
+      "used_in": ["GPT-2", "GPT-3", "RoBERTa"],
+      "advantages": ["Data-driven", "Flexible vocabulary", "Good compression"],
+      "limitations": [
+        "Greedy algorithm (not optimal)",
+        "May break morphological boundaries",
+        "BPE-based segmentation can hurt morphological derivations"
+      ],
+      "recent_findings": "2025 COLING paper showed BPE segmentation hurts morphological derivations in LLMs"
+    },
+    "wordpiece": {
+      "term": "WordPiece",
+      "definition": "Similar to BPE but selects merges based on likelihood maximization",
+      "algorithm": "Choose pair that maximizes probability of training data",
+      "example": "'unwanted' → ['un', '##want', '##ed']",
+      "used_in": ["BERT", "DistilBERT", "ELECTRA"],
+      "special_symbols": "## prefix indicates subword continuation",
+      "advantages": ["Likelihood-based (more principled)", "Handles rare words well"]
+    },
+    "sentencepiece": {
+      "term": "SentencePiece",
+      "definition": "Language-agnostic tokenizer treating text as raw character stream",
+      "key_feature": "No pre-tokenization required (language-independent)",
+      "algorithms": ["BPE", "Unigram language model"],
+      "used_in": ["T5", "ALBERT", "XLM-RoBERTa", "mT5"],
+      "advantages": [
+        "Works for any language",
+        "No language-specific rules",
+        "Handles whitespace as token",
+        "Reversible (can decode perfectly)"
+      ],
+      "use_cases": ["Multilingual models", "Languages without word boundaries (Chinese, Japanese)"]
+    },
+    "lca_tokenization": {
+      "acronym": "LCA",
+      "full_name": "Local Context-Aware Tokenization",
+      "year_introduced": "2024-2025",
+      "definition": "Enhanced tokenization that preserves local context better than traditional BPE",
+      "innovation": "Maintains contextual information during tokenization",
+      "advantages": ["Better context preservation", "Improved downstream performance"],
+      "status": "Recent research development"
+    },
+    "special_tokens": {
+      "term": "Special Tokens",
+      "definition": "Reserved tokens with specific semantic meaning in model",
+      "common_tokens": {
+        "[PAD]": "Padding token (make sequences same length)",
+        "[UNK]": "Unknown token (OOV replacement)",
+        "[CLS]": "Classification token (BERT sentence start)",
+        "[SEP]": "Separator token (between sentences)",
+        "[MASK]": "Masked token (for MLM training)",
+        "<s>": "Sequence start (GPT)",
+        "</s>": "Sequence end (GPT)",
+        "<eos>": "End of sequence",
+        "<bos>": "Beginning of sequence"
+      },
+      "importance": "Critical for model understanding of task structure"
+    }
+  },
+  "embeddings": {
+    "definition": {
+      "term": "Embedding",
+      "explanation": "Dense vector representation of discrete tokens in continuous space",
+      "purpose": "Convert words/tokens to numbers that capture semantic relationships",
+      "dimensions": "Typically 128-1024 dimensions (trade-off between expressiveness and efficiency)"
+    },
+    "token_embeddings": {
+      "term": "Token Embeddings (Word Embeddings)",
+      "definition": "Vector representation for each token in vocabulary",
+      "learned_from": "Training data - initialized randomly, then optimized",
+      "properties": [
+        "Similar words have similar vectors",
+        "Captures semantic and syntactic relationships",
+        "Dimensionality = model's hidden size"
+      ],
+      "example": "king - man + woman ≈ queen (vector arithmetic)"
+    },
+    "positional_embeddings": {
+      "term": "Positional Embeddings (Position Encoding)",
+      "definition": "Encode token position in sequence since transformers have no inherent order",
+      "necessity": "Transformers process all tokens in parallel - need position info",
+      "types": {
+        "learned": "Positional embeddings learned during training (BERT, GPT)",
+        "sinusoidal": "Fixed sine/cosine functions (original Transformer)",
+        "relative": "Encode relative distances between tokens (T5, Transformer-XL)",
+        "rotary": "RoPE (Rotary Position Embedding) - recent innovation"
+      },
+      "formula_sinusoidal": "PE(pos, 2i) = sin(pos / 10000^(2i/d)); PE(pos, 2i+1) = cos(pos / 10000^(2i/d))",
+      "advantages_sinusoidal": ["Works for any sequence length", "No parameters to learn"],
+      "advantages_learned": ["Optimized for specific task", "May perform better"]
+    },
+    "contextual_embeddings": {
+      "term": "Contextual Embeddings (Contextualized Representations)",
+      "definition": "Word representations that vary based on surrounding context",
+      "revolution": "Different from static embeddings (Word2Vec, GloVe)",
+      "example": "'bank' in 'river bank' vs 'bank account' has different embeddings",
+      "models": ["BERT", "GPT", "RoBERTa", "ELECTRA"],
+      "advantages": [
+        "Captures polysemy (multiple meanings)",
+        "Context-dependent meaning",
+        "Better semantic understanding"
+      ],
+      "vs_static": "Word2Vec/GloVe: one vector per word regardless of context"
+    },
+    "static_embeddings": {
+      "term": "Static Embeddings (Pre-contextual Embeddings)",
+      "definition": "Fixed vector for each word regardless of context",
+      "examples": ["Word2Vec (2013)", "GloVe (2014)", "FastText (2016)"],
+      "limitations": [
+        "One representation per word",
+        "Cannot handle polysemy",
+        "No context awareness"
+      ],
+      "still_useful": "Smaller models, simpler tasks, interpretability"
+    },
+    "segment_embeddings": {
+      "term": "Segment Embeddings (Token Type Embeddings)",
+      "definition": "Indicate which sentence/segment a token belongs to (BERT)",
+      "use_case": "Distinguish sentence A from sentence B in pairs",
+      "example": "[CLS] sent A [SEP] sent B [SEP] → segment 0s then segment 1s",
+      "models": "BERT, ALBERT (for sentence pair tasks)"
+    },
+    "embedding_layer": {
+      "term": "Embedding Layer",
+      "definition": "First layer of transformer that converts token IDs to dense vectors",
+      "computation": "Lookup table - token_id → embedding_vector",
+      "parameters": "Vocabulary_size × Embedding_dimension",
+      "trainable": "Yes - embeddings updated during training"
+    }
+  },
+  "attention_mechanisms": {
+    "self_attention": {
+      "term": "Self-Attention (Intra-Attention)",
+      "definition": "Mechanism allowing each token to attend to all other tokens in sequence",
+      "purpose": "Capture dependencies and relationships between tokens",
+      "process": [
+        "Each token looks at all tokens (including itself)",
+        "Calculates relevance scores",
+        "Creates weighted sum of all token representations"
+      ],
+      "example": "In 'The animal didn't cross the street because it was too tired', 'it' attends strongly to 'animal'",
+      "advantages": [
+        "Captures long-range dependencies",
+        "Parallelizable",
+        "No fixed context window"
+      ],
+      "formula": "Attention(Q, K, V) = softmax(QK^T / √d_k)V"
+    },
+    "query_key_value": {
+      "terms": "Query (Q), Key (K), Value (V)",
+      "definition": "Three matrices derived from input for attention computation",
+      "analogy": "Information retrieval system",
+      "components": {
+        "query": "What I'm looking for (search query)",
+        "key": "What I have to offer (document index)",
+        "value": "Actual content retrieved (document)"
+      },
+      "computation": [
+        "Q, K, V = input × W_q, input × W_k, input × W_v",
+        "Attention_weights = softmax(Q × K^T / √d_k)",
+        "Output = Attention_weights × V"
+      ],
+      "learned": "W_q, W_k, W_v weight matrices learned during training",
+      "dimensions": "Typically d_k = d_v = d_model / num_heads"
+    },
+    "scaled_dot_product": {
+      "term": "Scaled Dot-Product Attention",
+      "definition": "Core attention operation: QK^T scaled by √d_k, then softmax",
+      "formula": "Attention(Q, K, V) = softmax(QK^T / √d_k)V",
+      "scaling_factor": "√d_k prevents dot products from becoming too large",
+      "why_scale": "For large d_k, dot products grow large → softmax saturates → tiny gradients",
+      "components": [
+        "MatMul (Q, K^T)",
+        "Scale (÷ √d_k)",
+        "Softmax (→ probabilities)",
+        "MatMul (× V)"
+      ]
+    },
+    "multi_head_attention": {
+      "term": "Multi-Head Attention",
+      "definition": "Multiple attention mechanisms running in parallel, each learning different relationships",
+      "rationale": "Different heads can focus on different aspects (syntax, semantics, position, etc.)",
+      "process": [
+        "Split Q, K, V into H heads",
+        "Each head performs scaled dot-product attention",
+        "Concatenate head outputs",
+        "Linear projection to d_model"
+      ],
+      "formula": "MultiHead(Q,K,V) = Concat(head_1, ..., head_h)W^O where head_i = Attention(QW^Q_i, KW^K_i, VW^V_i)",
+      "typical_heads": "8 heads (base models), 16 heads (large models)",
+      "example_specialization": [
+        "Head 1: Subject-verb relationships",
+        "Head 2: Adjective-noun relationships",
+        "Head 3: Long-range dependencies",
+        "etc."
+      ],
+      "advantages": [
+        "Richer representations",
+        "Multiple representational subspaces",
+        "Captures diverse patterns"
+      ]
+    },
+    "causal_attention": {
+      "term": "Causal Attention (Masked Attention)",
+      "also_known_as": "Autoregressive attention, Unidirectional attention",
+      "definition": "Attention where tokens can only attend to previous tokens (not future)",
+      "purpose": "For autoregressive models (GPT) - generate text left-to-right",
+      "implementation": "Mask upper triangle of attention matrix with -∞ before softmax",
+      "use_cases": ["Text generation", "Language modeling", "Decoder in encoder-decoder"],
+      "vs_bidirectional": "BERT uses bidirectional (can see future), GPT uses causal (cannot)"
+    },
+    "cross_attention": {
+      "term": "Cross-Attention (Encoder-Decoder Attention)",
+      "definition": "Attention between two different sequences (encoder output and decoder)",
+      "usage": "Decoder attends to encoder representations",
+      "Q_from": "Decoder",
+      "K_V_from": "Encoder",
+      "purpose": "Decoder focuses on relevant parts of source sequence",
+      "example": "Translation - decoder attends to source language while generating target",
+      "models": "Original Transformer, T5, BART, Encoder-Decoder architectures"
+    },
+    "disentangled_attention": {
+      "term": "Disentangled Attention",
+      "introduced_in": "DeBERTa (2020)",
+      "definition": "Separate attention for content and position, then combine",
+      "innovation": "More efficient capture of word dependencies",
+      "components": [
+        "Content-to-content attention",
+        "Content-to-position attention",
+        "Position-to-content attention"
+      ],
+      "advantages": ["Better efficiency", "Improved performance on some tasks"]
+    },
+    "attention_weights": {
+      "term": "Attention Weights (Attention Scores)",
+      "definition": "Probabilities indicating how much each token attends to others",
+      "range": "0 to 1 (from softmax)",
+      "sum": "Weights for each query sum to 1",
+      "visualization": "Attention heatmaps show which tokens attend to which",
+      "interpretability": "Can inspect to understand model's focus (with caution)"
+    }
+  },
+  "architecture_components": {
+    "encoder": {
+      "term": "Encoder",
+      "definition": "Stack of layers that process input sequence into rich representations",
+      "components": [
+        "Multi-head self-attention",
+        "Feed-forward network",
+        "Layer normalization",
+        "Residual connections"
+      ],
+      "models": "BERT, RoBERTa, ELECTRA (encoder-only)",
+      "bidirectional": "Can attend to both past and future tokens",
+      "use_cases": ["Text understanding", "Classification", "Named Entity Recognition"]
+    },
+    "decoder": {
+      "term": "Decoder",
+      "definition": "Stack of layers that generate output sequence autoregressively",
+      "components": [
+        "Masked multi-head self-attention",
+        "Cross-attention (in encoder-decoder models)",
+        "Feed-forward network",
+        "Layer normalization",
+        "Residual connections"
+      ],
+      "models": "GPT series (decoder-only), Decoder part of T5/BART",
+      "unidirectional": "Can only attend to past tokens (causal masking)",
+      "use_cases": ["Text generation", "Translation", "Summarization"]
+    },
+    "encoder_decoder": {
+      "term": "Encoder-Decoder Architecture",
+      "definition": "Full transformer with both encoder and decoder stacks",
+      "workflow": [
+        "Encoder processes source sequence",
+        "Decoder generates target sequence",
+        "Cross-attention connects them"
+      ],
+      "models": ["Original Transformer (2017)", "T5", "BART", "mT5"],
+      "use_cases": ["Machine Translation", "Summarization", "Seq2Seq tasks"]
+    },
+    "feed_forward_network": {
+      "acronym": "FFN",
+      "term": "Position-wise Feed-Forward Network",
+      "definition": "Fully connected layers applied independently to each position",
+      "architecture": "Two linear transformations with activation in between",
+      "formula": "FFN(x) = max(0, xW_1 + b_1)W_2 + b_2 (ReLU activation)",
+      "dimensions": "d_model → d_ff (typically 4×d_model) → d_model",
+      "purpose": "Add non-linearity and transform representations",
+      "parameters": "Most parameters in transformer are in FFN layers"
+    },
+    "layer_normalization": {
+      "term": "Layer Normalization (LayerNorm)",
+      "definition": "Normalize activations across features for each example",
+      "purpose": "Stabilize training, faster convergence",
+      "formula": "LN(x) = γ(x - μ) / √(σ² + ε) + β",
+      "vs_batch_norm": "LayerNorm normalizes across features; BatchNorm across batch",
+      "placement": "Typically before or after attention/FFN (Pre-LN vs Post-LN)"
+    },
+    "residual_connections": {
+      "term": "Residual Connections (Skip Connections)",
+      "definition": "Add layer input directly to layer output",
+      "formula": "output = Layer(x) + x",
+      "purpose": [
+        "Easier gradient flow (solve vanishing gradient)",
+        "Allows training very deep networks",
+        "Identity mapping as fallback"
+      ],
+      "introduced_by": "ResNet (He et al., 2015)",
+      "in_transformers": "Around each sub-layer (attention, FFN)"
+    },
+    "dropout": {
+      "term": "Dropout",
+      "definition": "Randomly drop units during training for regularization",
+      "rate": "Typically 0.1 in transformers",
+      "locations": ["After attention", "After FFN", "In embedding layer"],
+      "purpose": "Prevent overfitting, improve generalization",
+      "inference": "Dropout disabled during inference (testing)"
+    }
+  },
+  "model_architectures": {
+    "bert": {
+      "acronym": "BERT",
+      "full_name": "Bidirectional Encoder Representations from Transformers",
+      "year": 2018,
+      "authors": "Devlin et al. (Google)",
+      "type": "Encoder-only",
+      "key_innovation": "Masked Language Modeling (MLM) for bidirectional pre-training",
+      "training_objectives": [
+        "Masked Language Modeling (predict masked tokens)",
+        "Next Sentence Prediction (NSP)"
+      ],
+      "variants": ["BERT-Base (110M)", "BERT-Large (340M)"],
+      "use_cases": ["Classification", "NER", "Question Answering", "Understanding tasks"],
+      "limitations": ["Not for generation", "Fixed max length (512 tokens)"]
+    },
+    "gpt": {
+      "acronym": "GPT",
+      "full_name": "Generative Pre-trained Transformer",
+      "type": "Decoder-only",
+      "versions": [
+        "GPT (2018) - 117M parameters",
+        "GPT-2 (2019) - up to 1.5B parameters",
+        "GPT-3 (2020) - up to 175B parameters",
+        "GPT-4 (2023) - parameters undisclosed"
+      ],
+      "key_innovation": "Unidirectional pre-training + few-shot learning",
+      "training_objective": "Language Modeling (predict next token)",
+      "use_cases": ["Text generation", "Chat", "Translation", "Coding"],
+      "capabilities": ["Zero-shot", "Few-shot", "Chain-of-thought reasoning"]
+    },
+    "t5": {
+      "acronym": "T5",
+      "full_name": "Text-to-Text Transfer Transformer",
+      "year": 2019,
+      "authors": "Raffel et al. (Google)",
+      "type": "Encoder-Decoder",
+      "key_innovation": "Unified text-to-text framework for all NLP tasks",
+      "approach": "All tasks cast as text generation (input text → output text)",
+      "training": "Span corruption (mask contiguous spans)",
+      "variants": ["T5-Small (60M)", "T5-Base (220M)", "T5-Large (770M)", "T5-XXL (11B)"],
+      "use_cases": ["Translation", "Summarization", "Question Answering", "Any seq2seq"]
+    },
+    "roberta": {
+      "acronym": "RoBERTa",
+      "full_name": "Robustly Optimized BERT Pretraining Approach",
+      "year": 2019,
+      "authors": "Liu et al. (Facebook AI)",
+      "improvements_over_bert": [
+        "More data",
+        "Longer training",
+        "Larger batches",
+        "Removed NSP objective",
+        "Dynamic masking"
+      ],
+      "result": "Better performance than BERT on most benchmarks"
+    },
+    "bart": {
+      "acronym": "BART",
+      "full_name": "Bidirectional and Auto-Regressive Transformers",
+      "year": 2019,
+      "type": "Encoder-Decoder (denoising autoencoder)",
+      "innovation": "Combine BERT-like encoder with GPT-like decoder",
+      "training": "Corrupted text → reconstruct original",
+      "use_cases": ["Summarization", "Translation", "Text generation"]
+    },
+    "electra": {
+      "acronym": "ELECTRA",
+      "full_name": "Efficiently Learning an Encoder that Classifies Token Replacements Accurately",
+      "year": 2020,
+      "innovation": "Replaced Token Detection (RTD) instead of MLM",
+      "efficiency": "More sample-efficient than BERT",
+      "training": "Discriminator detects which tokens were replaced by generator"
+    }
+  },
+  "training_concepts": {
+    "pre_training": {
+      "term": "Pre-training",
+      "definition": "Training on large unlabeled corpus before task-specific training",
+      "objectives": ["Language Modeling", "Masked Language Modeling", "Span Corruption"],
+      "data": "Huge text corpora (Common Crawl, Wikipedia, Books)",
+      "purpose": "Learn general language understanding",
+      "result": "Foundation model / Base model"
+    },
+    "fine_tuning": {
+      "term": "Fine-tuning",
+      "definition": "Adapting pre-trained model to specific task with labeled data",
+      "approach": "Continue training on task data with task-specific head",
+      "data_needed": "Much less than training from scratch",
+      "advantages": ["Leverages pre-trained knowledge", "Faster convergence", "Better performance"],
+      "typical_tasks": ["Sentiment analysis", "NER", "QA", "Classification"]
+    },
+    "transfer_learning": {
+      "term": "Transfer Learning",
+      "definition": "Leveraging knowledge from one task to improve performance on another",
+      "paradigm": "Pre-train on general data → fine-tune on specific task",
+      "success_story": "Transformers excel at transfer learning",
+      "related_terms": ["Domain adaptation", "Multi-task learning"]
+    },
+    "masked_language_modeling": {
+      "acronym": "MLM",
+      "term": "Masked Language Modeling",
+      "definition": "Randomly mask tokens and train model to predict them",
+      "example": "'The cat [MASK] on the mat' → predict 'sat'",
+      "masking_rate": "Typically 15% of tokens",
+      "used_in": "BERT, RoBERTa, ALBERT",
+      "advantage": "Bidirectional context (can use both left and right)",
+      "limitation": "Mismatch between pre-train (has [MASK]) and fine-tune (no [MASK])"
+    },
+    "autoregressive_lm": {
+      "term": "Autoregressive Language Modeling",
+      "definition": "Predict next token given all previous tokens (left-to-right)",
+      "formula": "P(x_t | x_1, ..., x_{t-1})",
+      "used_in": "GPT series",
+      "advantage": "Natural for generation, no pre-train/fine-tune mismatch",
+      "limitation": "Unidirectional (cannot use future context)"
+    },
+    "few_shot_learning": {
+      "term": "Few-Shot Learning",
+      "definition": "Learn task from few examples (typically in prompt)",
+      "approach": "Provide examples in prompt, model infers pattern",
+      "example": "Translation: 'English: Hello, French: Bonjour, English: Goodbye, French: '",
+      "models": "GPT-3, GPT-4 excel at few-shot",
+      "advantages": ["No training", "Fast adaptation", "Flexible"],
+      "related": ["Zero-shot (no examples)", "One-shot (1 example)"]
+    },
+    "zero_shot_learning": {
+      "term": "Zero-Shot Learning",
+      "definition": "Perform task without any task-specific examples",
+      "approach": "Task described in natural language prompt",
+      "example": "'Translate to French: Hello' (no examples given)",
+      "models": "Large LLMs (GPT-3/4, PaLM) have strong zero-shot ability"
+    }
+  },
+  "recent_innovations": {
+    "rope": {
+      "acronym": "RoPE",
+      "full_name": "Rotary Position Embedding",
+      "year": "2021",
+      "definition": "Encode position via rotation in embedding space",
+      "advantages": ["Better extrapolation to longer sequences", "Relative position encoding"],
+      "used_in": ["LLaMA", "GPT-NeoX", "PaLM"]
+    },
+    "flash_attention": {
+      "term": "Flash Attention",
+      "year": "2022",
+      "definition": "IO-aware exact attention algorithm for faster training and inference",
+      "speedup": "2-4× faster than standard attention",
+      "key_idea": "Recompute attention on-the-fly to avoid memory IO bottleneck",
+      "impact": "Enables longer context windows with same memory"
+    },
+    "sparse_attention": {
+      "term": "Sparse Attention",
+      "definition": "Attention patterns that don't attend to all tokens (reduces O(n²) complexity)",
+      "patterns": ["Local attention", "Strided attention", "Block-sparse attention"],
+      "advantages": ["Longer sequences possible", "Faster computation", "Less memory"],
+      "trade_off": "May miss some long-range dependencies",
+      "models": ["Longformer", "BigBird", "Sparse Transformer"]
+    },
+    "mixture_of_experts": {
+      "acronym": "MoE",
+      "term": "Mixture of Experts",
+      "definition": "Multiple expert networks with gating mechanism to select which experts to use",
+      "advantage": "Scale model capacity without scaling computation (sparse activation)",
+      "models": ["Switch Transformer", "GLaM", "GPT-4 (rumored)"]
+    }
+  },
+  "foundation_models": {
+    "term": "Foundation Models",
+    "definition": "Large pre-trained models that serve as foundation for many downstream tasks",
+    "characteristics": [
+      "Trained on massive data",
+      "General-purpose capabilities",
+      "Multi-task without task-specific training",
+      "Emergent abilities at scale"
+    ],
+    "examples": ["GPT-4", "BERT", "T5", "PaLM", "LLaMA"],
+    "paradigm_shift": "From task-specific models to general-purpose foundation models + prompting/fine-tuning"
+  }
+}

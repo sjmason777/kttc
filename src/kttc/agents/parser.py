@@ -23,29 +23,43 @@ LOCATION: 0-5
 DESCRIPTION: Incorrect translation
 SUGGESTION: Use correct term
 ERROR_END
+
+Enriches errors with MQM definitions from terminology glossaries.
 """
 
+import logging
 import re
 
 from kttc.core import ErrorAnnotation, ErrorSeverity
+from kttc.terminology import GlossaryManager, TermValidator
+
+logger = logging.getLogger(__name__)
 
 
 class ErrorParser:
-    """Parser for extracting error annotations from LLM text responses."""
+    """Parser for extracting error annotations from LLM text responses.
+
+    Supports optional glossary enrichment to add MQM definitions and
+    multi-lingual error descriptions to parsed errors.
+    """
 
     ERROR_BLOCK_PATTERN = re.compile(r"ERROR_START\s*(.*?)\s*ERROR_END", re.DOTALL | re.IGNORECASE)
 
     FIELD_PATTERN = re.compile(r"^(\w+):\s*(.+)$", re.MULTILINE)
 
     @classmethod
-    def parse_errors(cls, llm_response: str) -> list[ErrorAnnotation]:
+    def parse_errors(
+        cls, llm_response: str, enrich_with_glossary: bool = True, language: str = "en"
+    ) -> list[ErrorAnnotation]:
         """Parse all error blocks from LLM response.
 
         Args:
             llm_response: Raw text response from LLM
+            enrich_with_glossary: Whether to enrich errors with MQM glossary data (default: True)
+            language: Language code for glossary lookup (default: "en")
 
         Returns:
-            List of parsed error annotations
+            List of parsed error annotations, optionally enriched with glossary data
 
         Raises:
             AgentParsingError: If parsing fails
@@ -55,6 +69,8 @@ class ErrorParser:
             >>> errors = ErrorParser.parse_errors(response)
             >>> print(errors[0].category)
             accuracy
+            >>> # Enriched errors include MQM definitions
+            >>> errors_enriched = ErrorParser.parse_errors(response, enrich_with_glossary=True)
         """
         errors = []
         error_blocks = cls.ERROR_BLOCK_PATTERN.findall(llm_response)
@@ -69,8 +85,12 @@ class ErrorParser:
                 errors.append(error)
             except (ValueError, KeyError):
                 # Log warning but continue parsing other errors
-                # In production, you'd want proper logging here
+                logger.warning(f"Failed to parse error block: {block[:100]}...")
                 continue
+
+        # Enrich errors with glossary data if requested
+        if enrich_with_glossary and errors:
+            errors = cls._enrich_with_glossary(errors, language)
 
         return errors
 
@@ -180,3 +200,71 @@ class ErrorParser:
             )
 
         return severity_map[severity_lower]
+
+    @classmethod
+    def _enrich_with_glossary(
+        cls, errors: list[ErrorAnnotation], language: str = "en"
+    ) -> list[ErrorAnnotation]:
+        """Enrich error annotations with MQM glossary definitions.
+
+        Args:
+            errors: List of parsed error annotations
+            language: Language code for glossary lookup (default: "en")
+
+        Returns:
+            List of errors enriched with glossary data (definitions, examples)
+
+        Example:
+            >>> errors = [ErrorAnnotation(...)]
+            >>> enriched = ErrorParser._enrich_with_glossary(errors, "en")
+            >>> # enriched[0].description now includes MQM definition
+        """
+        try:
+            # Initialize glossary manager and term validator
+            glossary_manager = GlossaryManager()
+            term_validator = TermValidator()
+
+            # Load MQM glossary for the target language
+            mqm_glossary = glossary_manager.load_glossary(language, "mqm_core")
+
+            if not mqm_glossary:
+                logger.debug(
+                    f"No MQM glossary found for language '{language}', skipping enrichment"
+                )
+                return errors
+
+            # Enrich each error with glossary information
+            for error in errors:
+                # Validate and get MQM error type information
+                is_valid, mqm_info = term_validator.validate_mqm_error_type(
+                    error.subcategory, language
+                )
+
+                if is_valid and mqm_info:
+                    # Add MQM definition to description if available
+                    if "definition" in mqm_info and mqm_info["definition"]:
+                        if "[MQM:" not in error.description:
+                            error.description = (
+                                f"{error.description} [MQM: {mqm_info['definition']}]"
+                            )
+
+                    # Log successful enrichment
+                    logger.debug(
+                        f"Enriched error '{error.subcategory}' with MQM definition from glossary"
+                    )
+                else:
+                    # Log unknown error types (might be custom or language-specific)
+                    logger.debug(
+                        f"No MQM definition found for error type '{error.subcategory}' "
+                        f"in language '{language}'"
+                    )
+
+            logger.info(
+                f"Enriched {len(errors)} errors with MQM glossary data (language: {language})"
+            )
+
+        except Exception as e:
+            # Log error but don't fail - enrichment is optional
+            logger.warning(f"Failed to enrich errors with glossary data: {e}")
+
+        return errors

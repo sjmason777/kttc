@@ -1,0 +1,355 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "MQM Core",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "MQM (Multidimensional Quality Metrics) core terminology for translation quality assessment",
+    "source": "W3C MQM Community Group (themqm.org)",
+    "total_terms": 95
+  },
+  "error_dimensions": [
+    {
+      "id": "terminology",
+      "name": "Terminology",
+      "definition": "Errors arising when a term does not conform to normative domain or organizational terminology standards or when a term in the target text is not the correct equivalent of the corresponding term in the source text",
+      "severity_weight": 1.0,
+      "subtypes": [
+        "inconsistent_with_terminology_resource",
+        "inconsistent_use_of_terminology",
+        "wrong_term",
+        "terminological_collocation"
+      ]
+    },
+    {
+      "id": "accuracy",
+      "name": "Accuracy",
+      "definition": "Errors occurring when the target text does not accurately correspond to the propositional content of the source text",
+      "severity_weight": 1.5,
+      "subtypes": [
+        "mistranslation",
+        "omission",
+        "addition",
+        "overtranslation",
+        "undertranslation",
+        "mt_hallucination",
+        "false_friend",
+        "untranslated",
+        "do_not_translate"
+      ]
+    },
+    {
+      "id": "completeness",
+      "name": "Completeness",
+      "definition": "Gaps in the source text that result in missing content that is necessary for a complete translation",
+      "severity_weight": 1.3,
+      "subtypes": [
+        "incomplete_lists",
+        "incomplete_procedures"
+      ]
+    },
+    {
+      "id": "linguistic_conventions",
+      "name": "Linguistic Conventions",
+      "definition": "Errors related to the linguistic well-formedness of the text, including problems with grammaticality, spelling, punctuation, and mechanical correctness",
+      "severity_weight": 0.8,
+      "subtypes": [
+        "grammar",
+        "spelling",
+        "punctuation",
+        "capitalization",
+        "morphology",
+        "word_order",
+        "function_words",
+        "character_encoding"
+      ]
+    },
+    {
+      "id": "textual_conventions",
+      "name": "Textual Conventions",
+      "definition": "Violations of discourse and document-level structure requirements",
+      "severity_weight": 0.9,
+      "subtypes": [
+        "cohesion",
+        "coherence",
+        "index_toc_issues",
+        "images_vs_text"
+      ]
+    },
+    {
+      "id": "style",
+      "name": "Style",
+      "definition": "Errors in which the text is grammatically acceptable but the choices of words or phrases are inappropriate for the context",
+      "severity_weight": 0.7,
+      "subtypes": [
+        "awkward_style",
+        "unidiomatic",
+        "inconsistent_style",
+        "register",
+        "organization_style",
+        "third_party_style"
+      ]
+    },
+    {
+      "id": "locale_conventions",
+      "name": "Locale Conventions",
+      "definition": "Errors related to the application of target-locale-specific formatting and content requirements",
+      "severity_weight": 0.6,
+      "subtypes": [
+        "number_format",
+        "currency_format",
+        "date_format",
+        "time_format",
+        "measurement_format",
+        "address_format",
+        "telephone_format",
+        "locale_specific_punctuation"
+      ]
+    },
+    {
+      "id": "audience_appropriateness",
+      "name": "Audience Appropriateness",
+      "definition": "Content that is not suitable for the intended audience or target locale",
+      "severity_weight": 1.2,
+      "subtypes": [
+        "culture_specific_references",
+        "offensive_content",
+        "non_inclusivity",
+        "legal_requirements",
+        "end_user_suitability"
+      ]
+    },
+    {
+      "id": "design_markup",
+      "name": "Design and Markup",
+      "definition": "Errors related to the physical presentation, formatting, and structural issues in the translation",
+      "severity_weight": 0.5,
+      "subtypes": [
+        "character_formatting",
+        "layout_problems",
+        "markup_errors",
+        "truncation",
+        "link_errors",
+        "missing_graphics"
+      ]
+    },
+    {
+      "id": "verity",
+      "name": "Verity",
+      "definition": "Extra-linguistic truth correspondence - the degree to which the translation accurately reflects real-world facts",
+      "severity_weight": 1.4,
+      "subtypes": [
+        "factual_error",
+        "logical_inconsistency",
+        "contradictory_information"
+      ]
+    }
+  ],
+  "quality_metrics": {
+    "evaluation_word_count": {
+      "abbreviation": "EWC",
+      "definition": "Actual number of words in translation source or target text product, typically counted by CAT tools",
+      "usage": "denominator_in_calculations"
+    },
+    "reference_word_count": {
+      "abbreviation": "RWC",
+      "definition": "Arbitrary number of words in hypothetical reference text, typically 1000",
+      "usage": "normalization_standard"
+    },
+    "error_type_penalty_total": {
+      "abbreviation": "ETPT",
+      "definition": "Sum of the products of individual error counts associated with a given error type multiplied by their respective severity penalty multipliers",
+      "formula": "Σ(error_count × severity_multiplier)"
+    },
+    "absolute_penalty_total": {
+      "abbreviation": "APT",
+      "definition": "Sum of all error type penalty totals for a given translation evaluation project",
+      "formula": "Σ(ETPT)"
+    },
+    "overall_normed_penalty_total": {
+      "abbreviation": "ONPT",
+      "definition": "Quality measure representing the per-word error penalty total relative to the reference word count",
+      "formula": "(APT / EWC) × RWC"
+    },
+    "overall_quality_score": {
+      "abbreviation": "OQS",
+      "definition": "Final quality measure derived from normed penalty total and maximum score value calculations, typically compared to 100",
+      "formula": "MSV - ONPT",
+      "threshold_excellent": 95,
+      "threshold_good": 85,
+      "threshold_acceptable": 75,
+      "threshold_poor": 60
+    }
+  },
+  "severity_levels": {
+    "neutral": {
+      "name": "Neutral",
+      "definition": "Severity level for errors differing from evaluator preference but representing acceptable translation",
+      "penalty_multiplier": 0,
+      "color_code": "gray"
+    },
+    "minor": {
+      "name": "Minor",
+      "definition": "Severity level not seriously impeding usability but with limited negative impact on quality aspects",
+      "penalty_multiplier": 1,
+      "color_code": "yellow",
+      "examples": [
+        "Minor spelling errors",
+        "Minor punctuation issues",
+        "Slightly awkward phrasing"
+      ]
+    },
+    "major": {
+      "name": "Major",
+      "definition": "Severity level seriously affecting understandability, reliability, or usability of content",
+      "penalty_multiplier": 5,
+      "color_code": "orange",
+      "examples": [
+        "Mistranslation of key terms",
+        "Omission of important content",
+        "Serious grammar errors"
+      ]
+    },
+    "critical": {
+      "name": "Critical",
+      "definition": "Severity level rendering entire content unfit for purpose or posing serious physical, financial, or reputational harm risk",
+      "penalty_multiplier": 10,
+      "color_code": "red",
+      "examples": [
+        "Mistranslation of safety warnings",
+        "Legal compliance violations",
+        "Offensive or harmful content"
+      ]
+    }
+  },
+  "rare_advanced_terms": [
+    {
+      "term": "Repeat Error Conflation",
+      "definition": "Processing option allowing multiple instances of certain error types with same error string to be assigned reduced error count",
+      "usage": "optimization",
+      "example": "Same terminology error repeated 10 times counted as 3 instances"
+    },
+    {
+      "term": "MT Hallucination",
+      "definition": "LLM-generated content not present in source text - a form of addition error specific to neural machine translation",
+      "category": "accuracy",
+      "severity": "major_to_critical"
+    },
+    {
+      "term": "Terminological Collocation",
+      "definition": "Co-occurrence patterns of technical terms that must be preserved in translation",
+      "category": "terminology",
+      "example": "machine learning model (not 'machine learning pattern')"
+    },
+    {
+      "term": "Unjustified Euphemism",
+      "definition": "Inappropriate softening of source meaning without justification",
+      "category": "accuracy",
+      "example": "Translating 'killed' as 'passed away' in a crime report"
+    },
+    {
+      "term": "False Friend",
+      "definition": "Cognate mistranslation due to similar-looking words with different meanings",
+      "category": "accuracy",
+      "example": "Spanish 'embarazada' (pregnant) mistranslated as 'embarrassed'"
+    },
+    {
+      "term": "Corpus Conformance",
+      "definition": "Violation of statistical language patterns observed in large corpora",
+      "category": "linguistic_conventions",
+      "detection": "statistical_analysis"
+    },
+    {
+      "term": "Unintelligible Text",
+      "definition": "Garbled or nonsensical output that cannot be understood",
+      "category": "linguistic_conventions",
+      "severity": "critical"
+    },
+    {
+      "term": "Language-Dependent Logic",
+      "definition": "UI/code logic tied to specific language features that must be adapted",
+      "category": "audience_appropriateness",
+      "example": "Pluralization rules, text direction, sort order"
+    },
+    {
+      "term": "Kerning Problems",
+      "definition": "Character spacing issues affecting readability and aesthetics",
+      "category": "design_markup",
+      "severity": "minor"
+    },
+    {
+      "term": "Single/Double-Width Issues (CJK)",
+      "definition": "Asian character width errors in CJK (Chinese-Japanese-Korean) languages",
+      "category": "design_markup",
+      "languages": ["zh", "ja", "ko"]
+    }
+  ],
+  "translation_process_terms": {
+    "translation_memory": {
+      "abbreviation": "TM",
+      "definition": "Database of source-language segments aligned with previously translated target-language segments created in a computer-assisted translation tool"
+    },
+    "termbase": {
+      "abbreviation": "TB",
+      "definition": "Database comprising a terminological data collection organized in multilingual format supporting translation quality"
+    },
+    "locale": {
+      "definition": "Set of characteristics, information or conventions specific to the linguistic, cultural, technical and geographical conventions of a target audience",
+      "components": ["language", "region", "encoding", "cultural_preferences"]
+    },
+    "translation_parameter": {
+      "definition": "One of a set of key factors, activities, elements and attributes of a project used for creating project specifications"
+    },
+    "do_not_translate": {
+      "abbreviation": "DNT",
+      "definition": "Content that should not be translated (brand names, code, specific terminology)",
+      "category": "accuracy_subtype"
+    },
+    "machine_translation_post_editing": {
+      "abbreviation": "MTPE",
+      "definition": "Human review and correction of machine-translated content",
+      "quality_levels": ["light_post_editing", "full_post_editing"]
+    }
+  },
+  "error_analysis": {
+    "error_root_cause": {
+      "definition": "Proximate cause at the end of a causal chain that leads to and is responsible for an error in the evaluation text",
+      "categories": [
+        "source_text_issue",
+        "translator_competence",
+        "mt_engine_limitation",
+        "terminology_resource_gap",
+        "context_insufficient"
+      ]
+    },
+    "error_type_weight": {
+      "abbreviation": "ETW",
+      "definition": "Value weighting individual error types more or less severely depending on project specifications",
+      "range": "0.0 to 2.0",
+      "default": 1.0
+    },
+    "threshold_value": {
+      "definition": "Lower limit for quality Pass/Fail ratings in translation quality evaluation",
+      "typical_values": {
+        "publication_quality": 95,
+        "commercial_quality": 85,
+        "comprehension_quality": 75
+      }
+    }
+  },
+  "evaluation_types": {
+    "analytic_tqe": {
+      "full_name": "Analytic Translation Quality Evaluation",
+      "definition": "Quality evaluation identifying and tallying errors using analytic metrics and calculating quality measures via scoring models",
+      "granularity": "high",
+      "time_investment": "high"
+    },
+    "holistic_tqe": {
+      "full_name": "Holistic Translation Quality Evaluation",
+      "definition": "Quality evaluation based on identifying overarching qualities such as readability and accuracy at the macro level",
+      "granularity": "low",
+      "time_investment": "low"
+    }
+  }
+}

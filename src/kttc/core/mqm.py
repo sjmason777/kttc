@@ -25,9 +25,13 @@ References:
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from kttc.core.models import ErrorAnnotation
+from kttc.terminology import GlossaryManager
+
+logger = logging.getLogger(__name__)
 
 
 class MQMScorer:
@@ -57,8 +61,9 @@ class MQMScorer:
     - < 80: Poor quality (significant rework required)
     """
 
-    # Category weight multipliers (based on MQM framework and WMT practices)
-    CATEGORY_WEIGHTS = {
+    # Default category weight multipliers (based on MQM framework and WMT practices)
+    # These can be overridden by glossary-based weights
+    DEFAULT_CATEGORY_WEIGHTS = {
         "accuracy": 1.0,  # Semantic correctness (highest priority)
         "terminology": 0.9,  # Domain-specific terms
         "fluency": 0.8,  # Grammar and naturalness
@@ -71,6 +76,72 @@ class MQMScorer:
     THRESHOLD_EXCELLENT = 95.0
     THRESHOLD_GOOD = 90.0
     THRESHOLD_ACCEPTABLE = 80.0
+
+    def __init__(self, use_glossary_weights: bool = True):
+        """Initialize MQM Scorer.
+
+        Args:
+            use_glossary_weights: If True, load category weights from MQM glossary
+        """
+        self.glossary_manager = GlossaryManager() if use_glossary_weights else None
+        self.category_weights = (
+            self._load_category_weights() if use_glossary_weights else self.DEFAULT_CATEGORY_WEIGHTS
+        )
+
+        if use_glossary_weights:
+            logger.info(
+                f"MQMScorer initialized with glossary-based weights: {self.category_weights}"
+            )
+        else:
+            logger.info("MQMScorer initialized with default weights")
+
+    def _load_category_weights(self) -> dict[str, float]:
+        """Load MQM category weights from glossary.
+
+        Returns:
+            Dictionary mapping category names to weight multipliers
+        """
+        if self.glossary_manager is None:
+            return self.DEFAULT_CATEGORY_WEIGHTS.copy()
+
+        try:
+            # Load English MQM glossary
+            mqm_glossary = self.glossary_manager.load_glossary("en", "mqm_core")
+
+            weights = {}
+            error_dimensions = mqm_glossary.get("error_dimensions", [])
+
+            # Handle both list and dict formats for backwards compatibility
+            if isinstance(error_dimensions, list):
+                # New format: list of dimension objects with 'id' and 'severity_weight'
+                for dimension in error_dimensions:
+                    if isinstance(dimension, dict):
+                        category_id = dimension.get("id", "").lower()
+                        weight = dimension.get("severity_weight", 1.0)
+                        if category_id:
+                            weights[category_id] = weight
+            elif isinstance(error_dimensions, dict):
+                # Legacy format: dict mapping category to data
+                for category, category_data in error_dimensions.items():
+                    if isinstance(category_data, dict):
+                        weight = category_data.get(
+                            "weight", self.DEFAULT_CATEGORY_WEIGHTS.get(category, 1.0)
+                        )
+                        weights[category] = weight
+                    else:
+                        weights[category] = self.DEFAULT_CATEGORY_WEIGHTS.get(category, 1.0)
+
+            # Fill in any missing categories with defaults
+            for category, default_weight in self.DEFAULT_CATEGORY_WEIGHTS.items():
+                if category not in weights:
+                    weights[category] = default_weight
+
+            logger.info(f"Loaded MQM category weights from glossary: {len(weights)} categories")
+            return weights
+
+        except Exception as e:
+            logger.warning(f"Failed to load glossary weights, using defaults: {e}")
+            return self.DEFAULT_CATEGORY_WEIGHTS.copy()
 
     def calculate_score(
         self,
@@ -109,8 +180,8 @@ class MQMScorer:
         if word_count <= 0:
             raise ValueError("word_count must be greater than 0")
 
-        # Use custom weights if provided, otherwise use defaults
-        weights = custom_weights or self.CATEGORY_WEIGHTS
+        # Use custom weights if provided, otherwise use instance weights
+        weights = custom_weights or self.category_weights
 
         # Calculate total penalty
         total_penalty = 0.0
@@ -169,7 +240,7 @@ class MQMScorer:
         # Calculate penalties with tracking
         for error in errors:
             severity_penalty = error.severity.penalty_value
-            category_weight = self.CATEGORY_WEIGHTS.get(error.category.lower(), 1.0)
+            category_weight = self.category_weights.get(error.category.lower(), 1.0)
             penalty = severity_penalty * category_weight
 
             # Track by category

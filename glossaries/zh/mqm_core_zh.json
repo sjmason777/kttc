@@ -1,0 +1,349 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "MQM Core (Chinese)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "MQM (多维质量指标) - 中文翻译质量评估术语",
+    "sources": [
+      "W3C MQM Community Group",
+      "我爱自然语言处理 (52nlp.cn)",
+      "Tmxmall 机器翻译质量评估"
+    ],
+    "total_terms": 75
+  },
+  "error_dimensions": [
+    {
+      "id": "terminology",
+      "name_zh": "术语",
+      "name_en": "Terminology",
+      "definition": "当术语不符合规范性领域或组织术语标准，或目标文本中的术语不是源文本中相应术语的正确等价物时出现的错误",
+      "severity_weight": 1.0,
+      "subtypes": [
+        "术语资源不一致",
+        "术语使用不一致",
+        "错误术语",
+        "术语搭配"
+      ]
+    },
+    {
+      "id": "accuracy",
+      "name_zh": "准确性",
+      "name_en": "Accuracy",
+      "definition": "当目标文本未准确对应源文本的命题内容时出现的错误",
+      "severity_weight": 1.5,
+      "subtypes": [
+        "误译",
+        "遗漏",
+        "添加",
+        "过度翻译",
+        "翻译不足",
+        "机器翻译幻觉",
+        "假朋友",
+        "未翻译",
+        "不应翻译"
+      ]
+    },
+    {
+      "id": "completeness",
+      "name_zh": "完整性",
+      "name_en": "Completeness",
+      "definition": "源文本中的空白导致完整翻译所需内容缺失",
+      "severity_weight": 1.3,
+      "subtypes": [
+        "列表不完整",
+        "程序不完整"
+      ]
+    },
+    {
+      "id": "linguistic_conventions",
+      "name_zh": "语言规范",
+      "name_en": "Linguistic Conventions",
+      "definition": "与文本的语言规范性相关的错误，包括语法、拼写、标点和机械正确性问题",
+      "severity_weight": 0.8,
+      "subtypes": [
+        "语法",
+        "拼写",
+        "标点",
+        "大小写",
+        "词法",
+        "词序",
+        "虚词",
+        "字符编码"
+      ]
+    },
+    {
+      "id": "style",
+      "name_zh": "风格",
+      "name_en": "Style",
+      "definition": "文本语法可接受但词汇或短语选择不适合上下文的错误",
+      "severity_weight": 0.7,
+      "subtypes": [
+        "笨拙风格",
+        "不符合习语",
+        "风格不一致",
+        "语域",
+        "组织风格",
+        "第三方风格"
+      ]
+    }
+  ],
+  "quality_metrics": {
+    "evaluation_word_count": {
+      "abbreviation_zh": "评估字数",
+      "abbreviation_en": "EWC",
+      "name_zh": "评估字数",
+      "definition": "翻译源文本或目标文本产品中的实际字数，通常由CAT工具计算",
+      "note": "中文按字符计数，不是单词"
+    },
+    "reference_word_count": {
+      "abbreviation_zh": "参考字数",
+      "abbreviation_en": "RWC",
+      "name_zh": "参考字数",
+      "definition": "假设参考文本中的任意字数，通常为1000",
+      "note": "中文可能使用1000字符作为参考"
+    },
+    "overall_quality_score": {
+      "abbreviation_zh": "总体质量分数",
+      "abbreviation_en": "OQS",
+      "name_zh": "总体质量分数",
+      "definition": "从规范化惩罚总数和最大分数值计算得出的最终质量度量，通常与100比较",
+      "thresholds": {
+        "excellent": 95,
+        "good": 85,
+        "acceptable": 75,
+        "poor": 60
+      }
+    },
+    "mqm_metric": {
+      "name_zh": "MQM指标",
+      "name_en": "MQM metric",
+      "definition": "基于MQM兼容错误类型和评分模型的翻译质量指标",
+      "status": "自2021年起在WMT Metrics Shared Task中被采纳为人工翻译质量评估的'金标准'"
+    }
+  },
+  "severity_levels": {
+    "neutral": {
+      "name_zh": "中性",
+      "name_en": "Neutral",
+      "definition": "与评估者偏好不同但代表可接受翻译的错误的严重程度级别",
+      "penalty_multiplier": 0
+    },
+    "minor": {
+      "name_zh": "轻微",
+      "name_en": "Minor",
+      "definition": "不严重妨碍可用性但对质量方面有有限负面影响的严重程度级别",
+      "penalty_multiplier": 1,
+      "examples": [
+        "轻微拼写错误",
+        "轻微标点问题",
+        "稍显笨拙的措辞"
+      ]
+    },
+    "major": {
+      "name_zh": "严重",
+      "name_en": "Major",
+      "definition": "严重影响内容的可理解性、可靠性或可用性的严重程度级别",
+      "penalty_multiplier": 5,
+      "examples": [
+        "关键术语误译",
+        "重要内容遗漏",
+        "严重语法错误"
+      ]
+    },
+    "critical": {
+      "name_zh": "关键",
+      "name_en": "Critical",
+      "definition": "使整个内容不适合使用或构成严重身体、财务或声誉伤害风险的严重程度级别",
+      "penalty_multiplier": 10,
+      "examples": [
+        "安全警告误译",
+        "法律合规违规",
+        "冒犯性或有害内容"
+      ]
+    }
+  },
+  "chinese_specific_errors": {
+    "measure_word_errors": {
+      "name_zh": "量词错误",
+      "name_en": "Measure Word Errors",
+      "definition": "量词（分类词）使用不当，这是中文特有的语法特征",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "types": {
+        "wrong_classifier": "使用了错误的量词（如：一张人 应为 一个人）",
+        "missing_classifier": "缺少量词（如：三书 应为 三本书）",
+        "redundant_classifier": "多余的量词使用"
+      },
+      "examples": [
+        "错误: 一条狗 → 正确: 一只狗",
+        "错误: 两张桌子 → 正确: 两张桌子 (此例正确)",
+        "错误: 三个水 → 正确: 三杯水/三瓶水"
+      ]
+    },
+    "particle_errors": {
+      "name_zh": "助词错误",
+      "name_en": "Particle Errors",
+      "definition": "助词（的、地、得、着、了、过等）使用不当",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "types": {
+        "structural_particle": "结构助词错误（的、地、得）",
+        "aspectual_particle": "动态助词错误（着、了、过）",
+        "modal_particle": "语气助词错误（吗、呢、吧、啊）"
+      },
+      "examples": [
+        "错误: 他跑的很快 → 正确: 他跑得很快",
+        "错误: 美丽得花 → 正确: 美丽的花",
+        "错误: 我去了图书馆过 → 正确: 我去过图书馆"
+      ]
+    },
+    "word_segmentation_errors": {
+      "name_zh": "分词错误",
+      "name_en": "Word Segmentation Errors",
+      "definition": "中文分词错误，特别是在机器翻译中",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "note": "中文没有空格分隔单词，分词是NLP的关键挑战",
+      "examples": [
+        "错误分词: '结婚的和尚' 可能是 '结婚 的 和尚' 或 '结 婚的 和尚'",
+        "错误分词: '乒乓球拍卖' vs '乒乓球 拍卖' vs '乒乓 球拍 卖'"
+      ]
+    },
+    "parataxis_errors": {
+      "name_zh": "意合错误",
+      "name_en": "Parataxis Errors",
+      "definition": "中文意合（依靠语义关联而非形式标记）的理解或翻译错误",
+      "category": "style",
+      "severity": "minor",
+      "note": "中文是意合语言，与西方语言的形合（hypotaxis）不同",
+      "examples": [
+        "中文意合: 他来我去 (no explicit conjunction)",
+        "西方形合: He came, so I left (explicit 'so')"
+      ]
+    },
+    "topic_comment_errors": {
+      "name_zh": "话题-评述结构错误",
+      "name_en": "Topic-Comment Structure Errors",
+      "definition": "中文基本句子结构（话题-评述）的误用",
+      "category": "linguistic_conventions",
+      "severity": "major",
+      "note": "中文常用话题-评述结构，不同于西方的主语-谓语结构",
+      "examples": [
+        "话题-评述: 这本书，我看过了 (Topic: this book, Comment: I've read)",
+        "主谓结构: I have read this book"
+      ]
+    }
+  },
+  "translation_specific_zh": {
+    "four_character_idioms": {
+      "name_zh": "成语（四字成语）",
+      "name_en": "Four-Character Idioms (Chengyu)",
+      "definition": "中文固定成语的误译或误用",
+      "category": "terminology",
+      "severity": "major",
+      "examples": {
+        "一举两得": "kill two birds with one stone (achieve two goals with one action)",
+        "画蛇添足": "gild the lily (ruin something by unnecessary additions)",
+        "对牛弹琴": "cast pearls before swine (waste effort on unappreciative audience)"
+      },
+      "challenge": "成语通常不能逐字翻译，需要理解文化背景"
+    },
+    "classical_chinese_influence": {
+      "name_zh": "文言文影响",
+      "name_en": "Classical Chinese Influence",
+      "definition": "正式文本中文言文结构的处理",
+      "category": "style",
+      "note": "现代汉语受文言文影响，尤其在正式文本中",
+      "examples": [
+        "文言: 之、乎、者、也",
+        "现代: 的、吗、的人、啊"
+      ]
+    },
+    "simplified_traditional": {
+      "name_zh": "简繁体混用",
+      "name_en": "Simplified-Traditional Mixing",
+      "definition": "简体字和繁体字的不当混用",
+      "category": "linguistic_conventions",
+      "severity": "minor_to_major",
+      "note": "取决于目标受众（大陆用简体，台湾/香港用繁体）",
+      "examples": {
+        "simplified": "学习、国家、书",
+        "traditional": "學習、國家、書"
+      }
+    }
+  },
+  "rare_advanced_terms_zh": [
+    {
+      "term_zh": "离合词",
+      "term_en": "Separable Word",
+      "definition": "可以拆开使用的词（如'见面'可说'见了一次面'）",
+      "category": "linguistic_conventions",
+      "example": "见面 → 见了三次面，洗澡 → 洗了个澡"
+    },
+    {
+      "term_zh": "趋向动词",
+      "term_en": "Directional Verb",
+      "definition": "表示动作方向的动词（来、去、上、下、进、出、回、过、起）",
+      "category": "linguistic_conventions",
+      "example": "走进来，跑出去，站起来"
+    },
+    {
+      "term_zh": "结果补语",
+      "term_en": "Resultative Complement",
+      "definition": "表示动作结果的补语",
+      "category": "linguistic_conventions",
+      "example": "看完（看+完成），打破（打+破碎），做好（做+好）"
+    },
+    {
+      "term_zh": "把字句",
+      "term_en": "Ba-construction",
+      "definition": "用'把'引出受事的特殊句式（处置式）",
+      "category": "linguistic_conventions",
+      "example": "我把书放在桌子上（I put the book on the table）"
+    },
+    {
+      "term_zh": "被字句",
+      "term_en": "Bei-construction",
+      "definition": "被动句的标记结构",
+      "category": "linguistic_conventions",
+      "example": "书被我放在桌子上了（The book was put on the table by me）"
+    },
+    {
+      "term_zh": "零形式",
+      "term_en": "Zero Form",
+      "definition": "没有语音形式但有语法意义的形式",
+      "category": "linguistic_conventions",
+      "example": "他Ø来了（Ø = 省略的主语）"
+    }
+  ],
+  "mt_quality_assessment_zh": {
+    "machine_translation_post_editing": {
+      "abbreviation_zh": "MTPE",
+      "name_zh": "机器翻译后编辑",
+      "definition": "已成为语言服务行业流行的人机协作方式",
+      "quality_levels": {
+        "S级": "优秀质量",
+        "A级": "良好质量",
+        "B级": "可接受质量",
+        "C级": "低质量"
+      }
+    },
+    "quality_estimation": {
+      "abbreviation_zh": "QE",
+      "name_zh": "质量评估",
+      "definition": "基于源句和翻译结果评估翻译质量，不依赖参考译文",
+      "methods": {
+        "manual": "人工评估 - 更准确但耗时",
+        "automatic": "自动评估 - 更快但可靠性较低"
+      }
+    },
+    "neural_machine_translation": {
+      "abbreviation_zh": "NMT",
+      "name_zh": "神经机器翻译",
+      "definition": "基于深度神经网络的机器翻译方法",
+      "note": "已成为主流机器翻译方法，优于统计机器翻译（SMT）"
+    }
+  }
+}

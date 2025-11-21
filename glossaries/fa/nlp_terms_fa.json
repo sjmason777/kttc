@@ -1,0 +1,543 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "فارسی (Persian/Farsi)",
+    "glossary_type": "NLP and Computational Linguistics Terms (Persian)",
+    "version": "1.0.0",
+    "created": "2025-11-21",
+    "description": "اصطلاحات پردازش زبان طبیعی و زبان‌شناسی محاسباتی فارسی - Persian NLP/CL terminology with focus on Persian-specific challenges",
+    "sources": [
+      "DadmaTools Documentation (Persian NLP toolkit)",
+      "Hazm Documentation (Persian NLP library)",
+      "Persian Computational Linguistics Resources",
+      "Wikipedia فارسی - پردازش زبان طبیعی",
+      "Bijankhan Corpus Documentation",
+      "Dadegan Dependency Treebank"
+    ],
+    "total_terms": 75
+  },
+  "core_nlp_concepts_fa": {
+    "پردازش_زبان_طبیعی": {
+      "term_fa": "پردازش زبان طبیعی",
+      "term_en": "Natural Language Processing (NLP)",
+      "abbreviation": "NLP",
+      "definition": "حوزه‌ای در تقاطع علوم کامپیوتر، هوش مصنوعی و زبان‌شناسی که به پردازش و درک زبان انسانی توسط کامپیوتر می‌پردازد",
+      "related_terms": ["زبان‌شناسی محاسباتی", "ترجمه ماشینی", "استخراج اطلاعات"]
+    },
+    "زبان‌شناسی_محاسباتی": {
+      "term_fa": "زبان‌شناسی محاسباتی",
+      "term_en": "Computational Linguistics (CL)",
+      "abbreviation": "CL",
+      "definition": "مطالعه علمی زبان از دیدگاه محاسباتی",
+      "related_terms": ["پردازش زبان طبیعی", "زبان‌شناسی پیکره‌ای", "زبان‌شناسی نظری"]
+    },
+    "پیکره_زبانی": {
+      "term_fa": "پیکره زبانی",
+      "term_en": "Corpus",
+      "plural_en": "Corpora",
+      "plural_fa": "پیکره‌ها",
+      "definition": "مجموعه بزرگی از متن یا گفتار که برای تحقیقات زبان‌شناسی و آموزش NLP استفاده می‌شود",
+      "examples": [
+        "پیکره بیجن‌خان (Bijankhan Corpus)",
+        "پیکره داده‌گان (Dadegan Dependency Treebank)",
+        "پیکره فارسینت (FarsiNet)",
+        "پیکره حمشهری (Hamshahri Corpus)"
+      ]
+    },
+    "پیکره_برچسب‌دار": {
+      "term_fa": "پیکره برچسب‌دار",
+      "term_en": "Annotated Corpus",
+      "definition": "پیکره‌ای که با برچسب‌های زبان‌شناسی (مانند نقش دستوری، ساختار نحوی، نقش معنایی) حاشیه‌نویسی شده است",
+      "examples": [
+        "پیکره داده‌گان (Dadegan) - برچسب‌گذاری وابستگی",
+        "پیکره بیجن‌خان - برچسب‌گذاری نقش دستوری"
+      ]
+    },
+    "پردازش_فارسی": {
+      "term_fa": "پردازش فارسی",
+      "term_en": "Persian Processing",
+      "definition": "پردازش اطلاعات به زبان فارسی با تکیه بر ویژگی‌های منحصر به فرد این زبان",
+      "challenges": [
+        "نویسه عربی-فارسی با حرکات اختیاری",
+        "ابهام در شکل کلمات بدون حرکت",
+        "ساختار اضافه (ezafe) که نوشته نمی‌شود",
+        "فعل‌های مرکب پربسامد",
+        "کلمات چسبیده (بدون فاصله)",
+        "زبان کم‌منبع نسبت به انگلیسی"
+      ]
+    }
+  },
+  "persian_specific_nlp": {
+    "تشخیص_مرز_کلمه": {
+      "term_fa": "تشخیص مرز کلمه / واژه‌شکنی",
+      "term_en": "Word Tokenization / Segmentation",
+      "definition": "تقسیم متن پیوسته فارسی به کلمات مجزا",
+      "challenges": [
+        "کلمات چسبیده بدون فاصله (e.g., 'نمی‌دانم' vs 'نمی دانم' vs 'نمیدانم')",
+        "پیشوندها و پسوندها (می-, ب-, -ها، -ان)",
+        "فاصله‌گذاری ناسازگار در متون مختلف",
+        "واژه‌های مرکب"
+      ],
+      "tools": ["Hazm", "DadmaTools", "Parsivar"],
+      "examples": [
+        "Input: نمیدانم → Output: نمی دانم (I don't know)",
+        "Input: خانه‌هایمان → Output: خانه ها مان (our houses)"
+      ]
+    },
+    "برچسب‌گذاری_نقش_دستوری": {
+      "term_fa": "برچسب‌گذاری نقش دستوری",
+      "term_en": "Part-of-Speech Tagging (POS Tagging)",
+      "abbreviation": "POS",
+      "definition": "تعیین نقش دستوری (اسم، فعل، صفت و غیره) برای هر کلمه",
+      "persian_pos_tags": {
+        "N": "اسم (Noun)",
+        "V": "فعل (Verb)",
+        "ADJ": "صفت (Adjective)",
+        "ADV": "قید (Adverb)",
+        "P": "حرف اضافه (Preposition)",
+        "CONJ": "حرف ربط (Conjunction)",
+        "PRON": "ضمیر (Pronoun)",
+        "NUM": "عدد (Numeral)",
+        "POSTP": "پسایند (Postposition)",
+        "DET": "تعیین‌کننده (Determiner)"
+      },
+      "tagsets": [
+        "Bijankhan tagset",
+        "Dadegan tagset",
+        "Universal Dependencies tagset"
+      ],
+      "challenge": "ابهام نقش دستوری بدون حرکات (e.g., 'درس' = lesson (noun) or study (verb stem))"
+    },
+    "تشخیص_موجودیت‌های_نامدار": {
+      "term_fa": "تشخیص موجودیت‌های نامدار",
+      "term_en": "Named Entity Recognition (NER)",
+      "abbreviation": "NER",
+      "definition": "شناسایی اسامی خاص در متن مانند نام اشخاص، مکان‌ها، سازمان‌ها",
+      "persian_challenges": [
+        "فقدان حروف بزرگ در فارسی",
+        "ابهام نام شخص-مکان (e.g., 'رضا' - person name, 'رضا' - place)",
+        "نام‌های سازمانی بلند و پیچیده",
+        "نام‌های ترکیبی (e.g., 'علی رضا' vs 'علیرضا')"
+      ],
+      "entity_types": {
+        "PER": "شخص (Person)",
+        "LOC": "مکان (Location)",
+        "ORG": "سازمان (Organization)",
+        "DATE": "تاریخ (Date)",
+        "TIME": "زمان (Time)",
+        "MONEY": "پول (Money)",
+        "PERCENT": "درصد (Percent)"
+      }
+    },
+    "تحلیل_وابستگی": {
+      "term_fa": "تحلیل وابستگی",
+      "term_en": "Dependency Parsing",
+      "definition": "تحلیل روابط وابستگی بین کلمات در جمله و ساخت درخت وابستگی",
+      "persian_characteristics": [
+        "ترتیب کلمات SOV (Subject-Object-Verb)",
+        "انعطاف‌پذیری نسبی در ترتیب واژگان",
+        "ساختار اضافه (ezafe) بین اسم‌ها و صفت‌ها",
+        "فعل‌های مرکب با اجزای جداشده"
+      ],
+      "dependency_relations": {
+        "nsubj": "فاعل (Subject)",
+        "obj": "مفعول (Object)",
+        "nmod": "وابسته اسمی (Nominal Modifier)",
+        "amod": "وابسته صفتی (Adjectival Modifier)",
+        "case": "نشانه حالت (Case marker - e.g., 'را')",
+        "compound:lvc": "فعل مرکب (Light Verb Construction)"
+      },
+      "resources": ["پیکره داده‌گان (Dadegan Dependency Treebank)", "Persian Universal Dependencies"]
+    },
+    "برچسب‌گذاری_نقش_معنایی": {
+      "term_fa": "برچسب‌گذاری نقش معنایی",
+      "term_en": "Semantic Role Labeling (SRL)",
+      "abbreviation": "SRL",
+      "definition": "شناسایی نقش‌های معنایی در جمله (عامل، معمول، زمان، مکان و غیره)",
+      "semantic_roles": {
+        "ARG0": "عامل (Agent)",
+        "ARG1": "معمول/موضوع (Patient/Theme)",
+        "ARG2": "گیرنده (Recipient/Beneficiary)",
+        "ARGM-LOC": "مکان (Location)",
+        "ARGM-TMP": "زمان (Temporal)",
+        "ARGM-MNR": "شیوه (Manner)"
+      },
+      "persian_resource": "Persian PropBank (در حال توسعه)"
+    },
+    "تطبیق_اضافه": {
+      "term_fa": "تطبیق اضافه / اضافه‌یاب",
+      "term_en": "Ezafe Detection",
+      "definition": "شناسایی موقعیت‌هایی که اضافه (ـِ) باید درج شود",
+      "challenge": "اضافه در نوشتار فارسی معاصر معمولاً نوشته نمی‌شود",
+      "importance": "برای text-to-speech، آموزش زبان، و تحلیل نحوی دقیق ضروری است",
+      "rules": [
+        "بین اسم و صفت: کتابِ بزرگ",
+        "بین دو اسم (ملکی): خانه‌یِ پدر",
+        "بین صفت و اسم: بزرگِ شهر"
+      ],
+      "tools": ["Hazm (ezafe detection)", "rule-based systems", "machine learning approaches"]
+    },
+    "تصحیح_املا": {
+      "term_fa": "تصحیح املا",
+      "term_en": "Spell Checking",
+      "definition": "شناسایی و تصحیح خطاهای املایی در متن فارسی",
+      "persian_challenges": [
+        "ابهام با حذف حرکات (e.g., 'کتاب' can be written multiple ways)",
+        "خطاهای رایج: 'می' vs 'می‌' (نیم‌فاصله)",
+        "اشتباهات یی/ی, وو/و, ها/ه",
+        "کلمات عربی با املای متعدد"
+      ],
+      "common_errors": {
+        "نیم‌فاصله": "می خورم (wrong) → می‌خورم (correct)",
+        "یی_vs_ی": "کتابی (correct for 'a book') vs کتابیی (wrong)",
+        "ها_vs_ه": "خانه‌ها (houses - correct) vs خانه ها (wrong spacing)"
+      },
+      "tools": ["Virastar (ویراستیار)", "Hazm", "custom rule-based systems"]
+    },
+    "استخراج_کلمات_کلیدی": {
+      "term_fa": "استخراج کلمات کلیدی",
+      "term_en": "Keyword Extraction",
+      "definition": "استخراج خودکار مهم‌ترین کلمات یا عبارات از متن",
+      "methods": [
+        "TF-IDF",
+        "TextRank",
+        "RAKE",
+        "روش‌های مبتنی بر BERT"
+      ],
+      "persian_consideration": "باید فعل‌های مرکب را به عنوان یک واحد در نظر گرفت"
+    }
+  },
+  "persian_nlp_tools": {
+    "DadmaTools": {
+      "name": "DadmaTools",
+      "name_fa": "ابزارهای دادما",
+      "type": "بسته جامع NLP فارسی",
+      "description": "یک کتابخانه پایتون برای پردازش زبان فارسی مبتنی بر spaCy",
+      "developer": "Dadmatech",
+      "features": [
+        "واژه‌شکنی (Tokenization)",
+        "برچسب‌گذاری نقش دستوری (POS Tagging)",
+        "تشخیص موجودیت‌های نامدار (NER)",
+        "تحلیل وابستگی (Dependency Parsing)",
+        "لماتایزیشن (Lemmatization)",
+        "تشخیص جملات (Sentence Boundary Detection)"
+      ],
+      "model_type": "مبتنی بر Transformer (مدل‌های بزرگ زبانی)",
+      "github": "Dadmatech/DadmaTools",
+      "advantages": [
+        "سازگار با spaCy",
+        "مدل‌های عصبی پیشرفته",
+        "به‌روزرسانی منظم"
+      ],
+      "usage": "import dadmatools; pips = dadmatools.pipeline('fa')"
+    },
+    "Hazm": {
+      "name": "Hazm",
+      "name_fa": "هضم",
+      "type": "کتابخانه پردازش متن فارسی",
+      "description": "یکی از قدیمی‌ترین و پرکاربردترین کتابخانه‌های NLP فارسی",
+      "developer": "Sobhe",
+      "features": [
+        "نرمال‌سازی متن (Text Normalization)",
+        "واژه‌شکنی (Tokenization)",
+        "ریشه‌یاب (Lemmatizer)",
+        "برچسب‌گذاری نقش دستوری (POS Tagger)",
+        "تشخیص موجودیت‌های نامدار (NER - Chunker)",
+        "تحلیل وابستگی (Dependency Parser)",
+        "تصحیح املا (Spell Correction - basic)"
+      ],
+      "model_type": "ترکیبی از آماری و قاعده‌مند",
+      "github": "sobhe/hazm",
+      "advantages": [
+        "سبک و سریع",
+        "مستندات فارسی خوب",
+        "مناسب برای پروژه‌های کوچک تا متوسط"
+      ],
+      "usage": "from hazm import *; normalizer = Normalizer()"
+    },
+    "Parsivar": {
+      "name": "Parsivar",
+      "name_fa": "پارسی‌ور",
+      "type": "ابزار پردازش متن فارسی",
+      "description": "کتابخانه پایتون برای پردازش زبان فارسی با تمرکز بر نرمال‌سازی",
+      "features": [
+        "نرمال‌سازی (Normalization)",
+        "واژه‌شکنی (Tokenization)",
+        "ریشه‌یاب (Stemmer)",
+        "برچسب‌گذاری نقش دستوری (POS Tagging)",
+        "اصلاح فاصله‌گذاری (Space correction)"
+      ],
+      "github": "ICTRC/Parsivar",
+      "developer": "مرکز تحقیقات مخابرات ایران (ICTRC)",
+      "specialty": "نرمال‌سازی و اصلاح فاصله‌گذاری قوی"
+    },
+    "PersoArabicNormalizer": {
+      "name": "Persian-Arabic Normalizer",
+      "name_fa": "نرمال‌ساز فارسی-عربی",
+      "type": "نرمال‌ساز متن",
+      "description": "ابزار نرمال‌سازی حروف فارسی و عربی",
+      "purpose": "یکسان‌سازی نویسه‌های مختلف (e.g., Arabic 'ي' vs Persian 'ی')",
+      "common_normalizations": {
+        "arabic_yeh_to_persian": "ي (Arabic) → ی (Persian)",
+        "arabic_kaf_to_persian": "ك (Arabic) → ک (Persian)",
+        "remove_diacritics": "حذف حرکات (ً ٌ ٍ َ ُ ِ ّ ْ)",
+        "standardize_spaces": "یکسان‌سازی فاصله‌ها و نیم‌فاصله‌ها"
+      }
+    },
+    "VirastyarTool": {
+      "name": "Virastar (ویراستیار)",
+      "type": "ابزار ویرایش و تصحیح متن فارسی",
+      "description": "تصحیح خطاهای رایج نگارشی فارسی",
+      "features": [
+        "تصحیح نیم‌فاصله (Half-space correction)",
+        "تصحیح علائم نگارشی",
+        "تبدیل ارقام عربی به فارسی (۱۲۳ vs 123)",
+        "تصحیح یی/ی",
+        "تصحیح واو"
+      ],
+      "usage": "ویرایش متن قبل از پردازش NLP",
+      "github": "juvoni/virastar"
+    },
+    "PolyGlot": {
+      "name": "PolyGlot (Persian models)",
+      "type": "مدل‌های زبانی چندزبانه",
+      "description": "شامل مدل‌های word embedding برای فارسی",
+      "features": ["Word2Vec embeddings", "Language models"],
+      "use_case": "نمایش برداری کلمات فارسی برای یادگیری ماشین"
+    },
+    "ParsBERT": {
+      "name": "ParsBERT",
+      "name_fa": "پارس‌برت",
+      "type": "مدل زبانی پیش‌آموخته فارسی",
+      "description": "مدل BERT آموزش داده شده بر روی متون فارسی",
+      "developer": "Hooshvare Research Group",
+      "training_data": "میلیاردها کلمه از متون فارسی (اخبار، ویکی‌پدیا، کتاب‌ها)",
+      "versions": [
+        "ParsBERT-base",
+        "ParsBERT-v2"
+      ],
+      "use_cases": [
+        "طبقه‌بندی متن",
+        "تشخیص موجودیت‌های نامدار",
+        "تحلیل احساسات",
+        "پرسش و پاسخ"
+      ],
+      "huggingface": "HooshvareLab/bert-fa-base-uncased"
+    }
+  },
+  "persian_corpora": {
+    "پیکره_بیجن‌خان": {
+      "name_fa": "پیکره بیجن‌خان",
+      "name_en": "Bijankhan Corpus",
+      "description": "یکی از معتبرترین پیکره‌های برچسب‌دار فارسی",
+      "size": "حدود 2.6 میلیون کلمه",
+      "annotation": "برچسب‌گذاری نقش دستوری (POS tagging)",
+      "domain": "متون رسمی نوشتاری",
+      "developer": "دانشگاه تهران",
+      "significance": "استاندارد طلایی برای ارزیابی برچسب‌گذاران نقش دستوری فارسی",
+      "availability": "در دسترس برای تحقیقات دانشگاهی"
+    },
+    "پیکره_داده‌گان": {
+      "name_fa": "پیکره داده‌گان",
+      "name_en": "Dadegan Dependency Treebank",
+      "description": "پیکره وابستگی فارسی با حاشیه‌نویسی ساختار نحوی",
+      "size": "حدود 29,000 جمله",
+      "annotation": "تحلیل وابستگی (Dependency parsing)",
+      "format": "CoNLL format",
+      "developer": "دانشگاه صنعتی شریف",
+      "significance": "اولین و بزرگترین پیکره وابستگی فارسی",
+      "use_case": "آموزش و ارزیابی تحلیلگرهای وابستگی"
+    },
+    "پیکره_حمشهری": {
+      "name_fa": "پیکره حمشهری",
+      "name_en": "Hamshahri Corpus",
+      "description": "بزرگترین پیکره متون فارسی، شامل اخبار روزنامه حمشهری",
+      "size": "بیش از 300,000 سند خبری",
+      "period": "1996-2004",
+      "domain": "اخبار روزانه فارسی",
+      "versions": ["Hamshahri 1", "Hamshahri 2 (extended)"],
+      "use_cases": [
+        "بازیابی اطلاعات",
+        "طبقه‌بندی متن",
+        "خلاصه‌سازی خودکار",
+        "استخراج کلمات کلیدی"
+      ],
+      "availability": "عمومی (با محدودیت‌ها)"
+    },
+    "فارسینت": {
+      "name_fa": "فارسینت",
+      "name_en": "FarsiNet / Persian WordNet",
+      "description": "شبکه معنایی واژگان فارسی (مشابه WordNet انگلیسی)",
+      "purpose": "روابط معنایی بین کلمات فارسی",
+      "relations": [
+        "هم‌معنی (Synonymy)",
+        "تضاد (Antonymy)",
+        "فراچیزی (Hypernymy)",
+        "فروچیزی (Hyponymy)",
+        "جزء-کل (Meronymy)"
+      ],
+      "synsets": "مجموعه‌های معنایی (synsets) فارسی",
+      "connection": "پیوند به Princeton WordNet",
+      "use_cases": ["تشخیص هم‌معنی", "استنتاج معنایی", "بهبود یادگیری ماشین"]
+    },
+    "پیکره_ملی": {
+      "name_fa": "پیکره ملی زبان فارسی",
+      "name_en": "National Corpus of Persian",
+      "description": "پیکره جامع زبان فارسی در حال توسعه",
+      "goal": "گردآوری نمونه‌های نماینده از کاربرد زبان فارسی",
+      "domains": ["نوشتاری", "گفتاری", "زبان محاوره", "زبان رسمی"],
+      "status": "در حال توسعه",
+      "developer": "فرهنگستان زبان و ادب فارسی"
+    },
+    "پیکره_پژوهشی_فارسی": {
+      "name_fa": "پیکره پژوهشی فارسی (PERLEX)",
+      "name_en": "PERLEX (PERsian LEXicon)",
+      "description": "واژه‌نامه محاسباتی فارسی",
+      "features": ["اطلاعات صرفی", "نقش دستوری", "بسامد"],
+      "use_case": "منبع واژگانی برای سیستم‌های NLP"
+    }
+  },
+  "machine_translation_fa": {
+    "ترجمه_ماشینی": {
+      "term_fa": "ترجمه ماشینی",
+      "term_en": "Machine Translation (MT)",
+      "abbreviation": "MT",
+      "definition": "ترجمه خودکار متن از یک زبان به زبان دیگر توسط کامپیوتر",
+      "types": {
+        "آماری": "SMT (Statistical Machine Translation)",
+        "عصبی": "NMT (Neural Machine Translation)",
+        "قاعده‌مند": "RBMT (Rule-Based Machine Translation)"
+      }
+    },
+    "ترجمه_ماشینی_عصبی": {
+      "term_fa": "ترجمه ماشینی عصبی",
+      "term_en": "Neural Machine Translation (NMT)",
+      "abbreviation": "NMT",
+      "definition": "روش ترجمه مبتنی بر شبکه‌های عصبی عمیق",
+      "architectures": [
+        "Sequence-to-Sequence (توالی به توالی)",
+        "Attention Mechanism (مکانیزم توجه)",
+        "Transformer",
+        "mBERT/mT5 (multilingual models)"
+      ],
+      "persian_challenges": [
+        "کمبود داده‌های موازی فارسی-انگلیسی",
+        "تفاوت ترتیب کلمات SOV vs SVO",
+        "ترجمه فعل‌های مرکب",
+        "حفظ سطح رسمیت",
+        "ساختار اضافه در ترجمه"
+      ]
+    },
+    "ارزیابی_کیفیت_ترجمه": {
+      "term_fa": "ارزیابی کیفیت ترجمه",
+      "term_en": "Translation Quality Assessment",
+      "abbreviation": "TQA",
+      "types": {
+        "دستی": "Human Evaluation",
+        "خودکار": "Automatic Evaluation"
+      },
+      "automatic_metrics": {
+        "BLEU": "نمره BLEU",
+        "METEOR": "نمره METEOR",
+        "TER": "نرخ ویرایش ترجمه",
+        "chrF": "نمره F مبتنی بر نویسه",
+        "BERTScore": "نمره مبتنی بر BERT"
+      },
+      "persian_note": "برای فارسی، معیارهای مبتنی بر نویسه (chrF) معمولاً بهتر از BLEU عمل می‌کنند"
+    },
+    "ویرایش_پس_از_ترجمه": {
+      "term_fa": "ویرایش پس از ترجمه ماشینی",
+      "term_en": "Machine Translation Post-Editing",
+      "abbreviation": "MTPE",
+      "definition": "ویرایش دستی خروجی ترجمه ماشینی",
+      "levels": {
+        "ویرایش_سبک": "Light PE - فقط خطاهای حیاتی",
+        "ویرایش_کامل": "Full PE - ویرایش به کیفیت انسانی"
+      }
+    }
+  },
+  "pretrained_models_fa": {
+    "ParsBERT": {
+      "name": "ParsBERT",
+      "full_name": "Persian BERT",
+      "type": "مدل زبانی پیش‌آموخته",
+      "developer": "Hooshvare",
+      "description": "مدل BERT آموزش داده شده بر روی میلیاردها کلمه فارسی",
+      "use_cases": ["طبقه‌بندی متن", "NER", "تحلیل احساسات", "پرسش و پاسخ"],
+      "huggingface": "HooshvareLab/bert-fa-base-uncased"
+    },
+    "mBERT": {
+      "name": "multilingual BERT",
+      "abbreviation": "mBERT",
+      "description": "مدل BERT چندزبانه که فارسی را پشتیبانی می‌کند",
+      "developer": "Google",
+      "languages": "104 زبان از جمله فارسی",
+      "limitation": "عملکرد کمتر از ParsBERT برای وظایف خاص فارسی"
+    },
+    "XLM-RoBERTa": {
+      "name": "XLM-RoBERTa",
+      "description": "مدل RoBERTa چندزبانه",
+      "developer": "Facebook AI",
+      "languages": "100 زبان از جمله فارسی",
+      "advantage": "عملکرد خوب در وظایف cross-lingual"
+    }
+  },
+  "evaluation_metrics": {
+    "BLEU": {
+      "full_name": "Bilingual Evaluation Understudy",
+      "type": "معیار ارزیابی ترجمه ماشینی",
+      "definition": "ارزیابی کیفیت ترجمه از طریق همپوشانی n-gram",
+      "range": "0-100",
+      "persian_limitation": "ممکن است برای فارسی کمتر مناسب باشد به دلیل صرف پیچیده"
+    },
+    "chrF": {
+      "full_name": "Character n-gram F-score",
+      "type": "معیار ارزیابی مبتنی بر نویسه",
+      "definition": "F-score مبتنی بر n-gram نویسه‌ای",
+      "advantage_for_persian": "بهتر از BLEU برای زبان‌هایی با صرف پیچیده مانند فارسی"
+    }
+  },
+  "rare_advanced_terms": {
+    "صرف_محاسباتی": {
+      "term_fa": "صرف محاسباتی",
+      "term_en": "Computational Morphology",
+      "definition": "مطالعه ساختار کلمات با روش‌های محاسباتی",
+      "persian_focus": "تحلیل پیشوندها، پسوندها، و بن‌های فعلی در فارسی",
+      "tools": ["Perstem (ریشه‌یاب)", "Hazm Lemmatizer", "Morphological analyzers"]
+    },
+    "تحلیل_کپولا": {
+      "term_fa": "تحلیل کپولا (فعل ربطی)",
+      "term_en": "Copula Analysis",
+      "definition": "تحلیل فعل 'بودن' و شکل‌های مختصر آن در فارسی",
+      "forms": [
+        "هستم، هستی، است، هستیم، هستید، هستند (present tense)",
+        "ام، ای، است، ایم، اید، اند (enclitic forms)",
+        "بودم، بودی، بود، بودیم، بودید، بودند (past tense)"
+      ],
+      "challenge": "تشخیص و تحلیل شکل‌های چسبیده کپولا (e.g., 'خوبم' = خوب + ام)"
+    },
+    "تحلیل_فعل_مرکب": {
+      "term_fa": "تحلیل فعل مرکب",
+      "term_en": "Light Verb Construction Analysis",
+      "definition": "شناسایی و تحلیل فعل‌های مرکب فارسی",
+      "structure": "جزء اسمی/صفتی + فعل کمکی (light verb)",
+      "light_verbs": ["کردن", "شدن", "زدن", "دادن", "خوردن"],
+      "challenge": "تشخیص اینکه آیا ترکیب یک فعل مرکب است یا دو کلمه جداگانه",
+      "example": "'قبول کردن' (to accept) - فعل مرکب vs 'غذا خوردن' (to eat food) - فعل + مفعول"
+    },
+    "تشخیص_مصدر": {
+      "term_fa": "تشخیص مصدر",
+      "term_en": "Infinitive Detection",
+      "definition": "شناسایی مصدرها در متن فارسی",
+      "pattern": "افعال منتهی به 'دن-' (e.g., خوردن، رفتن، آمدن)",
+      "use_case": "برای استخراج فعل‌ها از متن یا ساخت واژه‌نامه"
+    },
+    "تحلیل_نقل_قول": {
+      "term_fa": "تحلیل نقل قول",
+      "term_en": "Quotation Analysis",
+      "definition": "شناسایی و استخراج نقل قول‌ها از متن",
+      "persian_markers": ["گفت:", "«»", "علامت‌های نقل قول فارسی"],
+      "challenge": "تشخیص گوینده و محدوده نقل قول"
+    }
+  }
+}
