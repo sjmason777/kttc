@@ -48,6 +48,7 @@ from kttc.cli.ui import (
     print_translation_preview,
 )
 from kttc.core import BatchFileParser, BatchGrouper, QAReport, TranslationTask
+from kttc.i18n import get_supported_languages, set_language
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 from kttc.utils.config import get_settings
 
@@ -78,6 +79,12 @@ def version_callback(value: bool) -> None:
         raise typer.Exit()
 
 
+def ui_lang_callback(value: str | None) -> None:
+    """Set UI language."""
+    if value:
+        set_language(value)
+
+
 @app.callback()
 def main(
     version: bool = typer.Option(  # noqa: ARG001 - Used by Typer callback
@@ -86,6 +93,14 @@ def main(
         "-v",
         help="Show version and exit",
         callback=version_callback,
+        is_eager=True,
+    ),
+    ui_lang: str | None = typer.Option(  # noqa: ARG001 - Used by Typer callback
+        None,
+        "--ui-lang",
+        "-L",
+        help=f"UI language ({', '.join(get_supported_languages())}) or 'auto' for system detection",
+        callback=ui_lang_callback,
         is_eager=True,
     ),
 ) -> None:
@@ -742,18 +757,23 @@ async def _check_async(
         console.print("[green]✓[/green] Step 3/3: Report ready")
         console.print()
     else:
-        # Compact mode: simple spinner
-        try:
-            orchestrator = AgentOrchestrator(
-                llm_provider,
-                quality_threshold=threshold,
-                agent_temperature=settings.default_temperature,
-                agent_max_tokens=settings.default_max_tokens,
+        # Compact mode: show spinner during evaluation
+        with create_step_progress() as progress:
+            progress.add_task(
+                "[cyan]Evaluating translation quality...[/cyan]",
+                total=None,
             )
-            report = await orchestrator.evaluate(task)
-        except Exception as e:
-            api_errors.append(f"Quality assessment failed: {str(e)}")
-            raise RuntimeError(f"Evaluation failed: {e}") from e
+            try:
+                orchestrator = AgentOrchestrator(
+                    llm_provider,
+                    quality_threshold=threshold,
+                    agent_temperature=settings.default_temperature,
+                    agent_max_tokens=settings.default_max_tokens,
+                )
+                report = await orchestrator.evaluate(task)
+            except Exception as e:
+                api_errors.append(f"Quality assessment failed: {str(e)}")
+                raise RuntimeError(f"Evaluation failed: {e}") from e
 
     # Calculate lightweight metrics and rule-based errors
     from kttc.evaluation import ErrorDetector, LightweightMetrics

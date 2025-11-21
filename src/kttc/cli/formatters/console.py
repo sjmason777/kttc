@@ -26,6 +26,7 @@ from rich.table import Table
 from rich.text import Text
 
 from kttc.core import QAReport
+from kttc.i18n import _
 from kttc.utils.console import console
 
 
@@ -36,6 +37,51 @@ class ConsoleFormatter:
     - Compact (default): ~10-15 lines, essential info only
     - Verbose: ~25-30 lines, detailed info
     """
+
+    # Minimum widths for columns (characters)
+    MIN_WIDTH = 80
+    MAX_WIDTH = 200
+
+    @classmethod
+    def _get_terminal_width(cls) -> int:
+        """Get terminal width, bounded by min/max limits."""
+        width = console.width or 80
+        return max(cls.MIN_WIDTH, min(width, cls.MAX_WIDTH))
+
+    @classmethod
+    def _calculate_column_widths(cls, columns: list[str]) -> dict[str, int | None]:
+        """Calculate column widths based on terminal size.
+
+        Args:
+            columns: List of column names to calculate widths for
+
+        Returns:
+            Dictionary mapping column names to widths (None = auto)
+        """
+        terminal_width = cls._get_terminal_width()
+
+        # Define column width ratios for issues table
+        if "fragment" in [c.lower() for c in columns]:
+            # Issues table: #(5%), Location(15%), Fragment(25%), Issue(auto)
+            available = terminal_width - 10  # Padding
+            return {
+                "#": 4,
+                "location": 14,  # Fixed: enough for [1234:5678]
+                "fragment": max(20, int(available * 0.25)),
+                "issue": None,  # Auto-expand to fill remaining space
+            }
+        elif "provider" in [c.lower() for c in columns]:
+            # Benchmark table
+            return {
+                "provider": None,  # Auto
+                "mqm": 8,
+                "errors": 12,
+                "time": 8,
+                "status": 8,
+            }
+        else:
+            # Default: auto widths
+            return {c.lower(): None for c in columns}
 
     @staticmethod
     def _get_status_color(status: str) -> str:
@@ -70,6 +116,43 @@ class ConsoleFormatter:
         else:
             console.print(f"\n[bold cyan]{command}[/bold cyan]")
 
+    @staticmethod
+    def _extract_fragment(text: str, location: list[int], max_length: int = 25) -> str:
+        """Extract text fragment at location with ellipsis if needed.
+
+        Args:
+            text: Full text
+            location: [start, end] character positions
+            max_length: Maximum fragment length
+
+        Returns:
+            Fragment string with ellipsis if truncated
+        """
+        if not location or len(location) < 2:
+            return "N/A"
+
+        start, end = location[0], location[1]
+
+        # Ensure valid bounds
+        if start < 0 or end > len(text) or start >= end:
+            return "N/A"
+
+        # Add context (5 chars before and after)
+        context_start = max(0, start - 5)
+        context_end = min(len(text), end + 5)
+
+        # Build fragment with context
+        prefix = "..." if context_start > 0 else ""
+        suffix = "..." if context_end < len(text) else ""
+        full_fragment = f"{prefix}{text[context_start:context_end]}{suffix}"
+
+        # Truncate if too long
+        if len(full_fragment) > max_length:
+            # Show beginning of fragment
+            return full_fragment[: max_length - 3] + "..."
+
+        return full_fragment
+
     @classmethod
     def print_check_result(
         cls,
@@ -95,7 +178,7 @@ class ConsoleFormatter:
             verbose: Verbose mode flag
         """
         # Header
-        cls.print_header_compact("Translation Quality Check", f"{source_lang} → {target_lang}")
+        cls.print_header_compact(_("check_header"), f"{source_lang} → {target_lang}")
         console.print()
 
         # Main status line
@@ -103,10 +186,11 @@ class ConsoleFormatter:
         score_color = cls._get_score_color(report.mqm_score)
         status_icon = "✓" if report.status == "pass" else "✗"
 
+        status_text = _("check_pass") if report.status == "pass" else _("check_fail")
         status_line = (
-            f"[{status_color}]{status_icon} {report.status.upper()}[/{status_color}]  |  "
+            f"[{status_color}]{status_icon} {status_text}[/{status_color}]  |  "
             f"MQM: [{score_color}]{report.mqm_score:.1f}[/{score_color}]/100  |  "
-            f"Errors: {len(report.errors)}"
+            f"{_('check_errors', count=len(report.errors))}"
         )
 
         if len(report.errors) > 0:
@@ -122,13 +206,13 @@ class ConsoleFormatter:
                 f"TER: {lightweight_scores.ter:.1f}",
                 f"Rule-based: {rule_based_score:.0f}/100",
             ]
-            console.print(f"● Metrics: {' | '.join(metrics_parts)}")
+            console.print(f"● {_('check_metrics')}: {' | '.join(metrics_parts)}")
 
         console.print()
 
         # Show errors/warnings (compact table)
         if len(report.errors) > 0 or (nlp_insights and nlp_insights.get("issues")):
-            cls._print_issues_compact(report.errors, nlp_insights, verbose)
+            cls._print_issues_compact(report.errors, report.task.translation, nlp_insights, verbose)
 
         # Verbose mode: additional details
         if verbose:
@@ -151,7 +235,7 @@ class ConsoleFormatter:
             verbose: Verbose mode flag
         """
         # Header
-        cls.print_header_compact("Translation Comparison", f"{source_lang} → {target_lang}")
+        cls.print_header_compact(_("compare_header"), f"{source_lang} → {target_lang}")
         console.print()
 
         # Handle empty results
@@ -162,20 +246,27 @@ class ConsoleFormatter:
         # Summary line
         best = max(results, key=lambda r: r["mqm_score"])
         avg_score = sum(r["mqm_score"] for r in results) / len(results)
+        best_score = f"{best['mqm_score']:.1f}"
 
         console.print(
-            f"● Compared: {len(results)} translations  |  "
-            f"Avg MQM: {avg_score:.1f}  |  "
-            f"Best: [bold cyan]{best['name']}[/bold cyan] ({best['mqm_score']:.1f})"
+            f"● {_('compare_compared', count=len(results))}  |  "
+            f"{_('compare_avg_mqm', score=f'{avg_score:.1f}')}  |  "
+            f"{_('compare_best', name=best['name'], score=best_score)}"
         )
         console.print()
 
-        # Results table (compact)
-        table = Table(show_header=True, header_style="bold cyan", box=None, padding=(0, 1))
-        table.add_column("Translation", style="cyan")
-        table.add_column("MQM", justify="right", width=8)
-        table.add_column("Errors", justify="center", width=10)
-        table.add_column("Status", justify="center", width=8)
+        # Results table (compact) - dynamic width
+        table = Table(
+            show_header=True,
+            header_style="bold cyan",
+            box=None,
+            padding=(0, 1),
+            expand=True,
+        )
+        table.add_column(_("table_translation"), style="cyan", no_wrap=False)
+        table.add_column(_("table_mqm"), justify="right", width=8)
+        table.add_column(_("table_errors"), justify="center", width=12)
+        table.add_column(_("table_status"), justify="center", width=8)
 
         for result in results:
             score_color = cls._get_score_color(result["mqm_score"])
@@ -199,7 +290,7 @@ class ConsoleFormatter:
             for result in results:
                 if result.get("errors"):
                     console.print(f"\n[bold cyan]{result['name']}:[/bold cyan]")
-                    cls._print_issues_compact(result["errors"], None, verbose=True)
+                    cls._print_issues_compact(result["errors"], "", nlp_insights=None, verbose=True)
 
     @classmethod
     def print_benchmark_result(
@@ -218,7 +309,7 @@ class ConsoleFormatter:
             verbose: Verbose mode flag
         """
         # Header
-        cls.print_header_compact("Provider Benchmark", f"{source_lang} → {target_lang}")
+        cls.print_header_compact(_("benchmark_header"), f"{source_lang} → {target_lang}")
         console.print()
 
         # Summary line
@@ -229,20 +320,26 @@ class ConsoleFormatter:
             avg_time = sum(r["duration"] for r in successful) / len(successful)
 
             console.print(
-                f"● Tested: {len(results)} providers  |  "
-                f"Avg MQM: {avg_mqm:.1f}  |  "
-                f"Avg time: {avg_time:.1f}s  |  "
-                f"Best: [bold cyan]{best['name']}[/bold cyan]"
+                f"● {_('benchmark_tested', count=len(results))}  |  "
+                f"{_('compare_avg_mqm', score=f'{avg_mqm:.1f}')}  |  "
+                f"{_('benchmark_avg_time', time=f'{avg_time:.1f}')}  |  "
+                f"{_('compare_best', name=best['name'], score='')}"
             )
             console.print()
 
-            # Results table (compact)
-            table = Table(show_header=True, header_style="bold cyan", box=None, padding=(0, 1))
-            table.add_column("Provider", style="cyan")
-            table.add_column("MQM", justify="right", width=8)
-            table.add_column("Errors", justify="center", width=10)
-            table.add_column("Time", justify="right", width=8)
-            table.add_column("Status", justify="center", width=8)
+            # Results table (compact) - dynamic width
+            table = Table(
+                show_header=True,
+                header_style="bold cyan",
+                box=None,
+                padding=(0, 1),
+                expand=True,
+            )
+            table.add_column(_("table_provider"), style="cyan", no_wrap=False)
+            table.add_column(_("table_mqm"), justify="right", width=8)
+            table.add_column(_("table_errors"), justify="center", width=12)
+            table.add_column(_("table_time"), justify="right", width=8)
+            table.add_column(_("table_status"), justify="center", width=8)
 
             for result in results:
                 if result["success"]:
@@ -276,13 +373,13 @@ class ConsoleFormatter:
             # Recommendation
             if best["status"] == "pass":
                 console.print(
-                    f"[green]✓[/green] Recommendation: Use [bold cyan]{best['name']}[/bold cyan] "
-                    f"(MQM: {best['mqm_score']:.1f}, Time: {best['duration']:.1f}s)"
+                    f"[green]✓[/green] {_('benchmark_recommendation', name=best['name'])} "
+                    f"(MQM: {best['mqm_score']:.1f}, {_('table_time')}: {best['duration']:.1f}s)"
                 )
             else:
                 console.print(
-                    f"[yellow]⚠[/yellow] No provider passed threshold. "
-                    f"Best: [bold cyan]{best['name']}[/bold cyan] (MQM: {best['mqm_score']:.1f})"
+                    f"[yellow]⚠[/yellow] {_('benchmark_no_pass', name=best['name'])} "
+                    f"(MQM: {best['mqm_score']:.1f})"
                 )
 
     @classmethod
@@ -306,7 +403,7 @@ class ConsoleFormatter:
             verbose: Verbose mode flag
         """
         # Header
-        cls.print_header_compact("Batch Processing Complete")
+        cls.print_header_compact(_("batch_header"))
         console.print()
 
         # Summary line
@@ -316,18 +413,22 @@ class ConsoleFormatter:
 
         console.print(
             f"● [{status_color}]{status_icon}[/{status_color}] "
-            f"Total: {total}  |  "
-            f"Passed: [green]{passed}[/green]  |  "
-            f"Failed: [red]{failed}[/red]  |  "
-            f"Pass rate: {pass_rate:.0f}%"
+            f"{_('batch_total', total=total)}  |  "
+            f"{_('batch_passed', passed=passed)}  |  "
+            f"{_('batch_failed', failed=failed)}  |  "
+            f"{_('batch_pass_rate', rate=int(pass_rate))}"
         )
-        console.print(f"● Avg MQM: {avg_score:.1f}/100  |  " f"Total errors: {total_errors}")
+        console.print(
+            f"● {_('batch_avg_mqm', score=f'{avg_score:.1f}')}  |  "
+            f"{_('batch_total_errors', count=total_errors)}"
+        )
         console.print()
 
     @classmethod
     def _print_issues_compact(
         cls,
         errors: list[Any],
+        translation_text: str,
         nlp_insights: dict[str, Any] | None,
         verbose: bool,
     ) -> None:
@@ -335,6 +436,7 @@ class ConsoleFormatter:
 
         Args:
             errors: List of errors from QA report
+            translation_text: Full translation text for extracting fragments
             nlp_insights: Optional NLP insights with issues
             verbose: Show detailed descriptions
         """
@@ -342,13 +444,14 @@ class ConsoleFormatter:
         all_issues = []
 
         for error in errors:
-            all_issues.append(
-                {
-                    "category": error.category,
-                    "severity": error.severity.value,
-                    "description": error.description,
-                }
-            )
+            issue = {
+                "category": error.category,
+                "severity": error.severity.value,
+                "description": error.description,
+                "location": error.location,
+                "suggestion": error.suggestion,
+            }
+            all_issues.append(issue)
 
         if nlp_insights and nlp_insights.get("issues"):
             for issue in nlp_insights["issues"]:
@@ -357,6 +460,8 @@ class ConsoleFormatter:
                         "category": issue.get("category", "Linguistic"),
                         "severity": issue.get("severity", "minor"),
                         "description": issue.get("description", ""),
+                        "location": issue.get("location", [0, 0]),
+                        "suggestion": issue.get("suggestion"),
                     }
                 )
 
@@ -364,39 +469,156 @@ class ConsoleFormatter:
             return
 
         # Create compact issues table
-        table = Table(
-            title="Issues Found",
-            show_header=True,
-            header_style="bold cyan",
-            box=None,
-            padding=(0, 1),
-        )
-        table.add_column("Category", style="cyan", width=12)
-        table.add_column("Severity", width=10)
-        table.add_column("Description", max_width=70 if verbose else 50)
+        if verbose:
+            # Verbose: show numbered list with full context
+            cls._print_issues_verbose(all_issues, translation_text)
+        else:
+            # Compact: show table with location and fragment
+            # Calculate dynamic column widths
+            widths = cls._calculate_column_widths(["#", "Location", "Fragment", "Issue"])
 
-        for issue in all_issues:
+            table = Table(
+                title=_("table_issues_found"),
+                show_header=True,
+                header_style="bold cyan",
+                box=None,
+                padding=(0, 1),
+                expand=True,  # Use full terminal width
+            )
+            table.add_column("#", style="dim", width=widths["#"], justify="right")
+            table.add_column(
+                _("table_location"), style="dim cyan", width=widths["location"], no_wrap=True
+            )
+            table.add_column(
+                _("table_fragment"),
+                style="yellow",
+                width=widths["fragment"],
+                no_wrap=False,
+                overflow="fold",
+            )
+            table.add_column(_("table_issue"), no_wrap=False, overflow="fold")  # Auto-expand
+
+            # Calculate dynamic max lengths based on column widths
+            fragment_max = widths["fragment"] - 4 if widths["fragment"] else 25
+
+            for idx, issue in enumerate(all_issues, 1):
+                # Format location
+                location = issue.get("location", [0, 0])
+                if isinstance(location, (list, tuple)) and len(location) >= 2:
+                    loc_str = f"[{location[0]}:{location[1]}]"
+                else:
+                    loc_str = "N/A"
+
+                # Extract fragment (dynamic width)
+                fragment = cls._extract_fragment(
+                    translation_text, location, max_length=fragment_max
+                )
+
+                # Build issue description (no truncation - let table handle wrapping)
+                description = issue["description"]
+                suggestion = issue.get("suggestion")
+
+                # Add suggestion if available
+                if suggestion:
+                    issue_text = f"{description} → {suggestion}"
+                else:
+                    issue_text = description
+
+                # Color-code severity
+                severity = issue["severity"]
+                if severity == "critical":
+                    severity_style = "bold red"
+                elif severity == "major":
+                    severity_style = "bold yellow"
+                else:
+                    severity_style = "dim"
+
+                # Format issue with severity badge
+                severity_badge = severity.upper()[0]  # C, M, or m
+                issue_display = (
+                    f"[{severity_style}]{severity_badge}[/{severity_style}] {issue_text}"
+                )
+
+                table.add_row(
+                    str(idx),
+                    loc_str,
+                    f'"{fragment}"',
+                    issue_display,
+                )
+
+            console.print(table)
+            console.print()
+            console.print(f"[dim]💡 {_('check_hint_verbose')}[/dim]")
+            console.print()
+
+    @classmethod
+    def _print_issues_verbose(
+        cls,
+        issues: list[dict[str, Any]],
+        translation_text: str,
+    ) -> None:
+        """Print issues in verbose format with full context.
+
+        Args:
+            issues: List of issue dictionaries
+            translation_text: Full translation text
+        """
+        console.print(f"[bold cyan]{_('table_issues_detailed')}[/bold cyan]\n")
+
+        for idx, issue in enumerate(issues, 1):
+            # Extract location
+            location = issue.get("location", [0, 0])
+            start, end = location[0], location[1]
+
             # Color-code severity
             severity = issue["severity"]
             if severity == "critical":
-                severity_color = "red"
+                severity_color = "bold red"
+                severity_icon = "🔴"
             elif severity == "major":
-                severity_color = "yellow"
+                severity_color = "bold yellow"
+                severity_icon = "🟡"
             else:
                 severity_color = "dim"
+                severity_icon = "⚪"
 
-            # Truncate description if not verbose
-            description = issue["description"]
-            if not verbose and len(description) > 50:
-                description = description[:47] + "..."
-
-            table.add_row(
-                issue["category"],
-                Text(severity.upper(), style=severity_color),
-                description,
+            # Header
+            console.print(
+                f"[{severity_color}]{severity_icon} [{idx}] {severity.upper()} "
+                f"{issue['category']} error at {start}-{end}[/{severity_color}]"
             )
 
-        console.print(table)
+            # Extract context (50 chars before and after)
+            context_start = max(0, start - 50)
+            context_end = min(len(translation_text), end + 50)
+
+            prefix = "..." if context_start > 0 else ""
+            suffix = "..." if context_end < len(translation_text) else ""
+
+            # Show text with highlighted error
+            before_error = translation_text[context_start:start]
+            error_text = translation_text[start:end]
+            after_error = translation_text[context_end:end] if context_end > end else ""
+
+            console.print(
+                f"    Text: {prefix}{before_error}[bold yellow][{error_text}][/bold yellow]{after_error}{suffix}"
+            )
+
+            # Underline the error
+            underline_pos = len(prefix) + len(before_error)
+            underline = " " * (underline_pos + 10) + "^" * min(len(error_text), 20)
+            console.print(f"[dim]{underline}[/dim]")
+
+            # Issue description
+            console.print(f"    [cyan]Issue:[/cyan] {issue['description']}")
+
+            # Suggestion if available
+            suggestion = issue.get("suggestion")
+            if suggestion:
+                console.print(f"    [green]Fix:[/green] {suggestion}")
+
+            console.print()
+
         console.print()
 
     @classmethod
@@ -415,34 +637,37 @@ class ConsoleFormatter:
             rule_based_errors: Optional rule-based errors
             nlp_insights: Optional NLP insights
         """
-        console.print("\n[bold]Detailed Metrics:[/bold]")
+        console.print(f"\n[bold]{_('detailed_metrics')}[/bold]")
 
         # Confidence and agent agreement
         if report.confidence is not None:
-            conf_color = (
-                "green"
+            level_key = (
+                "detailed_confidence_high"
                 if report.confidence >= 0.8
-                else "yellow" if report.confidence >= 0.6 else "red"
+                else (
+                    "detailed_confidence_medium"
+                    if report.confidence >= 0.6
+                    else "detailed_confidence_low"
+                )
             )
             console.print(
-                f"  Confidence: [{conf_color}]{report.confidence:.2f}[/{conf_color}] "
-                f"({'high' if report.confidence >= 0.8 else 'medium' if report.confidence >= 0.6 else 'low'})"
+                f"  {_('detailed_confidence', score=f'{report.confidence:.2f}', level=_(level_key))}"
             )
 
         if report.agent_agreement is not None:
-            console.print(f"  Agent Agreement: {report.agent_agreement * 100:.0f}%")
+            console.print(f"  {_('detailed_agreement', percent=int(report.agent_agreement * 100))}")
 
         # Domain detection
         if report.agent_details and "detected_domain" in report.agent_details:
             domain = report.agent_details["detected_domain"]
             domain_confidence = report.agent_details.get("domain_confidence", 0.0)
             console.print(
-                f"  Domain: {domain.replace('_', ' ').title()} ({domain_confidence:.0%} confidence)"
+                f"  {_('detailed_domain', domain=domain.replace('_', ' ').title(), confidence=int(domain_confidence * 100))}"
             )
 
         # Per-agent scores
         if report.agent_scores:
-            console.print("\n  Per-Agent Scores:")
+            console.print(f"\n  {_('detailed_agent_scores')}")
             for agent_name, score in sorted(report.agent_scores.items()):
                 score_color = cls._get_score_color(score)
                 console.print(
@@ -451,13 +676,13 @@ class ConsoleFormatter:
 
         # NLP good indicators
         if nlp_insights and nlp_insights.get("good_indicators"):
-            console.print("\n  Linguistic Checks Passed:")
+            console.print(f"\n  {_('detailed_linguistic_passed')}")
             for indicator in nlp_insights["good_indicators"]:
                 console.print(f"    [dim]✓ {indicator}[/dim]")
 
         # Rule-based errors (if any and not shown in main table)
         if rule_based_errors:
-            console.print(f"\n  Rule-Based Errors: {len(rule_based_errors)}")
+            console.print(f"\n  {_('detailed_rule_errors', count=len(rule_based_errors))}")
             for error in rule_based_errors[:3]:  # Show first 3
                 console.print(f"    [dim]• {error.check_type}: {error.description[:50]}[/dim]")
 

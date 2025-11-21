@@ -610,6 +610,7 @@ kttc check source.txt trans.txt --source-lang en --target-lang zh --glossary non
 
 适用于所有命令：
 
+- `--ui-lang CODE`，`-L CODE` - CLI 界面语言（en、ru、zh、hi、fa）或 'auto' 自动检测系统语言
 - `--version`，`-v` - 显示版本并退出
 - `--help` - 显示帮助信息
 

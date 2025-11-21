@@ -207,6 +207,35 @@ Control output verbosity:
 -q, --quiet       # Decrease verbosity
 ```
 
+### UI Language
+
+Set the language for CLI output:
+
+```bash
+--ui-lang LANG, -L LANG    # Set UI language (en, ru, zh, hi, fa) or 'auto'
+```
+
+Examples:
+
+```bash
+# Use Russian for CLI output
+kttc check source.txt translation.txt \
+    --source-lang en --target-lang ru \
+    -L ru
+
+# Use auto-detection (based on system language)
+kttc check source.txt translation.txt \
+    --source-lang en --target-lang ru \
+    --ui-lang auto
+```
+
+Supported languages:
+- `en` - English
+- `ru` - Russian (Русский)
+- `zh` - Chinese (中文)
+- `hi` - Hindi (हिन्दी)
+- `fa` - Persian (فارسی)
+
 ## Advanced Commands
 
 ### Compare Translations Explicitly

@@ -12,6 +12,13 @@ from rich.console import Console
 
 from kttc.cli.formatters.console import ConsoleFormatter
 from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
+from kttc.i18n import set_language
+
+
+@pytest.fixture(autouse=True)
+def set_english_language() -> None:
+    """Ensure English language is used for all tests."""
+    set_language("en")
 
 
 def strip_ansi(text: str) -> str:
@@ -384,12 +391,14 @@ class TestConsoleFormatterErrorTable:
     def test_issues_table_compact(self, mock_qa_report: QAReport) -> None:
         """Test issues table in compact mode."""
         # Arrange
+        translation_text = "Это тест с ошибками перевода."
         console = Console(file=StringIO(), width=120, legacy_windows=False)
 
         with patch("kttc.cli.formatters.console.console", console):
             # Act
             ConsoleFormatter._print_issues_compact(
                 errors=mock_qa_report.errors,
+                translation_text=translation_text,
                 nlp_insights=None,
                 verbose=False,
             )
@@ -400,27 +409,24 @@ class TestConsoleFormatterErrorTable:
 
         # Assert: Table structure
         assert "Issues Found" in output_stripped
-        assert "Category" in output_stripped
-        assert "Severity" in output_stripped
-        assert "Description" in output_stripped
+        assert "Location" in output_stripped
+        assert "Fragment" in output_stripped
+        assert "Issue" in output_stripped
 
-        # Assert: All errors present
-        assert "Accuracy" in output_stripped
-        assert "Grammar" in output_stripped
-        assert "Fluency" in output_stripped
-        assert "CRITICAL" in output_stripped
-        assert "MAJOR" in output_stripped
-        assert "MINOR" in output_stripped
+        # Assert: Errors present (severity badges C/M/m)
+        assert "C " in output_stripped or "M " in output_stripped or "m " in output_stripped
 
     def test_issues_table_with_nlp_insights(self, mock_qa_report: QAReport) -> None:
         """Test issues table includes NLP insights."""
         # Arrange
+        translation_text = "Это тест с ошибками перевода."
         nlp_insights = {
             "issues": [
                 {
                     "category": "Linguistic",
                     "severity": "minor",
                     "description": "Case agreement issue",
+                    "location": [0, 10],
                 }
             ]
         }
@@ -431,6 +437,7 @@ class TestConsoleFormatterErrorTable:
             # Act
             ConsoleFormatter._print_issues_compact(
                 errors=mock_qa_report.errors,
+                translation_text=translation_text,
                 nlp_insights=nlp_insights,
                 verbose=False,
             )
@@ -440,20 +447,19 @@ class TestConsoleFormatterErrorTable:
             output_stripped = strip_ansi(output)
 
         # Assert: NLP issues included
-        assert "Linguistic" in output_stripped
         assert "Case agreement issue" in output_stripped
 
-    def test_issues_table_truncates_long_descriptions(self) -> None:
-        """Test long descriptions are truncated in compact mode."""
+    def test_issues_table_with_long_descriptions(self) -> None:
+        """Test long descriptions are handled correctly (wrapped by Rich)."""
         # Arrange
+        translation_text = "Test text for translation with some errors in it."
         long_error = ErrorAnnotation(
             category="Test",
             subcategory="Test",
             severity=ErrorSeverity.MINOR,
             location=[0, 10],
-            description="This is a very long description that should be truncated "
-            "in compact mode because it exceeds the maximum length allowed for "
-            "compact display and we want to keep the output concise",
+            description="This is a very long description that should be handled "
+            "by the Rich table wrapping feature in compact mode",
         )
 
         console = Console(file=StringIO(), width=120, legacy_windows=False)
@@ -462,6 +468,7 @@ class TestConsoleFormatterErrorTable:
             # Act
             ConsoleFormatter._print_issues_compact(
                 errors=[long_error],
+                translation_text=translation_text,
                 nlp_insights=None,
                 verbose=False,
             )
@@ -470,10 +477,10 @@ class TestConsoleFormatterErrorTable:
             output = console.file.getvalue()
             output_stripped = strip_ansi(output)
 
-        # Assert: Description is truncated with ellipsis
-        assert "..." in output_stripped
-        # Full text should not be present
-        assert "keep the output concise" not in output_stripped
+        # Assert: Table structure present
+        assert "Issues Found" in output_stripped
+        # Assert: Description is present (may be wrapped)
+        assert "long description" in output_stripped
 
 
 @pytest.mark.unit

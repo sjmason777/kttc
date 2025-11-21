@@ -610,6 +610,7 @@ kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary non
 
 Available for all commands:
 
+- `--ui-lang CODE`, `-L CODE` - UI language for CLI output (en, ru, zh, hi, fa) or 'auto' for system detection
 - `--version`, `-v` - Show version and exit
 - `--help` - Show help message
 
