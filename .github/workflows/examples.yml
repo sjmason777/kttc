@@ -1,0 +1,206 @@
+name: Examples & Demos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'runtime.txt'
+      - '.devcontainer/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'runtime.txt'
+      - '.devcontainer/**'
+  # Run weekly to catch dependency issues
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9:00 UTC
+  workflow_dispatch:
+
+jobs:
+  streamlit-app:
+    name: Streamlit App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install streamlit
+          pip install -e .
+
+      - name: Verify Streamlit app syntax
+        run: |
+          python -c "import ast; ast.parse(open('examples/streamlit_app.py').read())"
+          echo "✅ Streamlit app syntax is valid"
+
+      - name: Check Streamlit app imports
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, 'examples')
+          # Test that all imports work
+          import streamlit as st
+          from kttc.cli.demo import DemoLLMProvider
+          from kttc.agents import AgentOrchestrator
+          from kttc.core import TranslationTask
+          print('✅ All Streamlit app imports work')
+          "
+
+      - name: Verify runtime.txt
+        run: |
+          if [ -f runtime.txt ]; then
+            echo "runtime.txt content: $(cat runtime.txt)"
+            if grep -q "python-3.11" runtime.txt; then
+              echo "✅ runtime.txt specifies Python 3.11"
+            else
+              echo "❌ runtime.txt should specify python-3.11 for Streamlit Cloud"
+              exit 1
+            fi
+          else
+            echo "❌ runtime.txt not found (required for Streamlit Cloud)"
+            exit 1
+          fi
+
+  colab-notebook:
+    name: Colab Notebook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install nbformat nbconvert jupyter
+          pip install -e .
+
+      - name: Validate notebook JSON
+        run: |
+          python -c "
+          import json
+          with open('examples/kttc_demo.ipynb') as f:
+              nb = json.load(f)
+          assert 'cells' in nb, 'Notebook missing cells'
+          assert 'metadata' in nb, 'Notebook missing metadata'
+          print(f'✅ Notebook has {len(nb[\"cells\"])} cells')
+          "
+
+      - name: Check notebook syntax (code cells)
+        run: |
+          python -c "
+          import json
+          import ast
+
+          with open('examples/kttc_demo.ipynb') as f:
+              nb = json.load(f)
+
+          errors = []
+          for i, cell in enumerate(nb['cells']):
+              if cell['cell_type'] == 'code':
+                  source = ''.join(cell['source'])
+                  # Skip cells with magic commands or shell commands
+                  if source.strip().startswith(('!', '%', 'await ')):
+                      continue
+                  try:
+                      ast.parse(source)
+                  except SyntaxError as e:
+                      errors.append(f'Cell {i}: {e}')
+
+          if errors:
+              for e in errors:
+                  print(f'❌ {e}')
+              exit(1)
+          print('✅ All code cells have valid Python syntax')
+          "
+
+      - name: Test notebook can be converted
+        run: |
+          jupyter nbconvert --to script examples/kttc_demo.ipynb --stdout > /dev/null
+          echo "✅ Notebook can be converted to script"
+
+  codespaces:
+    name: Codespaces Config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate devcontainer.json
+        run: |
+          python -c "
+          import json
+          with open('.devcontainer/devcontainer.json') as f:
+              config = json.load(f)
+
+          assert 'image' in config, 'Missing image specification'
+          assert 'python:3.11' in config['image'], 'Should use Python 3.11 image'
+          assert 'postCreateCommand' in config, 'Missing postCreateCommand'
+          print('✅ devcontainer.json is valid')
+          print(f'   Image: {config[\"image\"]}')
+          "
+
+      - name: Check setup script exists and is executable
+        run: |
+          if [ -f .devcontainer/setup.sh ]; then
+            echo "✅ setup.sh exists"
+            # Check for syntax errors
+            bash -n .devcontainer/setup.sh
+            echo "✅ setup.sh has valid bash syntax"
+          else
+            echo "❌ .devcontainer/setup.sh not found"
+            exit 1
+          fi
+
+  cli-examples:
+    name: CLI Examples
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install KTTC
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Test CLI demo mode
+        run: |
+          kttc --version
+          echo "✅ kttc CLI is available"
+
+      - name: Test check command (demo mode)
+        run: |
+          kttc check examples/cli/source_en.txt examples/cli/translation_ru_good.txt \
+            --source-lang en --target-lang ru --demo
+          echo "✅ kttc check works in demo mode"
+
+      - name: Test compare command (demo mode)
+        run: |
+          kttc compare \
+            --source examples/cli/source_en.txt \
+            --translations examples/cli/translation_ru_good.txt examples/cli/translation_ru_bad.txt \
+            --source-lang en --target-lang ru --demo
+          echo "✅ kttc compare works in demo mode"
+
+      - name: Test batch command (demo mode)
+        run: |
+          kttc batch --file examples/batch/translations.csv --demo --format json
+          echo "✅ kttc batch works in demo mode"

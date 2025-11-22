@@ -46,7 +46,7 @@
 
 - 🏠 [主 README](../../README.zh.md) - 中文项目概述
 - 🇺🇸 [English Documentation](../en/README.md) - 英文文档（主要）
-- 🚀 [快速开始 (EN)](../en/tutorials/quickstart.md) - 第一步
+- [快速开始 (EN)](../en/tutorials/quickstart.md) - 第一步
 - 🐛 [GitHub Issues](https://github.com/kttc-ai/kttc/issues) - 报告问题
 
 ---

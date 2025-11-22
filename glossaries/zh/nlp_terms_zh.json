@@ -307,7 +307,7 @@
       "significance": "中文句法分析的标准评测数据集"
     },
     "OntoNotes": {
-      "name": zh": "OntoNotes中文部分",
+      "name_zh": "OntoNotes中文部分",
       "name_en": "OntoNotes Chinese",
       "description": "大规模多语言语料库（包含中文）",
       "annotation_layers": [

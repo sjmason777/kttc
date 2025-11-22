@@ -131,7 +131,7 @@ All metrics run on CPU:
 - **Zero API costs**
 
 Perfect for:
-- 🚀 CI/CD pipelines
+- CI/CD pipelines
 - 💻 Development environments
 - 📊 Quick quality checks
 - 💰 Cost-sensitive applications

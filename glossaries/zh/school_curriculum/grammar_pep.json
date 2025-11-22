@@ -1,0 +1,182 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文",
+    "glossary_type": "中国语文课程标准 - 语法与标点 (部编版)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "中国中小学语文课程语法和标点规则 (部编版2024-2025)",
+    "sources": [
+      "中华人民共和国教育部统编教材 (部编版)",
+      "人民教育出版社语文教材",
+      "《标点符号用法》(GB/T 15834-2011)"
+    ],
+    "standard": "部编版 2024-2025",
+    "grade_levels": "小学1-6年级, 初中7-9年级",
+    "total_rules": 30
+  },
+  "classifier_rules": {
+    "general_classifiers": {
+      "rule_id": "ZH_CLASS_001",
+      "name": "常用量词",
+      "description": "汉语中名词前需要使用量词，不同名词使用不同量词",
+      "examples": {
+        "correct": ["一个人", "一本书", "一张纸", "一支笔", "一条鱼", "一只猫"],
+        "incorrect": ["一书", "一人", "一纸", "一笔"]
+      },
+      "common_classifiers": {
+        "个": "通用量词，用于人、物体等",
+        "本": "书籍、杂志",
+        "张": "纸、桌子、床、脸",
+        "支": "笔、枪、歌曲",
+        "条": "鱼、河流、新闻、裤子",
+        "只": "动物、手、眼睛",
+        "把": "刀、椅子、伞",
+        "件": "事情、衣服",
+        "辆": "车辆",
+        "位": "敬称，用于人"
+      },
+      "severity": "major",
+      "grade_level": "小学1-2年级"
+    },
+    "special_classifiers": {
+      "rule_id": "ZH_CLASS_002",
+      "name": "特殊量词",
+      "description": "某些名词有特定的量词搭配",
+      "examples": {
+        "correct": ["一匹马", "一头牛", "一朵花", "一棵树", "一粒米", "一滴水"],
+        "incorrect": ["一个马", "一个牛", "一个花", "一个树"]
+      },
+      "severity": "minor",
+      "grade_level": "小学3-4年级"
+    }
+  },
+  "de_particle_rules": {
+    "de_usage": {
+      "rule_id": "ZH_DE_001",
+      "name": "的/地/得用法",
+      "description": "三个'de'的正确使用：的(定语)、地(状语)、得(补语)",
+      "examples": {
+        "correct": [
+          "美丽的花朵 (形容词+的+名词)",
+          "认真地学习 (副词+地+动词)",
+          "跑得很快 (动词+得+补语)"
+        ],
+        "incorrect": [
+          "美丽地花朵",
+          "认真的学习 (作状语时)",
+          "跑的很快"
+        ]
+      },
+      "rules": {
+        "的": "用于名词前，修饰名词 (形容词+的+名词)",
+        "地": "用于动词前，修饰动词 (副词+地+动词)",
+        "得": "用于动词后，表示程度/结果 (动词+得+补语)"
+      },
+      "severity": "critical",
+      "grade_level": "小学3-4年级"
+    }
+  },
+  "punctuation_rules": {
+    "chinese_punctuation": {
+      "rule_id": "ZH_PUNCT_001",
+      "name": "中文标点符号",
+      "description": "中文使用全角标点符号",
+      "examples": {
+        "correct": ["你好，世界！", "他说：「你好。」", "什么？为什么？"],
+        "incorrect": ["你好,世界!", "他说:'你好.'"]
+      },
+      "punctuation_map": {
+        "逗号": "，",
+        "句号": "。",
+        "问号": "？",
+        "感叹号": "！",
+        "冒号": "：",
+        "分号": "；",
+        "引号": "「」『』",
+        "书名号": "《》〈〉",
+        "顿号": "、",
+        "省略号": "……"
+      },
+      "severity": "major",
+      "grade_level": "小学1-2年级"
+    },
+    "dunhao_usage": {
+      "rule_id": "ZH_PUNCT_002",
+      "name": "顿号用法",
+      "description": "顿号用于并列词语之间，相当于英文的逗号分隔并列项",
+      "examples": {
+        "correct": ["红、黄、蓝是三原色。", "北京、上海、广州是大城市。"],
+        "incorrect": ["红，黄，蓝是三原色。"]
+      },
+      "severity": "minor",
+      "grade_level": "小学3-4年级"
+    },
+    "shuminghao_usage": {
+      "rule_id": "ZH_PUNCT_003",
+      "name": "书名号用法",
+      "description": "书名号用于书籍、文章、电影、歌曲等作品名称",
+      "examples": {
+        "correct": ["《红楼梦》", "《论语》", "电影《长津湖》"],
+        "incorrect": ["\"红楼梦\"", "'论语'"]
+      },
+      "severity": "major",
+      "grade_level": "小学2-3年级"
+    }
+  },
+  "word_order_rules": {
+    "basic_order": {
+      "rule_id": "ZH_ORDER_001",
+      "name": "基本语序",
+      "description": "汉语基本语序为：主语 + 时间/地点状语 + 谓语 + 宾语",
+      "examples": {
+        "correct": ["我昨天在图书馆看了一本书。", "他每天早上跑步。"],
+        "incorrect": ["我看了一本书昨天在图书馆。"]
+      },
+      "severity": "major",
+      "grade_level": "小学5-6年级"
+    },
+    "ba_construction": {
+      "rule_id": "ZH_ORDER_002",
+      "name": "把字句",
+      "description": "把字句结构：主语 + 把 + 宾语 + 动词补语",
+      "examples": {
+        "correct": ["我把书放在桌子上了。", "请把门关上。"],
+        "incorrect": ["我把书放了在桌子上。"]
+      },
+      "severity": "minor",
+      "grade_level": "小学5-6年级"
+    }
+  },
+  "chengyu_rules": {
+    "four_character_idioms": {
+      "rule_id": "ZH_CHENGYU_001",
+      "name": "成语使用",
+      "description": "成语是固定搭配，不能随意改变或拆分",
+      "common_idioms": {
+        "学习类": ["学以致用", "温故知新", "勤能补拙", "开卷有益"],
+        "品德类": ["助人为乐", "见义勇为", "诚实守信", "尊老爱幼"],
+        "自然类": ["春暖花开", "秋高气爽", "风和日丽", "山清水秀"]
+      },
+      "severity": "minor",
+      "grade_level": "小学3-6年级"
+    }
+  },
+  "common_mistakes": {
+    "de_confusion": {
+      "mistake_id": "ZH_MISTAKE_001",
+      "description": "的/地/得混淆",
+      "frequency": "very_high"
+    },
+    "classifier_omission": {
+      "mistake_id": "ZH_MISTAKE_002",
+      "description": "量词遗漏或使用错误",
+      "frequency": "high"
+    },
+    "punctuation_mixing": {
+      "mistake_id": "ZH_MISTAKE_003",
+      "description": "中英文标点混用",
+      "frequency": "very_high"
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिंदी",
+    "glossary_type": "NCERT Hindi Grammar Rules (व्याकरण)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "हिंदी व्याकरण नियम NCERT/CBSE पाठ्यक्रम 2024-2025 से",
+    "sources": [
+      "NCERT हिंदी पाठ्यपुस्तक कक्षा 6-12",
+      "CBSE Hindi Core Syllabus 2024-25",
+      "आरोह, वितान, अभिव्यक्ति और माध्यम"
+    ],
+    "standard": "CBSE/NCERT 2024-2025",
+    "grade_levels": "कक्षा 6-12",
+    "total_rules": 30
+  },
+  "sandhi_rules": {
+    "swar_sandhi": {
+      "rule_id": "HI_SANDHI_001",
+      "name": "स्वर संधि",
+      "name_en": "Vowel Sandhi",
+      "description": "दो स्वरों के मिलने से होने वाला परिवर्तन",
+      "types": {
+        "dirgh_sandhi": {
+          "name": "दीर्घ संधि",
+          "rule": "समान स्वर मिलने पर दीर्घ स्वर बनता है",
+          "examples": ["विद्या + आलय = विद्यालय", "मातृ + आज्ञा = मातृज्ञा", "गुरु + उपदेश = गुरूपदेश"]
+        },
+        "guna_sandhi": {
+          "name": "गुण संधि",
+          "rule": "अ/आ + इ/ई = ए; अ/आ + उ/ऊ = ओ",
+          "examples": ["देव + इंद्र = देवेंद्र", "महा + उत्सव = महोत्सव", "सूर्य + उदय = सूर्योदय"]
+        },
+        "vriddhi_sandhi": {
+          "name": "वृद्धि संधि",
+          "rule": "अ/आ + ए/ऐ = ऐ; अ/आ + ओ/औ = औ",
+          "examples": ["एक + एक = एकैक", "महा + ऐश्वर्य = महैश्वर्य", "परम + औषध = परमौषध"]
+        },
+        "yan_sandhi": {
+          "name": "यण् संधि",
+          "rule": "इ/ई/उ/ऊ/ऋ + असमान स्वर = य/व/र",
+          "examples": ["अति + आचार = अत्याचार", "अनु + अय = अन्वय", "पितृ + आज्ञा = पित्राज्ञा"]
+        }
+      },
+      "severity": "major",
+      "grade_level": "कक्षा 9-10"
+    },
+    "vyanjan_sandhi": {
+      "rule_id": "HI_SANDHI_002",
+      "name": "व्यंजन संधि",
+      "name_en": "Consonant Sandhi",
+      "description": "व्यंजन + स्वर/व्यंजन के मिलने से परिवर्तन",
+      "examples": ["वाक् + ईश = वागीश", "सत् + जन = सज्जन", "उत् + हार = उद्धार"],
+      "severity": "major",
+      "grade_level": "कक्षा 9-10"
+    },
+    "visarg_sandhi": {
+      "rule_id": "HI_SANDHI_003",
+      "name": "विसर्ग संधि",
+      "name_en": "Visarga Sandhi",
+      "description": "विसर्ग (:) के साथ स्वर/व्यंजन के मिलने से परिवर्तन",
+      "examples": ["निः + आशा = निराशा", "दुः + गम = दुर्गम", "मनः + हर = मनोहर"],
+      "severity": "major",
+      "grade_level": "कक्षा 9-10"
+    }
+  },
+  "samas_rules": {
+    "samas_types": {
+      "rule_id": "HI_SAMAS_001",
+      "name": "समास के प्रकार",
+      "name_en": "Types of Compound Words",
+      "description": "दो या अधिक शब्दों के मिलने से बने शब्द",
+      "types": {
+        "avyayibhav": {
+          "name": "अव्ययीभाव समास",
+          "rule": "पहला पद अव्यय और प्रधान",
+          "examples": ["यथाशक्ति", "प्रतिदिन", "आजीवन", "निर्भय"]
+        },
+        "tatpurush": {
+          "name": "तत्पुरुष समास",
+          "rule": "दूसरा पद प्रधान",
+          "examples": ["राजपुत्र (राजा का पुत्र)", "देशभक्ति", "जलमग्न", "पथभ्रष्ट"]
+        },
+        "karmadharaya": {
+          "name": "कर्मधारय समास",
+          "rule": "विशेषण-विशेष्य संबंध",
+          "examples": ["नीलकमल", "महात्मा", "परमेश्वर", "सद्गुरु"]
+        },
+        "dvigu": {
+          "name": "द्विगु समास",
+          "rule": "पहला पद संख्यावाचक",
+          "examples": ["त्रिलोक", "पंचवटी", "सप्ताह", "नवरात्र"]
+        },
+        "dvandva": {
+          "name": "द्वंद्व समास",
+          "rule": "दोनों पद प्रधान",
+          "examples": ["माता-पिता", "सुख-दुख", "दिन-रात", "राधा-कृष्ण"]
+        },
+        "bahuvrihi": {
+          "name": "बहुव्रीहि समास",
+          "rule": "कोई पद प्रधान नहीं, अन्य अर्थ प्रधान",
+          "examples": ["नीलकंठ (शिव)", "चतुर्भुज (विष्णु)", "दशानन (रावण)"]
+        }
+      },
+      "severity": "major",
+      "grade_level": "कक्षा 9-10"
+    }
+  },
+  "spelling_rules": {
+    "chandrabindu_anusvara": {
+      "rule_id": "HI_SPELL_001",
+      "name": "चंद्रबिंदु और अनुस्वार",
+      "name_en": "Chandrabindu and Anusvara",
+      "description": "अनुनासिक ध्वनियों का सही प्रयोग",
+      "examples": {
+        "correct": ["चाँद", "आँख", "हँसना", "अंग", "संगम"],
+        "incorrect": ["चांद", "आंख", "हंसना (for smile)"]
+      },
+      "rule": "शिरोरेखा पर मात्रा होने पर अनुस्वार (ं), अन्यथा चंद्रबिंदु (ँ)",
+      "severity": "minor",
+      "grade_level": "कक्षा 6-7"
+    },
+    "nukta_usage": {
+      "rule_id": "HI_SPELL_002",
+      "name": "नुक्ता का प्रयोग",
+      "name_en": "Nukta Usage",
+      "description": "उर्दू/फारसी शब्दों में नुक्ते का सही प्रयोग",
+      "examples": {
+        "correct": ["ज़रूरत", "फ़ैसला", "क़ानून", "ख़बर", "ग़लत"],
+        "without_nukta": ["जरूरत", "फैसला", "कानून", "खबर", "गलत"]
+      },
+      "note": "दोनों वर्तनी मान्य हैं, परंतु मूल उच्चारण के लिए नुक्ता प्रयोग करें",
+      "severity": "minor",
+      "grade_level": "कक्षा 8-9"
+    },
+    "reph_rules": {
+      "rule_id": "HI_SPELL_003",
+      "name": "रेफ का प्रयोग",
+      "name_en": "Reph Usage",
+      "description": "र् का सही स्थान - अगले व्यंजन के ऊपर",
+      "examples": {
+        "correct": ["धर्म", "कर्म", "वर्ष", "पूर्व", "सूर्य"],
+        "incorrect": ["धरम", "करम"]
+      },
+      "severity": "major",
+      "grade_level": "कक्षा 6-7"
+    }
+  },
+  "punctuation_rules": {
+    "hindi_punctuation": {
+      "rule_id": "HI_PUNCT_001",
+      "name": "हिंदी विराम चिह्न",
+      "name_en": "Hindi Punctuation",
+      "description": "हिंदी में विराम चिह्नों का सही प्रयोग",
+      "punctuation": {
+        "पूर्ण विराम": "।",
+        "अर्ध विराम": ";",
+        "अल्प विराम": ",",
+        "प्रश्नवाचक": "?",
+        "विस्मयादिबोधक": "!",
+        "उद्धरण चिह्न": "''",
+        "योजक चिह्न": "-"
+      },
+      "examples": {
+        "correct": ["राम ने कहा, 'मैं जाऊँगा।'", "क्या तुम आओगे?"],
+        "incorrect": ["राम ने कहा. 'मैं जाऊंगा'"]
+      },
+      "severity": "major",
+      "grade_level": "कक्षा 6-7"
+    }
+  },
+  "common_mistakes": {
+    "sandhi_errors": {
+      "mistake_id": "HI_MISTAKE_001",
+      "description": "संधि विच्छेद में त्रुटि",
+      "frequency": "high"
+    },
+    "chandrabindu_confusion": {
+      "mistake_id": "HI_MISTAKE_002",
+      "description": "चंद्रबिंदु और अनुस्वार का भ्रम",
+      "frequency": "very_high"
+    },
+    "gender_agreement": {
+      "mistake_id": "HI_MISTAKE_003",
+      "description": "लिंग-वचन की असंगति",
+      "examples": ["लड़का गई (incorrect)", "लड़का गया (correct)"],
+      "frequency": "high"
+    }
+  }
+}

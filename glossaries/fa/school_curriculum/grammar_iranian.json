@@ -1,0 +1,212 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "فارسی",
+    "glossary_type": "Iranian School Curriculum - Grammar (دستور زبان فارسی)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "قواعد دستور زبان فارسی از برنامه درسی مدارس ایران ۱۴۰۳-۱۴۰۴",
+    "sources": [
+      "کتاب‌های درسی فارسی دبستان و دبیرستان",
+      "سازمان پژوهش و برنامه‌ریزی آموزشی",
+      "فرهنگستان زبان و ادب فارسی"
+    ],
+    "standard": "برنامه درسی ۱۴۰۳-۱۴۰۴",
+    "grade_levels": "دبستان تا دبیرستان",
+    "total_rules": 25
+  },
+  "ezafe_rules": {
+    "ezafe_construction": {
+      "rule_id": "FA_EZAFE_001",
+      "name": "اضافه",
+      "name_en": "Ezafe Construction",
+      "description": "کسره اضافه برای پیوند دادن اسم به صفت یا مضاف به مضاف‌الیه",
+      "examples": {
+        "correct": [
+          "کتابِ خوب (ketāb-e khub)",
+          "خانه‌یِ بزرگ (khāne-ye bozorg)",
+          "درِ اتاق (dar-e otāq)"
+        ],
+        "incorrect": [
+          "کتاب خوب (without ezafe connection)",
+          "خانه بزرگ (without ye-ezafe)"
+        ]
+      },
+      "rules": {
+        "after_consonant": "کسره (-e) بعد از حرف صامت: کتابِ",
+        "after_vowel_aa": "یِ (ye) بعد از آ/ا: خانه‌یِ",
+        "after_silent_h": "یِ (ye) بعد از ه غیرملفوظ: خانه‌یِ",
+        "after_vowel_u_i": "یِ (ye) بعد از و/ی: داروی، جویِ"
+      },
+      "severity": "major",
+      "grade_level": "دبستان"
+    }
+  },
+  "verb_rules": {
+    "present_tense": {
+      "rule_id": "FA_VERB_001",
+      "name": "فعل مضارع",
+      "name_en": "Present Tense",
+      "description": "ساختن فعل مضارع با پیشوند می- و شناسه",
+      "conjugation": {
+        "من": "می‌روم",
+        "تو": "می‌روی",
+        "او": "می‌رود",
+        "ما": "می‌رویم",
+        "شما": "می‌روید",
+        "آنها": "می‌روند"
+      },
+      "examples": {
+        "correct": ["می‌خوانم", "می‌نویسی", "می‌گوید"],
+        "incorrect": ["میخوانم", "می خوانم"]
+      },
+      "note": "پیشوند می- با نیم‌فاصله نوشته می‌شود",
+      "severity": "major",
+      "grade_level": "دبستان"
+    },
+    "past_tense": {
+      "rule_id": "FA_VERB_002",
+      "name": "فعل ماضی",
+      "name_en": "Past Tense",
+      "description": "ساختن فعل ماضی ساده از بن ماضی و شناسه",
+      "conjugation": {
+        "من": "رفتم",
+        "تو": "رفتی",
+        "او": "رفت",
+        "ما": "رفتیم",
+        "شما": "رفتید",
+        "آنها": "رفتند"
+      },
+      "severity": "major",
+      "grade_level": "دبستان"
+    },
+    "negative_verbs": {
+      "rule_id": "FA_VERB_003",
+      "name": "فعل منفی",
+      "name_en": "Negative Verbs",
+      "description": "ساختن فعل منفی با پیشوند ن- یا نمی-",
+      "examples": {
+        "correct": ["نمی‌روم", "نرفتم", "نخواهم رفت"],
+        "incorrect": ["نه می‌روم", "نه رفتم"]
+      },
+      "severity": "major",
+      "grade_level": "دبستان"
+    }
+  },
+  "spelling_rules": {
+    "hamze_rules": {
+      "rule_id": "FA_SPELL_001",
+      "name": "همزه",
+      "name_en": "Hamza Rules",
+      "description": "قواعد نوشتن همزه در کلمات فارسی و عربی",
+      "examples": {
+        "correct": ["مسئله", "جزء", "سؤال", "رأی", "مؤسسه"],
+        "incorrect": ["مسأله", "مساله"]
+      },
+      "rules": {
+        "on_alef": "أ - همزه روی الف",
+        "on_vav": "ؤ - همزه روی واو",
+        "on_ye": "ئ - همزه زیر یا",
+        "standalone": "ء - همزه تنها"
+      },
+      "severity": "minor",
+      "grade_level": "راهنمایی"
+    },
+    "ye_rules": {
+      "rule_id": "FA_SPELL_002",
+      "name": "ی و یای نکره",
+      "name_en": "Ye Rules",
+      "description": "تفاوت ی (یای معروف) و ی نکره",
+      "examples": {
+        "correct": ["کتابی خواندم", "مردی آمد", "خانه‌ای دیدم"],
+        "incorrect": ["کتاب ی خواندم"]
+      },
+      "note": "یای نکره چسبیده به کلمه نوشته می‌شود",
+      "severity": "major",
+      "grade_level": "دبستان"
+    },
+    "tanvin": {
+      "rule_id": "FA_SPELL_003",
+      "name": "تنوین",
+      "name_en": "Tanvin",
+      "description": "استفاده صحیح از تنوین در کلمات عربی",
+      "examples": {
+        "correct": ["اصلاً", "مثلاً", "حتماً", "واقعاً"],
+        "incorrect": ["اصلن", "مثلن", "حتمن"]
+      },
+      "severity": "minor",
+      "grade_level": "راهنمایی"
+    },
+    "nim_fasele": {
+      "rule_id": "FA_SPELL_004",
+      "name": "نیم‌فاصله",
+      "name_en": "Zero-Width Non-Joiner (ZWNJ)",
+      "description": "استفاده از نیم‌فاصله در ترکیبات فارسی",
+      "examples": {
+        "correct": ["می‌روم", "خانه‌ها", "کتاب‌های", "نمی‌دانم"],
+        "incorrect": ["میروم", "می روم", "خانه ها"]
+      },
+      "rules": {
+        "prefix_mi": "می‌ + فعل",
+        "suffix_ha": "اسم + ‌ها",
+        "suffix_ye": "اسم + ‌ی (صفت)",
+        "compound": "کلمات مرکب"
+      },
+      "severity": "major",
+      "grade_level": "دبستان"
+    }
+  },
+  "punctuation_rules": {
+    "persian_punctuation": {
+      "rule_id": "FA_PUNCT_001",
+      "name": "نشانه‌گذاری فارسی",
+      "name_en": "Persian Punctuation",
+      "description": "علائم نگارشی در زبان فارسی",
+      "punctuation": {
+        "نقطه": ".",
+        "ویرگول": "،",
+        "نقطه‌ویرگول": "؛",
+        "علامت سؤال": "؟",
+        "علامت تعجب": "!",
+        "گیومه": "«»",
+        "کمانک": "()",
+        "خط تیره": "–"
+      },
+      "examples": {
+        "correct": ["او گفت: «سلام!»", "چرا آمدی؟", "کتاب، دفتر و قلم"],
+        "incorrect": ["او گفت: \"سلام!\"", "چرا آمدی?"]
+      },
+      "severity": "major",
+      "grade_level": "دبستان"
+    },
+    "comma_usage": {
+      "rule_id": "FA_PUNCT_002",
+      "name": "ویرگول فارسی",
+      "name_en": "Persian Comma",
+      "description": "استفاده از ویرگول فارسی (،) نه انگلیسی (,)",
+      "examples": {
+        "correct": ["سیب، گلابی، پرتقال"],
+        "incorrect": ["سیب, گلابی, پرتقال"]
+      },
+      "severity": "minor",
+      "grade_level": "دبستان"
+    }
+  },
+  "common_mistakes": {
+    "hamze_errors": {
+      "mistake_id": "FA_MISTAKE_001",
+      "description": "اشتباه در نوشتن همزه",
+      "frequency": "high"
+    },
+    "nim_fasele_omission": {
+      "mistake_id": "FA_MISTAKE_002",
+      "description": "حذف نیم‌فاصله",
+      "frequency": "very_high"
+    },
+    "arabic_persian_mixing": {
+      "mistake_id": "FA_MISTAKE_003",
+      "description": "اشتباه در کاربرد کلمات عربی",
+      "frequency": "medium"
+    }
+  }
+}

@@ -402,10 +402,14 @@
       },
       "formality": "तत्सम शब्द अधिक औपचारिक, तद्भव अधिक बोलचाल के",
       "examples": {
-        "formal": "जल (water - Sanskrit)",
-        "informal": "पानी (water - evolved)",
-        "formal": "वायु (air - Sanskrit)",
-        "informal": "हवा (air - Perso-Arabic)"
+        "water": {
+          "formal": "जल (Sanskrit)",
+          "informal": "पानी (evolved)"
+        },
+        "air": {
+          "formal": "वायु (Sanskrit)",
+          "informal": "हवा (Perso-Arabic)"
+        }
       }
     },
     "register_variation": {

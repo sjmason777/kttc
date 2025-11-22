@@ -27,8 +27,9 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 - **智能路由** - 基于文本复杂度自动选择最优模型（节省 60% 成本）
 - **自动修正** - 基于大语言模型（LLM）的错误修复与迭代优化（TEaR 循环）
 - **特定语言智能体** - 为英语、中文、俄语、印地语和波斯语提供母语级检查
+- **自我检查 / 校对** - 基于学校课程标准的语法、拼写、标点检查
 - **翻译记忆库** - 具有质量跟踪和重用的语义搜索
-- **术语表管理** - 自定义术语验证和一致性
+- **术语表管理** - 自定义术语 + 学校课程词汇表（部编版、UK GPS、NCERT、ФГОС）
 - **批量处理** - 并行处理数千个翻译
 - **CI/CD 就绪** - GitHub Actions 集成、退出代码、多种输出格式
 - **多 LLM 支持** - OpenAI、Anthropic、GigaChat、YandexGPT
@@ -37,7 +38,7 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 
 ---
 
-## 🚀 在线试用 KTTC
+## 在线试用 KTTC
 
 无需安装即可体验 KTTC：
 
@@ -116,6 +117,11 @@ kttc benchmark --source text.txt --providers openai,anthropic    # LLM 基准测
 kttc glossary list                              # 列出所有术语表
 kttc glossary create tech --from-csv terms.csv  # 创建项目术语表
 kttc glossary create personal --from-csv my.csv --user  # 创建用户术语表
+
+# 🥚 自我检查 / 校对（新功能！）
+kttc check article.md --self --lang zh          # 无需翻译的校对
+kttc proofread article.md --lang zh             # 同上（别名）
+kttc lint article.md --lang zh --fix            # 快速规则检查（无 LLM）
 ```
 
 **查看完整命令参考：** [docs/zh/reference/cli-commands.md](docs/zh/reference/cli-commands.md)

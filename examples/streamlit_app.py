@@ -288,7 +288,7 @@ st.markdown(
 - 🐛 [Report Issues](https://github.com/kttc-ai/kttc/issues)
 - 💬 [Discussions](https://github.com/kttc-ai/kttc/discussions)
 
-### 🚀 Install Locally
+### Install Locally
 
 ```bash
 pip install kttc

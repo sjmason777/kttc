@@ -44,9 +44,5 @@
 
   "postCreateCommand": "bash .devcontainer/setup.sh",
 
-  "remoteUser": "vscode",
-
-  "mounts": [
-    "source=${localEnv:HOME}/.kttc,target=/home/vscode/.kttc,type=bind,consistency=cached"
-  ]
+  "remoteUser": "vscode"
 }

@@ -319,6 +319,17 @@ def check(
     demo: bool = typer.Option(
         False, "--demo", help="Demo mode (no API calls, simulated responses)"
     ),
+    self_check: bool = typer.Option(
+        False,
+        "--self",
+        help="Self-check mode: proofread text without translation (monolingual)",
+    ),
+    lang: str | None = typer.Option(
+        None,
+        "--lang",
+        "-l",
+        help="Language for self-check mode (e.g., 'ru', 'en'). Sets both source and target.",
+    ),
 ) -> None:
     """
     Smart translation quality checker with auto-detection.
@@ -327,8 +338,9 @@ def check(
     - Single file: Simple quality check
     - Multiple translations: Automatic comparison
     - Directory/CSV/JSON: Batch processing
+    - Self-check (--self): Monolingual proofreading
 
-    🚀 SMART DEFAULTS (can disable):
+    SMART DEFAULTS (can disable):
     - Smart routing enabled (--no-smart-routing to disable)
     - Auto-detects glossary 'base' if exists
     - Auto-detects output format from file extension
@@ -337,6 +349,10 @@ def check(
 
     # Single check
     kttc check source.txt translation.txt --source-lang en --target-lang ru
+
+    # Self-check mode (proofread without translation)
+    kttc check article.md --self --lang ru
+    kttc check article.md --source-lang ru --target-lang ru  # equivalent
 
     # Compare multiple translations (auto-detected)
     kttc check source.txt trans1.txt trans2.txt trans3.txt \\
@@ -363,10 +379,46 @@ def check(
         raise typer.Exit(code=1)
 
     try:
+        # 🥚 Self-check mode (Easter egg!)
+        if self_check or (source_lang and target_lang and source_lang == target_lang):
+            # Handle --lang shortcut
+            if lang:
+                source_lang = lang
+                target_lang = lang
+
+            if not source_lang:
+                console.print(
+                    "[red]Error: --lang or --source-lang required for self-check mode[/red]"
+                )
+                raise typer.Exit(code=1)
+
+            # Easter egg message
+            console.print()
+            console.print("[yellow]🥚 Self-Check Mode Activated![/yellow]")
+            console.print('[dim]"Heal thyself before healing others" (Luke 4:23)[/dim]')
+            console.print(
+                "[dim]Pro tip: Always proofread your articles about proofreading tools![/dim]"
+            )
+            console.print()
+
+            asyncio.run(
+                _self_check_async(
+                    source=source,
+                    language=source_lang,
+                    threshold=threshold,
+                    output=output,
+                    format=_auto_detect_format(output, format),
+                    provider=provider,
+                    verbose=verbose,
+                    demo=demo,
+                )
+            )
+            return
+
         # 🎯 Auto-detect mode
         mode, mode_params = _detect_check_mode(source, translations)
 
-        # 🚀 Auto-detect glossary
+        # Auto-detect glossary
         detected_glossary = _auto_detect_glossary(glossary)
 
         # 📄 Auto-detect output format
@@ -483,6 +535,235 @@ def check(
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
+        raise typer.Exit(code=1)
+
+
+async def _self_check_async(
+    source: str,
+    language: str,
+    threshold: float,
+    output: str | None,
+    format: str,
+    provider: str | None,
+    verbose: bool,
+    demo: bool = False,
+) -> None:
+    """Async implementation of self-check (proofreading) mode.
+
+    Args:
+        source: Source file path to check
+        language: Language code of the text
+        threshold: Quality threshold (0-100)
+        output: Output file path (optional)
+        format: Output format
+        provider: LLM provider name
+        verbose: Verbose output flag
+        demo: Demo mode flag
+    """
+    from kttc.agents.proofreading import GrammarAgent, SpellingAgent
+    from kttc.cli.demo import DemoLLMProvider
+
+    # Load settings
+    settings = get_settings()
+
+    # Load the file
+    source_path = Path(source)
+    if not source_path.exists():
+        raise FileNotFoundError(f"File not found: {source}")
+
+    text = source_path.read_text(encoding="utf-8")
+
+    if verbose:
+        print_header(
+            "Self-Check Mode: Proofreading",
+            f"Checking {language.upper()} text for grammar, spelling, and punctuation errors",
+        )
+        console.print(f"[dim]Loaded {len(text)} characters from {source_path.name}[/dim]\n")
+
+    # Setup LLM provider (optional for self-check)
+    llm_provider = None
+    if not demo:
+        try:
+            llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
+        except Exception as e:
+            if verbose:
+                console.print(
+                    f"[yellow]⚠ LLM not available, using rule-based checks only: {e}[/yellow]\n"
+                )
+    else:
+        llm_provider = DemoLLMProvider(model="demo-model")
+
+    # Run proofreading agents
+    all_errors: list[Any] = []
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+    ) as progress:
+        # Step 1: Spelling check
+        progress.add_task("[cyan]Checking spelling...[/cyan]", total=None)
+        spelling_agent = SpellingAgent(
+            llm_provider=None,  # Fast rule-based only
+            language=language,
+            use_patterns=True,
+            use_school_rules=True,
+        )
+        spelling_errors = await spelling_agent.check(text)
+        all_errors.extend(spelling_errors)
+
+    console.print(f"[green]✓[/green] Spelling check: found {len(spelling_errors)} issues")
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+    ) as progress:
+        # Step 2: Grammar check
+        progress.add_task("[cyan]Checking grammar...[/cyan]", total=None)
+        grammar_agent = GrammarAgent(
+            llm_provider=llm_provider,
+            language=language,
+            use_languagetool=True,
+            use_school_rules=True,
+        )
+        grammar_errors = await grammar_agent.check(text)
+
+        # Deduplicate
+        seen_positions: set[tuple[int, int]] = {e.location for e in all_errors}
+        for err in grammar_errors:
+            if err.location not in seen_positions:
+                all_errors.append(err)
+                seen_positions.add(err.location)
+
+    console.print(f"[green]✓[/green] Grammar check: found {len(grammar_errors)} issues")
+
+    # Calculate score
+    # MQM-style: start from 100, subtract penalties
+    critical_count = sum(1 for e in all_errors if e.severity.value == "critical")
+    major_count = sum(1 for e in all_errors if e.severity.value == "major")
+    minor_count = sum(1 for e in all_errors if e.severity.value == "minor")
+
+    # Penalties: critical=10, major=5, minor=1
+    penalty = critical_count * 10 + major_count * 5 + minor_count * 1
+    word_count = len(text.split())
+    normalized_penalty = (penalty / max(word_count, 1)) * 100
+    score = max(0, 100 - normalized_penalty)
+
+    # Display results
+    console.print()
+    score_color = "green" if score >= threshold else "yellow" if score >= 80 else "red"
+    status = "PASS" if score >= threshold else "NEEDS REVISION"
+    status_color = "green" if score >= threshold else "red"
+
+    console.print(
+        f"[bold {status_color}]{'✓' if score >= threshold else '✗'} {status}[/bold {status_color}]"
+    )
+    console.print(f"\n[bold]Quality Score:[/bold] [{score_color}]{score:.1f}[/{score_color}] / 100")
+    console.print(f"[bold]Threshold:[/bold] {threshold}")
+    console.print(f"\n[bold]Issues Found:[/bold] {len(all_errors)}")
+    console.print(f"  Critical: {critical_count} | Major: {major_count} | Minor: {minor_count}")
+
+    # Display errors
+    if all_errors and verbose:
+        console.print("\n[bold]Error Details:[/bold]")
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("Type", style="cyan", width=12)
+        table.add_column("Severity", width=10)
+        table.add_column("Text", width=20)
+        table.add_column("Suggestion", width=20)
+        table.add_column("Description", width=40)
+
+        for error in all_errors[:20]:  # Limit to 20 errors
+            severity_color = (
+                "red"
+                if error.severity.value == "critical"
+                else "yellow" if error.severity.value == "major" else "dim"
+            )
+            # Extract error text from the original text using location
+            start, end = error.location
+            error_text = text[start:end] if start < len(text) and end <= len(text) else ""
+            table.add_row(
+                error.subcategory,
+                f"[{severity_color}]{error.severity.value}[/{severity_color}]",
+                error_text[:20],
+                (error.suggestion or "")[:20],
+                (
+                    error.description[:40] + "..."
+                    if len(error.description) > 40
+                    else error.description
+                ),
+            )
+
+        console.print(table)
+
+        if len(all_errors) > 20:
+            console.print(f"[dim]... and {len(all_errors) - 20} more errors[/dim]")
+
+    elif all_errors:
+        # Compact view
+        console.print("\n[bold]Top Issues:[/bold]")
+        for error in all_errors[:5]:
+            severity_icon = (
+                "🔴"
+                if error.severity.value == "critical"
+                else "🟡" if error.severity.value == "major" else "⚪"
+            )
+            suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
+            start, end = error.location
+            error_text = text[start:end] if start < len(text) and end <= len(text) else ""
+            console.print(f"  {severity_icon} '{error_text}'{suggestion_text}")
+            console.print(f"     [dim]{error.description}[/dim]")
+
+        if len(all_errors) > 5:
+            console.print(f"\n[dim]Use --verbose to see all {len(all_errors)} issues[/dim]")
+
+    # Save output if requested
+    if output:
+        report_data = {
+            "mode": "self-check",
+            "language": language,
+            "file": str(source_path),
+            "score": score,
+            "threshold": threshold,
+            "status": status.lower().replace(" ", "_"),
+            "word_count": word_count,
+            "errors": [
+                {
+                    "type": e.subcategory,
+                    "severity": e.severity.value,
+                    "location": list(e.location),
+                    "text": (
+                        text[e.location[0] : e.location[1]] if e.location[0] < len(text) else ""
+                    ),
+                    "suggestion": e.suggestion,
+                    "description": e.description,
+                }
+                for e in all_errors
+            ],
+            "summary": {
+                "total": len(all_errors),
+                "critical": critical_count,
+                "major": major_count,
+                "minor": minor_count,
+            },
+        }
+
+        output_path = Path(output)
+        if format == "json" or output.endswith(".json"):
+            output_path.write_text(
+                json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8"
+            )
+        else:
+            # Default to JSON for self-check
+            output_path.write_text(
+                json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8"
+            )
+
+        console.print(f"\n[dim]Report saved to: {output}[/dim]")
+
+    # Exit code based on score
+    if score < threshold:
         raise typer.Exit(code=1)
 
 
@@ -2251,6 +2532,143 @@ def compare(
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def proofread(
+    file: str = typer.Argument(..., help="File to proofread"),
+    lang: str = typer.Option(..., "--lang", "-l", help="Language code (e.g., 'ru', 'en', 'zh')"),
+    threshold: float = typer.Option(95.0, "--threshold", help="Quality threshold (0-100)"),
+    output: str | None = typer.Option(None, "--output", "-o", help="Output report file path"),
+    provider: str | None = typer.Option(
+        None, "--provider", help="LLM provider for context-aware checking"
+    ),
+    verbose: bool = typer.Option(False, "--verbose", help="Verbose output"),
+) -> None:
+    """
+    Proofread a text file for grammar, spelling, and punctuation errors.
+
+    This is an alias for `kttc check --self` with a simpler interface.
+    Uses school curriculum rules and optional LLM for context-aware checking.
+
+    Supported languages: en, ru, zh, hi, fa
+
+    Examples:
+        # Proofread a Russian article
+        kttc proofread article.md --lang ru
+
+        # Proofread with strict threshold
+        kttc proofread article.md --lang ru --threshold 98
+
+        # Save report
+        kttc proofread article.md --lang ru --output report.json --verbose
+    """
+    try:
+        asyncio.run(
+            _self_check_async(
+                source=file,
+                language=lang,
+                threshold=threshold,
+                output=output,
+                format="json",
+                provider=provider,
+                verbose=verbose,
+                demo=False,
+            )
+        )
+    except KeyboardInterrupt:
+        console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
+        raise typer.Exit(code=130)
+    except typer.Exit:
+        raise
+    except Exception as e:
+        console.print(f"\n[red]✗ Error: {e}[/red]")
+        if verbose:
+            console.print_exception()
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def lint(
+    file: str = typer.Argument(..., help="File to lint"),
+    lang: str = typer.Option(..., "--lang", "-l", help="Language code (e.g., 'ru', 'en', 'zh')"),
+    strict: bool = typer.Option(False, "--strict", help="Strict mode: fail on any error"),
+    fix: bool = typer.Option(False, "--fix", help="Show suggestions for fixing errors"),
+) -> None:
+    """
+    Quick lint check for common errors (no LLM, fast).
+
+    Fast rule-based checking using school curriculum rules and patterns.
+    Does not use LLM - ideal for CI/CD pipelines and pre-commit hooks.
+
+    Exit codes:
+        0 - No errors found
+        1 - Errors found
+
+    Examples:
+        # Quick lint check
+        kttc lint article.md --lang ru
+
+        # Strict mode (fail on any error)
+        kttc lint article.md --lang ru --strict
+
+        # Show fix suggestions
+        kttc lint article.md --lang ru --fix
+    """
+    from kttc.agents.proofreading import SpellingAgent
+
+    try:
+        # Load file
+        file_path = Path(file)
+        if not file_path.exists():
+            console.print(f"[red]Error: File not found: {file}[/red]")
+            raise typer.Exit(code=1)
+
+        text = file_path.read_text(encoding="utf-8")
+
+        console.print(f"[cyan]Linting {file_path.name}...[/cyan]")
+
+        # Run fast rule-based check only
+        async def run_lint() -> list[Any]:
+            agent = SpellingAgent(
+                llm_provider=None,
+                language=lang,
+                use_patterns=True,
+                use_school_rules=True,
+            )
+            return await agent.check(text)
+
+        errors = asyncio.run(run_lint())
+
+        if errors:
+            console.print(f"\n[yellow]Found {len(errors)} issue(s):[/yellow]\n")
+
+            for error in errors:
+                severity_icon = (
+                    "🔴"
+                    if error.severity.value == "critical"
+                    else "🟡" if error.severity.value == "major" else "⚪"
+                )
+                console.print(
+                    f"  {severity_icon} Line ~{error.location[0] // 50 + 1}: {error.description}"
+                )
+
+                if fix and error.suggestion:
+                    console.print(f"     [green]Fix: → '{error.suggestion}'[/green]")
+
+            if strict or any(e.severity.value == "critical" for e in errors):
+                console.print("\n[red]✗ Lint failed[/red]")
+                raise typer.Exit(code=1)
+            else:
+                console.print("\n[yellow]⚠ Lint completed with warnings[/yellow]")
+        else:
+            console.print("\n[green]✓ No issues found[/green]")
+
+    except typer.Exit:
+        raise
+    except Exception as e:
+        console.print(f"\n[red]✗ Error: {e}[/red]")
         raise typer.Exit(code=1)
 
 

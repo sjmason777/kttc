@@ -29,8 +29,9 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 - **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
 - **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
 - **Language-Specific Agents** - Native-level checks for English, Chinese, Russian, Hindi, and Persian
+- **Self-Check / Proofreading** - Grammar, spelling, punctuation checking using school curriculum rules
 - **Translation Memory** - Semantic search with quality tracking and reuse
-- **Glossary Management** - Custom terminology validation and consistency
+- **Glossary Management** - Custom terminology + school curriculum glossaries (FGOS, UK GPS, NCERT, PEP)
 - **Batch Processing** - Process thousands of translations in parallel
 - **CI/CD Ready** - GitHub Actions integration, exit codes, multiple output formats
 - **Multi-LLM Support** - OpenAI, Anthropic, GigaChat, YandexGPT
@@ -39,7 +40,7 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 
 ---
 
-## 🚀 Try KTTC Online
+## Try KTTC Online
 
 Experience KTTC without installation:
 
@@ -120,6 +121,11 @@ kttc benchmark --source text.txt --providers openai,anthropic    # Benchmark LLM
 kttc glossary list                              # List all glossaries
 kttc glossary create tech --from-csv terms.csv  # Create project glossary
 kttc glossary create personal --from-csv my.csv --user  # Create user glossary
+
+# 🥚 Self-check / Proofreading (new!)
+kttc check article.md --self --lang ru          # Proofread without translation
+kttc proofread article.md --lang ru             # Same as above (alias)
+kttc lint article.md --lang ru --fix            # Quick rule-based check (no LLM)
 ```
 
 **See full command reference:** [docs/en/reference/cli-commands.md](docs/en/reference/cli-commands.md)

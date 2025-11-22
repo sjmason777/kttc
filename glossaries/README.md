@@ -13,13 +13,13 @@ These glossaries are automatically loaded by quality agents and used for error d
 
 ## 🌍 Supported Languages
 
-| Language | Code | Grammar Files | Status |
-|----------|------|---------------|--------|
-| English | `en` | mqm_core.json, nlp_terms.json, grammar_advanced.json, **mqm_error_taxonomy.json**, **translation_metrics.json**, **transformer_nlp_terms.json**, **llm_terminology.json** | ✅ Complete + **Enhanced** |
-| Russian | `ru` | mqm_core_ru.json, nlp_terms_ru.json, morphology_ru.json | ✅ Complete |
-| Chinese | `zh` | mqm_core_zh.json, nlp_terms_zh.json, classifiers_zh.json, **idioms_expressions_zh.json** | ✅ Complete + **Enhanced** |
-| Persian | `fa` | mqm_core_fa.json, nlp_terms_fa.json, grammar_fa.json | ✅ Complete |
-| Hindi | `hi` | mqm_core_hi.json, nlp_terms_hi.json, cases_hi.json | ✅ Complete |
+| Language | Code | Grammar Files | School Curriculum | Status |
+|----------|------|---------------|-------------------|--------|
+| English | `en` | mqm_core.json, nlp_terms.json, grammar_advanced.json, **mqm_error_taxonomy.json**, **translation_metrics.json**, **transformer_nlp_terms.json**, **llm_terminology.json** | 🆕 `school_curriculum/spelling_uk_gps.json` | ✅ Complete + **Enhanced** |
+| Russian | `ru` | mqm_core_ru.json, nlp_terms_ru.json, morphology_ru.json | 🆕 `school_curriculum/orthography_fgos.json`, `punctuation_fgos.json` | ✅ Complete + **Enhanced** |
+| Chinese | `zh` | mqm_core_zh.json, nlp_terms_zh.json, classifiers_zh.json, **idioms_expressions_zh.json** | 🆕 `school_curriculum/grammar_pep.json` | ✅ Complete + **Enhanced** |
+| Persian | `fa` | mqm_core_fa.json, nlp_terms_fa.json, grammar_fa.json | 🆕 `school_curriculum/grammar_iranian.json` | ✅ Complete + **Enhanced** |
+| Hindi | `hi` | mqm_core_hi.json, nlp_terms_hi.json, cases_hi.json | 🆕 `school_curriculum/grammar_ncert.json` | ✅ Complete + **Enhanced** |
 
 **NEW (2025-11-21):** Added 7 new comprehensive glossaries with 402+ terms for translation quality assessment and modern NLP/LLM terminology.
 
@@ -37,30 +37,41 @@ glossaries/
 │   ├── 🆕 mqm_error_taxonomy.json       # Complete MQM error classification (47 terms)
 │   ├── 🆕 translation_metrics.json      # BLEU, COMET, TER, evaluation methods (32 terms)
 │   ├── 🆕 transformer_nlp_terms.json    # Attention, embeddings, tokenization (58 terms)
-│   └── 🆕 llm_terminology.json          # Hallucinations, RLHF, alignment, RAG (45 terms)
+│   ├── 🆕 llm_terminology.json          # Hallucinations, RLHF, alignment, RAG (45 terms)
+│   └── 🆕 school_curriculum/            # UK GPS spelling & grammar rules
+│       └── spelling_uk_gps.json        # Homophones, common errors, apostrophes
 ├── ru/                                 # Russian glossaries
 │   ├── mqm_core_ru.json                # MQM на русском
 │   ├── nlp_terms_ru.json               # NLP терминология
-│   └── morphology_ru.json              # Морфология (cases, aspects, gender, 70+ terms)
+│   ├── morphology_ru.json              # Морфология (cases, aspects, gender, 70+ terms)
+│   └── 🆕 school_curriculum/            # ФГОС orthography & punctuation
+│       ├── orthography_fgos.json       # НЕ/НИ, hyphens, ЖИ-ШИ rules
+│       └── punctuation_fgos.json       # Commas, colons, quotation marks
 ├── zh/                                 # Chinese glossaries
 │   ├── mqm_core_zh.json                # MQM 中文
 │   ├── nlp_terms_zh.json               # NLP 术语
 │   ├── classifiers_zh.json             # 量词 (measure words, 150+ terms)
-│   └── 🆕 idioms_expressions_zh.json    # 成语、惯用语、歇后语、谚语 (120 terms)
+│   ├── 🆕 idioms_expressions_zh.json    # 成语、惯用语、歇后语、谚语 (120 terms)
+│   └── 🆕 school_curriculum/            # 部编版 PEP grammar rules
+│       └── grammar_pep.json            # 量词, 的/地/得, punctuation
 ├── fa/                                 # Persian glossaries
 │   ├── mqm_core_fa.json                # MQM فارسی
 │   ├── nlp_terms_fa.json               # اصطلاحات NLP
-│   └── grammar_fa.json                 # دستور (ezafe, compound verbs, 80+ terms)
+│   ├── grammar_fa.json                 # دستور (ezafe, compound verbs, 80+ terms)
+│   └── 🆕 school_curriculum/            # Iranian curriculum grammar
+│       └── grammar_iranian.json        # Ezafe, nim-fasele, verb conjugation
 └── hi/                                 # Hindi glossaries
     ├── mqm_core_hi.json                # MQM हिन्दी
     ├── nlp_terms_hi.json               # NLP शब्दावली
-    └── cases_hi.json                   # कारक (8 cases, 60+ terms)
+    ├── cases_hi.json                   # कारक (8 cases, 60+ terms)
+    └── 🆕 school_curriculum/            # NCERT grammar rules
+        └── grammar_ncert.json          # Sandhi, samas, spelling rules
 ```
 
-**Total Glossary Files:** 24 (7 NEW in 2025-11-21 expansion)
-**Total Terms:** 1000+ across all languages
+**Total Glossary Files:** 31 (7 NEW in 2025-11-21 expansion + 7 school_curriculum files)
+**Total Terms:** 1200+ across all languages
 
-## 🚀 Usage
+## Usage
 
 ### For Users
 
@@ -560,9 +571,34 @@ For questions about glossaries or terminology:
 
 ---
 
-## 🆕 Recent Updates (2025-11-21)
+## 🆕 Recent Updates
 
-### Glossary Expansion Project
+### School Curriculum Glossaries (2025-11-22)
+
+Added proofreading support with school curriculum rules for all 5 languages:
+
+**Russian (ФГОС):**
+- `school_curriculum/orthography_fgos.json` - НЕ/НИ with verbs, hyphens, ЖИ-ШИ rules
+- `school_curriculum/punctuation_fgos.json` - Comma rules, colons, quotation marks
+
+**English (UK GPS):**
+- `school_curriculum/spelling_uk_gps.json` - Homophones, apostrophes, common errors
+
+**Chinese (部编版 PEP):**
+- `school_curriculum/grammar_pep.json` - 量词, 的/地/得, punctuation rules
+
+**Hindi (NCERT):**
+- `school_curriculum/grammar_ncert.json` - Sandhi (संधि), samas (समास), spelling
+
+**Persian (Iranian Curriculum):**
+- `school_curriculum/grammar_iranian.json` - Ezafe (اضافه), nim-fasele (نیم‌فاصله), verbs
+
+**Integration:**
+- Used by `kttc check --self` (monolingual proofreading mode)
+- Used by `kttc proofread` and `kttc lint` commands
+- Loaded by GrammarAgent and SpellingAgent
+
+### Glossary Expansion Project (2025-11-21)
 
 Added 7 new comprehensive glossaries with 402+ terms:
 
@@ -586,9 +622,9 @@ Added 7 new comprehensive glossaries with 402+ terms:
 
 ---
 
-**Version**: 2.0.0 (Major expansion)
-**Last Updated**: 2025-11-21
-**Total Glossary Files**: 24 (was 17)
-**Total Terms**: 1000+ (was ~600)
+**Version**: 2.1.0 (School curriculum support)
+**Last Updated**: 2025-11-22
+**Total Glossary Files**: 31 (was 24)
+**Total Terms**: 1200+ (was ~1000)
 **Languages**: 5 (en, ru, zh, fa, hi)
 **Maintained by**: KTTC AI Team

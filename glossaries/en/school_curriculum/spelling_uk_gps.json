@@ -1,0 +1,217 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "UK National Curriculum - Grammar, Punctuation & Spelling (GPS)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Spelling and grammar rules from UK National Curriculum Key Stages 1-2",
+    "sources": [
+      "UK National Curriculum English Programmes of Study (gov.uk)",
+      "Key Stage 2 GPS Test Materials 2024",
+      "Spelling word lists Years 3-6"
+    ],
+    "standard": "UK National Curriculum 2014 (updated 2024)",
+    "grade_levels": "Key Stage 1-2 (Years 1-6)",
+    "total_rules": 35
+  },
+  "spelling_rules": {
+    "able_ible": {
+      "rule_id": "UK_SPELL_001",
+      "name": "Words ending in -able/-ible",
+      "description": "Use -able when the root word is recognizable; -ible when it is not a complete word",
+      "examples": {
+        "correct": ["believable", "enjoyable", "visible", "possible", "incredible"],
+        "incorrect": ["beleivable", "visable", "possable", "incrediable"]
+      },
+      "patterns": {
+        "-able": "adorable, applicable, considerable, tolerable",
+        "-ible": "audible, edible, eligible, legible, terrible"
+      },
+      "severity": "minor",
+      "grade_level": "Years 5-6"
+    },
+    "tion_sion_ssion": {
+      "rule_id": "UK_SPELL_002",
+      "name": "Words ending in -tion/-sion/-ssion",
+      "description": "Most words use -tion; -sion after l/n/r; -ssion after short vowels",
+      "examples": {
+        "correct": ["action", "invention", "extension", "permission", "discussion"],
+        "incorrect": ["accion", "invension", "permition"]
+      },
+      "severity": "minor",
+      "grade_level": "Years 3-4"
+    },
+    "ous_suffix": {
+      "rule_id": "UK_SPELL_003",
+      "name": "Words ending in -ous",
+      "description": "The suffix -ous means 'full of'. Sometimes the root word changes.",
+      "examples": {
+        "correct": ["famous", "enormous", "jealous", "humorous", "glamorous"],
+        "incorrect": ["famos", "enormus", "jealus", "humorus"]
+      },
+      "severity": "minor",
+      "grade_level": "Years 3-4"
+    },
+    "ei_ie_rule": {
+      "rule_id": "UK_SPELL_004",
+      "name": "i before e except after c",
+      "description": "Write 'ie' except after 'c' where it sounds like 'ee'",
+      "examples": {
+        "correct": ["believe", "receive", "chief", "ceiling", "deceive"],
+        "incorrect": ["beleive", "recieve", "cheif", "cieling"]
+      },
+      "exceptions": ["weird", "seize", "either", "neither", "protein", "caffeine"],
+      "severity": "minor",
+      "grade_level": "Years 5-6"
+    },
+    "double_consonants": {
+      "rule_id": "UK_SPELL_005",
+      "name": "Doubling consonants when adding suffixes",
+      "description": "Double the final consonant when adding -ed, -ing, -er if the word ends in CVC pattern with stress on final syllable",
+      "examples": {
+        "correct": ["running", "stopped", "beginning", "occurred", "preferred"],
+        "incorrect": ["runing", "stoped", "begining", "occured", "prefered"]
+      },
+      "severity": "major",
+      "grade_level": "Years 3-4"
+    },
+    "silent_letters": {
+      "rule_id": "UK_SPELL_006",
+      "name": "Silent letters",
+      "description": "Some letters are written but not pronounced",
+      "examples": {
+        "correct": ["knight", "know", "write", "island", "listen", "Wednesday"],
+        "incorrect": ["nite", "no", "rite", "iland", "lisen", "Wensday"]
+      },
+      "common_silent_letters": {
+        "k": "knight, knee, know, knife",
+        "w": "write, wrong, wrap, wrist",
+        "b": "lamb, climb, thumb, doubt",
+        "g": "gnome, gnat, sign, design"
+      },
+      "severity": "major",
+      "grade_level": "Years 3-4"
+    },
+    "homophones": {
+      "rule_id": "UK_SPELL_007",
+      "name": "Common homophones",
+      "description": "Words that sound the same but have different meanings and spellings",
+      "examples": {
+        "their_there_theyre": {
+          "their": "belonging to them (their house)",
+          "there": "in that place (over there)",
+          "they're": "they are (they're coming)"
+        },
+        "your_youre": {
+          "your": "belonging to you (your book)",
+          "you're": "you are (you're welcome)"
+        },
+        "its_its": {
+          "its": "belonging to it (the dog wagged its tail)",
+          "it's": "it is or it has (it's raining)"
+        },
+        "to_too_two": {
+          "to": "preposition/infinitive (go to school, to run)",
+          "too": "also/excessive (me too, too much)",
+          "two": "number 2 (two apples)"
+        }
+      },
+      "severity": "critical",
+      "grade_level": "Years 2-6"
+    },
+    "apostrophe_possession": {
+      "rule_id": "UK_SPELL_008",
+      "name": "Apostrophe for possession",
+      "description": "Use apostrophe to show ownership: singular 's, plural s'",
+      "examples": {
+        "correct": ["the dog's bowl", "the dogs' bowls", "James's book", "the children's toys"],
+        "incorrect": ["the dogs bowl", "the dog's bowls (for multiple dogs)", "James' book"]
+      },
+      "severity": "major",
+      "grade_level": "Years 3-4"
+    },
+    "apostrophe_contraction": {
+      "rule_id": "UK_SPELL_009",
+      "name": "Apostrophe for contraction",
+      "description": "Use apostrophe to show missing letters in contractions",
+      "examples": {
+        "correct": ["don't", "can't", "won't", "I'm", "they've", "should've"],
+        "incorrect": ["dont", "cant", "wont", "Im", "theyve", "should of"]
+      },
+      "severity": "major",
+      "grade_level": "Years 2-3"
+    },
+    "prefix_rules": {
+      "rule_id": "UK_SPELL_010",
+      "name": "Prefix spelling",
+      "description": "Prefixes are added to the beginning of words without changing root spelling",
+      "examples": {
+        "correct": ["disappear", "misspell", "unnecessary", "irregular", "impossible"],
+        "incorrect": ["disapear", "mispell", "unecessary", "iregular", "imposible"]
+      },
+      "common_prefixes": ["dis-", "mis-", "un-", "re-", "pre-", "anti-", "auto-"],
+      "severity": "minor",
+      "grade_level": "Years 3-4"
+    }
+  },
+  "grammar_rules": {
+    "subject_verb_agreement": {
+      "rule_id": "UK_GRAM_001",
+      "name": "Subject-verb agreement",
+      "description": "Singular subjects take singular verbs; plural subjects take plural verbs",
+      "examples": {
+        "correct": ["The dog runs fast.", "The dogs run fast.", "Everyone is here."],
+        "incorrect": ["The dog run fast.", "The dogs runs fast.", "Everyone are here."]
+      },
+      "severity": "major",
+      "grade_level": "Years 3-4"
+    },
+    "consistent_tense": {
+      "rule_id": "UK_GRAM_002",
+      "name": "Consistent tense",
+      "description": "Maintain the same tense throughout a piece of writing",
+      "examples": {
+        "correct": ["She walked to school and met her friend."],
+        "incorrect": ["She walked to school and meets her friend."]
+      },
+      "severity": "major",
+      "grade_level": "Years 5-6"
+    },
+    "comma_splice": {
+      "rule_id": "UK_GRAM_003",
+      "name": "Avoiding comma splices",
+      "description": "Don't join two independent clauses with just a comma",
+      "examples": {
+        "correct": ["I went home; I was tired.", "I went home because I was tired."],
+        "incorrect": ["I went home, I was tired."]
+      },
+      "severity": "major",
+      "grade_level": "Years 5-6"
+    }
+  },
+  "common_mistakes": {
+    "their_there_confusion": {
+      "mistake_id": "UK_MISTAKE_001",
+      "description": "Confusion between their/there/they're",
+      "frequency": "very_high"
+    },
+    "your_youre_confusion": {
+      "mistake_id": "UK_MISTAKE_002",
+      "description": "Confusion between your/you're",
+      "frequency": "very_high"
+    },
+    "its_its_confusion": {
+      "mistake_id": "UK_MISTAKE_003",
+      "description": "Confusion between its/it's",
+      "frequency": "very_high"
+    },
+    "should_of_error": {
+      "mistake_id": "UK_MISTAKE_004",
+      "description": "Writing 'should of' instead of 'should have'",
+      "examples": ["should of", "could of", "would of"],
+      "correct_forms": ["should have (should've)", "could have (could've)", "would have (would've)"],
+      "frequency": "high"
+    }
+  }
+}
