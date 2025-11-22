@@ -206,16 +206,17 @@ DOMAIN_PROFILES: dict[str, DomainProfile] = {
         domain_type="literary",
         description="Literary texts, creative writing, poetry",
         complexity=0.8,
-        priority_agents=["fluency", "context", "accuracy"],
+        priority_agents=["style_preservation", "accuracy", "fluency", "context"],
         agent_weights={
-            "fluency": 1.0,  # Critical: style and flow
-            "context": 0.9,  # Very important: narrative coherence
-            "accuracy": 0.85,  # Important but flexibility allowed
-            "terminology": 0.6,  # Less critical: creative freedom
-            "hallucination": 0.7,  # Some creative interpretation acceptable
+            "style_preservation": 1.0,  # Critical: authorial voice must be preserved
+            "accuracy": 0.9,  # Important: meaning must be correct
+            "fluency": 0.7,  # Lower: intentional "errors" may be style
+            "context": 0.85,  # Important: narrative coherence
+            "terminology": 0.5,  # Less critical: creative freedom
+            "hallucination": 0.6,  # Some creative interpretation acceptable
         },
-        quality_threshold=90.0,  # Lower threshold: art is subjective
-        confidence_threshold=0.65,
+        quality_threshold=88.0,  # Lower threshold: art is subjective
+        confidence_threshold=0.6,
         keywords=[
             "chapter",
             "character",
@@ -229,8 +230,88 @@ DOMAIN_PROFILES: dict[str, DomainProfile] = {
             "scene",
             "plot",
             "fiction",
+            "soul",
+            "heart",
+            "dream",
+            "fate",
+            "destiny",
         ],
-        metadata={"creative_work": True, "subjective_quality": True},
+        metadata={
+            "creative_work": True,
+            "subjective_quality": True,
+            "style_aware": True,
+            "allow_intentional_deviations": True,
+        },
+    ),
+    # Specialized literary sub-profiles (auto-detected by StyleFingerprint)
+    "literary_skaz": DomainProfile(
+        domain_type="literary_skaz",
+        description="Skaz narrative style (Leskov, oral storytelling voice)",
+        complexity=0.9,
+        priority_agents=["style_preservation", "accuracy", "context"],
+        agent_weights={
+            "style_preservation": 1.0,
+            "accuracy": 0.85,
+            "fluency": 0.4,  # Very low: folk speech "errors" are intentional
+            "context": 0.8,
+            "terminology": 0.4,
+            "hallucination": 0.5,
+        },
+        quality_threshold=85.0,
+        confidence_threshold=0.55,
+        keywords=[],  # Detected by StyleFingerprint, not keywords
+        metadata={
+            "style_pattern": "skaz_narrative",
+            "allow_folk_speech": True,
+            "allow_dialectisms": True,
+            "fluency_tolerance": 0.7,
+        },
+    ),
+    "literary_modernist": DomainProfile(
+        domain_type="literary_modernist",
+        description="Modernist style (Platanov, intentional awkwardness)",
+        complexity=0.95,
+        priority_agents=["style_preservation", "accuracy"],
+        agent_weights={
+            "style_preservation": 1.0,
+            "accuracy": 0.9,
+            "fluency": 0.3,  # Minimal: pleonasms/inversions are intentional
+            "context": 0.75,
+            "terminology": 0.4,
+            "hallucination": 0.5,
+        },
+        quality_threshold=82.0,
+        confidence_threshold=0.5,
+        keywords=[],
+        metadata={
+            "style_pattern": "modernist",
+            "allow_pleonasms": True,
+            "allow_inversions": True,
+            "fluency_tolerance": 0.8,
+        },
+    ),
+    "literary_stream": DomainProfile(
+        domain_type="literary_stream",
+        description="Stream of consciousness (Joyce, Erofeev)",
+        complexity=0.95,
+        priority_agents=["style_preservation", "context", "accuracy"],
+        agent_weights={
+            "style_preservation": 1.0,
+            "accuracy": 0.8,
+            "fluency": 0.2,  # Almost ignore: fragmentation is the style
+            "context": 0.9,
+            "terminology": 0.3,
+            "hallucination": 0.4,
+        },
+        quality_threshold=80.0,
+        confidence_threshold=0.5,
+        keywords=[],
+        metadata={
+            "style_pattern": "stream_of_consciousness",
+            "allow_fragmentation": True,
+            "allow_run_on_sentences": True,
+            "fluency_tolerance": 0.9,
+        },
     ),
     "general": DomainProfile(
         domain_type="general",
@@ -397,3 +478,64 @@ def list_available_domains() -> list[str]:
         True
     """
     return list(DOMAIN_PROFILES.keys())
+
+
+# Mapping from StylePattern to domain profile
+STYLE_PATTERN_TO_DOMAIN: dict[str, str] = {
+    "standard": "general",
+    "skaz_narrative": "literary_skaz",
+    "modernist": "literary_modernist",
+    "stream_of_consciousness": "literary_stream",
+    "poetic": "literary",
+    "colloquial": "literary",
+    "archaic": "literary",
+    "mixed": "literary",
+}
+
+
+def get_domain_for_style_pattern(style_pattern: str) -> str:
+    """Get appropriate domain type for a style pattern.
+
+    Args:
+        style_pattern: Style pattern from StyleFingerprint analysis
+
+    Returns:
+        Domain type identifier
+
+    Example:
+        >>> domain = get_domain_for_style_pattern("skaz_narrative")
+        >>> print(domain)
+        'literary_skaz'
+    """
+    return STYLE_PATTERN_TO_DOMAIN.get(style_pattern, "literary")
+
+
+def get_literary_profile_for_style(
+    style_pattern: str,
+    deviation_score: float,
+) -> DomainProfile:
+    """Get the most appropriate literary profile based on style analysis.
+
+    Uses StyleFingerprint analysis results to select the best domain profile.
+
+    Args:
+        style_pattern: Detected style pattern
+        deviation_score: Overall deviation score (0.0-1.0)
+
+    Returns:
+        Appropriate DomainProfile for the detected style
+
+    Example:
+        >>> profile = get_literary_profile_for_style("modernist", 0.7)
+        >>> print(profile.domain_type)
+        'literary_modernist'
+    """
+    # If low deviation, use general even if pattern detected
+    if deviation_score < 0.2:
+        return DOMAIN_PROFILES["general"]
+
+    # Map style pattern to domain
+    domain_type = get_domain_for_style_pattern(style_pattern)
+
+    # Return the profile
+    return DOMAIN_PROFILES.get(domain_type, DOMAIN_PROFILES["literary"])

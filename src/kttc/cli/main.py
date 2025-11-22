@@ -735,6 +735,22 @@ async def _check_async(
             "[dim]⊘ Step 1/3: Linguistic analysis (not available for this language)[/dim]"
         )
 
+    # Style analysis (optional, runs for source text to detect literary patterns)
+    style_profile = None
+    try:
+        from kttc.style import StyleFingerprint
+
+        style_analyzer = StyleFingerprint()
+        style_profile = style_analyzer.analyze(source_text, lang=source_lang)
+        if verbose and style_profile.is_literary:
+            console.print(
+                f"[magenta]📚 Literary text detected: "
+                f"{style_profile.detected_pattern.value.replace('_', ' ').title()}[/magenta]"
+            )
+    except Exception:
+        # Style analysis is optional, don't fail the check
+        pass
+
     # Step 2: Quality Evaluation
     if verbose:
         with create_step_progress() as progress:
@@ -835,6 +851,7 @@ async def _check_async(
         rule_based_score=rule_based_score,
         rule_based_errors=rule_based_errors,
         nlp_insights=nlp_insights,
+        style_profile=style_profile,
         verbose=verbose,
     )
 

@@ -23,11 +23,17 @@ Agents evaluate different quality dimensions following the MQM framework:
 - TerminologyAgent: Checks terminology consistency
 - HallucinationAgent: Detects hallucinated content and factual errors
 - ContextAgent: Checks document-level consistency and coherence
+- StylePreservationAgent: Checks authorial voice/style preservation in literary texts
 - AgentOrchestrator: Coordinates multiple agents in parallel
 - WeightedConsensus: Weighted consensus mechanism for multi-agent evaluation
 - DomainProfile: Domain-specific agent configurations
 - DomainDetector: Automatic domain detection for adaptive agent selection
 - DynamicAgentSelector: Budget-aware agent selection for cost optimization
+
+Literary text support:
+The system automatically detects literary texts with stylistic deviations
+(Leskov-style skaz, Platanov-style modernism, stream of consciousness)
+and adjusts agent weights accordingly. No --literary flag needed.
 """
 
 from .accuracy import AccuracyAgent
@@ -49,6 +55,7 @@ from .fluency_russian import RussianFluencyAgent
 from .hallucination import HallucinationAgent
 from .orchestrator import AgentOrchestrator
 from .parser import ErrorParser
+from .style_preservation import StylePreservationAgent
 from .terminology import TerminologyAgent
 
 __all__ = [
@@ -61,6 +68,7 @@ __all__ = [
     "TerminologyAgent",
     "HallucinationAgent",
     "ContextAgent",
+    "StylePreservationAgent",
     "AgentOrchestrator",
     "WeightedConsensus",
     "DomainProfile",

@@ -35,10 +35,17 @@ Example:
     >>> print(f"MQM Score: {report.mqm_score}")
 """
 
+from __future__ import annotations
+
 import asyncio
 import logging
+from typing import TYPE_CHECKING, Any
 
 from kttc.core import ErrorAnnotation, QAReport, TranslationTask
+
+if TYPE_CHECKING:
+    from kttc.agents.domain_profiles import DomainProfile
+    from kttc.style import StyleFingerprint, StyleProfile
 from kttc.core.mqm import MQMScorer
 from kttc.helpers import get_helper_for_language
 from kttc.llm import BaseLLMProvider
@@ -46,11 +53,16 @@ from kttc.llm import BaseLLMProvider
 from .accuracy import AccuracyAgent
 from .base import AgentEvaluationError, BaseAgent
 from .consensus import WeightedConsensus
-from .domain_profiles import DomainDetector, get_domain_profile
+from .domain_profiles import (
+    DomainDetector,
+    get_domain_profile,
+    get_literary_profile_for_style,
+)
 from .fluency import FluencyAgent
 from .fluency_hindi import HindiFluencyAgent
 from .fluency_persian import PersianFluencyAgent
 from .fluency_russian import RussianFluencyAgent
+from .style_preservation import StylePreservationAgent
 from .terminology import TerminologyAgent
 
 logger = logging.getLogger(__name__)
@@ -123,6 +135,9 @@ class AgentOrchestrator:
         # Initialize domain detector for adaptive agent selection
         self.domain_detector = DomainDetector() if enable_domain_adaptation else None
 
+        # Initialize style fingerprint analyzer for literary text detection
+        self.style_analyzer = self._init_style_analyzer()
+
         # Initialize dynamic agent selector for cost optimization (Phase 4)
         from .dynamic_selector import DynamicAgentSelector
 
@@ -135,6 +150,77 @@ class AgentOrchestrator:
             if enable_dynamic_selection
             else None
         )
+
+    def _init_style_analyzer(self) -> StyleFingerprint | None:
+        """Initialize style analyzer for literary text detection."""
+        try:
+            from kttc.style import StyleFingerprint as StyleFP
+
+            return StyleFP()
+        except ImportError:
+            logger.warning("Style module not available, literary detection disabled")
+            return None
+
+    def _analyze_source_style(self, task: TranslationTask) -> StyleProfile | None:
+        """Analyze source text style for automatic literary detection.
+
+        Returns:
+            StyleProfile or None if analysis not available
+        """
+        if not self.style_analyzer:
+            return None
+
+        try:
+
+            profile = self.style_analyzer.analyze(task.source_text, task.source_lang)
+
+            if profile.has_significant_deviations:
+                logger.info(
+                    f"Literary style detected: pattern={profile.detected_pattern.value}, "
+                    f"deviation_score={profile.deviation_score:.2f}, "
+                    f"deviations={len(profile.detected_deviations)}"
+                )
+            return profile
+        except Exception as e:
+            logger.warning(f"Style analysis failed: {e}")
+            return None
+
+    def _get_style_aware_profile(
+        self, task: TranslationTask, style_profile: StyleProfile | None
+    ) -> DomainProfile | None:
+        """Get domain profile adjusted for style analysis results.
+
+        If literary style is detected, returns appropriate literary profile
+        instead of keyword-based domain detection.
+        """
+        if style_profile is None or not style_profile.has_significant_deviations:
+            return None
+
+        # Get literary profile based on detected style pattern
+        literary_profile = get_literary_profile_for_style(
+            style_profile.detected_pattern.value,
+            style_profile.deviation_score,
+        )
+
+        logger.info(
+            f"Using style-aware profile: {literary_profile.domain_type} "
+            f"(fluency weight: {literary_profile.agent_weights.get('fluency', 1.0):.2f})"
+        )
+
+        return literary_profile
+
+    def _get_style_preservation_agent(self, style_profile: StyleProfile | None) -> BaseAgent | None:
+        """Create StylePreservationAgent if literary style detected."""
+        if style_profile is None or not style_profile.has_significant_deviations:
+            return None
+
+        agent = StylePreservationAgent(
+            self.llm_provider,
+            temperature=self.agent_temperature,
+            max_tokens=self.agent_max_tokens,
+            style_profile=style_profile,
+        )
+        return agent
 
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
         """Get language-specific agents based on target language.
@@ -266,12 +352,25 @@ class AgentOrchestrator:
             ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
+            # Style analysis for automatic literary detection (runs first)
+            style_profile = self._analyze_source_style(task)
+            style_aware_profile = self._get_style_aware_profile(task, style_profile)
+
             # Domain-adaptive agent selection (Phase 3)
             detected_domain = None
             domain_profile = None
             domain_confidence = None
 
-            if self.enable_domain_adaptation and self.domain_detector:
+            # If style analysis detected literary text, use style-aware profile
+            if style_aware_profile:
+                domain_profile = style_aware_profile
+                detected_domain = style_aware_profile.domain_type
+                domain_confidence = style_profile.deviation_score if style_profile else 0.5
+                logger.info(
+                    f"Style-aware domain: {detected_domain} "
+                    f"(deviation_score: {domain_confidence:.2f})"
+                )
+            elif self.enable_domain_adaptation and self.domain_detector:
                 detected_domain = self.domain_detector.detect_domain(
                     task.source_text, task.target_lang, task.context
                 )
@@ -295,6 +394,12 @@ class AgentOrchestrator:
                 # Static agent selection (original behavior)
                 language_agents = self._get_language_specific_agents(task)
                 all_agents = self.agents + language_agents
+
+            # Add StylePreservationAgent if literary style detected
+            style_preservation_agent = self._get_style_preservation_agent(style_profile)
+            if style_preservation_agent:
+                all_agents = [style_preservation_agent] + list(all_agents)
+                logger.info("Added StylePreservationAgent for literary text evaluation")
 
             # Run all agents in parallel using asyncio.gather
             results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
@@ -353,7 +458,7 @@ class AgentOrchestrator:
             status = "pass" if mqm_score >= quality_threshold else "fail"
 
             # Build domain information for report
-            domain_details = None
+            domain_details: dict[str, Any] | None = None
             if detected_domain and domain_profile:
                 domain_details = {
                     "detected_domain": detected_domain,
@@ -362,6 +467,22 @@ class AgentOrchestrator:
                     "quality_threshold_used": quality_threshold,
                     "domain_description": domain_profile.description,
                 }
+
+            # Add style analysis information if available
+            if style_profile and style_profile.has_significant_deviations:
+                style_details = {
+                    "style_detected": True,
+                    "deviation_score": style_profile.deviation_score,
+                    "style_pattern": style_profile.detected_pattern.value,
+                    "is_literary": style_profile.is_literary,
+                    "deviations_count": len(style_profile.detected_deviations),
+                    "fluency_tolerance": style_profile.recommended_fluency_tolerance,
+                    "detected_features": [d.type.value for d in style_profile.detected_deviations],
+                }
+                if domain_details:
+                    domain_details["style_analysis"] = style_details
+                else:
+                    domain_details = {"style_analysis": style_details}
 
             # Build comprehensive quality report
             return QAReport(
@@ -484,7 +605,7 @@ class AgentOrchestrator:
             status = "pass" if mqm_score >= quality_threshold else "fail"
 
             # Build domain information for report
-            domain_details = None
+            domain_details: dict[str, Any] | None = None
             if detected_domain and domain_profile:
                 domain_details = {
                     "detected_domain": detected_domain,

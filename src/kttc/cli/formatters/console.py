@@ -163,6 +163,7 @@ class ConsoleFormatter:
         rule_based_score: float | None = None,
         rule_based_errors: list[Any] | None = None,
         nlp_insights: dict[str, Any] | None = None,
+        style_profile: Any | None = None,
         verbose: bool = False,
     ) -> None:
         """Print check command result in compact or verbose mode.
@@ -175,6 +176,7 @@ class ConsoleFormatter:
             rule_based_score: Optional rule-based score
             rule_based_errors: Optional rule-based errors
             nlp_insights: Optional NLP insights
+            style_profile: Optional StyleProfile from style analysis
             verbose: Verbose mode flag
         """
         # Header
@@ -208,6 +210,26 @@ class ConsoleFormatter:
             ]
             console.print(f"● {_('check_metrics')}: {' | '.join(metrics_parts)}")
 
+        # Style analysis line (if available)
+        if style_profile:
+            style_parts = []
+            if style_profile.is_literary:
+                style_parts.append("[magenta]Literary text[/magenta]")
+            if (
+                style_profile.detected_pattern
+                and style_profile.detected_pattern.value != "standard"
+            ):
+                pattern_name = style_profile.detected_pattern.value.replace("_", " ").title()
+                style_parts.append(f"Pattern: {pattern_name}")
+            if style_profile.deviation_score > 0.3:
+                style_parts.append(f"Deviation: {style_profile.deviation_score:.0%}")
+            if style_profile.detected_deviations:
+                dev_types = [d.type.value for d in style_profile.detected_deviations[:3]]
+                style_parts.append(f"Features: {', '.join(dev_types)}")
+
+            if style_parts:
+                console.print(f"● Style: {' | '.join(style_parts)}")
+
         console.print()
 
         # Show errors/warnings (compact table)
@@ -216,7 +238,9 @@ class ConsoleFormatter:
 
         # Verbose mode: additional details
         if verbose:
-            cls._print_verbose_details(report, lightweight_scores, rule_based_errors, nlp_insights)
+            cls._print_verbose_details(
+                report, lightweight_scores, rule_based_errors, nlp_insights, style_profile
+            )
 
     @classmethod
     def print_compare_result(
@@ -628,6 +652,7 @@ class ConsoleFormatter:
         lightweight_scores: Any | None,
         rule_based_errors: list[Any] | None,
         nlp_insights: dict[str, Any] | None,
+        style_profile: Any | None = None,
     ) -> None:
         """Print verbose details (confidence, agent scores, etc.).
 
@@ -636,6 +661,7 @@ class ConsoleFormatter:
             lightweight_scores: Optional lightweight metrics scores
             rule_based_errors: Optional rule-based errors
             nlp_insights: Optional NLP insights
+            style_profile: Optional StyleProfile from style analysis
         """
         console.print(f"\n[bold]{_('detailed_metrics')}[/bold]")
 
@@ -685,5 +711,37 @@ class ConsoleFormatter:
             console.print(f"\n  {_('detailed_rule_errors', count=len(rule_based_errors))}")
             for error in rule_based_errors[:3]:  # Show first 3
                 console.print(f"    [dim]• {error.check_type}: {error.description[:50]}[/dim]")
+
+        # Style analysis details (verbose)
+        if style_profile:
+            console.print("\n  [bold magenta]Style Analysis[/bold magenta]")
+            console.print(f"    Literary text: {'Yes' if style_profile.is_literary else 'No'}")
+            console.print(
+                f"    Pattern: {style_profile.detected_pattern.value.replace('_', ' ').title()}"
+            )
+            console.print(f"    Deviation score: {style_profile.deviation_score:.0%}")
+            console.print(f"    Lexical diversity: {style_profile.lexical_diversity:.2f}")
+            console.print(f"    Avg sentence length: {style_profile.avg_sentence_length:.1f} words")
+
+            if style_profile.detected_deviations:
+                console.print(f"    Detected features ({len(style_profile.detected_deviations)}):")
+                for dev in style_profile.detected_deviations[:5]:
+                    dev_type = dev.type.value.replace("_", " ").title()
+                    examples = ", ".join(dev.examples[:2]) if dev.examples else ""
+                    if examples:
+                        console.print(f"      [dim]• {dev_type}: {examples}[/dim]")
+                    else:
+                        console.print(f"      [dim]• {dev_type}[/dim]")
+
+            # Agent weight recommendations
+            adjustments = style_profile.get_agent_weight_adjustments()
+            if adjustments.get("fluency", 1.0) != 1.0:
+                console.print(
+                    f"    [yellow]Fluency tolerance adjusted to {adjustments['fluency']:.0%}[/yellow]"
+                )
+            if adjustments.get("style_preservation", 1.0) > 1.0:
+                console.print(
+                    f"    [green]Style preservation weight increased to {adjustments['style_preservation']:.0%}[/green]"
+                )
 
         console.print()
