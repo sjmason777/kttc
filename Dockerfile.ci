@@ -1,0 +1,44 @@
+# Dockerfile for CI/CD testing - replicates GitHub Actions environment
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy project files
+COPY . .
+
+# Install Python dependencies
+RUN python -m pip install --upgrade pip && \
+    pip install -e ".[dev]" && \
+    pip install build twine pip-audit detect-secrets
+
+# Run all CI checks
+CMD ["bash", "-c", "\
+    echo '=== Running Black ===' && \
+    black --check --config pyproject.toml src/ tests/ && \
+    echo '' && \
+    echo '=== Running Ruff ===' && \
+    ruff check src/ tests/ && \
+    echo '' && \
+    echo '=== Running MyPy ===' && \
+    mypy --config-file pyproject.toml && \
+    echo '' && \
+    echo '=== Running Unit Tests ===' && \
+    pytest tests/unit/ -v && \
+    echo '' && \
+    echo '=== Running Integration Tests ===' && \
+    pytest tests/integration/ -v && \
+    echo '' && \
+    echo '=== Building Package ===' && \
+    python -m build && \
+    twine check dist/* && \
+    echo '' && \
+    echo '=== Checking for Secrets ===' && \
+    detect-secrets scan --baseline .secrets.baseline && \
+    echo '' && \
+    echo '=== All CI checks passed! ===' \
+"]

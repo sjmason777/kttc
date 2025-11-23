@@ -2876,6 +2876,9 @@ def compare(
         None, "--provider", help="LLM provider for evaluation (openai or anthropic)"
     ),
     verbose: bool = typer.Option(False, "--verbose", help="Show detailed error information"),
+    demo: bool = typer.Option(
+        False, "--demo", help="Demo mode (no API calls, simulated responses)"
+    ),
 ) -> None:
     """
     Compare multiple translations side by side.
@@ -2903,6 +2906,7 @@ def compare(
                 threshold=threshold,
                 provider=provider,
                 verbose=verbose,
+                demo=demo,
             )
         )
     except KeyboardInterrupt:

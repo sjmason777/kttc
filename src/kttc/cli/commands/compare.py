@@ -135,8 +135,11 @@ async def run_compare(
     threshold: float,
     provider: str | None,
     verbose: bool,
+    demo: bool = False,
 ) -> None:
     """Compare multiple translations side by side."""
+    from kttc.cli.demo import DemoLLMProvider
+
     settings = get_settings()
 
     source_path = Path(source)
@@ -150,11 +153,19 @@ async def run_compare(
         print_error("No valid translation files found")
         raise typer.Exit(code=1)
 
-    try:
-        llm_provider = _setup_compare_provider(provider, settings, verbose)
-    except Exception as e:
-        print_error(f"Failed to setup LLM provider: {e}")
-        raise typer.Exit(code=1)
+    # Use demo provider if demo mode enabled
+    if demo:
+        if verbose:
+            console.print(
+                "[yellow]🎭 Demo mode: Using simulated responses (no API calls)[/yellow]\n"
+            )
+        llm_provider: BaseLLMProvider = DemoLLMProvider(model="demo-model")
+    else:
+        try:
+            llm_provider = _setup_compare_provider(provider, settings, verbose)
+        except Exception as e:
+            print_error(f"Failed to setup LLM provider: {e}")
+            raise typer.Exit(code=1)
 
     results = []
     if verbose:
