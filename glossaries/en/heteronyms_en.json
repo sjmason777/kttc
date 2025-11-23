@@ -1,0 +1,456 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Heteronyms - Same Spelling, Different Pronunciation",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "English heteronyms - words spelled identically but with different pronunciations and meanings. Critical for TTS and context analysis.",
+    "sources": [
+      "Grammarly: Homographs - Same Spelling, Different Pronunciation",
+      "Cambridge Dictionary",
+      "Oxford English Dictionary",
+      "Merriam-Webster Dictionary"
+    ],
+    "total_terms": 60,
+    "usage": "TTS quality, pronunciation verification, context-based disambiguation, translation QA"
+  },
+  "overview": {
+    "definition": "Heteronyms are words that are spelled the same but have different pronunciations and meanings",
+    "also_known_as": ["homographs (subset)", "heterographs"],
+    "importance": "Critical for: 1) TTS systems - wrong pronunciation, 2) Context analysis - meaning disambiguation, 3) Translation - choosing correct equivalent",
+    "detection_method": "Context analysis required - part of speech and surrounding words determine pronunciation",
+    "severity": "major - can cause misunderstanding in speech synthesis and translation"
+  },
+  "stress_shift_heteronyms": {
+    "description": "Words where stress shifts between noun/adjective and verb forms",
+    "pattern": "Noun/Adjective: stress on FIRST syllable; Verb: stress on SECOND syllable",
+    "entries": {
+      "record": {
+        "noun_adj": {
+          "pronunciation": "/ˈrekərd/ (REK-ord)",
+          "meaning": "a stored account; best achievement; vinyl disc",
+          "examples": ["a world record", "keep a record", "play a record"]
+        },
+        "verb": {
+          "pronunciation": "/rɪˈkɔːrd/ (ri-KORD)",
+          "meaning": "to store information; to capture audio/video",
+          "examples": ["record the meeting", "record a song"]
+        },
+        "mnemonic": "You RECORD a RECord"
+      },
+      "present": {
+        "noun_adj": {
+          "pronunciation": "/ˈprezənt/ (PREZ-ent)",
+          "meaning": "gift; current time; being there",
+          "examples": ["a birthday present", "the present day", "those present"]
+        },
+        "verb": {
+          "pronunciation": "/prɪˈzent/ (pri-ZENT)",
+          "meaning": "to give; to show; to introduce",
+          "examples": ["present an award", "present evidence"]
+        }
+      },
+      "object": {
+        "noun": {
+          "pronunciation": "/ˈɒbdʒɪkt/ (OB-jikt)",
+          "meaning": "a thing; purpose",
+          "examples": ["a strange object", "the object of the game"]
+        },
+        "verb": {
+          "pronunciation": "/əbˈdʒekt/ (ob-JEKT)",
+          "meaning": "to express disapproval",
+          "examples": ["I object to this decision"]
+        }
+      },
+      "project": {
+        "noun": {
+          "pronunciation": "/ˈprɒdʒekt/ (PROJ-ekt)",
+          "meaning": "a planned undertaking",
+          "examples": ["a school project", "the project manager"]
+        },
+        "verb": {
+          "pronunciation": "/prəˈdʒekt/ (pro-JEKT)",
+          "meaning": "to forecast; to throw forward; to display",
+          "examples": ["project growth", "project an image"]
+        }
+      },
+      "subject": {
+        "noun_adj": {
+          "pronunciation": "/ˈsʌbdʒɪkt/ (SUB-jikt)",
+          "meaning": "topic; citizen; grammar term",
+          "examples": ["change the subject", "British subject"]
+        },
+        "verb": {
+          "pronunciation": "/səbˈdʒekt/ (sub-JEKT)",
+          "meaning": "to cause to undergo",
+          "examples": ["subject to questioning", "subjected to torture"]
+        }
+      },
+      "produce": {
+        "noun": {
+          "pronunciation": "/ˈprɒdjuːs/ (PROD-yoos)",
+          "meaning": "agricultural products; fresh food",
+          "examples": ["fresh produce", "local produce"]
+        },
+        "verb": {
+          "pronunciation": "/prəˈdjuːs/ (pro-DYOOS)",
+          "meaning": "to make; to create",
+          "examples": ["produce a film", "produce results"]
+        }
+      },
+      "conduct": {
+        "noun": {
+          "pronunciation": "/ˈkɒndʌkt/ (KON-dukt)",
+          "meaning": "behavior; way of acting",
+          "examples": ["good conduct", "code of conduct"]
+        },
+        "verb": {
+          "pronunciation": "/kənˈdʌkt/ (kon-DUKT)",
+          "meaning": "to lead; to direct; to transmit",
+          "examples": ["conduct an orchestra", "conduct electricity"]
+        }
+      },
+      "contract": {
+        "noun": {
+          "pronunciation": "/ˈkɒntrækt/ (KON-trakt)",
+          "meaning": "a legal agreement",
+          "examples": ["sign a contract", "employment contract"]
+        },
+        "verb": {
+          "pronunciation": "/kənˈtrækt/ (kon-TRAKT)",
+          "meaning": "to shrink; to acquire (illness); to agree",
+          "examples": ["muscles contract", "contract a disease"]
+        }
+      },
+      "conflict": {
+        "noun": {
+          "pronunciation": "/ˈkɒnflɪkt/ (KON-flikt)",
+          "meaning": "a fight; disagreement",
+          "examples": ["armed conflict", "conflict of interest"]
+        },
+        "verb": {
+          "pronunciation": "/kənˈflɪkt/ (kon-FLIKT)",
+          "meaning": "to clash; to be incompatible",
+          "examples": ["The stories conflict."]
+        }
+      },
+      "contest": {
+        "noun": {
+          "pronunciation": "/ˈkɒntest/ (KON-test)",
+          "meaning": "a competition",
+          "examples": ["a beauty contest", "enter a contest"]
+        },
+        "verb": {
+          "pronunciation": "/kənˈtest/ (kon-TEST)",
+          "meaning": "to challenge; to dispute",
+          "examples": ["contest the will", "contest the decision"]
+        }
+      },
+      "permit": {
+        "noun": {
+          "pronunciation": "/ˈpɜːmɪt/ (PER-mit)",
+          "meaning": "official authorization document",
+          "examples": ["a work permit", "parking permit"]
+        },
+        "verb": {
+          "pronunciation": "/pəˈmɪt/ (per-MIT)",
+          "meaning": "to allow",
+          "examples": ["We don't permit smoking."]
+        }
+      },
+      "desert": {
+        "noun": {
+          "pronunciation": "/ˈdezət/ (DEZ-ert)",
+          "meaning": "dry barren land",
+          "examples": ["the Sahara Desert", "desert climate"]
+        },
+        "verb": {
+          "pronunciation": "/dɪˈzɜːt/ (di-ZERT)",
+          "meaning": "to abandon",
+          "examples": ["desert the army", "deserted village"]
+        },
+        "note": "Not to be confused with dessert (sweet course) /dɪˈzɜːt/"
+      },
+      "refuse": {
+        "noun": {
+          "pronunciation": "/ˈrefjuːs/ (REF-yoos)",
+          "meaning": "garbage, waste",
+          "examples": ["refuse collection", "household refuse"]
+        },
+        "verb": {
+          "pronunciation": "/rɪˈfjuːz/ (ri-FYOOZ)",
+          "meaning": "to decline",
+          "examples": ["refuse to answer", "refused entry"]
+        }
+      },
+      "content": {
+        "noun": {
+          "pronunciation": "/ˈkɒntent/ (KON-tent)",
+          "meaning": "what is contained; substance",
+          "examples": ["table of contents", "video content"]
+        },
+        "adjective": {
+          "pronunciation": "/kənˈtent/ (kon-TENT)",
+          "meaning": "satisfied",
+          "examples": ["content with life", "perfectly content"]
+        }
+      },
+      "progress": {
+        "noun": {
+          "pronunciation": "/ˈprəʊɡres/ (PROG-res)",
+          "meaning": "advancement, development",
+          "examples": ["make progress", "work in progress"]
+        },
+        "verb": {
+          "pronunciation": "/prəˈɡres/ (pro-GRES)",
+          "meaning": "to move forward",
+          "examples": ["The project is progressing."]
+        }
+      },
+      "increase": {
+        "noun": {
+          "pronunciation": "/ˈɪnkriːs/ (IN-krees)",
+          "meaning": "a rise, growth",
+          "examples": ["a price increase", "an increase in sales"]
+        },
+        "verb": {
+          "pronunciation": "/ɪnˈkriːs/ (in-KREES)",
+          "meaning": "to grow, to make larger",
+          "examples": ["increase the budget", "prices increased"]
+        }
+      },
+      "decrease": {
+        "noun": {
+          "pronunciation": "/ˈdiːkriːs/ (DEE-krees)",
+          "meaning": "a reduction",
+          "examples": ["a decrease in crime"]
+        },
+        "verb": {
+          "pronunciation": "/dɪˈkriːs/ (di-KREES)",
+          "meaning": "to reduce",
+          "examples": ["decrease the volume"]
+        }
+      }
+    }
+  },
+  "vowel_change_heteronyms": {
+    "description": "Words where vowel sounds change completely",
+    "entries": {
+      "lead": {
+        "verb_noun1": {
+          "pronunciation": "/liːd/ (LEED)",
+          "meaning": "to guide; a winning position",
+          "examples": ["lead the team", "take the lead", "lead singer"]
+        },
+        "noun2": {
+          "pronunciation": "/led/ (LED)",
+          "meaning": "the metal (Pb); graphite in pencils",
+          "examples": ["lead pipes", "pencil lead", "lead poisoning"]
+        },
+        "common_error": "TTS often mispronounces 'lead' in 'lead singer'"
+      },
+      "read": {
+        "present": {
+          "pronunciation": "/riːd/ (REED)",
+          "meaning": "to interpret written text (present/future)",
+          "examples": ["I read books daily.", "I will read this."]
+        },
+        "past": {
+          "pronunciation": "/red/ (RED)",
+          "meaning": "interpreted text (past tense)",
+          "examples": ["I read that book yesterday.", "Have you read it?"]
+        },
+        "detection": "Tense markers (yesterday, already, have) indicate past pronunciation"
+      },
+      "live": {
+        "verb": {
+          "pronunciation": "/lɪv/ (LIV)",
+          "meaning": "to be alive; to reside",
+          "examples": ["I live in London.", "live a good life"]
+        },
+        "adjective": {
+          "pronunciation": "/laɪv/ (LYVE)",
+          "meaning": "alive; not recorded; carrying electricity",
+          "examples": ["live concert", "live wire", "live broadcast"]
+        }
+      },
+      "wind": {
+        "noun": {
+          "pronunciation": "/wɪnd/ (WIND, rhymes with 'thinned')",
+          "meaning": "moving air",
+          "examples": ["strong wind", "wind energy"]
+        },
+        "verb": {
+          "pronunciation": "/waɪnd/ (WYND, rhymes with 'find')",
+          "meaning": "to turn; to wrap around",
+          "examples": ["wind the clock", "wind through the mountains"]
+        }
+      },
+      "tear": {
+        "noun1": {
+          "pronunciation": "/tɪər/ (TEER)",
+          "meaning": "drop from eye",
+          "examples": ["tears of joy", "shed a tear"]
+        },
+        "verb_noun2": {
+          "pronunciation": "/teər/ (TAIR)",
+          "meaning": "to rip; a rip",
+          "examples": ["tear the paper", "a tear in the fabric"]
+        }
+      },
+      "bow": {
+        "noun1_verb1": {
+          "pronunciation": "/baʊ/ (BOW, rhymes with 'cow')",
+          "meaning": "to bend forward; front of ship",
+          "examples": ["take a bow", "bow to the queen", "ship's bow"]
+        },
+        "noun2": {
+          "pronunciation": "/bəʊ/ (BOH, rhymes with 'go')",
+          "meaning": "weapon; ribbon knot; violin accessory",
+          "examples": ["bow and arrow", "a red bow", "violin bow"]
+        }
+      },
+      "row": {
+        "noun_verb1": {
+          "pronunciation": "/rəʊ/ (ROH)",
+          "meaning": "a line; to propel a boat",
+          "examples": ["a row of seats", "row a boat"]
+        },
+        "noun2": {
+          "pronunciation": "/raʊ/ (ROW, rhymes with 'cow')",
+          "meaning": "a noisy argument (British)",
+          "examples": ["have a row", "a family row"]
+        }
+      },
+      "sow": {
+        "verb": {
+          "pronunciation": "/səʊ/ (SOH)",
+          "meaning": "to plant seeds",
+          "examples": ["sow seeds", "you reap what you sow"]
+        },
+        "noun": {
+          "pronunciation": "/saʊ/ (SOW, rhymes with 'cow')",
+          "meaning": "female pig",
+          "examples": ["a sow and piglets"]
+        }
+      },
+      "does": {
+        "verb": {
+          "pronunciation": "/dʌz/ (DUZ)",
+          "meaning": "third person singular of 'do'",
+          "examples": ["She does her homework."]
+        },
+        "noun": {
+          "pronunciation": "/dəʊz/ (DOZE)",
+          "meaning": "plural of 'doe' (female deer)",
+          "examples": ["The does were grazing."]
+        }
+      },
+      "bass": {
+        "noun1": {
+          "pronunciation": "/beɪs/ (BASE)",
+          "meaning": "low frequency; bass guitar",
+          "examples": ["bass notes", "bass guitar", "bass voice"]
+        },
+        "noun2": {
+          "pronunciation": "/bæs/ (BASS, like 'mass')",
+          "meaning": "a type of fish",
+          "examples": ["sea bass", "catch a bass"]
+        }
+      },
+      "minute": {
+        "noun": {
+          "pronunciation": "/ˈmɪnɪt/ (MIN-it)",
+          "meaning": "60 seconds",
+          "examples": ["wait a minute", "five minutes"]
+        },
+        "adjective": {
+          "pronunciation": "/maɪˈnjuːt/ (my-NOOT)",
+          "meaning": "extremely small",
+          "examples": ["minute details", "minute particles"]
+        }
+      },
+      "close": {
+        "verb": {
+          "pronunciation": "/kləʊz/ (KLOZE)",
+          "meaning": "to shut",
+          "examples": ["close the door", "store closes at 9"]
+        },
+        "adjective_adverb": {
+          "pronunciation": "/kləʊs/ (KLOSS)",
+          "meaning": "near",
+          "examples": ["close friend", "stand close"]
+        }
+      },
+      "wound": {
+        "noun_verb": {
+          "pronunciation": "/wuːnd/ (WOOND)",
+          "meaning": "an injury; to injure",
+          "examples": ["a deep wound", "wound in battle"]
+        },
+        "verb_past": {
+          "pronunciation": "/waʊnd/ (WOWND)",
+          "meaning": "past tense of 'wind'",
+          "examples": ["wound the clock", "the river wound through"]
+        }
+      },
+      "use": {
+        "verb": {
+          "pronunciation": "/juːz/ (YOOZ)",
+          "meaning": "to employ",
+          "examples": ["use the tool", "I use this daily"]
+        },
+        "noun": {
+          "pronunciation": "/juːs/ (YOOS)",
+          "meaning": "purpose; application",
+          "examples": ["What's the use?", "of no use"]
+        },
+        "note": "Final consonant: Z for verb, S for noun"
+      },
+      "house": {
+        "noun": {
+          "pronunciation": "/haʊs/ (HOWS)",
+          "meaning": "a building for living",
+          "examples": ["a big house", "move house"]
+        },
+        "verb": {
+          "pronunciation": "/haʊz/ (HOWZ)",
+          "meaning": "to provide shelter",
+          "examples": ["house the refugees", "the museum houses art"]
+        },
+        "note": "Final consonant: S for noun, Z for verb"
+      }
+    }
+  },
+  "context_detection_rules": {
+    "description": "Rules to determine correct pronunciation from context",
+    "rules": [
+      {
+        "word": "read",
+        "past_indicators": ["yesterday", "last", "ago", "already", "just", "have/has/had"],
+        "present_indicators": ["now", "today", "usually", "always", "will"]
+      },
+      {
+        "word": "lead",
+        "metal_indicators": ["pipe", "paint", "poisoning", "pencil", "heavy", "metal"],
+        "verb_indicators": ["team", "way", "charge", "singer", "role"]
+      },
+      {
+        "pattern": "noun vs verb stress",
+        "rule": "Article (a/the) before word suggests noun (first syllable stress)",
+        "example": "'the record' = /ˈrekərd/, 'to record' = /rɪˈkɔːrd/"
+      }
+    ]
+  },
+  "tts_guidelines": {
+    "description": "Guidelines for text-to-speech systems",
+    "recommendations": [
+      "Always analyze context before pronunciation",
+      "Use POS tagging to distinguish noun/verb forms",
+      "Look for stress-shift pattern words",
+      "Handle 'read' based on tense markers",
+      "Default to more common pronunciation when ambiguous"
+    ]
+  }
+}

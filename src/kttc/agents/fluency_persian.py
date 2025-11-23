@@ -20,9 +20,11 @@ Specialized fluency checking for Persian language with support for:
 - Named Entity Recognition via DadmaTools
 - Sentiment analysis via DadmaTools (NEW in v2!)
 - Informal-to-formal conversion via DadmaTools (NEW in v2!)
+- Persian traps validation (false friends, ta'arof, compound verbs, idioms)
 
 Uses hybrid approach:
 - DadmaTools (spaCy-based) for deterministic checks
+- PersianTrapsValidator for linguistic traps detection
 - LLM for semantic and complex linguistic analysis
 - Parallel execution for optimal performance
 
@@ -40,7 +42,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.persian import PersianLanguageHelper
 from kttc.llm import BaseLLMProvider
-from kttc.terminology import PersianEzafeValidator
+from kttc.terminology import PersianEzafeValidator, PersianTrapsValidator
 
 from .fluency import FluencyAgent
 
@@ -76,6 +78,12 @@ class PersianFluencyAgent(FluencyAgent):
         "ner": "Named entity recognition (DadmaTools)",
         "sentiment": "Sentiment analysis (DadmaTools v2)",
         "formality": "Informal-to-formal conversion (DadmaTools v2)",
+        "false_friends": "Persian-Arabic false friends detection",
+        "taarof": "Ta'arof politeness phrases detection",
+        "compound_verbs": "Compound verb error detection",
+        "idioms": "Idiom detection (cannot translate literally)",
+        "register": "Colloquial/formal register consistency",
+        "untranslatable": "Untranslatable concepts detection",
     }
 
     def __init__(
@@ -103,7 +111,13 @@ class PersianFluencyAgent(FluencyAgent):
 
         # Initialize glossary-based validator for ezafe and grammar checking
         self.ezafe_validator = PersianEzafeValidator()
-        logger.info("PersianFluencyAgent initialized with glossary-based ezafe validator")
+
+        # Initialize Persian traps validator for linguistic traps detection
+        self.traps_validator = PersianTrapsValidator()
+        logger.info(
+            "PersianFluencyAgent initialized with glossary-based validators "
+            "(ezafe + traps: false friends, ta'arof, idioms, compound verbs)"
+        )
 
         if self.helper.is_available():
             logger.info("PersianFluencyAgent using DadmaTools helper for enhanced checks")
@@ -144,19 +158,18 @@ class PersianFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with Persian-specific)
         base_errors = await super().evaluate(task)
 
-        # Run DadmaTools and LLM checks in parallel
+        # Run DadmaTools, LLM, glossary, and traps checks in parallel
         try:
             results = await asyncio.gather(
                 self._dadmatools_check(task),  # Fast, DadmaTools
-                self._llm_check(task),
-                self._glossary_check(
-                    task
-                ),  # Glossary-based ezafe/grammar validation  # Slow, semantic
+                self._llm_check(task),  # Slow, semantic
+                self._glossary_check(task),  # Glossary-based ezafe/grammar validation
+                self._traps_check(task),  # Persian traps validation
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            dadma_result, llm_result, glossary_result = results
+            dadma_result, llm_result, glossary_result, traps_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(dadma_result, Exception):
@@ -177,6 +190,12 @@ class PersianFluencyAgent(FluencyAgent):
             else:
                 glossary_errors = cast(list[ErrorAnnotation], glossary_result)
 
+            if isinstance(traps_result, Exception):
+                logger.warning(f"Traps check failed: {traps_result}")
+                traps_errors: list[ErrorAnnotation] = []
+            else:
+                traps_errors = cast(list[ErrorAnnotation], traps_result)
+
             # Verify LLM results with DadmaTools (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
@@ -186,15 +205,21 @@ class PersianFluencyAgent(FluencyAgent):
             # Remove duplicates from glossary errors
             unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_dadma)
 
+            # Remove duplicates from traps errors
+            unique_traps = self._remove_duplicates(
+                traps_errors, verified_llm + unique_dadma + unique_glossary
+            )
+
             # Merge all unique errors
-            all_errors = base_errors + unique_dadma + verified_llm + unique_glossary
+            all_errors = base_errors + unique_dadma + verified_llm + unique_glossary + unique_traps
 
             logger.info(
                 f"PersianFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"dadmatools={len(unique_dadma)}, "
                 f"llm={len(verified_llm)}, "
-                f"glossary={len(unique_glossary)} "
+                f"glossary={len(unique_glossary)}, "
+                f"traps={len(unique_traps)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -279,6 +304,150 @@ class PersianFluencyAgent(FluencyAgent):
             logger.error(f"Glossary check failed: {e}")
 
         return errors
+
+    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform Persian traps validation using PersianTrapsValidator.
+
+        Checks for:
+        - Persian-Arabic false friends
+        - Ta'arof phrases (ritual politeness)
+        - Colloquial/formal register mixing
+        - Compound verb errors
+        - Idioms that cannot be translated literally
+        - Untranslatable words
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by traps validation
+        """
+        errors: list[ErrorAnnotation] = []
+
+        if not self.traps_validator.is_available():
+            logger.debug("Persian traps validator not available")
+            return errors
+
+        try:
+            # Analyze translation text for Persian-specific traps
+            analysis = self.traps_validator.analyze_text(task.translation)
+
+            # Convert false friends to errors
+            for ff in analysis.get("false_friends", []):
+                severity = (
+                    ErrorSeverity.CRITICAL if ff["severity"] == "critical" else ErrorSeverity.MAJOR
+                )
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_false_friend",
+                        severity=severity,
+                        location=(0, min(50, len(task.translation))),
+                        description=(
+                            f"Persian-Arabic false friend: '{ff['word']}' - "
+                            f"Persian: {ff['persian_meaning']}, Arabic: {ff['arabic_meaning']}"
+                        ),
+                        suggestion=ff.get("translation_note", ""),
+                    )
+                )
+
+            # Convert ta'arof phrases to warnings
+            for taarof in analysis.get("taarof", []):
+                severity = (
+                    ErrorSeverity.CRITICAL
+                    if taarof["severity"] == "critical"
+                    else ErrorSeverity.MAJOR
+                )
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_taarof",
+                        severity=severity,
+                        location=(0, min(50, len(task.translation))),
+                        description=(
+                            f"Ta'arof phrase: '{taarof['phrase']}' - "
+                            f"means '{taarof['actual_meaning']}', NOT '{taarof['literal']}'"
+                        ),
+                        suggestion="Do not translate literally - use cultural equivalent",
+                    )
+                )
+
+            # Convert compound verb errors
+            for cv_error in analysis.get("compound_verb_errors", []):
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_compound_verb",
+                        severity=ErrorSeverity.CRITICAL,
+                        location=(0, min(50, len(task.translation))),
+                        description=(
+                            f"Compound verb error: '{cv_error['error']}' "
+                            f"should be '{cv_error['correct']}'"
+                        ),
+                        suggestion=cv_error.get("note", ""),
+                    )
+                )
+
+            # Convert idioms to warnings
+            for idiom in analysis.get("idioms", []):
+                severity_str = idiom.get("severity", "major")
+                if severity_str in ["critical", "critical_if_literal"]:
+                    severity = ErrorSeverity.CRITICAL
+                else:
+                    severity = ErrorSeverity.MAJOR
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_idiom",
+                        severity=severity,
+                        location=(0, min(50, len(task.translation))),
+                        description=(
+                            f"Idiom detected: '{idiom['idiom']}' - "
+                            f"means '{idiom['meaning']}', not literal translation"
+                        ),
+                        suggestion=idiom.get("english_equivalent", "Find cultural equivalent"),
+                    )
+                )
+
+            # Convert register issues
+            for register in analysis.get("register_issues", []):
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_register",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(0, len(task.translation)),
+                        description=(
+                            f"Register mixing: {register['formal_found']} formal markers, "
+                            f"{register['colloquial_found']} colloquial markers"
+                        ),
+                        suggestion="Maintain consistent register throughout",
+                    )
+                )
+
+            # Convert untranslatable words
+            for untrans in analysis.get("untranslatable", []):
+                approx = ", ".join(untrans.get("approximate_translations", [])[:3])
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_untranslatable",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(0, min(50, len(task.translation))),
+                        description=(
+                            f"Untranslatable word: '{untrans['word']}' "
+                            f"({untrans.get('transliteration', '')})"
+                        ),
+                        suggestion=f"Consider: {approx}" if approx else "Add cultural note",
+                    )
+                )
+
+            logger.debug(f"Persian traps check found {len(errors)} issues")
+            return errors
+
+        except Exception as e:
+            logger.error(f"Persian traps check failed: {e}")
+            return []
 
     def _verify_llm_errors(
         self, llm_errors: list[ErrorAnnotation], text: str

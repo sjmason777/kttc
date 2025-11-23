@@ -40,7 +40,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.russian import RussianLanguageHelper
 from kttc.llm import BaseLLMProvider
-from kttc.terminology import RussianCaseAspectValidator
+from kttc.terminology import RussianCaseAspectValidator, RussianTrapsValidator
 
 from .fluency import FluencyAgent
 
@@ -103,6 +103,13 @@ class RussianFluencyAgent(FluencyAgent):
         self.case_validator = RussianCaseAspectValidator()
         logger.info("RussianFluencyAgent initialized with glossary-based case/aspect validator")
 
+        # Initialize Russian traps validator (homonyms, idioms, position verbs, etc.)
+        self.traps_validator = RussianTrapsValidator()
+        if self.traps_validator.is_available():
+            logger.info("RussianFluencyAgent: Russian traps validator enabled (auto)")
+        else:
+            logger.warning("RussianFluencyAgent: Russian traps glossaries not found")
+
         if self.helper.is_available():
             logger.info("RussianFluencyAgent using MAWO NLP helper for enhanced checks")
         else:
@@ -142,18 +149,19 @@ class RussianFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with Russian-specific)
         base_errors = await super().evaluate(task)
 
-        # Run NLP, LLM, glossary, and entity checks in parallel
+        # Run NLP, LLM, glossary, entity, and traps checks in parallel
         try:
             results = await asyncio.gather(
                 self._nlp_check(task),  # Fast, deterministic
                 self._llm_check(task),  # Slow, semantic
                 self._glossary_check(task),  # Glossary-based case/aspect validation
                 self._entity_check(task),  # NER-based entity preservation
+                self._traps_check(task),  # Russian traps: homonyms, idioms, position verbs
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            nlp_result, llm_result, glossary_result, entity_result = results
+            nlp_result, llm_result, glossary_result, entity_result, traps_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(nlp_result, Exception):
@@ -186,6 +194,12 @@ class RussianFluencyAgent(FluencyAgent):
             else:
                 entity_errors = cast(list[ErrorAnnotation], entity_result)
 
+            if isinstance(traps_result, Exception):
+                logger.warning(f"Traps check failed: {traps_result}")
+                traps_errors: list[ErrorAnnotation] = []
+            else:
+                traps_errors = cast(list[ErrorAnnotation], traps_result)
+
             # Verify LLM results with NLP (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
@@ -195,8 +209,20 @@ class RussianFluencyAgent(FluencyAgent):
             # Remove duplicates from glossary errors
             unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_nlp)
 
+            # Remove duplicates from traps errors
+            unique_traps = self._remove_duplicates(
+                traps_errors, verified_llm + unique_nlp + unique_glossary
+            )
+
             # Merge all unique errors
-            all_errors = base_errors + unique_nlp + verified_llm + unique_glossary + entity_errors
+            all_errors = (
+                base_errors
+                + unique_nlp
+                + verified_llm
+                + unique_glossary
+                + entity_errors
+                + unique_traps
+            )
 
             logger.info(
                 f"RussianFluencyAgent: "
@@ -204,7 +230,8 @@ class RussianFluencyAgent(FluencyAgent):
                 f"nlp={len(unique_nlp)}, "
                 f"llm={len(verified_llm)}, "
                 f"glossary={len(unique_glossary)}, "
-                f"entity={len(entity_errors)} "
+                f"entity={len(entity_errors)}, "
+                f"traps={len(unique_traps)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -326,6 +353,114 @@ class RussianFluencyAgent(FluencyAgent):
             logger.error(f"Entity check failed: {e}")
             return []
 
+    def _check_idioms(self, translation: str, analysis: dict[str, Any]) -> list[ErrorAnnotation]:
+        """Check idioms in translation."""
+        errors = []
+        for idiom in analysis.get("idioms", []):
+            idiom_text = idiom.get("idiom", "")
+            pos = translation.lower().find(idiom_text.lower())
+            if pos >= 0:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="russian_idiom",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(pos, pos + len(idiom_text)),
+                        description=f"Idiom detected: '{idiom_text}' means '{idiom.get('meaning', '')}'. Literal translation '{idiom.get('literal', '')}' is INCORRECT.",
+                        suggestion=idiom.get("english_equivalent"),
+                    )
+                )
+        return errors
+
+    def _check_position_verbs(self, analysis: dict[str, Any]) -> list[ErrorAnnotation]:
+        """Check position verb errors."""
+        return [
+            ErrorAnnotation(
+                category="fluency",
+                subcategory="russian_position_verb",
+                severity=ErrorSeverity.MAJOR,
+                location=(0, 10),
+                description=f"Position verb error: {e.get('reason', '')}. Use '{e.get('correct', '')}' instead.",
+                suggestion=e.get("correct"),
+            )
+            for e in analysis.get("position_verbs", [])
+        ]
+
+    def _check_homonyms(self, translation: str, analysis: dict[str, Any]) -> list[ErrorAnnotation]:
+        """Check critical homonyms."""
+        errors = []
+        for homonym in analysis.get("homonyms", []):
+            if homonym.get("severity") != "critical":
+                continue
+            word = homonym.get("word", "")
+            pos = translation.lower().find(word.lower())
+            if pos < 0:
+                continue
+            meanings = ", ".join(
+                [
+                    f"{m.get('meaning', '')} ({m.get('english', '')})"
+                    for m in homonym.get("meanings", [])[:3]
+                ]
+            )
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="russian_homonym",
+                    severity=ErrorSeverity.MINOR,
+                    location=(pos, pos + len(word)),
+                    description=f"Homonym '{word}' has multiple meanings: {meanings}. Verify correct translation based on context.",
+                    suggestion=None,
+                )
+            )
+        return errors
+
+    def _check_paronyms(self, translation: str, analysis: dict[str, Any]) -> list[ErrorAnnotation]:
+        """Check paronym confusion."""
+        errors = []
+        for paronym in analysis.get("paronyms", []):
+            if not paronym.get("common_error"):
+                continue
+            word = paronym.get("word", "")
+            pos = translation.lower().find(word.lower())
+            if pos < 0:
+                continue
+            pair = paronym.get("pair", [])
+            definitions = paronym.get("definitions", {})
+            other_word = [w for w in pair if w != word]
+            other_def = definitions.get(other_word[0], "") if other_word else ""
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="russian_paronym",
+                    severity=ErrorSeverity.MINOR,
+                    location=(pos, pos + len(word)),
+                    description=f"Paronym check: '{word}' ({definitions.get(word, '')}). Often confused with '{other_word[0] if other_word else ''}' ({other_def}).",
+                    suggestion=None,
+                )
+            )
+        return errors
+
+    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Check for Russian language traps (idioms, position verbs, homonyms, paronyms)."""
+        if not self.traps_validator or not self.traps_validator.is_available():
+            logger.debug("Traps validator not available, skipping traps checks")
+            return []
+
+        try:
+            translation = task.translation
+            analysis = self.traps_validator.analyze_text(translation)
+            errors = self._check_idioms(translation, analysis)
+            errors.extend(self._check_position_verbs(analysis))
+            errors.extend(self._check_homonyms(translation, analysis))
+            errors.extend(self._check_paronyms(translation, analysis))
+            logger.debug(f"Traps check found {len(errors)} issues")
+            return errors
+
+        except Exception as e:
+            logger.error(f"Traps check failed: {e}")
+
+        return errors
+
     def _verify_llm_errors(
         self, llm_errors: list[ErrorAnnotation], text: str
     ) -> list[ErrorAnnotation]:
@@ -405,48 +540,34 @@ class RussianFluencyAgent(FluencyAgent):
         # Check for any overlap
         return not (end1 <= start2 or end2 <= start1)
 
+    def _build_morphology_section(self, translation: str) -> str:
+        """Build morphology section for prompt if helper is available."""
+        if not self.helper or not self.helper.is_available():
+            return ""
+
+        enrichment = self.helper.get_enrichment_data(translation)
+        if not enrichment.get("has_morphology"):
+            return ""
+
+        section = "\n## MORPHOLOGICAL ANALYSIS (for context):\n"
+        if enrichment.get("verb_aspects"):
+            section += "\n**Verbs in translation:**\n"
+            for verb, info in enrichment["verb_aspects"].items():
+                section += f"- '{verb}': {info['aspect_name']} aspect\n"
+
+        if enrichment.get("adjective_noun_pairs"):
+            section += "\n**Adjective-Noun pairs:**\n"
+            for pair in enrichment["adjective_noun_pairs"]:
+                adj, noun = pair["adjective"], pair["noun"]
+                status = "✓ agreement OK" if pair["agreement"] == "correct" else "⚠ CHECK agreement"
+                section += f"- '{adj['word']}' ({adj['gender']}, {adj['case']}) + '{noun['word']}' ({noun['gender']}, {noun['case']}) - {status}\n"
+
+        section += "\nUse this morphological context to make informed decisions.\n"
+        return section
+
     async def _check_russian_specifics(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform Russian-specific fluency checks with morphological context.
-
-        Args:
-            task: Translation task
-
-        Returns:
-            List of Russian-specific errors
-        """
-        # Get morphological enrichment data if helper is available
-        morphology_section = ""
-        if self.helper and self.helper.is_available():
-            enrichment = self.helper.get_enrichment_data(task.translation)
-
-            if enrichment.get("has_morphology"):
-                morphology_section = "\n## MORPHOLOGICAL ANALYSIS (for context):\n"
-
-                # Add verb aspect information
-                if enrichment.get("verb_aspects"):
-                    morphology_section += "\n**Verbs in translation:**\n"
-                    for verb, info in enrichment["verb_aspects"].items():
-                        morphology_section += f"- '{verb}': {info['aspect_name']} aspect\n"
-
-                # Add adjective-noun pair information
-                if enrichment.get("adjective_noun_pairs"):
-                    morphology_section += "\n**Adjective-Noun pairs:**\n"
-                    for pair in enrichment["adjective_noun_pairs"]:
-                        adj = pair["adjective"]
-                        noun = pair["noun"]
-                        status = (
-                            "✓ agreement OK"
-                            if pair["agreement"] == "correct"
-                            else "⚠ CHECK agreement"
-                        )
-                        morphology_section += (
-                            f"- '{adj['word']}' ({adj['gender']}, {adj['case']}) + "
-                            f"'{noun['word']}' ({noun['gender']}, {noun['case']}) - {status}\n"
-                        )
-
-                morphology_section += (
-                    "\nUse this morphological context to make informed decisions.\n"
-                )
+        """Perform Russian-specific fluency checks with morphological context."""
+        morphology_section = self._build_morphology_section(task.translation)
 
         # MODERN PROMPT ENGINEERING (Nov 2025):
         # 1. Step-Back Prompting: First classify text type
@@ -785,165 +906,136 @@ Output only valid JSON, no explanation."""
             logger.warning(f"Failed to parse JSON response: {response[:200]}")
             return {"errors": []}
 
+    # Patterns for false positive filtering
+    _TECH_PATTERNS = [
+        r"\bGen\s+\d+",
+        r"\bWi-Fi\s+\d+",
+        r"\bUSB\s*\d+",
+        r"\bThunderbolt\s+\d+",
+        r"\bDDR\d+",
+        r"\bGDDR\d+",
+        r"\bHDMI\s+\d+",
+        r"\bDisplayPort\s+\d+",
+        r"\bRyzen\s+\d+",
+        r"\bRTX\s+\d+",
+        r"\bCore\s+i\d+",
+        r"\bType-C\s+\d+",
+        r"\d+\s+(MHz|GHz|Гбит/с|долларов?)",
+    ]
+
+    _DIGIT_GENITIVE_PATTERNS = [
+        r"\d+\s+(минут[ыа]?|час(ов|а)?|секунд[ыа]?|д(ней|ня)|недель?|месяц(ев|а)?|лет|год(ов|а)?)",
+        r"\d+\s+(раз[а]?|штук|процент(ов|а)?|человек|рублей|долларов)",
+    ]
+
+    _PARTICLE_PHRASES = [
+        r"\bто\s+же\s+самое",
+        r"\bто\s+же\b",
+        r"\bесли\s+.+\s+то\b",
+        r"\bто\s+есть\b",
+    ]
+
+    def _is_digit_genitive_fp(self, error: ErrorAnnotation) -> bool:
+        """Check if error is a digit+genitive false positive."""
+        if error.subcategory != "russian_numeral_agreement":
+            return False
+        pattern_match = re.search(r"\d+\s+requires\s+gent", error.description, re.IGNORECASE)
+        if pattern_match:
+            logger.info(f"Filtered digit+genitive FP: '{pattern_match.group()}'")
+            return True
+        return False
+
+    def _is_tech_term_fp(self, flagged_text: str, context: str) -> bool:
+        """Check if error is on a technical term."""
+        for pattern in self._TECH_PATTERNS:
+            if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
+                pattern, context, re.IGNORECASE
+            ):
+                logger.info(f"Filtered tech term FP: pattern '{pattern}'")
+                return True
+        return False
+
+    def _is_digit_genitive_location_fp(self, flagged_text: str, context: str) -> bool:
+        """Check if error is on correct digit+genitive pattern."""
+        for pattern in self._DIGIT_GENITIVE_PATTERNS:
+            if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
+                pattern, context, re.IGNORECASE
+            ):
+                logger.info(f"Filtered digit+genitive location FP: pattern '{pattern}'")
+                return True
+        return False
+
+    def _is_preposition_case_fp(
+        self, error: ErrorAnnotation, flagged_text: str, context: str
+    ) -> bool:
+        """Check if error is a plural inanimate preposition case false positive."""
+        if error.subcategory != "russian_preposition_case":
+            return False
+        desc_lower = error.description.lower()
+        if "got nomn" not in desc_lower and "got nom" not in desc_lower:
+            return False
+        combined = flagged_text + " " + context
+        if re.search(r"\b(эти|дополнительные|основные|все|других)\b", combined):
+            logger.info("Filtered preposition case FP: plural inanimate")
+            return True
+        return False
+
+    def _is_particle_usage_fp(
+        self, error: ErrorAnnotation, flagged_text: str, context: str
+    ) -> bool:
+        """Check if error is a standard particle phrase false positive."""
+        if error.subcategory != "russian_particle_usage":
+            return False
+        combined = flagged_text + " " + context
+        for pattern in self._PARTICLE_PHRASES:
+            if re.search(pattern, combined, re.IGNORECASE):
+                logger.info(f"Filtered particle usage FP: pattern '{pattern}'")
+                return True
+        return False
+
     def _filter_false_positives(
         self, errors: list[ErrorAnnotation], text: str
     ) -> list[ErrorAnnotation]:
-        """Filter known false positives from LLM errors.
-
-        Removes errors that match known patterns:
-        - Technical designations (Gen 5, Wi-Fi 7, USB4, etc.)
-        - Plural inanimate accusative (nomn == accs)
-        - Standard particles ("то же самое", "если...то")
-        - Digit numerals with genitive (5 минут, 50 МБ, etc.)
-
-        Args:
-            errors: Errors from LLM
-            text: Translation text
-
-        Returns:
-            Filtered list of errors (false positives removed)
-        """
+        """Filter known false positives from LLM errors."""
         logger.info(f"=== Filter Debug: Processing {len(errors)} errors ===")
-        for i, err in enumerate(errors):
-            logger.info(
-                f"Error {i+1}: {err.subcategory} | "
-                f"Location: {err.location} | "
-                f"Desc: {err.description[:80]}"
-            )
-        # Technical terminology patterns
-        tech_patterns = [
-            r"\bGen\s+\d+",
-            r"\bWi-Fi\s+\d+",
-            r"\bUSB\s*\d+",
-            r"\bThunderbolt\s+\d+",
-            r"\bDDR\d+",
-            r"\bGDDR\d+",
-            r"\bHDMI\s+\d+",
-            r"\bDisplayPort\s+\d+",
-            r"\bRyzen\s+\d+",
-            r"\bRTX\s+\d+",
-            r"\bCore\s+i\d+",
-            r"\bType-C\s+\d+",
-            r"\d+\s+(MHz|GHz|Гбит/с|долларов?)",
-        ]
-
-        # Correct digit numeral + genitive patterns (time, duration, quantity)
-        # These are grammatically CORRECT and should NOT be flagged
-        digit_genitive_patterns = [
-            r"\d+\s+(минут[ыа]?|час(ов|а)?|секунд[ыа]?|д(ней|ня)|недель?|месяц(ев|а)?|лет|год(ов|а)?)",
-            r"\d+\s+(раз[а]?|штук|процент(ов|а)?|человек|рублей|долларов)",
-        ]
-
-        # Standard particle phrases (correct usage)
-        particle_phrases = [
-            r"\bто\s+же\s+самое",
-            r"\bто\s+же\b",
-            r"\bесли\s+.+\s+то\b",
-            r"\bто\s+есть\b",
-        ]
 
         filtered = []
         for error in errors:
-            # CRITICAL FIX: Filter digit+genitive errors FIRST (before location check)
-            # because NLP often generates these errors without valid location
-            if error.subcategory == "russian_numeral_agreement":
-                desc = error.description
+            # Filter digit+genitive errors first (before location check)
+            if self._is_digit_genitive_fp(error):
+                continue
 
-                # Check if description contains digit followed by "requires gent"
-                # Pattern: "5 requires gent plur", "10 requires gent plur", etc.
-                pattern_match = re.search(r"\d+\s+requires\s+gent", desc, re.IGNORECASE)
-
-                if pattern_match:
-                    # This is a digit + genitive construction which is grammatically correct in Russian
-                    logger.info(
-                        f"Filtered digit+genitive FP: '{pattern_match.group()}' in '{desc[:80]}'"
-                    )
-                    continue  # Skip this error - it's a false positive
-
-            # Skip if no location (but allow through if not already filtered above)
+            # Skip if no valid location
             if not error.location or len(error.location) != 2:
                 filtered.append(error)
                 continue
 
             start, end = error.location
             if start < 0 or end > len(text):
-                # Invalid location
                 filtered.append(error)
                 continue
 
-            # Get actual flagged text
+            # Get flagged text and context
             flagged_text = text[start:end]
-
-            # Get context around error (±50 chars)
             context_start = max(0, start - 50)
             context_end = min(len(text), end + 50)
             context = text[context_start:context_end]
 
-            # Additional location-based filters for numeral agreement errors
+            # Filter numeral agreement false positives
             if error.subcategory == "russian_numeral_agreement":
-                is_false_positive = False
+                if self._is_tech_term_fp(flagged_text, context):
+                    continue
+                if self._is_digit_genitive_location_fp(flagged_text, context):
+                    continue
 
-                # Check for technical terms (Gen 5, Wi-Fi 7, etc.)
-                if not is_false_positive:
-                    for pattern in tech_patterns:
-                        if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
-                            pattern, context, re.IGNORECASE
-                        ):
-                            logger.info(
-                                f"Filtered numeral agreement FP: technical term matching '{pattern}' "
-                                f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
-                            )
-                            is_false_positive = True
-                            break
+            # Filter preposition case false positives
+            if self._is_preposition_case_fp(error, flagged_text, context):
+                continue
 
-                # Check for correct digit + genitive patterns (5 минут, 10 часов, etc.)
-                if not is_false_positive:
-                    for pattern in digit_genitive_patterns:
-                        if re.search(pattern, flagged_text, re.IGNORECASE) or re.search(
-                            pattern, context, re.IGNORECASE
-                        ):
-                            logger.info(
-                                f"Filtered numeral agreement FP: correct digit+genitive matching '{pattern}' "
-                                f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
-                            )
-                            is_false_positive = True
-                            break
+            # Filter particle usage false positives
+            if self._is_particle_usage_fp(error, flagged_text, context):
+                continue
 
-                if is_false_positive:
-                    continue  # Skip this error
-
-            # Filter preposition case errors on plural inanimate
-            if error.subcategory == "russian_preposition_case":
-                # Check for plural markers in description
-                desc_lower = error.description.lower()
-                if "got nomn" in desc_lower or "got nom" in desc_lower:
-                    # Likely plural inanimate (nomn == accs)
-                    # Check if flagged text or context has plural markers
-                    combined = flagged_text + " " + context
-                    if re.search(r"\b(эти|дополнительные|основные|все|других)\b", combined):
-                        logger.info(
-                            f"Filtered preposition case FP: plural inanimate "
-                            f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
-                        )
-                        continue  # Skip this error
-
-            # Filter particle usage errors on standard phrases
-            if error.subcategory == "russian_particle_usage":
-                is_standard_phrase = False
-                combined = flagged_text + " " + context
-                for pattern in particle_phrases:
-                    if re.search(pattern, combined, re.IGNORECASE):
-                        logger.info(
-                            f"Filtered particle usage FP: standard phrase matching '{pattern}' "
-                            f"in '{flagged_text[:30]}' (context: '{context[:30]}...')"
-                        )
-                        is_standard_phrase = True
-                        break
-
-                if is_standard_phrase:
-                    continue  # Skip this error
-
-            # Keep this error
             filtered.append(error)
 
         return filtered

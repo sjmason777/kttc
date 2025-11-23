@@ -1,0 +1,320 @@
+{
+  "metadata": {
+    "language": "ru",
+    "language_name": "Русский",
+    "glossary_type": "Russian Stress Patterns and Homographs",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Ударение в русском языке - смыслоразличительная функция и типичные ошибки",
+    "sources": [
+      "Зализняк А.А. Грамматический словарь русского языка",
+      "Резниченко И.Л. Словарь ударений русского языка",
+      "Gramota.ru - Справочно-информационный портал"
+    ],
+    "total_terms": 60
+  },
+  "stress_overview": {
+    "description": "В русском языке ударение подвижное (может менять место в разных формах слова) и смыслоразличительное (меняет значение слова)",
+    "comparison_with_english": "В английском ударение более фиксировано и редко меняет смысл слова",
+    "difficulty_for_foreigners": "Нет простых правил - каждое слово нужно запоминать с ударением"
+  },
+  "stress_homographs": {
+    "description": "Слова, одинаковые по написанию, но разные по ударению и значению",
+    "critical_pairs": {
+      "замок": {
+        "variants": [
+          {"stress": "за́мок", "meaning": "крепость, дворец", "english": "castle"},
+          {"stress": "замо́к", "meaning": "запирающее устройство", "english": "lock"}
+        ],
+        "example_sentences": [
+          "Мы посетили старинный за́мок",
+          "Я потерял ключ от замка́"
+        ],
+        "severity": "critical"
+      },
+      "мука": {
+        "variants": [
+          {"stress": "мука́", "meaning": "продукт помола зерна", "english": "flour"},
+          {"stress": "му́ка", "meaning": "страдание, мучение", "english": "torment, suffering"}
+        ],
+        "example_sentences": [
+          "Купи пшеничную муку́",
+          "Это была настоящая му́ка"
+        ],
+        "severity": "critical"
+      },
+      "орган": {
+        "variants": [
+          {"stress": "о́рган", "meaning": "часть тела, учреждение", "english": "organ (body), agency"},
+          {"stress": "орга́н", "meaning": "музыкальный инструмент", "english": "organ (music)"}
+        ],
+        "example_sentences": [
+          "Сердце - важный о́рган",
+          "Он играл на орга́не в церкви"
+        ],
+        "severity": "major"
+      },
+      "атлас": {
+        "variants": [
+          {"stress": "а́тлас", "meaning": "сборник карт", "english": "atlas"},
+          {"stress": "атла́с", "meaning": "ткань", "english": "satin"}
+        ],
+        "severity": "major"
+      },
+      "ирис": {
+        "variants": [
+          {"stress": "и́рис", "meaning": "цветок", "english": "iris (flower)"},
+          {"stress": "ири́с", "meaning": "конфета", "english": "toffee candy"}
+        ],
+        "severity": "minor"
+      },
+      "хлопок": {
+        "variants": [
+          {"stress": "хло́пок", "meaning": "растение, волокно", "english": "cotton"},
+          {"stress": "хлопо́к", "meaning": "звук удара", "english": "clap, pop"}
+        ],
+        "severity": "major"
+      },
+      "пропасть": {
+        "variants": [
+          {"stress": "про́пасть", "meaning": "бездна, обрыв", "english": "abyss, chasm"},
+          {"stress": "пропа́сть", "meaning": "исчезнуть", "english": "to disappear"}
+        ],
+        "severity": "major"
+      },
+      "полки": {
+        "variants": [
+          {"stress": "по́лки", "meaning": "множ. от 'полка' (мебель)", "english": "shelves"},
+          {"stress": "полки́", "meaning": "множ. от 'полк' (воинское)", "english": "regiments"}
+        ],
+        "severity": "minor"
+      },
+      "стрелки": {
+        "variants": [
+          {"stress": "стре́лки", "meaning": "часовые стрелки, стрелки на одежде", "english": "hands (clock), arrows"},
+          {"stress": "стрелки́", "meaning": "множ. от 'стрелок' (человек)", "english": "shooters"}
+        ],
+        "severity": "minor"
+      },
+      "белки": {
+        "variants": [
+          {"stress": "бе́лки", "meaning": "животные", "english": "squirrels"},
+          {"stress": "белки́", "meaning": "множ. от 'белок' (вещество)", "english": "proteins"}
+        ],
+        "severity": "minor"
+      },
+      "духи": {
+        "variants": [
+          {"stress": "ду́хи", "meaning": "парфюмерия", "english": "perfume"},
+          {"stress": "духи́", "meaning": "призраки, существа", "english": "spirits, ghosts"}
+        ],
+        "severity": "minor"
+      },
+      "парить": {
+        "variants": [
+          {"stress": "па́рить", "meaning": "обдавать паром", "english": "to steam"},
+          {"stress": "пари́ть", "meaning": "летать без крыльев", "english": "to soar"}
+        ],
+        "severity": "minor"
+      },
+      "писать": {
+        "variants": [
+          {"stress": "писа́ть", "meaning": "создавать текст", "english": "to write"},
+          {"stress": "пи́сать", "meaning": "мочиться (разг.)", "english": "to pee (colloquial)"}
+        ],
+        "severity": "critical",
+        "warning": "Ошибка в ударении приводит к грубому искажению смысла!"
+      },
+      "вести": {
+        "variants": [
+          {"stress": "ве́сти", "meaning": "новости, известия", "english": "news"},
+          {"stress": "вести́", "meaning": "направлять, руководить", "english": "to lead"}
+        ],
+        "severity": "minor"
+      },
+      "засыпать": {
+        "variants": [
+          {"stress": "засыпа́ть", "meaning": "начинать спать", "english": "to fall asleep"},
+          {"stress": "засы́пать", "meaning": "наполнять сыпучим", "english": "to fill with"}
+        ],
+        "severity": "major"
+      },
+      "видение": {
+        "variants": [
+          {"stress": "ви́дение", "meaning": "способность видеть, точка зрения", "english": "vision, view"},
+          {"stress": "виде́ние", "meaning": "призрак, галлюцинация", "english": "apparition"}
+        ],
+        "severity": "minor"
+      }
+    }
+  },
+  "mobile_stress": {
+    "description": "Ударение перемещается в разных формах одного слова",
+    "noun_paradigms": {
+      "вода": {
+        "singular": {
+          "nominative": "вода́",
+          "genitive": "воды́",
+          "dative": "воде́",
+          "accusative": "во́ду",
+          "instrumental": "водо́й",
+          "prepositional": "воде́"
+        },
+        "plural_nominative": "во́ды",
+        "pattern": "Ударение переходит на основу в вин.п. ед.ч. и им.п. мн.ч."
+      },
+      "рука": {
+        "singular": {
+          "nominative": "рука́",
+          "genitive": "руки́",
+          "accusative": "ру́ку"
+        },
+        "plural_nominative": "ру́ки",
+        "pattern": "Похоже на 'вода'"
+      },
+      "голова": {
+        "singular_nominative": "голова́",
+        "singular_accusative": "го́лову",
+        "plural_nominative": "го́ловы"
+      },
+      "город": {
+        "singular_nominative": "го́род",
+        "plural_nominative": "города́",
+        "pattern": "Ударение переходит на окончание во мн.ч."
+      },
+      "дом": {
+        "singular_nominative": "дом",
+        "plural_nominative": "дома́",
+        "pattern": "Ударение переходит на окончание во мн.ч."
+      }
+    },
+    "verb_paradigms": {
+      "писать": {
+        "infinitive": "писа́ть",
+        "first_person": "пишу́",
+        "second_person": "пи́шешь",
+        "pattern": "Ударение на корень во 2 и 3 лице"
+      },
+      "дать": {
+        "infinitive": "дать",
+        "past_masculine": "дал",
+        "past_feminine": "дала́",
+        "past_neuter": "да́ло",
+        "past_plural": "да́ли",
+        "pattern": "В женском роде ударение на окончание"
+      },
+      "быть": {
+        "past_masculine": "был",
+        "past_feminine": "была́",
+        "past_neuter": "бы́ло",
+        "past_plural": "бы́ли",
+        "pattern": "Типичный паттерн - жен.род отличается"
+      }
+    }
+  },
+  "common_stress_errors": {
+    "description": "Типичные ошибки в ударении, которые делают и носители языка",
+    "frequently_mispronounced": {
+      "звонит": {
+        "correct": "звони́т",
+        "incorrect": "зво́нит",
+        "note": "Одна из самых распространённых ошибок",
+        "mnemonic": "Звони́т, звони́шь - ударение на И"
+      },
+      "торты": {
+        "correct": "то́рты",
+        "incorrect": "торты́",
+        "mnemonic": "Долго ели то́рты - не налезли шо́рты"
+      },
+      "договор": {
+        "correct": "догово́р",
+        "acceptable": "до́говор (разговорное)",
+        "note": "В официальной речи - догово́р"
+      },
+      "каталог": {
+        "correct": "катало́г",
+        "incorrect": "ката́лог"
+      },
+      "красивее": {
+        "correct": "краси́вее",
+        "incorrect": "красиве́е"
+      },
+      "свёкла": {
+        "correct": "свёкла",
+        "incorrect": "свекла́",
+        "note": "Буква Ё всегда под ударением"
+      },
+      "щавель": {
+        "correct": "щаве́ль",
+        "incorrect": "ща́вель"
+      },
+      "творог": {
+        "variants": ["тво́рог", "творо́г"],
+        "note": "Оба варианта допустимы"
+      },
+      "банты": {
+        "correct": "ба́нты",
+        "incorrect": "банты́",
+        "mnemonic": "Аркадий наш не любит шу́мных ба́нтов"
+      },
+      "жалюзи": {
+        "correct": "жалюзи́",
+        "incorrect": "жа́люзи",
+        "note": "Французское слово, ударение на последний слог"
+      },
+      "квартал": {
+        "correct": "кварта́л",
+        "incorrect": "ква́ртал",
+        "note": "Во всех значениях - кварта́л"
+      },
+      "обеспечение": {
+        "correct": "обеспе́чение",
+        "acceptable": "обеспече́ние (разговорное)"
+      },
+      "феномен": {
+        "correct": "фено́мен",
+        "incorrect": "феноме́н"
+      },
+      "танцовщица": {
+        "correct": "танцо́вщица",
+        "incorrect": "танцовщи́ца"
+      },
+      "включит": {
+        "correct": "включи́т",
+        "incorrect": "вклю́чит"
+      },
+      "балованный": {
+        "correct": "бало́ванный",
+        "incorrect": "ба́лованный"
+      },
+      "облегчить": {
+        "correct": "облегчи́ть",
+        "incorrect": "обле́гчить"
+      }
+    }
+  },
+  "stress_rules": {
+    "general_principles": [
+      "Буква Ё всегда под ударением",
+      "В сложных словах обычно два ударения: главное и побочное",
+      "Заимствованные слова часто сохраняют ударение языка-источника"
+    ],
+    "suffix_patterns": {
+      "-ировать": {
+        "pattern": "Обычно ударение на И: копи́ровать, но: маркирова́ть",
+        "exceptions": ["маркирова́ть", "премирова́ть"]
+      },
+      "-ция": {
+        "pattern": "Ударение на слог перед -ция: информа́ция, демонстра́ция"
+      },
+      "-ение": {
+        "pattern": "Обычно на Е: обеспе́чение, но есть варианты"
+      }
+    }
+  },
+  "translation_implications": {
+    "for_tts": "При синтезе речи необходимо правильное ударение для понимания",
+    "for_translation": "При переводе на русский важно учитывать ударение для омографов",
+    "for_quality_check": "Неправильное ударение в омографах - критическая ошибка"
+  }
+}

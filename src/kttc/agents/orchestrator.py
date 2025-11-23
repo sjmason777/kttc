@@ -59,6 +59,7 @@ from .domain_profiles import (
     get_literary_profile_for_style,
 )
 from .fluency import FluencyAgent
+from .fluency_chinese import ChineseFluencyAgent
 from .fluency_hindi import HindiFluencyAgent
 from .fluency_persian import PersianFluencyAgent
 from .fluency_russian import RussianFluencyAgent
@@ -222,100 +223,205 @@ class AgentOrchestrator:
         )
         return agent
 
+    def _create_language_agent(
+        self,
+        lang: str,
+        agent_cls: type[BaseAgent],
+        helper_cls: type,
+        msg_avail: str,
+        msg_fallback: str,
+    ) -> BaseAgent:
+        """Create a language-specific agent with appropriate helper."""
+        helper = get_helper_for_language(lang)
+        typed_helper = helper if isinstance(helper, helper_cls) else None
+
+        if typed_helper and hasattr(typed_helper, "is_available") and typed_helper.is_available():
+            logger.info(msg_avail)
+        else:
+            logger.info(msg_fallback)
+            typed_helper = None
+
+        # Language-specific agents accept these extra kwargs
+        return agent_cls(  # type: ignore[call-arg]
+            self.llm_provider,
+            temperature=self.agent_temperature,
+            max_tokens=self.agent_max_tokens,
+            helper=typed_helper,
+        )
+
     def _get_language_specific_agents(self, task: TranslationTask) -> list[BaseAgent]:
-        """Get language-specific agents based on target language.
+        """Get language-specific agents based on target language."""
+        from kttc.helpers.chinese import ChineseLanguageHelper
+        from kttc.helpers.hindi import HindiLanguageHelper
+        from kttc.helpers.persian import PersianLanguageHelper
+        from kttc.helpers.russian import RussianLanguageHelper
 
-        Automatically creates appropriate agents with NLP helpers when available.
+        lang = task.target_lang
 
-        Args:
-            task: Translation task with target language info
-
-        Returns:
-            List of language-specific agent instances
-        """
-        language_agents: list[BaseAgent] = []
-
-        # Russian-specific fluency agent with NLP helper
-        if task.target_lang == "ru":
-            # Try to get Russian NLP helper
-            from kttc.helpers.russian import RussianLanguageHelper
-
-            helper = get_helper_for_language("ru")
-
-            # Cast to RussianLanguageHelper or None
-            russian_helper: RussianLanguageHelper | None = None
-            if isinstance(helper, RussianLanguageHelper):
-                russian_helper = helper
-
-            if russian_helper and russian_helper.is_available():
-                logger.info(
-                    "Using RussianFluencyAgent with MAWO NLP helper (mawo-pymorphy3 + mawo-razdel)"
+        if lang == "ru":
+            return [
+                self._create_language_agent(
+                    "ru",
+                    RussianFluencyAgent,
+                    RussianLanguageHelper,
+                    "Using RussianFluencyAgent with MAWO NLP helper (mawo-pymorphy3 + mawo-razdel)",
+                    "Using RussianFluencyAgent in LLM-only mode (MAWO NLP not available)",
                 )
-            else:
-                logger.info("Using RussianFluencyAgent in LLM-only mode (MAWO NLP not available)")
+            ]
 
-            language_agents.append(
-                RussianFluencyAgent(
-                    self.llm_provider,
-                    temperature=self.agent_temperature,
-                    max_tokens=self.agent_max_tokens,
-                    helper=russian_helper,  # Pass properly typed helper
+        if lang == "hi":
+            return [
+                self._create_language_agent(
+                    "hi",
+                    HindiFluencyAgent,
+                    HindiLanguageHelper,
+                    "Using HindiFluencyAgent with Indic NLP + Stanza + Spello",
+                    "Using HindiFluencyAgent in LLM-only mode (helpers not available)",
+                )
+            ]
+
+        if lang == "fa":
+            return [
+                self._create_language_agent(
+                    "fa",
+                    PersianFluencyAgent,
+                    PersianLanguageHelper,
+                    "Using PersianFluencyAgent with DadmaTools v2 (spaCy-based all-in-one)",
+                    "Using PersianFluencyAgent in LLM-only mode (DadmaTools not available)",
+                )
+            ]
+
+        if lang.startswith("zh"):
+            return [
+                self._create_language_agent(
+                    "zh",
+                    ChineseFluencyAgent,
+                    ChineseLanguageHelper,
+                    "Using ChineseFluencyAgent with HanLP + jieba + spaCy",
+                    "Using ChineseFluencyAgent in LLM-only mode (NLP helpers not available)",
+                )
+            ]
+
+        return []
+
+    def _get_domain_context(
+        self,
+        task: TranslationTask,
+        style_profile: StyleProfile | None,
+        style_aware_profile: DomainProfile | None,
+    ) -> tuple[str | None, DomainProfile | None, float | None]:
+        """Get domain detection context for task evaluation."""
+        if style_aware_profile:
+            domain = style_aware_profile.domain_type
+            confidence = style_profile.deviation_score if style_profile else 0.5
+            logger.info(f"Style-aware domain: {domain} (deviation_score: {confidence:.2f})")
+            return domain, style_aware_profile, confidence
+
+        if self.enable_domain_adaptation and self.domain_detector:
+            domain = self.domain_detector.detect_domain(
+                task.source_text, task.target_lang, task.context
+            )
+            profile = get_domain_profile(domain)
+            confidence = self.domain_detector.get_domain_confidence(task.source_text, domain)
+            logger.info(f"Domain detection: {domain} (confidence: {confidence:.2f})")
+            return domain, profile, confidence
+
+        return None, None, None
+
+    def _select_agents(
+        self,
+        task: TranslationTask,
+        domain_profile: DomainProfile | None,
+        style_profile: StyleProfile | None,
+    ) -> list[BaseAgent]:
+        """Select agents for task evaluation."""
+        if self.dynamic_selector:
+            complexity = task.context.get("complexity", "auto") if task.context else "auto"
+            agents = list(
+                self.dynamic_selector.select_agents(
+                    task, complexity=complexity, domain_profile=domain_profile
                 )
             )
+        else:
+            language_agents = self._get_language_specific_agents(task)
+            agents = list(self.agents) + list(language_agents)
 
-        # Hindi-specific fluency agent with Indic NLP + Stanza + Spello
-        elif task.target_lang == "hi":
-            # Try to get Hindi NLP helper
-            from kttc.helpers.hindi import HindiLanguageHelper
+        style_agent = self._get_style_preservation_agent(style_profile)
+        if style_agent:
+            agents = [style_agent] + agents
+            logger.info("Added StylePreservationAgent for literary text evaluation")
 
-            helper = get_helper_for_language("hi")
+        return agents
 
-            # Cast to HindiLanguageHelper or None
-            hindi_helper: HindiLanguageHelper | None = None
-            if isinstance(helper, HindiLanguageHelper):
-                hindi_helper = helper
+    def _calculate_evaluation_scores(
+        self,
+        agent_results: dict[str, list[ErrorAnnotation]],
+        all_errors: list[ErrorAnnotation],
+        word_count: int,
+        domain_profile: DomainProfile | None,
+    ) -> tuple[float, float | None, float | None, dict[str, float] | None, dict[str, Any] | None]:
+        """Calculate MQM scores and consensus metrics."""
+        domain_weights = domain_profile.agent_weights if domain_profile else None
 
-            if hindi_helper and hindi_helper.is_available():
-                logger.info("Using HindiFluencyAgent with Indic NLP + Stanza + Spello")
-            else:
-                logger.info("Using HindiFluencyAgent in LLM-only mode (helpers not available)")
-
-            language_agents.append(
-                HindiFluencyAgent(
-                    self.llm_provider,
-                    temperature=self.agent_temperature,
-                    max_tokens=self.agent_max_tokens,
-                    helper=hindi_helper,  # Pass properly typed helper
-                )
+        if self.use_weighted_consensus and len(agent_results) > 0:
+            consensus_data = self.consensus.calculate_weighted_score(
+                agent_results, word_count, agent_weights_override=domain_weights
+            )
+            logger.info(
+                f"Weighted consensus: MQM={consensus_data['weighted_mqm_score']:.2f}, "
+                f"confidence={consensus_data['confidence']:.2f}, "
+                f"agreement={consensus_data['agent_agreement']:.2f}"
+            )
+            return (
+                consensus_data["weighted_mqm_score"],
+                consensus_data["confidence"],
+                consensus_data["agent_agreement"],
+                consensus_data["agent_scores"],
+                {
+                    "agent_weights_used": consensus_data["agent_weights_used"],
+                    "total_weight": consensus_data["total_weight"],
+                    **consensus_data["metadata"],
+                },
             )
 
-        # Persian-specific fluency agent with DadmaTools
-        elif task.target_lang == "fa":
-            # Try to get Persian NLP helper
-            from kttc.helpers.persian import PersianLanguageHelper
+        return self.scorer.calculate_score(all_errors, word_count), None, None, None, None
 
-            helper = get_helper_for_language("fa")
+    def _build_domain_and_style_details(
+        self,
+        detected_domain: str | None,
+        domain_profile: DomainProfile | None,
+        domain_confidence: float | None,
+        quality_threshold: float,
+        style_profile: StyleProfile | None,
+    ) -> dict[str, Any] | None:
+        """Build domain and style details for report."""
+        domain_details: dict[str, Any] | None = None
 
-            # Cast to PersianLanguageHelper or None
-            persian_helper: PersianLanguageHelper | None = None
-            if isinstance(helper, PersianLanguageHelper):
-                persian_helper = helper
+        if detected_domain and domain_profile:
+            domain_details = {
+                "detected_domain": detected_domain,
+                "domain_confidence": domain_confidence,
+                "domain_complexity": domain_profile.complexity,
+                "quality_threshold_used": quality_threshold,
+                "domain_description": domain_profile.description,
+            }
 
-            if persian_helper and persian_helper.is_available():
-                logger.info("Using PersianFluencyAgent with DadmaTools v2 (spaCy-based all-in-one)")
+        if style_profile and style_profile.has_significant_deviations:
+            style_details = {
+                "style_detected": True,
+                "deviation_score": style_profile.deviation_score,
+                "style_pattern": style_profile.detected_pattern.value,
+                "is_literary": style_profile.is_literary,
+                "deviations_count": len(style_profile.detected_deviations),
+                "fluency_tolerance": style_profile.recommended_fluency_tolerance,
+                "detected_features": [d.type.value for d in style_profile.detected_deviations],
+            }
+            if domain_details:
+                domain_details["style_analysis"] = style_details
             else:
-                logger.info("Using PersianFluencyAgent in LLM-only mode (DadmaTools not available)")
+                domain_details = {"style_analysis": style_details}
 
-            language_agents.append(
-                PersianFluencyAgent(
-                    self.llm_provider,
-                    temperature=self.agent_temperature,
-                    max_tokens=self.agent_max_tokens,
-                    helper=persian_helper,  # Pass properly typed helper
-                )
-            )
-
-        return language_agents
+        return domain_details
 
     async def evaluate(self, task: TranslationTask) -> QAReport:
         """Evaluate translation quality using all agents in parallel.
@@ -352,139 +458,41 @@ class AgentOrchestrator:
             ...     print(f"Confidence: {report.confidence:.2f}")
         """
         try:
-            # Style analysis for automatic literary detection (runs first)
+            # Style and domain analysis
             style_profile = self._analyze_source_style(task)
             style_aware_profile = self._get_style_aware_profile(task, style_profile)
+            detected_domain, domain_profile, domain_confidence = self._get_domain_context(
+                task, style_profile, style_aware_profile
+            )
 
-            # Domain-adaptive agent selection (Phase 3)
-            detected_domain = None
-            domain_profile = None
-            domain_confidence = None
-
-            # If style analysis detected literary text, use style-aware profile
-            if style_aware_profile:
-                domain_profile = style_aware_profile
-                detected_domain = style_aware_profile.domain_type
-                domain_confidence = style_profile.deviation_score if style_profile else 0.5
-                logger.info(
-                    f"Style-aware domain: {detected_domain} "
-                    f"(deviation_score: {domain_confidence:.2f})"
-                )
-            elif self.enable_domain_adaptation and self.domain_detector:
-                detected_domain = self.domain_detector.detect_domain(
-                    task.source_text, task.target_lang, task.context
-                )
-                domain_profile = get_domain_profile(detected_domain)
-                domain_confidence = self.domain_detector.get_domain_confidence(
-                    task.source_text, detected_domain
-                )
-
-                logger.info(
-                    f"Domain detection: {detected_domain} " f"(confidence: {domain_confidence:.2f})"
-                )
-
-            # Select agents: dynamic (Phase 4) or static
-            if self.dynamic_selector:
-                # Dynamic agent selection based on complexity and domain
-                complexity = task.context.get("complexity", "auto") if task.context else "auto"
-                all_agents = self.dynamic_selector.select_agents(
-                    task, complexity=complexity, domain_profile=domain_profile
-                )
-            else:
-                # Static agent selection (original behavior)
-                language_agents = self._get_language_specific_agents(task)
-                all_agents = self.agents + language_agents
-
-            # Add StylePreservationAgent if literary style detected
-            style_preservation_agent = self._get_style_preservation_agent(style_profile)
-            if style_preservation_agent:
-                all_agents = [style_preservation_agent] + list(all_agents)
-                logger.info("Added StylePreservationAgent for literary text evaluation")
-
-            # Run all agents in parallel using asyncio.gather
+            # Select and run agents
+            all_agents = self._select_agents(task, domain_profile, style_profile)
             results = await asyncio.gather(*[agent.evaluate(task) for agent in all_agents])
 
-            # Build agent results dictionary (agent category -> errors)
+            # Collect agent results
             agent_results: dict[str, list[ErrorAnnotation]] = {}
             all_errors: list[ErrorAnnotation] = []
-
             for agent, agent_errors in zip(all_agents, results):
-                category = agent.category
-                agent_results[category] = agent_errors
+                agent_results[agent.category] = agent_errors
                 all_errors.extend(agent_errors)
 
-            # Calculate word count for MQM scoring
+            # Calculate scores
             word_count = len(task.source_text.split())
-
-            # Use domain-specific weights if available
-            domain_weights = domain_profile.agent_weights if domain_profile else None
-
-            # Calculate MQM score and consensus metrics
-            if self.use_weighted_consensus and len(agent_results) > 0:
-                # Use weighted consensus calculation with domain-specific weights
-                consensus_data = self.consensus.calculate_weighted_score(
-                    agent_results, word_count, agent_weights_override=domain_weights
+            mqm_score, confidence, agent_agreement, agent_scores, consensus_metadata = (
+                self._calculate_evaluation_scores(
+                    agent_results, all_errors, word_count, domain_profile
                 )
+            )
 
-                mqm_score = consensus_data["weighted_mqm_score"]
-                confidence = consensus_data["confidence"]
-                agent_agreement = consensus_data["agent_agreement"]
-                agent_scores = consensus_data["agent_scores"]
-                consensus_metadata = {
-                    "agent_weights_used": consensus_data["agent_weights_used"],
-                    "total_weight": consensus_data["total_weight"],
-                    **consensus_data["metadata"],
-                }
-
-                logger.info(
-                    f"Weighted consensus: MQM={mqm_score:.2f}, "
-                    f"confidence={confidence:.2f}, "
-                    f"agreement={agent_agreement:.2f}"
-                )
-            else:
-                # Use traditional simple aggregation
-                mqm_score = self.scorer.calculate_score(all_errors, word_count)
-                confidence = None
-                agent_agreement = None
-                agent_scores = None
-                consensus_metadata = None
-
-            # Use domain-specific threshold if available
+            # Determine status and build details
             quality_threshold = (
                 domain_profile.quality_threshold if domain_profile else self.quality_threshold
             )
-
-            # Determine pass/fail status
             status = "pass" if mqm_score >= quality_threshold else "fail"
+            domain_details = self._build_domain_and_style_details(
+                detected_domain, domain_profile, domain_confidence, quality_threshold, style_profile
+            )
 
-            # Build domain information for report
-            domain_details: dict[str, Any] | None = None
-            if detected_domain and domain_profile:
-                domain_details = {
-                    "detected_domain": detected_domain,
-                    "domain_confidence": domain_confidence,
-                    "domain_complexity": domain_profile.complexity,
-                    "quality_threshold_used": quality_threshold,
-                    "domain_description": domain_profile.description,
-                }
-
-            # Add style analysis information if available
-            if style_profile and style_profile.has_significant_deviations:
-                style_details = {
-                    "style_detected": True,
-                    "deviation_score": style_profile.deviation_score,
-                    "style_pattern": style_profile.detected_pattern.value,
-                    "is_literary": style_profile.is_literary,
-                    "deviations_count": len(style_profile.detected_deviations),
-                    "fluency_tolerance": style_profile.recommended_fluency_tolerance,
-                    "detected_features": [d.type.value for d in style_profile.detected_deviations],
-                }
-                if domain_details:
-                    domain_details["style_analysis"] = style_details
-                else:
-                    domain_details = {"style_analysis": style_details}
-
-            # Build comprehensive quality report
             return QAReport(
                 task=task,
                 mqm_score=mqm_score,
@@ -502,6 +510,35 @@ class AgentOrchestrator:
             raise AgentEvaluationError(f"Orchestrator evaluation failed: {e}") from e
         except Exception as e:
             raise AgentEvaluationError(f"Unexpected error in orchestrator: {e}") from e
+
+    def _calculate_mqm_with_consensus_breakdown(
+        self,
+        breakdown: dict[str, list[ErrorAnnotation]],
+        word_count: int,
+        domain_weights: dict[str, float] | None,
+        all_errors: list[ErrorAnnotation],
+    ) -> tuple[float, float | None, float | None, dict[str, Any] | None, dict[str, Any] | None]:
+        """Calculate MQM score using consensus or traditional aggregation.
+
+        Returns:
+            Tuple of (mqm_score, confidence, agent_agreement, agent_scores, consensus_metadata)
+        """
+        if self.use_weighted_consensus and len(breakdown) > 0:
+            consensus_data = self.consensus.calculate_weighted_score(
+                breakdown, word_count, agent_weights_override=domain_weights
+            )
+            return (
+                consensus_data["weighted_mqm_score"],
+                consensus_data["confidence"],
+                consensus_data["agent_agreement"],
+                consensus_data["agent_scores"],
+                {
+                    "agent_weights_used": consensus_data["agent_weights_used"],
+                    "total_weight": consensus_data["total_weight"],
+                    **consensus_data["metadata"],
+                },
+            )
+        return self.scorer.calculate_score(all_errors, word_count), None, None, None, None
 
     async def evaluate_with_breakdown(
         self, task: TranslationTask
@@ -573,28 +610,11 @@ class AgentOrchestrator:
             domain_weights = domain_profile.agent_weights if domain_profile else None
 
             # Calculate MQM score and consensus metrics
-            if self.use_weighted_consensus and len(breakdown) > 0:
-                # Use weighted consensus with domain-specific weights
-                consensus_data = self.consensus.calculate_weighted_score(
-                    breakdown, word_count, agent_weights_override=domain_weights
+            mqm_score, confidence, agent_agreement, agent_scores, consensus_metadata = (
+                self._calculate_mqm_with_consensus_breakdown(
+                    breakdown, word_count, domain_weights, all_errors
                 )
-
-                mqm_score = consensus_data["weighted_mqm_score"]
-                confidence = consensus_data["confidence"]
-                agent_agreement = consensus_data["agent_agreement"]
-                agent_scores = consensus_data["agent_scores"]
-                consensus_metadata = {
-                    "agent_weights_used": consensus_data["agent_weights_used"],
-                    "total_weight": consensus_data["total_weight"],
-                    **consensus_data["metadata"],
-                }
-            else:
-                # Use traditional aggregation
-                mqm_score = self.scorer.calculate_score(all_errors, word_count)
-                confidence = None
-                agent_agreement = None
-                agent_scores = None
-                consensus_metadata = None
+            )
 
             # Use domain-specific threshold if available
             quality_threshold = (

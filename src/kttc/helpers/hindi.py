@@ -300,181 +300,148 @@ class HindiLanguageHelper(LanguageHelper):
             logger.error(f"Morphology analysis failed: {e}")
             return []
 
+    # Hindi case markers (postpositions)
+    _CASE_MARKERS = {
+        "ने": "ERG",
+        "को": "ACC/DAT",
+        "से": "INS/ABL",
+        "में": "LOC",
+        "पर": "LOC",
+        "का": "GEN",
+        "की": "GEN",
+        "के": "GEN",
+    }
+
+    def _check_ergative_case(self, sentence: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check ergative ने usage with past tense verbs."""
+        ne_indices = [i for i, word in enumerate(sentence.words) if word.text == "ने"]
+        if not ne_indices:
+            return
+
+        verbs = [w for w in sentence.words if w.upos == "VERB"]
+        if not verbs:
+            return
+
+        main_verb = verbs[-1]
+        if main_verb.feats and "Tense=Past" not in main_verb.feats:
+            ne_word = sentence.words[ne_indices[0]]
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_grammar_case",
+                    severity=ErrorSeverity.MAJOR,
+                    location=(ne_word.start_char, ne_word.end_char),
+                    description="Ergative case marker 'ने' (ne) should be used with transitive past tense verbs",
+                    suggestion="Check verb tense or remove 'ने'",
+                )
+            )
+
+    def _extract_features(self, word: Any) -> tuple[str | None, str | None]:
+        """Extract gender and number from word features."""
+        gender, number = None, None
+        if word.feats:
+            for feat in word.feats.split("|"):
+                if "Gender=" in feat:
+                    gender = feat.split("=")[1]
+                if "Number=" in feat:
+                    number = feat.split("=")[1]
+        return gender, number
+
+    def _check_subject_verb_agreement(self, sentence: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check subject-verb agreement in gender and number."""
+        subjects = [w for w in sentence.words if w.deprel and "subj" in w.deprel.lower()]
+        verbs = [w for w in sentence.words if w.upos == "VERB"]
+
+        if not subjects or not verbs:
+            return
+
+        subject = subjects[0]
+        main_verb = verbs[-1]
+
+        subj_gender, subj_number = self._extract_features(subject)
+        verb_gender, verb_number = self._extract_features(main_verb)
+
+        if subj_gender and verb_gender and subj_gender != verb_gender:
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_grammar_agreement",
+                    severity=ErrorSeverity.MAJOR,
+                    location=(main_verb.start_char, main_verb.end_char),
+                    description=f"Verb gender ({verb_gender}) does not match subject gender ({subj_gender})",
+                    suggestion="Ensure verb agrees with subject in gender",
+                )
+            )
+
+        if subj_number and verb_number and subj_number != verb_number:
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_grammar_agreement",
+                    severity=ErrorSeverity.MAJOR,
+                    location=(main_verb.start_char, main_verb.end_char),
+                    description=f"Verb number ({verb_number}) does not match subject number ({subj_number})",
+                    suggestion="Ensure verb agrees with subject in number",
+                )
+            )
+
+    def _check_word_order(self, sentence: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check Hindi SOV word order."""
+        subjects = [w for w in sentence.words if w.deprel and "subj" in w.deprel.lower()]
+        verbs = [w for w in sentence.words if w.upos == "VERB"]
+
+        if not subjects or not verbs:
+            return
+
+        subject_idx = subjects[0].id
+        main_verb_idx = verbs[-1].id
+
+        if main_verb_idx < subject_idx - 2:
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_grammar_word_order",
+                    severity=ErrorSeverity.MINOR,
+                    location=(sentence.words[0].start_char, sentence.words[-1].end_char),
+                    description="Unusual word order detected: verb appears before subject. Hindi typically follows SOV order",
+                    suggestion="Verify sentence structure follows natural Hindi word order",
+                )
+            )
+
+    def _check_multiple_case_markers(self, sentence: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check for consecutive case markers."""
+        for i in range(len(sentence.words) - 1):
+            word1 = sentence.words[i]
+            word2 = sentence.words[i + 1]
+
+            if word1.text in self._CASE_MARKERS and word2.text in self._CASE_MARKERS:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="hindi_grammar_case",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(word1.start_char, word2.end_char),
+                        description=f"Consecutive case markers '{word1.text}' and '{word2.text}' detected",
+                        suggestion="Remove redundant case marker",
+                    )
+                )
+
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
-        """Check Hindi grammar using deterministic rules with Stanza.
-
-        Implements rule-based grammar validation for common Hindi errors:
-        - Case marker consistency (ने, को, से, में, पर, etc.)
-        - Verb agreement with subject (gender/number/person)
-        - Postposition usage patterns
-        - Subject-Object-Verb word order violations
-        - Dependency parsing anomalies
-
-        Args:
-            text: Hindi text to check
-
-        Returns:
-            List of detected grammar errors with positions and suggestions
-
-        Note:
-            Uses Stanza dependency parsing and POS tagging for validation.
-            Complex grammatical nuances are still handled by HindiFluencyAgent.
-        """
+        """Check Hindi grammar using deterministic rules with Stanza."""
         if not self._stanza_available or not self._stanza_nlp:
             logger.debug("Stanza not available, skipping grammar checks")
             return []
 
-        errors = []
+        errors: list[ErrorAnnotation] = []
 
         try:
             doc = self._stanza_nlp(text)
 
-            # Define Hindi case markers (postpositions)
-            case_markers = {
-                "ने": "ERG",  # Ergative (transitive past subject)
-                "को": "ACC/DAT",  # Accusative/Dative (object/indirect object)
-                "से": "INS/ABL",  # Instrumental/Ablative (with/from)
-                "में": "LOC",  # Locative (in/inside)
-                "पर": "LOC",  # Locative (on/at)
-                "का": "GEN",  # Genitive (possessive masculine)
-                "की": "GEN",  # Genitive (possessive feminine)
-                "के": "GEN",  # Genitive (possessive plural)
-            }
-
             for sentence in doc.sentences:
-                # Check 1: Ergative ने without transitive past verb
-                ne_indices = [i for i, word in enumerate(sentence.words) if word.text == "ने"]
-                if ne_indices:
-                    # Look for main verb in sentence
-                    verbs = [w for w in sentence.words if w.upos == "VERB"]
-                    if verbs:
-                        main_verb = verbs[-1]  # Last verb is usually main verb
-                        # Check if verb is past tense transitive
-                        if main_verb.feats:
-                            # VerbForm=Fin and Tense=Past expected
-                            is_past = "Tense=Past" in main_verb.feats
-                            if not is_past:
-                                # ने used but verb is not past tense
-                                ne_word = sentence.words[ne_indices[0]]
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="hindi_grammar_case",
-                                        severity=ErrorSeverity.MAJOR,
-                                        location=(ne_word.start_char, ne_word.end_char),
-                                        description=(
-                                            "Ergative case marker 'ने' (ne) should be used "
-                                            "with transitive past tense verbs"
-                                        ),
-                                        suggestion="Check verb tense or remove 'ने'",
-                                    )
-                                )
-
-                # Check 2: Subject-verb agreement (gender/number)
-                # Find subject (nsubj relation) and main verb
-                subjects = [w for w in sentence.words if w.deprel and "subj" in w.deprel.lower()]
-                verbs = [w for w in sentence.words if w.upos == "VERB"]
-
-                if subjects and verbs:
-                    subject = subjects[0]
-                    main_verb = verbs[-1]  # Last verb is usually main verb
-
-                    # Extract gender/number from subject and verb
-                    subj_gender = None
-                    subj_number = None
-                    verb_gender = None
-                    verb_number = None
-
-                    if subject.feats:
-                        for feat in subject.feats.split("|"):
-                            if "Gender=" in feat:
-                                subj_gender = feat.split("=")[1]
-                            if "Number=" in feat:
-                                subj_number = feat.split("=")[1]
-
-                    if main_verb.feats:
-                        for feat in main_verb.feats.split("|"):
-                            if "Gender=" in feat:
-                                verb_gender = feat.split("=")[1]
-                            if "Number=" in feat:
-                                verb_number = feat.split("=")[1]
-
-                    # Check agreement
-                    if subj_gender and verb_gender and subj_gender != verb_gender:
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="hindi_grammar_agreement",
-                                severity=ErrorSeverity.MAJOR,
-                                location=(main_verb.start_char, main_verb.end_char),
-                                description=(
-                                    f"Verb gender ({verb_gender}) does not match "
-                                    f"subject gender ({subj_gender})"
-                                ),
-                                suggestion="Ensure verb agrees with subject in gender",
-                            )
-                        )
-
-                    if subj_number and verb_number and subj_number != verb_number:
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="hindi_grammar_agreement",
-                                severity=ErrorSeverity.MAJOR,
-                                location=(main_verb.start_char, main_verb.end_char),
-                                description=(
-                                    f"Verb number ({verb_number}) does not match "
-                                    f"subject number ({subj_number})"
-                                ),
-                                suggestion="Ensure verb agrees with subject in number",
-                            )
-                        )
-
-                # Check 3: Word order - Hindi is SOV (Subject-Object-Verb)
-                # Flag if verb comes before subject (extreme violation)
-                if subjects and verbs:
-                    subject_idx = subjects[0].id
-                    main_verb_idx = verbs[-1].id
-
-                    # If verb comes significantly before subject (> 2 positions)
-                    if main_verb_idx < subject_idx - 2:
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="hindi_grammar_word_order",
-                                severity=ErrorSeverity.MINOR,
-                                location=(
-                                    sentence.words[0].start_char,
-                                    sentence.words[-1].end_char,
-                                ),
-                                description=(
-                                    "Unusual word order detected: verb appears before subject. "
-                                    "Hindi typically follows Subject-Object-Verb (SOV) order"
-                                ),
-                                suggestion="Verify sentence structure follows natural Hindi word order",
-                            )
-                        )
-
-                # Check 4: Multiple case markers on same noun
-                # Look for consecutive case markers
-                for i in range(len(sentence.words) - 1):
-                    word1 = sentence.words[i]
-                    word2 = sentence.words[i + 1]
-
-                    if word1.text in case_markers and word2.text in case_markers:
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="hindi_grammar_case",
-                                severity=ErrorSeverity.MAJOR,
-                                location=(word1.start_char, word2.end_char),
-                                description=(
-                                    f"Consecutive case markers '{word1.text}' and '{word2.text}' detected. "
-                                    "Each noun should have only one case marker"
-                                ),
-                                suggestion="Remove redundant case marker",
-                            )
-                        )
+                self._check_ergative_case(sentence, errors)
+                self._check_subject_verb_agreement(sentence, errors)
+                self._check_word_order(sentence, errors)
+                self._check_multiple_case_markers(sentence, errors)
 
             logger.debug(f"Hindi grammar check found {len(errors)} errors")
             return errors
@@ -482,6 +449,88 @@ class HindiLanguageHelper(LanguageHelper):
         except Exception as e:
             logger.error(f"Hindi grammar check failed: {e}")
             return []
+
+    def _handle_spelling_replace(
+        self,
+        i1: int,
+        i2: int,
+        j1: int,
+        j2: int,
+        original_tokens: list[tuple[str, int, int]],
+        corrected_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle replace operations in spelling diff."""
+        for idx in range(i1, i2):
+            if idx >= len(original_tokens):
+                continue
+            orig_word, start, end = original_tokens[idx]
+            corrections = [
+                corrected_tokens[jdx][0] for jdx in range(j1, j2) if jdx < len(corrected_tokens)
+            ]
+            suggestion = " ".join(corrections) if corrections else orig_word
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(start, end),
+                    description=f"Possible spelling error: '{orig_word}' may be incorrect",
+                    suggestion=suggestion,
+                )
+            )
+
+    def _handle_spelling_delete(
+        self,
+        i1: int,
+        i2: int,
+        original_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle delete operations in spelling diff."""
+        for idx in range(i1, i2):
+            if idx >= len(original_tokens):
+                continue
+            orig_word, start, end = original_tokens[idx]
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(start, end),
+                    description=f"Possibly unnecessary word: '{orig_word}'",
+                    suggestion="",
+                )
+            )
+
+    def _handle_spelling_insert(
+        self,
+        i1: int,
+        j1: int,
+        j2: int,
+        original_tokens: list[tuple[str, int, int]],
+        corrected_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle insert operations in spelling diff."""
+        if i1 <= 0 or i1 > len(original_tokens):
+            return
+        prev_token = original_tokens[i1 - 1]
+        insert_pos = prev_token[2]
+        inserted = [
+            corrected_tokens[jdx][0] for jdx in range(j1, j2) if jdx < len(corrected_tokens)
+        ]
+        if inserted:
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="hindi_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(insert_pos, insert_pos),
+                    description="Missing word(s) detected",
+                    suggestion=" ".join(inserted),
+                )
+            )
 
     def check_spelling(self, text: str) -> list[ErrorAnnotation]:
         """Check Hindi spelling using Spello.
@@ -501,98 +550,31 @@ class HindiLanguageHelper(LanguageHelper):
             return []
 
         try:
-            # Spello spell_correct returns corrected text
             corrected = self._spellchecker.spell_correct(text)
+            if corrected == text:
+                return []
 
-            errors = []
+            errors: list[ErrorAnnotation] = []
+            original_tokens = self.tokenize(text)
+            corrected_tokens = self.tokenize(corrected)
 
-            # Token-based diff to find exact error positions
-            if corrected != text:
-                # Tokenize both original and corrected texts
-                original_tokens = self.tokenize(text)
-                corrected_tokens = self.tokenize(corrected)
+            from difflib import SequenceMatcher
 
-                # Compare token-by-token
-                # Use sequence alignment for more accurate matching
-                from difflib import SequenceMatcher
+            original_words = [t[0] for t in original_tokens]
+            corrected_words = [t[0] for t in corrected_tokens]
+            matcher = SequenceMatcher(None, original_words, corrected_words)
 
-                # Get matching blocks
-                original_words = [t[0] for t in original_tokens]
-                corrected_words = [t[0] for t in corrected_tokens]
-
-                matcher = SequenceMatcher(None, original_words, corrected_words)
-
-                # Find mismatched tokens
-                for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-                    if tag == "replace":
-                        # Word(s) replaced - spelling error
-                        for idx in range(i1, i2):
-                            if idx < len(original_tokens):
-                                orig_word, start, end = original_tokens[idx]
-
-                                # Get corresponding corrected word(s)
-                                corrections = []
-                                for jdx in range(j1, j2):
-                                    if jdx < len(corrected_tokens):
-                                        corrections.append(corrected_tokens[jdx][0])
-
-                                suggestion = " ".join(corrections) if corrections else orig_word
-
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="hindi_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(start, end),
-                                        description=(
-                                            f"Possible spelling error: '{orig_word}' "
-                                            f"may be incorrect"
-                                        ),
-                                        suggestion=suggestion,
-                                    )
-                                )
-
-                    elif tag == "delete":
-                        # Extra word(s) - possible error or unnecessary repetition
-                        for idx in range(i1, i2):
-                            if idx < len(original_tokens):
-                                orig_word, start, end = original_tokens[idx]
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="hindi_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(start, end),
-                                        description=f"Possibly unnecessary word: '{orig_word}'",
-                                        suggestion="",  # Remove word
-                                    )
-                                )
-
-                    elif tag == "insert":
-                        # Missing word(s) detected by spell checker
-                        # Insert at position of previous token's end
-                        if i1 > 0 and i1 <= len(original_tokens):
-                            # Insert after previous token
-                            prev_token = original_tokens[i1 - 1]
-                            insert_pos = prev_token[2]  # End of previous token
-
-                            # Get inserted words
-                            inserted = []
-                            for jdx in range(j1, j2):
-                                if jdx < len(corrected_tokens):
-                                    inserted.append(corrected_tokens[jdx][0])
-
-                            if inserted:
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="hindi_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(insert_pos, insert_pos),
-                                        description="Missing word(s) detected",
-                                        suggestion=" ".join(inserted),
-                                    )
-                                )
+            for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+                if tag == "replace":
+                    self._handle_spelling_replace(
+                        i1, i2, j1, j2, original_tokens, corrected_tokens, errors
+                    )
+                elif tag == "delete":
+                    self._handle_spelling_delete(i1, i2, original_tokens, errors)
+                elif tag == "insert":
+                    self._handle_spelling_insert(
+                        i1, j1, j2, original_tokens, corrected_tokens, errors
+                    )
 
             logger.debug(f"Spello found {len(errors)} spelling errors")
             return errors

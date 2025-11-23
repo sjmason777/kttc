@@ -1,0 +1,466 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "False Friends - Cross-Language Translation Traps",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Words that look or sound similar across languages but have different meanings. Critical for avoiding embarrassing mistranslations.",
+    "sources": [
+      "Duolingo: False Cognates in Spanish and Other Languages",
+      "OnlineTeachersUK: Russian Mistakes in English - 54 False Friends",
+      "Planet Word Museum: False Friends",
+      "MacMillan Dictionary: False Friends Russian-English"
+    ],
+    "total_terms": 120,
+    "usage": "Translation QA, cross-language validation, MT error detection, localization"
+  },
+  "overview": {
+    "definition": "False friends (false cognates) are words in different languages that look or sound similar but have different meanings",
+    "also_known_as": ["faux amis", "false cognates", "deceptive cognates"],
+    "importance": "Critical for translation - can cause embarrassing or dangerous errors",
+    "severity": "major to critical - can completely change meaning or cause offense"
+  },
+  "russian_english": {
+    "language_pair": "Russian → English",
+    "description": "Common false friends between Russian and English",
+    "entries": {
+      "sympathy_sympathetic": {
+        "english_word": "sympathetic",
+        "english_meaning": "showing understanding and care for someone's problems",
+        "russian_false_friend": "симпатичный (simpatichnyj)",
+        "russian_meaning": "attractive, nice-looking, cute",
+        "correct_translation": {
+          "sympathetic_to_russian": "сочувствующий, участливый",
+          "симпатичный_to_english": "attractive, nice, cute"
+        },
+        "example_error": "'She is very sympathetic' ≠ 'Она очень симпатичная'",
+        "severity": "major"
+      },
+      "preservative": {
+        "english_word": "preservative",
+        "english_meaning": "a substance used to prevent food from spoiling (консервант)",
+        "russian_false_friend": "презерватив (prezervativ)",
+        "russian_meaning": "condom",
+        "correct_translation": {
+          "preservative_to_russian": "консервант",
+          "презерватив_to_english": "condom"
+        },
+        "example_error": "Extremely embarrassing in food context!",
+        "severity": "critical"
+      },
+      "brilliant": {
+        "english_word": "brilliant",
+        "english_meaning": "very clever, excellent, splendid",
+        "russian_false_friend": "бриллиант (brilliant)",
+        "russian_meaning": "diamond (the gemstone)",
+        "correct_translation": {
+          "brilliant_to_russian": "блестящий, великолепный, гениальный",
+          "бриллиант_to_english": "diamond"
+        },
+        "note": "Technical: 'brilliant' can mean diamond cut, but rarely used",
+        "severity": "major"
+      },
+      "cabinet": {
+        "english_word": "cabinet",
+        "english_meaning": "furniture with shelves; group of ministers",
+        "russian_false_friend": "кабинет (kabinet)",
+        "russian_meaning": "office, study room",
+        "correct_translation": {
+          "cabinet_to_russian": "шкаф; кабинет министров",
+          "кабинет_to_english": "office, study"
+        },
+        "severity": "minor"
+      },
+      "accurate": {
+        "english_word": "accurate",
+        "english_meaning": "correct, precise, exact",
+        "russian_false_friend": "аккуратный (akkuratnyj)",
+        "russian_meaning": "neat, tidy, careful",
+        "correct_translation": {
+          "accurate_to_russian": "точный",
+          "аккуратный_to_english": "neat, tidy, careful"
+        },
+        "severity": "major"
+      },
+      "actual": {
+        "english_word": "actual",
+        "english_meaning": "real, existing in fact",
+        "russian_false_friend": "актуальный (aktualnyj)",
+        "russian_meaning": "relevant, topical, current",
+        "correct_translation": {
+          "actual_to_russian": "реальный, фактический",
+          "актуальный_to_english": "relevant, topical, pressing"
+        },
+        "severity": "major"
+      },
+      "magazine": {
+        "english_word": "magazine",
+        "english_meaning": "periodical publication; ammunition holder",
+        "russian_false_friend": "магазин (magazin)",
+        "russian_meaning": "shop, store",
+        "correct_translation": {
+          "magazine_to_russian": "журнал",
+          "магазин_to_english": "shop, store"
+        },
+        "severity": "major"
+      },
+      "prospect": {
+        "english_word": "prospect",
+        "english_meaning": "possibility, outlook; potential customer",
+        "russian_false_friend": "проспект (prospekt)",
+        "russian_meaning": "avenue, main street; brochure",
+        "correct_translation": {
+          "prospect_to_russian": "перспектива, возможность",
+          "проспект_to_english": "avenue; brochure"
+        },
+        "severity": "minor"
+      },
+      "data": {
+        "english_word": "data",
+        "english_meaning": "facts, information",
+        "russian_false_friend": "дата (data)",
+        "russian_meaning": "date (calendar)",
+        "correct_translation": {
+          "data_to_russian": "данные",
+          "дата_to_english": "date"
+        },
+        "severity": "major"
+      },
+      "family": {
+        "english_word": "family",
+        "english_meaning": "relatives, household",
+        "russian_false_friend": "фамилия (familiya)",
+        "russian_meaning": "surname, last name",
+        "correct_translation": {
+          "family_to_russian": "семья",
+          "фамилия_to_english": "surname, last name"
+        },
+        "severity": "major"
+      },
+      "fabric": {
+        "english_word": "fabric",
+        "english_meaning": "cloth, textile",
+        "russian_false_friend": "фабрика (fabrika)",
+        "russian_meaning": "factory",
+        "correct_translation": {
+          "fabric_to_russian": "ткань",
+          "фабрика_to_english": "factory"
+        },
+        "severity": "major"
+      },
+      "genial": {
+        "english_word": "genial",
+        "english_meaning": "friendly, cheerful",
+        "russian_false_friend": "гениальный (genialnyj)",
+        "russian_meaning": "genius, brilliant (intellectual)",
+        "correct_translation": {
+          "genial_to_russian": "приветливый, добродушный",
+          "гениальный_to_english": "genius, brilliant"
+        },
+        "severity": "major"
+      },
+      "intelligence": {
+        "english_word": "intelligence",
+        "english_meaning": "mental ability; secret information",
+        "russian_false_friend": "интеллигенция (intelligentsiya)",
+        "russian_meaning": "educated class, intellectuals",
+        "correct_translation": {
+          "intelligence_to_russian": "интеллект, ум; разведка",
+          "интеллигенция_to_english": "intelligentsia, intellectuals"
+        },
+        "severity": "minor"
+      },
+      "list": {
+        "english_word": "list",
+        "english_meaning": "written series of items",
+        "russian_false_friend": "лист (list)",
+        "russian_meaning": "leaf; sheet (of paper)",
+        "correct_translation": {
+          "list_to_russian": "список",
+          "лист_to_english": "leaf; sheet"
+        },
+        "severity": "major"
+      },
+      "lunatic": {
+        "english_word": "lunatic",
+        "english_meaning": "crazy person, madman",
+        "russian_false_friend": "лунатик (lunatik)",
+        "russian_meaning": "sleepwalker",
+        "correct_translation": {
+          "lunatic_to_russian": "сумасшедший, безумец",
+          "лунатик_to_english": "sleepwalker"
+        },
+        "severity": "major"
+      },
+      "replica": {
+        "english_word": "replica",
+        "english_meaning": "exact copy, reproduction",
+        "russian_false_friend": "реплика (replika)",
+        "russian_meaning": "remark, line (in dialogue); retort",
+        "correct_translation": {
+          "replica_to_russian": "копия, репродукция",
+          "реплика_to_english": "remark, line"
+        },
+        "severity": "major"
+      }
+    }
+  },
+  "spanish_english": {
+    "language_pair": "Spanish → English",
+    "description": "Common false friends between Spanish and English",
+    "entries": {
+      "embarrassed_embarazada": {
+        "english_word": "embarrassed",
+        "english_meaning": "feeling ashamed or self-conscious",
+        "spanish_false_friend": "embarazada",
+        "spanish_meaning": "pregnant",
+        "correct_translation": {
+          "embarrassed_to_spanish": "avergonzado/a",
+          "embarazada_to_english": "pregnant"
+        },
+        "example_error": "'I am embarrassed' ≠ 'Estoy embarazada'",
+        "severity": "critical"
+      },
+      "actually_actualmente": {
+        "english_word": "actually",
+        "english_meaning": "in fact, really",
+        "spanish_false_friend": "actualmente",
+        "spanish_meaning": "currently, at present",
+        "correct_translation": {
+          "actually_to_spanish": "en realidad, de hecho",
+          "actualmente_to_english": "currently, nowadays"
+        },
+        "severity": "major"
+      },
+      "exit_exito": {
+        "english_word": "exit",
+        "english_meaning": "way out, departure",
+        "spanish_false_friend": "éxito",
+        "spanish_meaning": "success",
+        "correct_translation": {
+          "exit_to_spanish": "salida",
+          "éxito_to_english": "success"
+        },
+        "severity": "major"
+      },
+      "library_libreria": {
+        "english_word": "library",
+        "english_meaning": "place where books are borrowed",
+        "spanish_false_friend": "librería",
+        "spanish_meaning": "bookstore",
+        "correct_translation": {
+          "library_to_spanish": "biblioteca",
+          "librería_to_english": "bookstore"
+        },
+        "severity": "major"
+      },
+      "sensible_sensible": {
+        "english_word": "sensible",
+        "english_meaning": "practical, reasonable",
+        "spanish_false_friend": "sensible",
+        "spanish_meaning": "sensitive",
+        "correct_translation": {
+          "sensible_to_spanish": "sensato, razonable",
+          "sensible_spanish_to_english": "sensitive"
+        },
+        "severity": "major"
+      },
+      "carpet_carpeta": {
+        "english_word": "carpet",
+        "english_meaning": "floor covering",
+        "spanish_false_friend": "carpeta",
+        "spanish_meaning": "folder, binder",
+        "correct_translation": {
+          "carpet_to_spanish": "alfombra",
+          "carpeta_to_english": "folder"
+        },
+        "severity": "major"
+      },
+      "constipated_constipado": {
+        "english_word": "constipated",
+        "english_meaning": "unable to empty bowels",
+        "spanish_false_friend": "constipado",
+        "spanish_meaning": "having a cold",
+        "correct_translation": {
+          "constipated_to_spanish": "estreñido",
+          "constipado_to_english": "having a cold"
+        },
+        "severity": "critical"
+      },
+      "introduce_introducir": {
+        "english_word": "introduce",
+        "english_meaning": "to present someone; to bring in",
+        "spanish_false_friend": "introducir",
+        "spanish_meaning": "to insert, to put in",
+        "correct_translation": {
+          "introduce_to_spanish": "presentar",
+          "introducir_to_english": "to insert"
+        },
+        "severity": "minor"
+      },
+      "molest_molestar": {
+        "english_word": "molest",
+        "english_meaning": "to assault sexually (serious crime)",
+        "spanish_false_friend": "molestar",
+        "spanish_meaning": "to bother, to annoy",
+        "correct_translation": {
+          "molest_to_spanish": "abusar sexualmente",
+          "molestar_to_english": "to bother, to annoy"
+        },
+        "severity": "critical"
+      },
+      "pretend_pretender": {
+        "english_word": "pretend",
+        "english_meaning": "to act as if something is true when it is not",
+        "spanish_false_friend": "pretender",
+        "spanish_meaning": "to try, to attempt; to expect",
+        "correct_translation": {
+          "pretend_to_spanish": "fingir",
+          "pretender_to_english": "to try, to intend"
+        },
+        "severity": "major"
+      }
+    }
+  },
+  "german_english": {
+    "language_pair": "German → English",
+    "description": "Common false friends between German and English",
+    "entries": {
+      "gift": {
+        "english_word": "gift",
+        "english_meaning": "present, something given",
+        "german_false_friend": "Gift",
+        "german_meaning": "poison",
+        "correct_translation": {
+          "gift_to_german": "Geschenk",
+          "Gift_to_english": "poison"
+        },
+        "severity": "critical",
+        "note": "Historically related - 'gift' meant 'dowry' which could be poisoned"
+      },
+      "chef": {
+        "english_word": "chef",
+        "english_meaning": "professional cook",
+        "german_false_friend": "Chef",
+        "german_meaning": "boss, manager",
+        "correct_translation": {
+          "chef_to_german": "Koch/Köchin",
+          "Chef_to_english": "boss"
+        },
+        "severity": "major"
+      },
+      "fast": {
+        "english_word": "fast",
+        "english_meaning": "quick, rapid",
+        "german_false_friend": "fast",
+        "german_meaning": "almost, nearly",
+        "correct_translation": {
+          "fast_to_german": "schnell",
+          "fast_german_to_english": "almost"
+        },
+        "severity": "major"
+      },
+      "billion": {
+        "english_word": "billion",
+        "english_meaning": "1,000,000,000 (one thousand million)",
+        "german_false_friend": "Billion",
+        "german_meaning": "1,000,000,000,000 (one trillion)",
+        "correct_translation": {
+          "billion_to_german": "Milliarde",
+          "Billion_to_english": "trillion"
+        },
+        "severity": "critical",
+        "note": "Financial documents can have huge errors!"
+      },
+      "handy": {
+        "english_word": "handy",
+        "english_meaning": "useful, convenient",
+        "german_false_friend": "Handy",
+        "german_meaning": "mobile phone, cell phone",
+        "correct_translation": {
+          "handy_to_german": "praktisch, nützlich",
+          "Handy_to_english": "mobile phone"
+        },
+        "severity": "minor"
+      }
+    }
+  },
+  "french_english": {
+    "language_pair": "French → English",
+    "description": "Common false friends between French and English",
+    "entries": {
+      "assist_assister": {
+        "english_word": "assist",
+        "english_meaning": "to help",
+        "french_false_friend": "assister",
+        "french_meaning": "to attend, to be present at",
+        "correct_translation": {
+          "assist_to_french": "aider",
+          "assister_to_english": "to attend"
+        },
+        "severity": "major"
+      },
+      "attend_attendre": {
+        "english_word": "attend",
+        "english_meaning": "to be present at",
+        "french_false_friend": "attendre",
+        "french_meaning": "to wait",
+        "correct_translation": {
+          "attend_to_french": "assister à",
+          "attendre_to_english": "to wait"
+        },
+        "severity": "major"
+      },
+      "demand_demander": {
+        "english_word": "demand",
+        "english_meaning": "to insist on, to require forcefully",
+        "french_false_friend": "demander",
+        "french_meaning": "to ask, to request",
+        "correct_translation": {
+          "demand_to_french": "exiger",
+          "demander_to_english": "to ask"
+        },
+        "severity": "major"
+      },
+      "surname_surnom": {
+        "english_word": "surname",
+        "english_meaning": "family name, last name",
+        "french_false_friend": "surnom",
+        "french_meaning": "nickname",
+        "correct_translation": {
+          "surname_to_french": "nom de famille",
+          "surnom_to_english": "nickname"
+        },
+        "severity": "major"
+      },
+      "coin_coin": {
+        "english_word": "coin",
+        "english_meaning": "metal money",
+        "french_false_friend": "coin",
+        "french_meaning": "corner, wedge",
+        "correct_translation": {
+          "coin_to_french": "pièce de monnaie",
+          "coin_french_to_english": "corner"
+        },
+        "severity": "minor"
+      }
+    }
+  },
+  "detection_guidelines": {
+    "description": "Guidelines for detecting false friend errors in translation",
+    "rules": [
+      "Compare source word with target language lookalikes",
+      "Verify meaning matches context, not just appearance",
+      "Check if cognate exists but has shifted meaning",
+      "Pay special attention to medical/legal/financial terms",
+      "Flag any word that looks 'too similar' for manual review"
+    ],
+    "high_risk_domains": [
+      "Medical (preservative/презерватив, constipated/constipado)",
+      "Legal (molest/molestar)",
+      "Financial (billion/Billion)",
+      "Food safety (gift/Gift)"
+    ]
+  }
+}

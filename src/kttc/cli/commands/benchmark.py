@@ -37,6 +37,108 @@ from kttc.utils.config import get_settings
 from kttc.utils.dependencies import require_benchmark
 
 
+def _init_provider(provider_name: str, settings: Any) -> BaseLLMProvider | None:
+    """Initialize a single provider instance."""
+    try:
+        if provider_name == "openai":
+            if not settings.openai_api_key:
+                print_error("OpenAI API key not configured")
+                return None
+            return OpenAIProvider(api_key=settings.openai_api_key, model=settings.default_model)
+
+        if provider_name == "anthropic":
+            if not settings.anthropic_api_key:
+                print_error("Anthropic API key not configured")
+                return None
+            return AnthropicProvider(
+                api_key=settings.anthropic_api_key, model=settings.default_model
+            )
+
+        if provider_name == "gigachat":
+            if not settings.gigachat_client_id or not settings.gigachat_client_secret:
+                print_error("GigaChat credentials not configured")
+                return None
+            return GigaChatProvider(
+                client_id=settings.gigachat_client_id, client_secret=settings.gigachat_client_secret
+            )
+
+        print_error(f"Unknown provider: {provider_name}")
+        return None
+
+    except Exception as e:
+        print_error(f"Failed to initialize {provider_name}: {e}")
+        return None
+
+
+async def _run_benchmarks_with_progress(
+    provider_instances: dict[str, BaseLLMProvider],
+    source_text: str,
+    source_lang: str,
+    target_lang: str,
+    threshold: float,
+) -> list[dict[str, Any]]:
+    """Run benchmarks with progress indicator."""
+    results = []
+    with create_progress() as progress:
+        task_id = progress.add_task("Benchmarking providers...", total=len(provider_instances))
+
+        for provider_name, provider in provider_instances.items():
+            progress.update(task_id, description=f"Testing {provider_name}...")
+
+            result = await benchmark_provider(
+                provider=provider,
+                provider_name=provider_name,
+                source_text=source_text,
+                source_lang=source_lang,
+                target_lang=target_lang,
+                threshold=threshold,
+            )
+            results.append(result)
+
+            if result["success"]:
+                status_icon = "✓" if result["status"] == "pass" else "✗"
+                status_color = "green" if result["status"] == "pass" else "red"
+                errors = (
+                    f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+                )
+                progress.console.print(
+                    f"  [{status_color}]{status_icon}[/{status_color}] "
+                    f"{provider_name}: MQM {result['mqm_score']:.2f}, Errors: {errors} "
+                    f"({result['duration']:.2f}s)"
+                )
+            else:
+                progress.console.print(
+                    f"  [red]✗[/red] {provider_name}: Failed - {result.get('error', 'Unknown error')}"
+                )
+
+            progress.advance(task_id)
+
+    console.print()
+    return results
+
+
+async def _run_benchmarks_compact(
+    provider_instances: dict[str, BaseLLMProvider],
+    source_text: str,
+    source_lang: str,
+    target_lang: str,
+    threshold: float,
+) -> list[dict[str, Any]]:
+    """Run benchmarks without progress indicator."""
+    results = []
+    for provider_name, provider in provider_instances.items():
+        result = await benchmark_provider(
+            provider=provider,
+            provider_name=provider_name,
+            source_text=source_text,
+            source_lang=source_lang,
+            target_lang=target_lang,
+            threshold=threshold,
+        )
+        results.append(result)
+    return results
+
+
 async def benchmark_provider(
     provider: BaseLLMProvider,
     provider_name: str,
@@ -140,15 +242,12 @@ async def run_benchmark(
 
     settings = get_settings()
 
-    # Show available extensions status (verbose mode only)
-    missing_any = not has_benchmark() or not has_webui()
-
-    if missing_any and verbose:
+    # Show available extensions status
+    if verbose and (not has_benchmark() or not has_webui()):
         print_available_extensions()
         console.print("[dim]You can continue, but some features require extensions.[/dim]")
         console.print()
 
-    # Check if benchmark dependencies are installed (will exit if not)
     require_benchmark("benchmark")
 
     # Load source text
@@ -161,39 +260,10 @@ async def run_benchmark(
 
     # Initialize providers
     provider_instances: dict[str, BaseLLMProvider] = {}
-
     for provider_name in providers:
-        try:
-            if provider_name == "openai":
-                api_key = settings.openai_api_key
-                if not api_key:
-                    print_error("OpenAI API key not configured")
-                    continue
-                provider_instances[provider_name] = OpenAIProvider(
-                    api_key=api_key, model=settings.default_model
-                )
-            elif provider_name == "anthropic":
-                api_key = settings.anthropic_api_key
-                if not api_key:
-                    print_error("Anthropic API key not configured")
-                    continue
-                provider_instances[provider_name] = AnthropicProvider(
-                    api_key=api_key, model=settings.default_model
-                )
-            elif provider_name == "gigachat":
-                client_id = settings.gigachat_client_id
-                client_secret = settings.gigachat_client_secret
-                if not client_id or not client_secret:
-                    print_error("GigaChat credentials not configured")
-                    continue
-                provider_instances[provider_name] = GigaChatProvider(
-                    client_id=client_id, client_secret=client_secret
-                )
-            else:
-                print_error(f"Unknown provider: {provider_name}")
-
-        except Exception as e:
-            print_error(f"Failed to initialize {provider_name}: {e}")
+        provider_instance = _init_provider(provider_name, settings)
+        if provider_instance:
+            provider_instances[provider_name] = provider_instance
 
     if not provider_instances:
         print_error("No providers available for benchmarking")
@@ -204,56 +274,14 @@ async def run_benchmark(
         console.print()
 
     # Run benchmarks
-    results = []
     if verbose:
-        with create_progress() as progress:
-            task_id = progress.add_task("Benchmarking providers...", total=len(provider_instances))
-
-            for provider_name, provider in provider_instances.items():
-                progress.update(task_id, description=f"Testing {provider_name}...")
-
-                result = await benchmark_provider(
-                    provider=provider,
-                    provider_name=provider_name,
-                    source_text=source_text,
-                    source_lang=source_lang,
-                    target_lang=target_lang,
-                    threshold=threshold,
-                )
-
-                results.append(result)
-
-                # Show result
-                if result["success"]:
-                    status_icon = "✓" if result["status"] == "pass" else "✗"
-                    status_color = "green" if result["status"] == "pass" else "red"
-                    errors = f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
-                    progress.console.print(
-                        f"  [{status_color}]{status_icon}[/{status_color}] "
-                        f"{provider_name}: MQM {result['mqm_score']:.2f}, "
-                        f"Errors: {errors} "
-                        f"({result['duration']:.2f}s)"
-                    )
-                else:
-                    progress.console.print(
-                        f"  [red]✗[/red] {provider_name}: Failed - {result.get('error', 'Unknown error')}"
-                    )
-
-                progress.advance(task_id)
-
-        console.print()
+        results = await _run_benchmarks_with_progress(
+            provider_instances, source_text, source_lang, target_lang, threshold
+        )
     else:
-        # Compact mode: simple benchmarking
-        for provider_name, provider in provider_instances.items():
-            result = await benchmark_provider(
-                provider=provider,
-                provider_name=provider_name,
-                source_text=source_text,
-                source_lang=source_lang,
-                target_lang=target_lang,
-                threshold=threshold,
-            )
-            results.append(result)
+        results = await _run_benchmarks_compact(
+            provider_instances, source_text, source_lang, target_lang, threshold
+        )
 
     # Display benchmark results using compact formatter
     ConsoleFormatter.print_benchmark_result(

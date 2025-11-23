@@ -22,74 +22,23 @@ from typing import Any
 
 from kttc.llm import BaseLLMProvider
 
-
-class DemoLLMProvider(BaseLLMProvider):
-    """Mock LLM provider that simulates responses without making API calls.
-
-    This provider is used for testing and demonstrations to avoid spending tokens.
-    It returns realistic-looking responses that mimic the structure of real LLM outputs.
-    """
-
-    def __init__(self, model: str = "demo-model", **kwargs: Any) -> None:
-        """Initialize demo provider."""
-        self.model = model
-        self.kwargs = kwargs
-
-    async def complete(
-        self,
-        prompt: str,
-        temperature: float = 0.0,
-        max_tokens: int = 2000,
-        **kwargs: Any,
-    ) -> str:
-        """Simulate LLM completion with demo response.
-
-        Args:
-            prompt: The prompt (analyzed to provide relevant response)
-            temperature: Ignored in demo mode
-            max_tokens: Ignored in demo mode
-            **kwargs: Additional arguments (ignored)
-
-        Returns:
-            Simulated LLM response based on prompt content
-        """
-        # Simulate API latency
-        await asyncio.sleep(0.5)
-
-        # Parse prompt to determine which agent is calling
-        prompt_lower = prompt.lower()
-
-        # Russian-specific fluency agent (expects JSON)
-        if "russian-specific" in prompt_lower or (
-            "russian" in prompt_lower and "output only valid json" in prompt_lower
-        ):
-            return """{
-  "errors": [
-    {
-      "subcategory": "case_agreement",
-      "severity": "minor",
-      "location": [15, 35],
-      "description": "Case agreement issue: adjective-noun agreement incorrect",
-      "suggestion": "Correct case agreement"
-    }
-  ]
-}"""
-
-        # Hallucination/Entity preservation agent (expects JSON)
-        elif "entity preservation" in prompt_lower or "hallucination" in prompt_lower:
-            return """{
-  "errors": []
-}"""
-
-        # Context/Coherence agent (expects JSON)
-        elif "coherence" in prompt_lower:
-            return """{
-  "errors": []
-}"""
-
-        # Accuracy agent response (expects ERROR_START format)
-        elif "accuracy" in prompt_lower or "meaning" in prompt_lower or "omission" in prompt_lower:
-            return """**Errors Found:**
+# Demo response templates for different agent types
+_DEMO_RESPONSES: dict[str, tuple[list[str], str]] = {
+    "json_empty": (
+        ["russian-specific", "output only valid json"],
+        '{\n  "errors": []\n}',
+    ),
+    "entity": (
+        ["entity preservation", "hallucination"],
+        '{\n  "errors": []\n}',
+    ),
+    "coherence": (
+        ["coherence"],
+        '{\n  "errors": []\n}',
+    ),
+    "accuracy": (
+        ["accuracy", "meaning", "omission"],
+        """**Errors Found:**
 
 1. **Minor Mistranslation** (Line 1)
    - Category: accuracy
@@ -110,11 +59,11 @@ class DemoLLMProvider(BaseLLMProvider):
 **Overall Assessment:**
 Translation captures the main meaning but has 2 minor accuracy issues affecting precision.
 
-**MQM Deductions:** -3.5 points"""
-
-        # Fluency agent response (expects ERROR_START format)
-        elif "fluency" in prompt_lower or "grammar" in prompt_lower or "spelling" in prompt_lower:
-            return """**Errors Found:**
+**MQM Deductions:** -3.5 points""",
+    ),
+    "fluency": (
+        ["fluency", "grammar", "spelling"],
+        """**Errors Found:**
 
 1. **Grammar Error** (Line 1)
    - Category: fluency
@@ -126,24 +75,22 @@ Translation captures the main meaning but has 2 minor accuracy issues affecting 
 **Overall Assessment:**
 Text is mostly fluent with natural Russian phrasing. One minor grammatical ordering issue.
 
-**MQM Deductions:** -1.5 points"""
-
-        # Terminology agent response (expects ERROR_START format)
-        elif (
-            "terminology" in prompt_lower or "domain" in prompt_lower or "technical" in prompt_lower
-        ):
-            return """**Errors Found:**
+**MQM Deductions:** -1.5 points""",
+    ),
+    "terminology": (
+        ["terminology", "domain", "technical"],
+        """**Errors Found:**
 
 None detected.
 
 **Overall Assessment:**
 No terminology issues found. General content without specialized domain terms.
 
-**MQM Deductions:** 0 points"""
+**MQM Deductions:** 0 points""",
+    ),
+}
 
-        # Default orchestrator response
-        else:
-            return """**Translation Quality Report**
+_DEFAULT_RESPONSE = """**Translation Quality Report**
 
 **Accuracy:** 2 minor errors (-3.5 points)
 **Fluency:** 1 minor error (-1.5 points)
@@ -156,6 +103,38 @@ No terminology issues found. General content without specialized domain terms.
 
 **Summary:**
 Good quality translation with minor accuracy and fluency issues. Main meaning preserved but could be more precise."""
+
+
+def _get_demo_response(prompt_lower: str) -> str:
+    """Get appropriate demo response based on prompt content."""
+    for _, (keywords, response) in _DEMO_RESPONSES.items():
+        if any(kw in prompt_lower for kw in keywords):
+            return response
+    return _DEFAULT_RESPONSE
+
+
+class DemoLLMProvider(BaseLLMProvider):
+    """Mock LLM provider that simulates responses without making API calls.
+
+    This provider is used for testing and demonstrations to avoid spending tokens.
+    It returns realistic-looking responses that mimic the structure of real LLM outputs.
+    """
+
+    def __init__(self, model: str = "demo-model", **kwargs: Any) -> None:
+        """Initialize demo provider."""
+        self.model = model
+        self.kwargs = kwargs
+
+    async def complete(
+        self,
+        prompt: str,
+        temperature: float = 0.0,
+        max_tokens: int = 2000,
+        **kwargs: Any,
+    ) -> str:
+        """Simulate LLM completion with demo response."""
+        await asyncio.sleep(0.5)  # Simulate API latency
+        return _get_demo_response(prompt.lower())
 
     async def stream(
         self,
@@ -189,11 +168,11 @@ Good quality translation with minor accuracy and fluency issues. Main meaning pr
 
     async def complete_with_response_model(
         self,
-        prompt: str,
-        response_model: type,
-        temperature: float = 0.0,
-        max_tokens: int = 2000,
-        **kwargs: Any,
+        _prompt: str,
+        _response_model: type,
+        _temperature: float = 0.0,
+        _max_tokens: int = 2000,
+        **_kwargs: Any,
     ) -> Any:
         """Not implemented for demo provider.
 

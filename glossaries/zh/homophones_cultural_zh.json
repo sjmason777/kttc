@@ -1,0 +1,343 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Homophones and Cultural Taboos (同音字与文化禁忌)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Chinese homophones with cultural significance - lucky/unlucky associations, puns, and translation pitfalls",
+    "sources": [
+      "Chinese Language Translation Quality 2025 Research",
+      "Baidu Baike '歧义'",
+      "LinkResearcher '汉语言迷信制造机'",
+      "Cultural linguistics resources"
+    ],
+    "total_terms": 80,
+    "usage": "Cultural appropriateness checking, translation quality assessment, localization"
+  },
+  "overview": {
+    "phenomenon_zh": "同音多义与文化禁忌",
+    "phenomenon_en": "Homophones and Cultural Taboos",
+    "description": "Chinese has ~420 syllables (with tones ~1300), creating extensive homophone networks with cultural implications",
+    "description_zh": "普通话约420个音节，加声调约1300个，形成大量同音字现象，并产生文化联想",
+    "importance": "Critical for culturally appropriate translation, especially in marketing, naming, and formal documents",
+    "chinese_concept": "谐音 (xiéyīn) - homophonic puns and associations"
+  },
+  "taboo_numbers": {
+    "category": "Numbers with negative associations",
+    "severity": "major",
+    "numbers": {
+      "四": {
+        "pinyin": "sì",
+        "sounds_like": "死 (sǐ) - death",
+        "association": "Extremely unlucky, associated with death",
+        "avoid_in": [
+          "Phone numbers",
+          "Floor numbers (many buildings skip 4th floor)",
+          "License plates",
+          "Room numbers",
+          "Gift quantities",
+          "Pricing (avoid ¥44, ¥444)"
+        ],
+        "cultural_note": "Tetraphobia is widespread in China, Taiwan, Hong Kong, Korea, Japan",
+        "translation_warning": "Do not use '4' in product names, addresses for Chinese market",
+        "example": "iPhone 4 was marketed carefully; some buildings have no 4th, 14th, 24th floors"
+      },
+      "七": {
+        "pinyin": "qī",
+        "sounds_like": "欺 (qī) - deceive, 气 (qì) - anger",
+        "association": "Mixed - can be negative (ghost month is 7th month)",
+        "context_dependent": true,
+        "note": "Less taboo than 4, but avoid in certain contexts"
+      },
+      "十三": {
+        "pinyin": "shísān",
+        "sounds_like": "实三 (shísān)",
+        "association": "Unlucky in Western contexts but neutral in Chinese",
+        "note": "Not traditionally taboo in Chinese culture"
+      }
+    }
+  },
+  "lucky_numbers": {
+    "category": "Numbers with positive associations",
+    "severity": "informational",
+    "numbers": {
+      "八": {
+        "pinyin": "bā",
+        "sounds_like": "发 (fā) - prosperity, wealth",
+        "association": "Extremely lucky, associated with wealth",
+        "preferred_in": [
+          "Business phone numbers (888-8888 is premium)",
+          "Pricing (¥88, ¥888 are popular)",
+          "Wedding dates",
+          "Store opening dates",
+          "License plates"
+        ],
+        "cultural_note": "Beijing Olympics started 08/08/08 at 8:08:08 PM",
+        "translation_tip": "Consider using 8 in pricing for Chinese market"
+      },
+      "六": {
+        "pinyin": "liù",
+        "sounds_like": "流 (liú) - flow, 溜 (liū) - smooth",
+        "association": "Lucky, smooth sailing, everything goes well",
+        "idiom": "六六大顺 (liùliù dàshùn) - everything goes smoothly",
+        "preferred_in": ["Business dealings", "Wishes", "Phone numbers"]
+      },
+      "九": {
+        "pinyin": "jiǔ",
+        "sounds_like": "久 (jiǔ) - long-lasting",
+        "association": "Longevity, eternity, imperial (9 was emperor's number)",
+        "preferred_in": ["Wedding gifts", "Birthday wishes for elderly", "Formal occasions"],
+        "cultural_note": "99 roses symbolize eternal love"
+      },
+      "二": {
+        "pinyin": "èr",
+        "sounds_like": "Similar to 'love' in some dialects",
+        "association": "Good things come in pairs",
+        "preferred_in": ["Wedding decorations", "Gift giving"],
+        "note": "双喜 (shuāngxǐ) double happiness is wedding symbol"
+      }
+    }
+  },
+  "lucky_homophones": {
+    "category": "Words/objects associated with good fortune through sound",
+    "items": {
+      "鱼": {
+        "pinyin": "yú",
+        "sounds_like": "余 (yú) - surplus, abundance",
+        "cultural_meaning": "Prosperity, having more than enough",
+        "usage": [
+          "年年有余 (niánnián yǒu yú) - May you have abundance every year",
+          "Fish dishes at Chinese New Year",
+          "Fish imagery in decorations"
+        ],
+        "translation_note": "Fish references in Chinese may carry prosperity meaning"
+      },
+      "蝠/蝙蝠": {
+        "pinyin": "fú / biānfú",
+        "sounds_like": "福 (fú) - good fortune, blessing",
+        "cultural_meaning": "Good luck, happiness",
+        "usage": [
+          "Bat imagery in traditional art (positive, unlike Western)",
+          "Five bats = 五福 (wǔfú) - five blessings"
+        ],
+        "translation_warning": "Bat symbolism is OPPOSITE in Chinese vs Western culture"
+      },
+      "蝴蝶": {
+        "pinyin": "húdié",
+        "sounds_like": "福迭 (fúdié) - blessings repeatedly",
+        "cultural_meaning": "Love, happiness, longevity",
+        "usage": ["Wedding decorations", "Art motifs"]
+      },
+      "苹果": {
+        "pinyin": "píngguǒ",
+        "sounds_like": "平 (píng) - peace",
+        "cultural_meaning": "Peace, safety",
+        "usage": [
+          "平安夜 (píng'ān yè) - Christmas Eve gift giving apples",
+          "Wishing someone safe journey"
+        ]
+      },
+      "橘子/桔子": {
+        "pinyin": "júzi",
+        "sounds_like": "吉 (jí) - lucky",
+        "cultural_meaning": "Good luck",
+        "usage": ["Chinese New Year gifts", "Business gifts"]
+      },
+      "花生": {
+        "pinyin": "huāshēng",
+        "sounds_like": "花生 - can mean 'give birth lavishly'",
+        "cultural_meaning": "Fertility",
+        "usage": ["Wedding snacks for fertility wishes"]
+      },
+      "枣": {
+        "pinyin": "zǎo",
+        "sounds_like": "早 (zǎo) - early",
+        "cultural_meaning": "Early (birth of children)",
+        "usage": ["Wedding bedding tradition: 早生贵子"]
+      },
+      "栗子": {
+        "pinyin": "lìzi",
+        "sounds_like": "利子 (lìzǐ) - benefit son",
+        "cultural_meaning": "Having sons (traditional wish)",
+        "usage": ["Combined with 枣: 早生贵子 (have precious children soon)"]
+      },
+      "莲": {
+        "pinyin": "lián",
+        "sounds_like": "连 (lián) - continuous, 廉 (lián) - honest",
+        "cultural_meaning": "Purity, continuous good fortune",
+        "usage": ["Buddhist imagery", "Wishing continuous success"]
+      },
+      "柿子": {
+        "pinyin": "shìzi",
+        "sounds_like": "事 (shì) - matters, 世 (shì) - generation",
+        "cultural_meaning": "Everything goes well",
+        "usage": ["事事如意 (shìshì rúyì) - may all your wishes come true"]
+      }
+    }
+  },
+  "unlucky_homophones": {
+    "category": "Words to avoid due to negative homophone associations",
+    "items": {
+      "钟": {
+        "pinyin": "zhōng",
+        "sounds_like": "终 (zhōng) - end, death",
+        "taboo_phrase": "送钟 (sòng zhōng) = sending a clock = 送终 (attending to dying)",
+        "avoid": "NEVER give clocks as gifts",
+        "severity": "critical",
+        "alternative": "If must give watch, have recipient give small payment to 'buy' it"
+      },
+      "伞": {
+        "pinyin": "sǎn",
+        "sounds_like": "散 (sàn) - separate, scatter",
+        "avoid": "Don't gift umbrellas to couples or business partners",
+        "meaning": "Implies relationship will break apart",
+        "severity": "major"
+      },
+      "梨": {
+        "pinyin": "lí",
+        "sounds_like": "离 (lí) - separate, leave",
+        "avoid": "Don't share pears with loved ones",
+        "phrase": "分梨 (fēn lí) = 分离 (separate)",
+        "severity": "major"
+      },
+      "鞋": {
+        "pinyin": "xié",
+        "sounds_like": "邪 (xié) - evil",
+        "avoid": "Giving shoes implies wanting someone to walk away",
+        "context": "Especially avoid for elderly or romantic partners",
+        "severity": "minor"
+      },
+      "绿帽子": {
+        "pinyin": "lǜ màozi",
+        "literal": "green hat",
+        "meaning": "Cuckold (wife's infidelity)",
+        "avoid": "NEVER give green hats or describe men wearing green hats",
+        "severity": "critical",
+        "note": "This is extremely offensive"
+      },
+      "白色": {
+        "pinyin": "báisè",
+        "association": "Death, mourning, funerals",
+        "avoid": "White wrapping paper for gifts (except at funerals)",
+        "context": "White is funeral color in China",
+        "severity": "major"
+      },
+      "黑色": {
+        "pinyin": "hēisè",
+        "association": "Bad luck, evil",
+        "avoid": "Black gift wrapping",
+        "severity": "minor"
+      }
+    }
+  },
+  "homophone_ambiguity": {
+    "category": "Homophones that create ambiguity in translation",
+    "description": "Same pronunciation, different meanings - context critical",
+    "examples": {
+      "gōngshì": {
+        "possible_meanings": [
+          {"characters": "公式", "meaning": "formula, equation"},
+          {"characters": "公事", "meaning": "public affairs, official business"},
+          {"characters": "工事", "meaning": "construction work, fortification"},
+          {"characters": "攻势", "meaning": "offensive, attack"},
+          {"characters": "宫室", "meaning": "palace rooms"}
+        ],
+        "note": "Context determines correct characters"
+      },
+      "shìgù": {
+        "possible_meanings": [
+          {"characters": "事故", "meaning": "accident"},
+          {"characters": "世故", "meaning": "worldly-wise, sophisticated"}
+        ]
+      },
+      "yìyì": {
+        "possible_meanings": [
+          {"characters": "意义", "meaning": "meaning, significance"},
+          {"characters": "异议", "meaning": "objection, dissent"},
+          {"characters": "译意", "meaning": "translated meaning"},
+          {"characters": "毅力", "meaning": "willpower (yìlì, close)"}
+        ]
+      },
+      "jiàoyù": {
+        "possible_meanings": [
+          {"characters": "教育", "meaning": "education"},
+          {"characters": "教谕", "meaning": "teachings, instructions (literary)"}
+        ]
+      }
+    }
+  },
+  "tone_change_meanings": {
+    "category": "Same characters, different tones, different meanings",
+    "examples": {
+      "大夫": {
+        "pronunciation_1": "dàifu",
+        "meaning_1": "doctor (colloquial)",
+        "pronunciation_2": "dàfū",
+        "meaning_2": "senior official (historical)"
+      },
+      "地道": {
+        "pronunciation_1": "dìdao",
+        "meaning_1": "authentic, genuine",
+        "pronunciation_2": "dìdào",
+        "meaning_2": "tunnel, underground passage"
+      },
+      "差": {
+        "pronunciation_1": "chà",
+        "meaning_1": "poor quality, lacking",
+        "pronunciation_2": "chā",
+        "meaning_2": "difference",
+        "pronunciation_3": "chāi",
+        "meaning_3": "dispatch, send",
+        "pronunciation_4": "cī",
+        "meaning_4": "uneven (参差 cēncī)"
+      }
+    }
+  },
+  "marketing_localization": {
+    "category": "Considerations for Chinese market",
+    "guidelines": {
+      "brand_names": {
+        "good_examples": [
+          "可口可乐 (kěkǒu kělè) - Coca-Cola: 'delicious and enjoyable'",
+          "宝马 (bǎomǎ) - BMW: 'precious horse'",
+          "奔驰 (bēnchí) - Mercedes: 'running fast'"
+        ],
+        "bad_examples": [
+          "避免含'死'、'四'音的名称",
+          "Avoid names that sound like negative words"
+        ]
+      },
+      "pricing": {
+        "good": "¥88, ¥168, ¥888 (lucky numbers)",
+        "avoid": "¥44, ¥74, ¥444 (death associations)"
+      },
+      "colors": {
+        "lucky": "Red (happiness), Gold (wealth), Yellow (royalty)",
+        "unlucky": "White (death), Black (evil), Green (for hats - infidelity)"
+      }
+    }
+  },
+  "detection_rules": {
+    "rule_1": {
+      "name": "Number taboo detection",
+      "description": "Flag use of 4 in sensitive contexts",
+      "severity": "major"
+    },
+    "rule_2": {
+      "name": "Gift taboo detection",
+      "description": "Flag mention of taboo gift items (钟, 伞, 梨, 绿帽子)",
+      "severity": "critical_in_context"
+    },
+    "rule_3": {
+      "name": "Color context check",
+      "description": "Flag inappropriate color usage in cultural contexts",
+      "severity": "minor"
+    },
+    "rule_4": {
+      "name": "Homophone ambiguity",
+      "description": "Flag potentially ambiguous homophones for review",
+      "severity": "informational"
+    }
+  }
+}

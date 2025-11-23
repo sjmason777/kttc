@@ -41,7 +41,7 @@ except ImportError:
 
 # Try to import jieba
 try:
-    import jieba  # type: ignore[import-untyped]
+    import jieba
 
     JIEBA_AVAILABLE = True
     logger.info("Using jieba for Chinese word segmentation")
@@ -451,6 +451,102 @@ class ChineseLanguageHelper(LanguageHelper):
             logger.error(f"Particle checking failed: {e}")
             return []
 
+    def _find_measure_patterns(
+        self, tokens: list[str], pos_tags: list[str]
+    ) -> list[dict[str, str]]:
+        """Find measure word patterns (CD + M + NN) in tokens."""
+        patterns = []
+        for i in range(len(pos_tags) - 2):
+            if pos_tags[i] == "CD" and pos_tags[i + 1] == "M" and pos_tags[i + 2] == "NN":
+                patterns.append(
+                    {
+                        "number": tokens[i],
+                        "measure": tokens[i + 1],
+                        "noun": tokens[i + 2],
+                        "pattern": f"{tokens[i]}{tokens[i+1]}{tokens[i+2]}",
+                    }
+                )
+        return patterns
+
+    def _find_aspect_particles(
+        self, tokens: list[str], pos_tags: list[str]
+    ) -> list[dict[str, Any]]:
+        """Find aspect particles (了, 过) in tokens."""
+        particles = []
+        for i, (token, pos) in enumerate(zip(tokens, pos_tags)):
+            if pos == "AS" and token in ["了", "过"]:
+                prev_verb = tokens[i - 1] if i > 0 else None
+                particles.append({"particle": token, "verb": prev_verb, "position": i})
+        return particles
+
+    def _get_hanlp_enrichment(self, text: str) -> dict[str, Any] | None:
+        """Get enrichment data using HanLP."""
+        if not (self._hanlp_available and self._hanlp):
+            return None
+
+        try:
+            result = self._hanlp(text)
+            tokens, pos_tags = result["tok"], result["pos"]
+
+            pos_counts: dict[str, int] = {}
+            for pos in pos_tags:
+                pos_counts[pos] = pos_counts.get(pos, 0) + 1
+
+            entities = [
+                {"text": e_text, "type": e_type, "start": start, "end": end}
+                for e_text, e_type, start, end in result["ner"]
+            ]
+
+            return {
+                "has_morphology": True,
+                "word_count": len([t for t in tokens if t.strip()]),
+                "pos_distribution": pos_counts,
+                "measure_patterns": self._find_measure_patterns(tokens, pos_tags),
+                "aspect_particles": self._find_aspect_particles(tokens, pos_tags),
+                "entities": entities,
+                "has_hanlp": True,
+            }
+        except Exception as e:
+            logger.error(f"HanLP enrichment failed: {e}")
+            return None
+
+    def _get_spacy_enrichment(self, text: str) -> dict[str, Any] | None:
+        """Get enrichment data using spaCy."""
+        if not (SPACY_AVAILABLE and self._nlp):
+            return None
+
+        doc = self._nlp(text)
+
+        pos_counts: dict[str, int] = {}
+        for token in doc:
+            if token.pos_:
+                pos_counts[token.pos_] = pos_counts.get(token.pos_, 0) + 1
+
+        entities = [
+            {"text": ent.text, "label": ent.label_, "start": ent.start_char, "end": ent.end_char}
+            for ent in doc.ents
+        ]
+
+        return {
+            "has_morphology": True,
+            "word_count": len([token for token in doc if not token.is_punct]),
+            "pos_distribution": pos_counts,
+            "entities": entities,
+            "sentence_count": len(list(doc.sents)),
+        }
+
+    def _get_jieba_enrichment(self, text: str) -> dict[str, Any] | None:
+        """Get enrichment data using jieba."""
+        if not JIEBA_AVAILABLE:
+            return None
+
+        words = list(jieba.cut(text))
+        return {
+            "has_morphology": True,
+            "word_count": len([w for w in words if w.strip()]),
+            "segmentation_method": "jieba",
+        }
+
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
         """Get comprehensive linguistic data for enriching LLM prompts.
 
@@ -470,107 +566,20 @@ class ChineseLanguageHelper(LanguageHelper):
         if not self.is_available():
             return {"has_morphology": False}
 
-        enrichment: dict[str, Any] = {"has_morphology": True}
+        # Try HanLP first (most accurate)
+        hanlp_result = self._get_hanlp_enrichment(text)
+        if hanlp_result:
+            return hanlp_result
 
-        # Prefer HanLP for most accurate analysis
-        if self._hanlp_available and self._hanlp:
-            try:
-                result = self._hanlp(text)
-                tokens = result["tok"]
-                pos_tags = result["pos"]
+        # Try spaCy fallback
+        spacy_result = self._get_spacy_enrichment(text)
+        if spacy_result:
+            return spacy_result
 
-                # Count CTB POS tags
-                pos_counts: dict[str, int] = {}
-                for pos in pos_tags:
-                    pos_counts[pos] = pos_counts.get(pos, 0) + 1
-
-                # Find measure word patterns (CD + M + NN)
-                measure_patterns = []
-                for i in range(len(pos_tags) - 2):
-                    if pos_tags[i] == "CD" and pos_tags[i + 1] == "M" and pos_tags[i + 2] == "NN":
-                        measure_patterns.append(
-                            {
-                                "number": tokens[i],
-                                "measure": tokens[i + 1],
-                                "noun": tokens[i + 2],
-                                "pattern": f"{tokens[i]}{tokens[i+1]}{tokens[i+2]}",
-                            }
-                        )
-
-                # Find aspect particles
-                aspect_particles = []
-                for i, (token, pos) in enumerate(zip(tokens, pos_tags)):
-                    if pos == "AS" and token in ["了", "过"]:
-                        prev_verb = tokens[i - 1] if i > 0 else None
-                        aspect_particles.append(
-                            {"particle": token, "verb": prev_verb, "position": i}
-                        )
-
-                # Extract named entities
-                entities = []
-                for ent_text, ent_type, start, end in result["ner"]:
-                    entities.append(
-                        {"text": ent_text, "type": ent_type, "start": start, "end": end}
-                    )
-
-                enrichment.update(
-                    {
-                        "word_count": len([t for t in tokens if t.strip()]),
-                        "pos_distribution": pos_counts,
-                        "measure_patterns": measure_patterns,
-                        "aspect_particles": aspect_particles,
-                        "entities": entities,
-                        "has_hanlp": True,
-                    }
-                )
-
-                return enrichment
-
-            except Exception as e:
-                logger.error(f"HanLP enrichment failed: {e}")
-                # Fall through to spaCy/jieba fallback
-
-        # Use spaCy if available for richer analysis
-        if SPACY_AVAILABLE and self._nlp:
-            doc = self._nlp(text)
-
-            # Count parts of speech
-            spacy_pos_counts: dict[str, int] = {}
-            for token in doc:
-                if token.pos_:
-                    spacy_pos_counts[token.pos_] = spacy_pos_counts.get(token.pos_, 0) + 1
-
-            # Extract named entities
-            spacy_entities = []
-            for ent in doc.ents:
-                spacy_entities.append(
-                    {
-                        "text": ent.text,
-                        "label": ent.label_,
-                        "start": ent.start_char,
-                        "end": ent.end_char,
-                    }
-                )
-
-            # Count sentences
-            sent_count = len(list(doc.sents))
-
-            return {
-                "has_morphology": True,
-                "word_count": len([token for token in doc if not token.is_punct]),
-                "pos_distribution": spacy_pos_counts,
-                "entities": spacy_entities,
-                "sentence_count": sent_count,
-            }
-
-        # Fallback to jieba-only mode
-        if JIEBA_AVAILABLE:
-            words = list(jieba.cut(text))
-            return {
-                "has_morphology": True,
-                "word_count": len([w for w in words if w.strip()]),
-                "segmentation_method": "jieba",
-            }
+        # Try jieba fallback
+        jieba_result = self._get_jieba_enrichment(text)
+        if jieba_result:
+            return jieba_result
 
         return {"has_morphology": False}
 

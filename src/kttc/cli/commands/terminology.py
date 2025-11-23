@@ -120,6 +120,70 @@ def list_glossaries(
         raise typer.Exit(code=1)
 
 
+def _display_mqm_glossary(glossary_data: dict[str, Any], limit: int) -> None:
+    """Display MQM error types glossary."""
+    error_types = glossary_data["error_types"]
+    table = Table(title=f"MQM Error Types ({len(error_types)} types)", show_lines=True)
+    table.add_column("Type", style="cyan", no_wrap=True)
+    table.add_column("Definition", style="green", max_width=60)
+    table.add_column("Severity", style="yellow")
+    for i, (error_type, info) in enumerate(sorted(error_types.items())):
+        if i >= limit:
+            break
+        table.add_row(error_type, info.get("definition", ""), info.get("severity", ""))
+    console.print(table)
+
+
+def _display_cases_glossary(glossary_data: dict[str, Any], key: str, title: str) -> None:
+    """Display cases glossary (Russian/Hindi)."""
+    cases = glossary_data[key]
+    table = Table(title=f"{title} ({len(cases)} cases)", show_lines=True)
+    table.add_column("Case", style="cyan", no_wrap=True)
+    table.add_column("Endings/Postposition", style="green")
+    table.add_column("Function", style="yellow", max_width=50)
+    for case_name, case_info in sorted(cases.items()):
+        endings = case_info.get("endings") or case_info.get("postposition", "")
+        if isinstance(endings, list):
+            endings = ", ".join(endings)
+        name = (
+            f"{case_name}. {case_info.get('name', '')}"
+            if key == "cases_hindi"
+            else case_name.title()
+        )
+        table.add_row(name, endings, case_info.get("function", ""))
+    console.print(table)
+
+
+def _display_classifiers_glossary(glossary_data: dict[str, Any], limit: int) -> None:
+    """Display Chinese classifiers glossary."""
+    classifiers = glossary_data["classifiers"]
+    table = Table(title=f"Chinese Measure Words ({len(classifiers)} classifiers)", show_lines=True)
+    table.add_column("Classifier", style="cyan", no_wrap=True)
+    table.add_column("Pinyin", style="green")
+    table.add_column("Category", style="yellow")
+    table.add_column("Usage", style="dim", max_width=40)
+    for i, (classifier, info) in enumerate(sorted(classifiers.items())):
+        if i >= limit:
+            break
+        table.add_row(
+            classifier, info.get("pinyin", ""), info.get("category", ""), info.get("usage", "")
+        )
+    console.print(table)
+
+
+def _display_generic_glossary(glossary_data: dict[str, Any], limit: int) -> None:
+    """Display generic glossary as key-value table."""
+    table = Table(title="Glossary Contents", show_lines=True)
+    table.add_column("Key", style="cyan")
+    table.add_column("Value", style="green", max_width=80)
+    for i, (key, value) in enumerate(sorted(glossary_data.items())):
+        if i >= limit:
+            break
+        value_str = json.dumps(value, ensure_ascii=False) if isinstance(value, dict) else str(value)
+        table.add_row(key, value_str[:200])
+    console.print(table)
+
+
 @terminology_app.command("show")
 def show_glossary(
     lang: str = typer.Argument(..., help="Language code (e.g., en, ru, zh)"),
@@ -155,99 +219,16 @@ def show_glossary(
 
         # Table output format
         if isinstance(glossary_data, dict):
-            # Handle different glossary structures
             if "error_types" in glossary_data:
-                # MQM glossary
-                error_types = glossary_data["error_types"]
-                table = Table(title=f"MQM Error Types ({len(error_types)} types)", show_lines=True)
-                table.add_column("Type", style="cyan", no_wrap=True)
-                table.add_column("Definition", style="green", max_width=60)
-                table.add_column("Severity", style="yellow")
-
-                count = 0
-                for error_type, info in sorted(error_types.items()):
-                    if count >= limit:
-                        break
-                    definition = info.get("definition", "")
-                    severity = info.get("severity", "")
-                    table.add_row(error_type, definition, severity)
-                    count += 1
-
-                console.print(table)
-
+                _display_mqm_glossary(glossary_data, limit)
             elif "cases" in glossary_data:
-                # Russian cases glossary
-                cases = glossary_data["cases"]
-                table = Table(title=f"Russian Cases ({len(cases)} cases)", show_lines=True)
-                table.add_column("Case", style="cyan", no_wrap=True)
-                table.add_column("Endings", style="green")
-                table.add_column("Function", style="yellow", max_width=50)
-
-                for case_name, case_info in sorted(cases.items()):
-                    endings = ", ".join(case_info.get("endings", []))
-                    function = case_info.get("function", "")
-                    table.add_row(case_name.title(), endings, function)
-
-                console.print(table)
-
+                _display_cases_glossary(glossary_data, "cases", "Russian Cases")
             elif "classifiers" in glossary_data:
-                # Chinese classifiers glossary
-                classifiers = glossary_data["classifiers"]
-                table = Table(
-                    title=f"Chinese Measure Words ({len(classifiers)} classifiers)", show_lines=True
-                )
-                table.add_column("Classifier", style="cyan", no_wrap=True)
-                table.add_column("Pinyin", style="green")
-                table.add_column("Category", style="yellow")
-                table.add_column("Usage", style="dim", max_width=40)
-
-                count = 0
-                for classifier, info in sorted(classifiers.items()):
-                    if count >= limit:
-                        break
-                    pinyin = info.get("pinyin", "")
-                    cat = info.get("category", "")
-                    usage = info.get("usage", "")
-                    table.add_row(classifier, pinyin, cat, usage)
-                    count += 1
-
-                console.print(table)
-
+                _display_classifiers_glossary(glossary_data, limit)
             elif "cases_hindi" in glossary_data:
-                # Hindi cases glossary
-                cases = glossary_data["cases_hindi"]
-                table = Table(title=f"Hindi Cases (कारक) ({len(cases)} cases)", show_lines=True)
-                table.add_column("Case", style="cyan", no_wrap=True)
-                table.add_column("Postposition", style="green")
-                table.add_column("Function", style="yellow", max_width=50)
-
-                for case_num, case_info in sorted(cases.items()):
-                    case_name = case_info.get("name", "")
-                    postposition = case_info.get("postposition", "")
-                    function = case_info.get("function", "")
-                    table.add_row(f"{case_num}. {case_name}", postposition, function)
-
-                console.print(table)
-
+                _display_cases_glossary(glossary_data, "cases_hindi", "Hindi Cases (कारक)")
             else:
-                # Generic dictionary display
-                table = Table(title="Glossary Contents", show_lines=True)
-                table.add_column("Key", style="cyan")
-                table.add_column("Value", style="green", max_width=80)
-
-                count = 0
-                for key, value in sorted(glossary_data.items()):
-                    if count >= limit:
-                        break
-                    value_str = (
-                        json.dumps(value, ensure_ascii=False)
-                        if isinstance(value, dict)
-                        else str(value)
-                    )
-                    table.add_row(key, value_str[:200])
-                    count += 1
-
-                console.print(table)
+                _display_generic_glossary(glossary_data, limit)
 
         console.print(f"\n[dim]Showing up to {limit} entries[/dim]")
 

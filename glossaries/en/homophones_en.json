@@ -1,0 +1,525 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Homophones - Translation Traps",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "English homophones - words that sound alike but have different meanings and spellings. Critical for translation quality.",
+    "sources": [
+      "Grammarly: The Ultimate Guide to Homophones",
+      "Oxford Royale: Homophones - The Most Confusing Words in English",
+      "Cambridge Dictionary",
+      "Merriam-Webster Dictionary"
+    ],
+    "total_terms": 85,
+    "usage": "Translation QA, spelling check, MT error detection, proofreading"
+  },
+  "overview": {
+    "definition": "Homophones are words that sound the same but have different meanings and usually different spellings",
+    "importance": "Critical for translation quality - MT and human translators often confuse these pairs",
+    "detection_method": "Context analysis required to determine correct word choice",
+    "severity": "major to critical - can completely change meaning"
+  },
+  "critical_homophones": {
+    "description": "Most commonly confused pairs - high frequency errors",
+    "severity": "critical",
+    "pairs": {
+      "their_there_theyre": {
+        "words": ["their", "there", "they're"],
+        "definitions": {
+          "their": "possessive pronoun - belonging to them",
+          "there": "adverb - in that place; also used as dummy subject",
+          "they're": "contraction of 'they are'"
+        },
+        "examples": {
+          "their": "Their house is beautiful.",
+          "there": "The book is over there. / There are three apples.",
+          "they're": "They're coming to the party."
+        },
+        "common_errors": [
+          "Their going to the store. (should be: They're)",
+          "I put it over they're. (should be: there)",
+          "There car is red. (should be: Their)"
+        ],
+        "mnemonic": "THEIR = ownership (has 'heir' - inherits things), THERE = place (has 'here'), THEY'RE = they are (has apostrophe)"
+      },
+      "your_youre": {
+        "words": ["your", "you're"],
+        "definitions": {
+          "your": "possessive pronoun - belonging to you",
+          "you're": "contraction of 'you are'"
+        },
+        "examples": {
+          "your": "Is this your book?",
+          "you're": "You're very talented."
+        },
+        "common_errors": [
+          "Your welcome. (should be: You're)",
+          "You're car is nice. (should be: Your)"
+        ],
+        "test": "If you can replace with 'you are', use you're"
+      },
+      "its_its": {
+        "words": ["its", "it's"],
+        "definitions": {
+          "its": "possessive pronoun - belonging to it (no apostrophe!)",
+          "it's": "contraction of 'it is' or 'it has'"
+        },
+        "examples": {
+          "its": "The dog wagged its tail.",
+          "it's": "It's raining. / It's been a long day."
+        },
+        "common_errors": [
+          "It's color is blue. (should be: Its)",
+          "Its going to rain. (should be: It's)"
+        ],
+        "special_note": "Unlike other possessives, 'its' has NO apostrophe",
+        "test": "If you can replace with 'it is' or 'it has', use it's"
+      },
+      "to_too_two": {
+        "words": ["to", "too", "two"],
+        "definitions": {
+          "to": "preposition (direction) or infinitive marker",
+          "too": "adverb meaning 'also' or 'excessively'",
+          "two": "the number 2"
+        },
+        "examples": {
+          "to": "Go to school. / I want to eat.",
+          "too": "Me too. / It's too hot.",
+          "two": "I have two cats."
+        },
+        "common_errors": [
+          "I want too go. (should be: to)",
+          "Me to! (should be: too)",
+          "There are to many. (should be: too)"
+        ],
+        "mnemonic": "TOO has too many O's (excessive)"
+      }
+    }
+  },
+  "major_homophones": {
+    "description": "Frequently confused pairs in professional/academic writing",
+    "severity": "major",
+    "pairs": {
+      "affect_effect": {
+        "words": ["affect", "effect"],
+        "definitions": {
+          "affect": "verb - to influence or have an impact on",
+          "effect": "noun - the result or outcome (rarely: verb meaning 'to bring about')"
+        },
+        "examples": {
+          "affect": "The weather affects my mood.",
+          "effect": "The effect of the medicine was immediate."
+        },
+        "common_errors": [
+          "The medicine had no affect. (should be: effect)",
+          "This will effect your grade. (should be: affect)"
+        ],
+        "mnemonic": "RAVEN: Remember Affect Verb Effect Noun"
+      },
+      "accept_except": {
+        "words": ["accept", "except"],
+        "definitions": {
+          "accept": "verb - to receive or agree to",
+          "except": "preposition/conjunction - excluding, but"
+        },
+        "examples": {
+          "accept": "I accept your apology.",
+          "except": "Everyone came except John."
+        }
+      },
+      "than_then": {
+        "words": ["than", "then"],
+        "definitions": {
+          "than": "conjunction used in comparisons",
+          "then": "adverb indicating time or sequence"
+        },
+        "examples": {
+          "than": "She is taller than me.",
+          "then": "First eat, then study. / Back then, things were different."
+        },
+        "common_errors": [
+          "He is smarter then me. (should be: than)",
+          "If you're ready, than let's go. (should be: then)"
+        ]
+      },
+      "principal_principle": {
+        "words": ["principal", "principle"],
+        "definitions": {
+          "principal": "noun - head of school/organization; adjective - main/primary",
+          "principle": "noun - fundamental rule or belief"
+        },
+        "examples": {
+          "principal": "The principal announced a holiday. / The principal reason is cost.",
+          "principle": "It's against my principles. / The principle of gravity."
+        },
+        "mnemonic": "The principAL is your pAL; a principLE is a ruLE"
+      },
+      "stationary_stationery": {
+        "words": ["stationary", "stationery"],
+        "definitions": {
+          "stationary": "adjective - not moving, fixed in place",
+          "stationery": "noun - writing materials (paper, pens, etc.)"
+        },
+        "examples": {
+          "stationary": "The car remained stationary.",
+          "stationery": "I need to buy some stationery."
+        },
+        "mnemonic": "StationERy includes papER"
+      },
+      "complement_compliment": {
+        "words": ["complement", "compliment"],
+        "definitions": {
+          "complement": "verb/noun - to complete or enhance; something that completes",
+          "compliment": "verb/noun - to praise; an expression of praise"
+        },
+        "examples": {
+          "complement": "The wine complements the cheese. / A full complement of staff.",
+          "compliment": "She complimented my dress. / That's a nice compliment."
+        },
+        "mnemonic": "I like to receive complIments"
+      },
+      "loose_lose": {
+        "words": ["loose", "lose"],
+        "definitions": {
+          "loose": "adjective - not tight, not firmly fixed",
+          "lose": "verb - to misplace, to fail to win"
+        },
+        "examples": {
+          "loose": "The screw is loose. / Loose clothing.",
+          "lose": "Don't lose your keys. / We might lose the game."
+        },
+        "common_errors": [
+          "I don't want to loose my wallet. (should be: lose)",
+          "This shirt is too lose. (should be: loose)"
+        ],
+        "note": "One of the most common spelling errors in English"
+      },
+      "advice_advise": {
+        "words": ["advice", "advise"],
+        "definitions": {
+          "advice": "noun - recommendation or guidance",
+          "advise": "verb - to give advice, to recommend"
+        },
+        "examples": {
+          "advice": "Can you give me some advice?",
+          "advise": "I advise you to study hard."
+        },
+        "pronunciation": "advice /ədˈvaɪs/ (S sound), advise /ədˈvaɪz/ (Z sound)"
+      },
+      "practice_practise": {
+        "words": ["practice", "practise"],
+        "definitions": {
+          "practice": "noun (US: also verb) - repeated exercise, habit",
+          "practise": "verb (British) - to perform repeatedly"
+        },
+        "examples": {
+          "practice": "Practice makes perfect. (noun)",
+          "practise": "You should practise every day. (British verb)"
+        },
+        "regional_note": "In American English, 'practice' is used for both noun and verb"
+      }
+    }
+  },
+  "common_homophones": {
+    "description": "Other frequently confused pairs",
+    "severity": "minor to major",
+    "pairs": {
+      "brake_break": {
+        "words": ["brake", "break"],
+        "definitions": {
+          "brake": "noun/verb - device for stopping; to slow down",
+          "break": "verb/noun - to damage; a pause"
+        },
+        "examples": {
+          "brake": "Hit the brake! / Brake slowly.",
+          "break": "Don't break the vase. / Take a break."
+        }
+      },
+      "bare_bear": {
+        "words": ["bare", "bear"],
+        "definitions": {
+          "bare": "adjective - uncovered, naked; verb - to uncover",
+          "bear": "noun - animal; verb - to carry, to endure"
+        },
+        "examples": {
+          "bare": "Bare feet. / The bare minimum.",
+          "bear": "A polar bear. / I can't bear the pain. / Bear in mind."
+        }
+      },
+      "passed_past": {
+        "words": ["passed", "past"],
+        "definitions": {
+          "passed": "verb - past tense of 'pass'",
+          "past": "noun/adjective/preposition - time gone by; beyond"
+        },
+        "examples": {
+          "passed": "She passed the exam. / Time passed slowly.",
+          "past": "In the past. / Walk past the store. / It's past midnight."
+        }
+      },
+      "weather_whether": {
+        "words": ["weather", "whether"],
+        "definitions": {
+          "weather": "noun - atmospheric conditions",
+          "whether": "conjunction - if, expressing doubt or choice"
+        },
+        "examples": {
+          "weather": "The weather is nice today.",
+          "whether": "I don't know whether to go."
+        }
+      },
+      "peace_piece": {
+        "words": ["peace", "piece"],
+        "definitions": {
+          "peace": "noun - absence of war, tranquility",
+          "piece": "noun - a part of something"
+        },
+        "examples": {
+          "peace": "World peace. / Peace of mind.",
+          "piece": "A piece of cake. / A piece of advice."
+        }
+      },
+      "right_write_rite": {
+        "words": ["right", "write", "rite"],
+        "definitions": {
+          "right": "adjective - correct, opposite of left; noun - entitlement",
+          "write": "verb - to form letters/words",
+          "rite": "noun - ceremony, ritual"
+        },
+        "examples": {
+          "right": "Turn right. / That's right. / Human rights.",
+          "write": "Write a letter.",
+          "rite": "A religious rite. / Rite of passage."
+        }
+      },
+      "knew_new": {
+        "words": ["knew", "new"],
+        "definitions": {
+          "knew": "verb - past tense of 'know'",
+          "new": "adjective - recently made or discovered"
+        },
+        "examples": {
+          "knew": "I knew the answer.",
+          "new": "A new car."
+        }
+      },
+      "hear_here": {
+        "words": ["hear", "here"],
+        "definitions": {
+          "hear": "verb - to perceive sound",
+          "here": "adverb - in this place"
+        },
+        "examples": {
+          "hear": "Can you hear me?",
+          "here": "Come here."
+        }
+      },
+      "whole_hole": {
+        "words": ["whole", "hole"],
+        "definitions": {
+          "whole": "adjective/noun - entire, complete",
+          "hole": "noun - an opening, gap"
+        },
+        "examples": {
+          "whole": "The whole truth. / As a whole.",
+          "hole": "A hole in the wall."
+        }
+      },
+      "waist_waste": {
+        "words": ["waist", "waste"],
+        "definitions": {
+          "waist": "noun - middle part of body",
+          "waste": "verb/noun - to use carelessly; garbage"
+        },
+        "examples": {
+          "waist": "A slim waist.",
+          "waste": "Don't waste water. / Industrial waste."
+        }
+      },
+      "wait_weight": {
+        "words": ["wait", "weight"],
+        "definitions": {
+          "wait": "verb - to stay in expectation",
+          "weight": "noun - heaviness, mass"
+        },
+        "examples": {
+          "wait": "Wait for me.",
+          "weight": "Lose weight."
+        }
+      },
+      "weak_week": {
+        "words": ["weak", "week"],
+        "definitions": {
+          "weak": "adjective - lacking strength",
+          "week": "noun - seven days"
+        },
+        "examples": {
+          "weak": "A weak signal.",
+          "week": "Next week."
+        }
+      },
+      "flour_flower": {
+        "words": ["flour", "flower"],
+        "definitions": {
+          "flour": "noun - ground grain for baking",
+          "flower": "noun - plant bloom"
+        },
+        "examples": {
+          "flour": "Wheat flour.",
+          "flower": "A beautiful flower."
+        }
+      },
+      "meet_meat": {
+        "words": ["meet", "meat"],
+        "definitions": {
+          "meet": "verb - to encounter",
+          "meat": "noun - animal flesh as food"
+        },
+        "examples": {
+          "meet": "Nice to meet you.",
+          "meat": "Red meat."
+        }
+      },
+      "see_sea": {
+        "words": ["see", "sea"],
+        "definitions": {
+          "see": "verb - to perceive with eyes",
+          "sea": "noun - ocean"
+        },
+        "examples": {
+          "see": "I can see you.",
+          "sea": "The Black Sea."
+        }
+      },
+      "son_sun": {
+        "words": ["son", "sun"],
+        "definitions": {
+          "son": "noun - male child",
+          "sun": "noun - star, source of light"
+        },
+        "examples": {
+          "son": "My son is five.",
+          "sun": "The sun is shining."
+        }
+      },
+      "buy_by_bye": {
+        "words": ["buy", "by", "bye"],
+        "definitions": {
+          "buy": "verb - to purchase",
+          "by": "preposition - near, through",
+          "bye": "interjection - goodbye"
+        },
+        "examples": {
+          "buy": "Buy groceries.",
+          "by": "Stand by me. / Written by Shakespeare.",
+          "bye": "Bye! See you later."
+        }
+      },
+      "ate_eight": {
+        "words": ["ate", "eight"],
+        "definitions": {
+          "ate": "verb - past tense of 'eat'",
+          "eight": "noun/adjective - the number 8"
+        },
+        "examples": {
+          "ate": "I ate breakfast.",
+          "eight": "Eight apples."
+        }
+      },
+      "allowed_aloud": {
+        "words": ["allowed", "aloud"],
+        "definitions": {
+          "allowed": "verb - permitted",
+          "aloud": "adverb - audibly, out loud"
+        },
+        "examples": {
+          "allowed": "Smoking is not allowed.",
+          "aloud": "Read aloud."
+        }
+      },
+      "desert_dessert": {
+        "words": ["desert", "dessert"],
+        "definitions": {
+          "desert": "noun - arid land; verb - to abandon",
+          "dessert": "noun - sweet course after meal"
+        },
+        "examples": {
+          "desert": "The Sahara Desert. / He deserted his post.",
+          "dessert": "Ice cream for dessert."
+        },
+        "mnemonic": "Dessert has two S's because you want more",
+        "pronunciation_note": "desert (noun) /ˈdezərt/, desert (verb) /dɪˈzɜːrt/, dessert /dɪˈzɜːrt/"
+      },
+      "discrete_discreet": {
+        "words": ["discrete", "discreet"],
+        "definitions": {
+          "discrete": "adjective - separate, distinct",
+          "discreet": "adjective - careful, tactful, unobtrusive"
+        },
+        "examples": {
+          "discrete": "Three discrete categories.",
+          "discreet": "Please be discreet about this."
+        }
+      },
+      "ensure_insure": {
+        "words": ["ensure", "insure"],
+        "definitions": {
+          "ensure": "verb - to make certain",
+          "insure": "verb - to provide insurance"
+        },
+        "examples": {
+          "ensure": "Ensure your safety.",
+          "insure": "Insure your car."
+        }
+      },
+      "elicit_illicit": {
+        "words": ["elicit", "illicit"],
+        "definitions": {
+          "elicit": "verb - to draw out, evoke",
+          "illicit": "adjective - illegal, forbidden"
+        },
+        "examples": {
+          "elicit": "Elicit a response.",
+          "illicit": "Illicit drugs."
+        }
+      }
+    }
+  },
+  "detection_rules": {
+    "description": "Rules for detecting homophone errors in text",
+    "patterns": [
+      {
+        "pattern": "their + verb",
+        "likely_error": "their should be they're",
+        "example": "Their going → They're going"
+      },
+      {
+        "pattern": "your + adjective/adverb",
+        "likely_error": "your should be you're",
+        "example": "Your welcome → You're welcome"
+      },
+      {
+        "pattern": "it's + noun",
+        "likely_error": "it's should be its",
+        "example": "It's tail → Its tail"
+      },
+      {
+        "pattern": "to + adjective",
+        "likely_error": "to should be too",
+        "example": "to much → too much"
+      },
+      {
+        "pattern": "affect + article/determiner",
+        "likely_error": "affect should be effect",
+        "example": "the affect → the effect"
+      },
+      {
+        "pattern": "loose + object",
+        "likely_error": "loose should be lose",
+        "example": "loose the game → lose the game"
+      }
+    ]
+  }
+}

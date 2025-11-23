@@ -1,0 +1,267 @@
+{
+  "metadata": {
+    "language": "ru",
+    "language_name": "Русский",
+    "glossary_type": "Russian Idioms and Phraseological Units",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Русские фразеологизмы и идиомы - нельзя переводить дословно",
+    "sources": [
+      "Фёдоров А.И. Фразеологический словарь русского языка",
+      "Молотков А.И. Фразеологический словарь русского языка",
+      "Телия В.Н. Большой фразеологический словарь русского языка"
+    ],
+    "total_terms": 80
+  },
+  "idioms": {
+    "description": "Устойчивые выражения, значение которых не выводится из значений составляющих слов",
+    "translation_warning": "КАТЕГОРИЧЕСКИ НЕЛЬЗЯ переводить дословно!",
+    "body_parts": {
+      "не_стой_над_душой": {
+        "literal": "Don't stand over [my] soul",
+        "meaning": "Не мешай, отойди, не контролируй",
+        "english_equivalent": "Stop breathing down my neck",
+        "usage": "Когда кто-то мешает работать своим присутствием",
+        "severity": "critical_if_literal"
+      },
+      "руки_не_доходят": {
+        "literal": "Hands don't reach",
+        "meaning": "Нет времени/возможности что-то сделать",
+        "english_equivalent": "I can't get around to it",
+        "example": "Руки не доходят прочитать эту книгу"
+      },
+      "голова_идёт_кругом": {
+        "literal": "Head goes in circles",
+        "meaning": "Сильное головокружение; слишком много дел",
+        "english_equivalent": "My head is spinning"
+      },
+      "зуб_на_зуб_не_попадает": {
+        "literal": "Tooth doesn't hit tooth",
+        "meaning": "Очень сильно замёрзнуть, дрожать от холода",
+        "english_equivalent": "Teeth are chattering"
+      },
+      "как_рукой_сняло": {
+        "literal": "As if removed by hand",
+        "meaning": "Мгновенно прошло (о боли, болезни)",
+        "english_equivalent": "Gone in a flash"
+      },
+      "глаза_разбегаются": {
+        "literal": "Eyes scatter",
+        "meaning": "Трудно выбрать из-за большого разнообразия",
+        "english_equivalent": "Spoiled for choice"
+      },
+      "язык_без_костей": {
+        "literal": "Tongue without bones",
+        "meaning": "Болтливый человек",
+        "english_equivalent": "Has a loose tongue"
+      },
+      "ушки_на_макушке": {
+        "literal": "Ears on top of the head",
+        "meaning": "Очень внимательно слушать, быть настороже",
+        "english_equivalent": "All ears"
+      }
+    },
+    "animals": {
+      "заморить_червячка": {
+        "literal": "To starve a little worm",
+        "meaning": "Слегка перекусить",
+        "english_equivalent": "To grab a bite",
+        "cultural_note": "Один из самых известных русских фразеологизмов"
+      },
+      "делать_из_мухи_слона": {
+        "literal": "To make an elephant out of a fly",
+        "meaning": "Преувеличивать, раздувать проблему",
+        "english_equivalent": "To make a mountain out of a molehill"
+      },
+      "кот_наплакал": {
+        "literal": "A cat cried [that much]",
+        "meaning": "Очень мало",
+        "english_equivalent": "A drop in the bucket"
+      },
+      "когда_рак_на_горе_свистнет": {
+        "literal": "When a crayfish whistles on a mountain",
+        "meaning": "Никогда",
+        "english_equivalent": "When pigs fly"
+      },
+      "медвежья_услуга": {
+        "literal": "Bear's service",
+        "meaning": "Помощь, которая приносит вред",
+        "english_equivalent": "Disservice, to do more harm than good"
+      },
+      "тянуть_кота_за_хвост": {
+        "literal": "To pull a cat by the tail",
+        "meaning": "Медлить, затягивать дело",
+        "english_equivalent": "To drag one's feet"
+      },
+      "собаку_съесть": {
+        "literal": "To eat a dog",
+        "meaning": "Быть большим специалистом в чём-то",
+        "english_equivalent": "To be an old hand at something"
+      },
+      "куры_не_клюют": {
+        "literal": "Chickens don't peck [at it]",
+        "meaning": "Очень много (обычно о деньгах)",
+        "english_equivalent": "Rolling in money"
+      },
+      "как_курица_лапой": {
+        "literal": "Like a chicken with its foot",
+        "meaning": "Очень плохой почерк",
+        "english_equivalent": "Chicken scratch"
+      }
+    },
+    "objects_actions": {
+      "положить_зубы_на_полку": {
+        "literal": "To put teeth on a shelf",
+        "meaning": "Голодать, жить в бедности",
+        "english_equivalent": "To tighten one's belt"
+      },
+      "наломать_дров": {
+        "literal": "To break firewood",
+        "meaning": "Наделать ошибок, натворить бед",
+        "english_equivalent": "To make a mess of things"
+      },
+      "вывести_на_чистую_воду": {
+        "literal": "To lead out onto clean water",
+        "meaning": "Разоблачить, раскрыть обман",
+        "english_equivalent": "To expose someone"
+      },
+      "сесть_в_калошу": {
+        "literal": "To sit into a galosh",
+        "meaning": "Попасть в неловкое положение",
+        "english_equivalent": "To put one's foot in it"
+      },
+      "бить_баклуши": {
+        "literal": "To hit wooden blocks",
+        "meaning": "Бездельничать",
+        "english_equivalent": "To twiddle one's thumbs"
+      },
+      "лить_воду": {
+        "literal": "To pour water",
+        "meaning": "Говорить много и бессодержательно",
+        "english_equivalent": "To waffle, to beat around the bush"
+      },
+      "водить_за_нос": {
+        "literal": "To lead by the nose",
+        "meaning": "Обманывать, вводить в заблуждение",
+        "english_equivalent": "To lead someone by the nose"
+      },
+      "попасть_впросак": {
+        "literal": "To get into the prosak (rope-making machine)",
+        "meaning": "Оказаться в неприятном положении по своей оплошности",
+        "english_equivalent": "To get into a pickle"
+      }
+    },
+    "unique_constructions": {
+      "да_нет_наверное": {
+        "literal": "Yes no probably",
+        "meaning": "Неуверенное отрицание с возможностью согласия",
+        "english_equivalent": "Not really / I guess not",
+        "translation_note": "УНИКАЛЬНАЯ русская конструкция, буквальный перевод невозможен",
+        "severity": "critical_if_literal"
+      },
+      "руки_в_ноги": {
+        "literal": "Hands into legs",
+        "full_phrase": "Руки в ноги и вперёд",
+        "meaning": "Быстро собраться и идти/действовать",
+        "english_equivalent": "Get a move on"
+      },
+      "ни_свет_ни_заря": {
+        "literal": "Neither light nor dawn",
+        "meaning": "Очень рано",
+        "english_equivalent": "At the crack of dawn"
+      },
+      "ни_рыба_ни_мясо": {
+        "literal": "Neither fish nor meat",
+        "meaning": "Ничем не выделяющийся человек",
+        "english_equivalent": "Neither fish nor fowl"
+      },
+      "семь_пятниц_на_неделе": {
+        "literal": "Seven Fridays in a week",
+        "meaning": "Часто менять решения, быть непостоянным",
+        "english_equivalent": "To blow hot and cold"
+      },
+      "после_дождичка_в_четверг": {
+        "literal": "After a little rain on Thursday",
+        "meaning": "Неизвестно когда, никогда",
+        "english_equivalent": "When pigs fly"
+      }
+    },
+    "work_effort": {
+      "засучив_рукава": {
+        "literal": "Having rolled up sleeves",
+        "meaning": "Энергично, с усердием",
+        "english_equivalent": "To roll up one's sleeves"
+      },
+      "спустя_рукава": {
+        "literal": "With sleeves down",
+        "meaning": "Небрежно, кое-как",
+        "english_equivalent": "Half-heartedly"
+      },
+      "не_покладая_рук": {
+        "literal": "Without putting down hands",
+        "meaning": "Без отдыха, очень усердно",
+        "english_equivalent": "Without rest"
+      },
+      "через_пень_колоду": {
+        "literal": "Through stump and log",
+        "meaning": "Кое-как, плохо",
+        "english_equivalent": "In a slipshod manner"
+      }
+    }
+  },
+  "proverbs_sayings": {
+    "description": "Пословицы и поговорки - народная мудрость",
+    "warning": "Часто имеют эквиваленты в других языках, но с другими образами",
+    "entries": {
+      "не_всё_то_золото": {
+        "russian": "Не всё то золото, что блестит",
+        "english": "All that glitters is not gold",
+        "note": "Редкий случай почти дословного совпадения"
+      },
+      "в_тихом_омуте": {
+        "russian": "В тихом омуте черти водятся",
+        "literal": "Devils live in still waters",
+        "english": "Still waters run deep"
+      },
+      "без_труда": {
+        "russian": "Без труда не выловишь и рыбку из пруда",
+        "literal": "Without effort you won't catch a fish from a pond",
+        "english": "No pain, no gain"
+      },
+      "яблоко_от_яблони": {
+        "russian": "Яблоко от яблони недалеко падает",
+        "literal": "The apple doesn't fall far from the apple tree",
+        "english": "The apple doesn't fall far from the tree"
+      },
+      "семь_раз_отмерь": {
+        "russian": "Семь раз отмерь, один раз отрежь",
+        "english": "Measure twice, cut once",
+        "note": "В русском - семь раз, в английском - дважды"
+      },
+      "волков_бояться": {
+        "russian": "Волков бояться — в лес не ходить",
+        "literal": "If you're afraid of wolves, don't go to the forest",
+        "english": "Nothing ventured, nothing gained"
+      }
+    }
+  },
+  "translation_rules": {
+    "critical": [
+      "НИКОГДА не переводить фразеологизмы дословно",
+      "Искать эквивалентный фразеологизм в целевом языке",
+      "Если эквивалента нет - использовать описательный перевод",
+      "Сохранять стилистическую окраску (разговорное, книжное)"
+    ],
+    "examples": {
+      "good_translation": {
+        "russian": "Он собаку съел на этом деле",
+        "good_english": "He's an old hand at this",
+        "bad_english": "He ate a dog on this matter"
+      },
+      "descriptive_translation": {
+        "russian": "Да нет, наверное",
+        "english": "Well, probably not (uncertain negation)"
+      }
+    }
+  }
+}

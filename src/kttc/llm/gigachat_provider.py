@@ -210,6 +210,35 @@ class GigaChatProvider(BaseLLMProvider):
                 raise LLMTimeoutError(f"GigaChat request timed out: {e}") from e
             raise LLMError(f"GigaChat API error: {e}") from e
 
+    async def _handle_stream_response_status(self, response: Any) -> None:
+        """Handle streaming response status codes."""
+        if response.status == 401:
+            self._access_token = await self._get_access_token()
+            raise LLMAuthenticationError("GigaChat token expired, retry")
+        elif response.status == 429:
+            raise LLMRateLimitError("GigaChat rate limit exceeded")
+        elif response.status != 200:
+            error_text = await response.text()
+            raise LLMError(f"GigaChat API error (status {response.status}): {error_text}")
+
+    def _parse_sse_content(self, line_text: str) -> str | None:
+        """Parse SSE line and extract content."""
+        import json
+
+        if not line_text.startswith("data: "):
+            return None
+        data_str = line_text[6:]
+        if data_str == "[DONE]":
+            return None
+        try:
+            chunk = json.loads(data_str)
+            if "choices" in chunk and chunk["choices"]:
+                content = chunk["choices"][0].get("delta", {}).get("content", "")
+                return str(content) if content else None
+        except json.JSONDecodeError:
+            pass
+        return None
+
     async def stream(
         self,
         prompt: str,
@@ -217,24 +246,7 @@ class GigaChatProvider(BaseLLMProvider):
         max_tokens: int = 2000,
         **kwargs: Any,
     ) -> AsyncGenerator[str, None]:
-        """Generate a streaming completion from GigaChat.
-
-        Args:
-            prompt: The prompt to send
-            temperature: Sampling temperature (0.0-1.0)
-            max_tokens: Maximum tokens to generate
-            **kwargs: Additional GigaChat parameters
-
-        Yields:
-            Text chunks as they are generated
-
-        Raises:
-            LLMAuthenticationError: If authentication fails
-            LLMRateLimitError: If rate limit is exceeded
-            LLMTimeoutError: If request times out
-            LLMError: For other API errors
-        """
-        # Get access token
+        """Generate a streaming completion from GigaChat."""
         if not self._access_token:
             self._access_token = await self._get_access_token()
 
@@ -243,51 +255,23 @@ class GigaChatProvider(BaseLLMProvider):
             "Authorization": f"Bearer {self._access_token}",
             "Content-Type": "application/json",
         }
-
         payload = {
             "model": self.model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": temperature,
             "max_tokens": max_tokens,
-            "stream": True,  # Enable streaming
+            "stream": True,
         }
 
         try:
             async with aiohttp.ClientSession(timeout=self.timeout) as session:
                 async with session.post(url, headers=headers, json=payload, ssl=False) as response:
-                    if response.status == 401:
-                        # Token expired
-                        self._access_token = await self._get_access_token()
-                        raise LLMAuthenticationError("GigaChat token expired, retry")
-                    elif response.status == 429:
-                        raise LLMRateLimitError("GigaChat rate limit exceeded")
-                    elif response.status != 200:
-                        error_text = await response.text()
-                        raise LLMError(
-                            f"GigaChat API error (status {response.status}): {error_text}"
-                        )
-
-                    # Stream response line by line (Server-Sent Events format)
+                    await self._handle_stream_response_status(response)
                     async for line in response.content:
                         if line:
-                            line_text = line.decode("utf-8").strip()
-                            if line_text.startswith("data: "):
-                                data_str = line_text[6:]  # Remove "data: " prefix
-                                if data_str == "[DONE]":
-                                    break
-
-                                import json
-
-                                try:
-                                    chunk = json.loads(data_str)
-                                    if "choices" in chunk and chunk["choices"]:
-                                        delta = chunk["choices"][0].get("delta", {})
-                                        content = delta.get("content", "")
-                                        if content:
-                                            yield content
-                                except json.JSONDecodeError:
-                                    continue
-
+                            content = self._parse_sse_content(line.decode("utf-8").strip())
+                            if content:
+                                yield content
         except aiohttp.ClientError as e:
             if "timeout" in str(e).lower():
                 raise LLMTimeoutError(f"GigaChat request timed out: {e}") from e

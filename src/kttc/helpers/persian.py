@@ -214,6 +214,136 @@ class PersianLanguageHelper(LanguageHelper):
             logger.error(f"Morphology analysis failed: {e}")
             return []
 
+    # Persian prepositions that commonly cause errors
+    _PREPOSITIONS = {
+        "به": "to/at",  # Direction, location
+        "از": "from/of",  # Source, possession
+        "در": "in/at",  # Location (inside)
+        "با": "with",  # Accompaniment
+        "برای": "for",  # Purpose, benefit
+        "تا": "until/to",  # Limit, destination
+        "بر": "on/upon",  # Location (on surface)
+        "مثل": "like",  # Comparison
+    }
+
+    def _extract_morph_features(self, token: Any) -> tuple[str | None, str | None]:
+        """Extract person and number features from token morphology."""
+        person, number = None, None
+        if hasattr(token, "morph") and token.morph:
+            morph_dict = token.morph.to_dict()
+            person = morph_dict.get("Person")
+            number = morph_dict.get("Number")
+        return person, number
+
+    def _check_subject_verb_agreement(self, doc: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check subject-verb agreement in Persian sentence."""
+        for token in doc:
+            if token.dep_ not in ["nsubj", "csubj"]:
+                continue
+            head_verb = token.head
+            if head_verb.pos_ != "VERB":
+                continue
+
+            subj_person, subj_number = self._extract_morph_features(token)
+            verb_person, verb_number = self._extract_morph_features(head_verb)
+
+            if subj_person and verb_person and subj_person != verb_person:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_grammar_agreement",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(head_verb.idx, head_verb.idx + len(head_verb.text)),
+                        description=(
+                            f"Verb person ({verb_person}) does not match "
+                            f"subject person ({subj_person})"
+                        ),
+                        suggestion="Ensure verb agrees with subject in person",
+                    )
+                )
+
+            if subj_number and verb_number and subj_number != verb_number:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_grammar_agreement",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(head_verb.idx, head_verb.idx + len(head_verb.text)),
+                        description=(
+                            f"Verb number ({verb_number}) does not match "
+                            f"subject number ({subj_number})"
+                        ),
+                        suggestion="Ensure verb agrees with subject in number",
+                    )
+                )
+
+    def _check_word_order(self, doc: Any, text: str, errors: list[ErrorAnnotation]) -> None:
+        """Check SOV word order in Persian sentence."""
+        subjects = [token for token in doc if token.dep_ in ["nsubj", "csubj"]]
+        verbs = [token for token in doc if token.pos_ == "VERB" and token.dep_ == "ROOT"]
+
+        if subjects and verbs:
+            subject = subjects[0]
+            main_verb = verbs[0]
+            if main_verb.i < subject.i - 2:  # Allow some flexibility
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_grammar_word_order",
+                        severity=ErrorSeverity.MINOR,
+                        location=(0, len(text)),
+                        description=(
+                            "Unusual word order detected: verb appears before subject. "
+                            "Persian typically follows Subject-Object-Verb (SOV) order"
+                        ),
+                        suggestion="Verify sentence structure follows natural Persian word order",
+                    )
+                )
+
+    def _check_preposition_usage(self, doc: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check preposition usage patterns in Persian sentence."""
+        for token in doc:
+            if token.text not in self._PREPOSITIONS:
+                continue
+            if token.i + 1 >= len(doc):
+                continue
+            next_token = doc[token.i + 1]
+            if next_token.pos_ in ["NOUN", "PRON", "PROPN", "NUM"]:
+                continue
+            has_object = any(child.dep_ in ["pobj", "obl", "obj"] for child in token.children)
+            if not has_object:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_grammar_preposition",
+                        severity=ErrorSeverity.MINOR,
+                        location=(token.idx, token.idx + len(token.text)),
+                        description=(
+                            f"Preposition '{token.text}' ({self._PREPOSITIONS[token.text]}) "
+                            "may be missing its object"
+                        ),
+                        suggestion="Ensure preposition is followed by a noun or pronoun",
+                    )
+                )
+
+    def _check_dependency_anomalies(self, doc: Any, errors: list[ErrorAnnotation]) -> None:
+        """Check for dependency parsing anomalies."""
+        for token in doc:
+            if token.dep_ == "ROOT" and token.pos_ not in ["VERB", "AUX"]:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="persian_grammar_structure",
+                        severity=ErrorSeverity.MINOR,
+                        location=(token.idx, token.idx + len(token.text)),
+                        description=(
+                            f"Unusual sentence structure: '{token.text}' ({token.pos_}) "
+                            "is the main clause element but is not a verb"
+                        ),
+                        suggestion="Verify sentence has a clear main verb",
+                    )
+                )
+
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
         """Check Persian grammar using deterministic rules with DadmaTools.
 
@@ -238,163 +368,15 @@ class PersianLanguageHelper(LanguageHelper):
             logger.debug("DadmaTools not available, skipping grammar checks")
             return []
 
-        errors = []
+        errors: list[ErrorAnnotation] = []
 
         try:
             doc = self._nlp(text)
 
-            # Persian prepositions that commonly cause errors
-            prepositions = {
-                "به": "to/at",  # Direction, location
-                "از": "from/of",  # Source, possession
-                "در": "in/at",  # Location (inside)
-                "با": "with",  # Accompaniment
-                "برای": "for",  # Purpose, benefit
-                "تا": "until/to",  # Limit, destination
-                "بر": "on/upon",  # Location (on surface)
-                "مثل": "like",  # Comparison
-            }
-
-            # Check ezafe constructions using DadmaTools kasreh detection
-            # Ezafe is marked in doc._.kasreh_ezafe
-            if hasattr(doc._, "kasreh_ezafe"):
-                # DadmaTools provides ezafe detection internally
-                # We rely on its built-in kasreh detection for validation
-                # Future: Could add custom validation rules here
-                pass
-
-            # Check 1: Subject-verb agreement
-            # Find subjects and main verbs using dependency parsing
-            for token in doc:
-                if token.dep_ in ["nsubj", "csubj"]:  # Subject relations
-                    # Find the head verb
-                    head_verb = token.head
-                    if head_verb.pos_ == "VERB":
-                        # Persian verbs agree with subject in person/number
-                        # Check for obvious mismatches
-                        # Note: Persian doesn't have grammatical gender
-
-                        # Extract person/number features
-                        subj_person = None
-                        subj_number = None
-                        verb_person = None
-                        verb_number = None
-
-                        # Parse morphological features
-                        if hasattr(token, "morph") and token.morph:
-                            morph_dict = token.morph.to_dict()
-                            subj_person = morph_dict.get("Person")
-                            subj_number = morph_dict.get("Number")
-
-                        if hasattr(head_verb, "morph") and head_verb.morph:
-                            morph_dict = head_verb.morph.to_dict()
-                            verb_person = morph_dict.get("Person")
-                            verb_number = morph_dict.get("Number")
-
-                        # Check agreement
-                        if subj_person and verb_person and subj_person != verb_person:
-                            errors.append(
-                                ErrorAnnotation(
-                                    category="fluency",
-                                    subcategory="persian_grammar_agreement",
-                                    severity=ErrorSeverity.MAJOR,
-                                    location=(head_verb.idx, head_verb.idx + len(head_verb.text)),
-                                    description=(
-                                        f"Verb person ({verb_person}) does not match "
-                                        f"subject person ({subj_person})"
-                                    ),
-                                    suggestion="Ensure verb agrees with subject in person",
-                                )
-                            )
-
-                        if subj_number and verb_number and subj_number != verb_number:
-                            errors.append(
-                                ErrorAnnotation(
-                                    category="fluency",
-                                    subcategory="persian_grammar_agreement",
-                                    severity=ErrorSeverity.MAJOR,
-                                    location=(head_verb.idx, head_verb.idx + len(head_verb.text)),
-                                    description=(
-                                        f"Verb number ({verb_number}) does not match "
-                                        f"subject number ({subj_number})"
-                                    ),
-                                    suggestion="Ensure verb agrees with subject in number",
-                                )
-                            )
-
-            # Check 2: Word order - Persian is SOV (Subject-Object-Verb)
-            # Find main clause structure
-            subjects = [token for token in doc if token.dep_ in ["nsubj", "csubj"]]
-            verbs = [token for token in doc if token.pos_ == "VERB" and token.dep_ == "ROOT"]
-
-            if subjects and verbs:
-                subject = subjects[0]
-                main_verb = verbs[0]
-
-                # Verb should typically come after subject
-                if main_verb.i < subject.i - 2:  # Allow some flexibility
-                    errors.append(
-                        ErrorAnnotation(
-                            category="fluency",
-                            subcategory="persian_grammar_word_order",
-                            severity=ErrorSeverity.MINOR,
-                            location=(0, len(text)),
-                            description=(
-                                "Unusual word order detected: verb appears before subject. "
-                                "Persian typically follows Subject-Object-Verb (SOV) order"
-                            ),
-                            suggestion="Verify sentence structure follows natural Persian word order",
-                        )
-                    )
-
-            # Check 3: Preposition usage patterns
-            # Look for common preposition errors
-            for token in doc:
-                if token.text in prepositions:
-                    # Check if preposition has a proper object
-                    # Prepositions should be followed by a noun/pronoun
-                    if token.i + 1 < len(doc):
-                        next_token = doc[token.i + 1]
-                        # In Persian, prepositions precede their objects
-                        if next_token.pos_ not in ["NOUN", "PRON", "PROPN", "NUM"]:
-                            # Check if it's connected via dependency
-                            has_object = any(
-                                child.dep_ in ["pobj", "obl", "obj"] for child in token.children
-                            )
-                            if not has_object:
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="persian_grammar_preposition",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(token.idx, token.idx + len(token.text)),
-                                        description=(
-                                            f"Preposition '{token.text}' ({prepositions[token.text]}) "
-                                            "may be missing its object"
-                                        ),
-                                        suggestion="Ensure preposition is followed by a noun or pronoun",
-                                    )
-                                )
-
-            # Check 4: Dependency parsing anomalies
-            # Look for tokens with unusual dependency relations
-            for token in doc:
-                # Root should typically be a verb
-                if token.dep_ == "ROOT" and token.pos_ not in ["VERB", "AUX"]:
-                    # Non-verb as root might indicate parsing error or grammar issue
-                    errors.append(
-                        ErrorAnnotation(
-                            category="fluency",
-                            subcategory="persian_grammar_structure",
-                            severity=ErrorSeverity.MINOR,
-                            location=(token.idx, token.idx + len(token.text)),
-                            description=(
-                                f"Unusual sentence structure: '{token.text}' ({token.pos_}) "
-                                "is the main clause element but is not a verb"
-                            ),
-                            suggestion="Verify sentence has a clear main verb",
-                        )
-                    )
+            self._check_subject_verb_agreement(doc, errors)
+            self._check_word_order(doc, text, errors)
+            self._check_preposition_usage(doc, errors)
+            self._check_dependency_anomalies(doc, errors)
 
             logger.debug(f"Persian grammar check found {len(errors)} errors")
             return errors
@@ -402,6 +384,88 @@ class PersianLanguageHelper(LanguageHelper):
         except Exception as e:
             logger.error(f"Persian grammar check failed: {e}")
             return []
+
+    def _handle_spelling_replace(
+        self,
+        i1: int,
+        i2: int,
+        j1: int,
+        j2: int,
+        original_tokens: list[tuple[str, int, int]],
+        corrected_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle replace operations in spelling diff."""
+        for idx in range(i1, i2):
+            if idx >= len(original_tokens):
+                continue
+            orig_word, start, end = original_tokens[idx]
+            corrections = [
+                corrected_tokens[jdx][0] for jdx in range(j1, j2) if jdx < len(corrected_tokens)
+            ]
+            suggestion = " ".join(corrections) if corrections else orig_word
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="persian_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(start, end),
+                    description=f"Possible spelling error: '{orig_word}' may be incorrect",
+                    suggestion=suggestion,
+                )
+            )
+
+    def _handle_spelling_delete(
+        self,
+        i1: int,
+        i2: int,
+        original_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle delete operations in spelling diff."""
+        for idx in range(i1, i2):
+            if idx >= len(original_tokens):
+                continue
+            orig_word, start, end = original_tokens[idx]
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="persian_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(start, end),
+                    description=f"Possibly unnecessary word: '{orig_word}'",
+                    suggestion="",
+                )
+            )
+
+    def _handle_spelling_insert(
+        self,
+        i1: int,
+        j1: int,
+        j2: int,
+        original_tokens: list[tuple[str, int, int]],
+        corrected_tokens: list[tuple[str, int, int]],
+        errors: list[ErrorAnnotation],
+    ) -> None:
+        """Handle insert operations in spelling diff."""
+        if i1 <= 0 or i1 > len(original_tokens):
+            return
+        prev_token = original_tokens[i1 - 1]
+        insert_pos = prev_token[2]
+        inserted = [
+            corrected_tokens[jdx][0] for jdx in range(j1, j2) if jdx < len(corrected_tokens)
+        ]
+        if inserted:
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="persian_spelling",
+                    severity=ErrorSeverity.MINOR,
+                    location=(insert_pos, insert_pos),
+                    description="Missing word(s) detected",
+                    suggestion=" ".join(inserted),
+                )
+            )
 
     def check_spelling(self, text: str) -> list[ErrorAnnotation]:
         """Check Persian spelling using DadmaTools v2 spell checker.
@@ -420,104 +484,37 @@ class PersianLanguageHelper(LanguageHelper):
             return []
 
         try:
-            # Process with spell checker
             doc = self._nlp(text)
 
-            # Get corrected text from doc extension
-            if hasattr(doc._, "spell_corrected"):
-                corrected = doc._.spell_corrected
-            else:
-                # Spell checker not available in pipeline
+            if not hasattr(doc._, "spell_corrected"):
                 logger.debug("DadmaTools spell checker not configured in pipeline")
                 return []
 
-            errors = []
+            corrected = doc._.spell_corrected
+            if corrected == text:
+                return []
 
-            # Token-based diff to find exact error positions
-            if corrected != text:
-                # Tokenize both original and corrected texts
-                original_tokens = self.tokenize(text)
-                corrected_tokens = self.tokenize(corrected)
+            errors: list[ErrorAnnotation] = []
+            original_tokens = self.tokenize(text)
+            corrected_tokens = self.tokenize(corrected)
 
-                # Compare token-by-token using sequence alignment
-                from difflib import SequenceMatcher
+            from difflib import SequenceMatcher
 
-                # Extract words for comparison
-                original_words = [t[0] for t in original_tokens]
-                corrected_words = [t[0] for t in corrected_tokens]
+            original_words = [t[0] for t in original_tokens]
+            corrected_words = [t[0] for t in corrected_tokens]
+            matcher = SequenceMatcher(None, original_words, corrected_words)
 
-                matcher = SequenceMatcher(None, original_words, corrected_words)
-
-                # Find mismatched tokens
-                for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-                    if tag == "replace":
-                        # Word(s) replaced - spelling error detected
-                        for idx in range(i1, i2):
-                            if idx < len(original_tokens):
-                                orig_word, start, end = original_tokens[idx]
-
-                                # Get corresponding corrected word(s)
-                                corrections = []
-                                for jdx in range(j1, j2):
-                                    if jdx < len(corrected_tokens):
-                                        corrections.append(corrected_tokens[jdx][0])
-
-                                suggestion = " ".join(corrections) if corrections else orig_word
-
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="persian_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(start, end),
-                                        description=(
-                                            f"Possible spelling error: '{orig_word}' "
-                                            f"may be incorrect"
-                                        ),
-                                        suggestion=suggestion,
-                                    )
-                                )
-
-                    elif tag == "delete":
-                        # Extra word(s) - possibly redundant or misspelled
-                        for idx in range(i1, i2):
-                            if idx < len(original_tokens):
-                                orig_word, start, end = original_tokens[idx]
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="persian_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(start, end),
-                                        description=f"Possibly unnecessary word: '{orig_word}'",
-                                        suggestion="",  # Remove word
-                                    )
-                                )
-
-                    elif tag == "insert":
-                        # Missing word(s) detected by spell checker
-                        # Insert at position after previous token
-                        if i1 > 0 and i1 <= len(original_tokens):
-                            prev_token = original_tokens[i1 - 1]
-                            insert_pos = prev_token[2]  # End of previous token
-
-                            # Get inserted words
-                            inserted = []
-                            for jdx in range(j1, j2):
-                                if jdx < len(corrected_tokens):
-                                    inserted.append(corrected_tokens[jdx][0])
-
-                            if inserted:
-                                errors.append(
-                                    ErrorAnnotation(
-                                        category="fluency",
-                                        subcategory="persian_spelling",
-                                        severity=ErrorSeverity.MINOR,
-                                        location=(insert_pos, insert_pos),
-                                        description="Missing word(s) detected",
-                                        suggestion=" ".join(inserted),
-                                    )
-                                )
+            for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+                if tag == "replace":
+                    self._handle_spelling_replace(
+                        i1, i2, j1, j2, original_tokens, corrected_tokens, errors
+                    )
+                elif tag == "delete":
+                    self._handle_spelling_delete(i1, i2, original_tokens, errors)
+                elif tag == "insert":
+                    self._handle_spelling_insert(
+                        i1, j1, j2, original_tokens, corrected_tokens, errors
+                    )
 
             logger.debug(f"DadmaTools spell checker found {len(errors)} errors")
             return errors

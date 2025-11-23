@@ -129,77 +129,80 @@ class GrammarAgent:
 
         return self._school_rules
 
-    def _check_with_school_rules(self, text: str) -> list[ErrorAnnotation]:
-        """Check text against school curriculum rules.
+    def _parse_severity(self, severity_str: str) -> ErrorSeverity:
+        """Parse severity string to ErrorSeverity enum."""
+        if severity_str == "critical":
+            return ErrorSeverity.CRITICAL
+        if severity_str == "minor":
+            return ErrorSeverity.MINOR
+        return ErrorSeverity.MAJOR
 
-        Args:
-            text: Text to check
-
-        Returns:
-            List of errors found using school rules
-        """
+    def _check_common_mistakes(
+        self, text: str, common_mistakes: dict[str, Any]
+    ) -> list[ErrorAnnotation]:
+        """Check text for common mistakes."""
         errors: list[ErrorAnnotation] = []
+        text_lower = text.lower()
+
+        for mistake_data in common_mistakes.values():
+            if not isinstance(mistake_data, dict) or "examples" not in mistake_data:
+                continue
+            for example in mistake_data["examples"]:
+                if example.lower() not in text_lower:
+                    continue
+                pos = text_lower.find(example.lower())
+                correct_forms = mistake_data.get("correct_forms", [])
+                suggestion = correct_forms[0] if correct_forms else ""
+                actual_text = text[pos : pos + len(example)]
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="grammar",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(pos, pos + len(example)),
+                        description=f"{mistake_data.get('description', 'Common mistake')}: '{actual_text}' → '{suggestion}'",
+                        suggestion=suggestion or None,
+                    )
+                )
+        return errors
+
+    def _check_spelling_rules(
+        self, text: str, spelling_rules: dict[str, Any]
+    ) -> list[ErrorAnnotation]:
+        """Check text against spelling rules."""
+        errors: list[ErrorAnnotation] = []
+        text_lower = text.lower()
+
+        for rule_data in spelling_rules.values():
+            if not isinstance(rule_data, dict) or "examples" not in rule_data:
+                continue
+            incorrect = rule_data["examples"].get("incorrect", [])
+            correct = rule_data["examples"].get("correct", [])
+
+            for i, wrong in enumerate(incorrect):
+                if wrong.lower() not in text_lower:
+                    continue
+                pos = text_lower.find(wrong.lower())
+                suggestion = correct[i] if i < len(correct) else ""
+                severity = self._parse_severity(rule_data.get("severity", "major"))
+                actual_text = text[pos : pos + len(wrong)]
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="spelling",
+                        severity=severity,
+                        location=(pos, pos + len(wrong)),
+                        description=f"{rule_data.get('name', 'Spelling rule')}: '{actual_text}' → '{suggestion}'",
+                        suggestion=suggestion or None,
+                    )
+                )
+        return errors
+
+    def _check_with_school_rules(self, text: str) -> list[ErrorAnnotation]:
+        """Check text against school curriculum rules."""
         rules = self._load_school_rules()
-
-        # Check common mistakes
-        common_mistakes = rules.get("common_mistakes", {})
-        for mistake_id, mistake_data in common_mistakes.items():
-            if isinstance(mistake_data, dict) and "examples" in mistake_data:
-                for example in mistake_data["examples"]:
-                    if example.lower() in text.lower():
-                        # Find position
-                        pos = text.lower().find(example.lower())
-                        correct_forms = mistake_data.get("correct_forms", [])
-                        suggestion = correct_forms[0] if correct_forms else ""
-
-                        actual_text = text[pos : pos + len(example)]
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="grammar",
-                                severity=ErrorSeverity.MAJOR,
-                                location=(pos, pos + len(example)),
-                                description=f"{mistake_data.get('description', 'Common mistake')}: "
-                                f"'{actual_text}' → '{suggestion}'",
-                                suggestion=suggestion if suggestion else None,
-                            )
-                        )
-
-        # Check spelling rules with patterns
-        spelling_rules = rules.get("spelling_rules", {})
-        for rule_id, rule_data in spelling_rules.items():
-            if isinstance(rule_data, dict) and "examples" in rule_data:
-                incorrect = rule_data["examples"].get("incorrect", [])
-                correct = rule_data["examples"].get("correct", [])
-
-                for i, wrong in enumerate(incorrect):
-                    if wrong.lower() in text.lower():
-                        pos = text.lower().find(wrong.lower())
-                        suggestion = correct[i] if i < len(correct) else ""
-                        severity_str = rule_data.get("severity", "major")
-                        severity = (
-                            ErrorSeverity.CRITICAL
-                            if severity_str == "critical"
-                            else (
-                                ErrorSeverity.MINOR
-                                if severity_str == "minor"
-                                else ErrorSeverity.MAJOR
-                            )
-                        )
-
-                        actual_text = text[pos : pos + len(wrong)]
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="spelling",
-                                severity=severity,
-                                location=(pos, pos + len(wrong)),
-                                description=f"{rule_data.get('name', 'Spelling rule')}: "
-                                f"'{actual_text}' → '{suggestion}'",
-                                suggestion=suggestion if suggestion else None,
-                            )
-                        )
-
+        errors = self._check_common_mistakes(text, rules.get("common_mistakes", {}))
+        errors.extend(self._check_spelling_rules(text, rules.get("spelling_rules", {})))
         return errors
 
     async def _check_with_llm(self, text: str) -> list[ErrorAnnotation]:

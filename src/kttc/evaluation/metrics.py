@@ -152,7 +152,7 @@ class LightweightMetrics:
         self,
         translations: list[str],
         references: list[str],
-        sources: list[str] | None = None,
+        _sources: list[str] | None = None,  # Unused but kept for API compatibility
     ) -> dict[str, Any]:
         """Evaluate batch of translations (corpus-level metrics).
 

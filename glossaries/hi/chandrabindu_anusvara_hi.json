@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Chandrabindu vs Anusvara Rules (चंद्रबिंदु और अनुस्वार)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Rules for correct usage of ँ (chandrabindu) and ं (anusvara) - common spelling trap",
+    "sources": [
+      "केंद्रीय हिन्दी निदेशालय - वर्तनी मानकीकरण",
+      "NCERT Hindi Grammar",
+      "Hindi Sahitya Duniya",
+      "Hindi Wikipedia - अनुस्वार"
+    ],
+    "total_terms": 80
+  },
+  "overview": {
+    "chandrabindu": {
+      "symbol": "ँ",
+      "name_hi": "चंद्रबिंदु",
+      "name_en": "Chandrabindu (Moon-dot)",
+      "type": "अनुनासिक स्वर (Nasalized vowel)",
+      "pronunciation": "Nasalization of the vowel, breath through nose AND mouth",
+      "usage": "Used when there is NO matra above the headline (शिरोरेखा)"
+    },
+    "anusvara": {
+      "symbol": "ं",
+      "name_hi": "अनुस्वार",
+      "name_en": "Anusvara (After-sound)",
+      "type": "व्यंजन ध्वनि (Consonant sound)",
+      "pronunciation": "Pure nasal consonant, breath only through nose",
+      "usage": "Used when there IS a matra above the headline OR before certain consonants"
+    },
+    "key_difference": "चंद्रबिंदु = nasalized vowel (softer), अनुस्वार = nasal consonant (stronger)",
+    "common_mistake": "Using anusvara where chandrabindu is required changes meaning"
+  },
+  "usage_rules": {
+    "rule_1_no_matra_above": {
+      "rule": "When NO matra above शिरोरेखा → use चंद्रबिंदु (ँ)",
+      "applies_to": "अ, आ, उ, ऊ vowels",
+      "examples": {
+        "correct": ["चाँद", "आँख", "गाँव", "हँसना", "पूँछ", "माँ", "साँप"],
+        "incorrect": ["चांद", "आंख", "गांव", "हंसना", "पूंछ", "मां", "सांप"]
+      }
+    },
+    "rule_2_matra_above": {
+      "rule": "When matra IS above शिरोरेखा → use अनुस्वार (ं)",
+      "applies_to": "इ, ई, ए, ऐ, ओ, औ vowels (their matras go above)",
+      "examples": {
+        "correct": ["हिंदी", "नहीं", "मैं", "कहीं", "वहीं", "तेंदुआ"],
+        "note": "Because ि, ी, े, ै, ो, ौ matras are above, use ं not ँ"
+      }
+    },
+    "rule_3_before_consonants": {
+      "rule": "Before varga consonants → use अनुस्वार (ं)",
+      "applies_to": "Before क, ख, ग, घ, च, छ, ज, झ, ट, ठ, ड, ढ, त, थ, द, ध, प, फ, ब, भ",
+      "examples": {
+        "correct": ["अंक", "गंगा", "चंचल", "पंजाब", "संत", "बंद"],
+        "note": "Anusvara before these consonants represents the corresponding nasal (ङ्, ञ्, ण्, न्, म्)"
+      }
+    },
+    "rule_4_word_final": {
+      "rule": "Word-final nasalization → use चंद्रबिंदु if no matra above",
+      "examples": {
+        "correct": ["हाँ", "नहीं", "वहाँ", "यहाँ"],
+        "note": "हाँ (yes) vs हाँ with anusvara would be different"
+      }
+    }
+  },
+  "meaning_change_pairs": {
+    "description": "Words where using wrong symbol CHANGES meaning",
+    "severity": "critical",
+    "pairs": {
+      "hans_hasna": {
+        "chandrabindu": "हँसना",
+        "chandrabindu_meaning": "to laugh (verb)",
+        "anusvara": "हंसना",
+        "anusvara_note": "Incorrect for 'laugh', but हंस = swan",
+        "trap": "हँसना (laugh) vs हंस (swan) - different words!"
+      },
+      "aankh_ang": {
+        "chandrabindu": "आँख",
+        "chandrabindu_meaning": "eye",
+        "anusvara": "अंख",
+        "note": "आँख is correct; अंख is wrong spelling"
+      },
+      "gaanv_gand": {
+        "chandrabindu": "गाँव",
+        "chandrabindu_meaning": "village",
+        "anusvara": "गांव",
+        "note": "गाँव is standard; गांव is informal/acceptable in some contexts"
+      },
+      "chaand_chand": {
+        "chandrabindu": "चाँद",
+        "chandrabindu_meaning": "moon",
+        "anusvara": "चांद",
+        "note": "चाँद is standard; चांद acceptable but less precise"
+      },
+      "daant_dant": {
+        "chandrabindu": "दाँत",
+        "chandrabindu_meaning": "tooth",
+        "anusvara": "दांत",
+        "note": "दाँत is standard"
+      },
+      "kaanp_kamp": {
+        "chandrabindu": "काँपना",
+        "chandrabindu_meaning": "to tremble",
+        "related": "कंपन (vibration) uses anusvara - different word"
+      },
+      "poonch_punch": {
+        "chandrabindu": "पूँछ",
+        "chandrabindu_meaning": "tail",
+        "anusvara": "पुंछ",
+        "note": "पूँछ is correct"
+      }
+    }
+  },
+  "common_words_chandrabindu": {
+    "description": "Words that MUST use चंद्रबिंदु (ँ)",
+    "entries": [
+      {"word": "आँख", "meaning": "eye", "wrong": "आंख"},
+      {"word": "आँसू", "meaning": "tear", "wrong": "आंसू"},
+      {"word": "आँगन", "meaning": "courtyard", "wrong": "आंगन"},
+      {"word": "ऊँचा", "meaning": "high/tall", "wrong": "ऊंचा"},
+      {"word": "ऊँट", "meaning": "camel", "wrong": "ऊंट"},
+      {"word": "काँच", "meaning": "glass", "wrong": "कांच"},
+      {"word": "गाँव", "meaning": "village", "wrong": "गांव"},
+      {"word": "गाँठ", "meaning": "knot", "wrong": "गांठ"},
+      {"word": "घाँस", "meaning": "grass", "wrong": "घांस"},
+      {"word": "चाँद", "meaning": "moon", "wrong": "चांद"},
+      {"word": "चाँदी", "meaning": "silver", "wrong": "चांदी"},
+      {"word": "छाँव", "meaning": "shade", "wrong": "छांव"},
+      {"word": "जाँच", "meaning": "examination/check", "wrong": "जांच"},
+      {"word": "झाँकना", "meaning": "to peek", "wrong": "झांकना"},
+      {"word": "टाँग", "meaning": "leg", "wrong": "टांग"},
+      {"word": "डाँटना", "meaning": "to scold", "wrong": "डांटना"},
+      {"word": "ताँबा", "meaning": "copper", "wrong": "तांबा"},
+      {"word": "दाँत", "meaning": "tooth", "wrong": "दांत"},
+      {"word": "धुआँ", "meaning": "smoke", "wrong": "धुआं"},
+      {"word": "पाँच", "meaning": "five", "wrong": "पांच"},
+      {"word": "पाँव", "meaning": "foot", "wrong": "पांव"},
+      {"word": "पूँछ", "meaning": "tail", "wrong": "पूंछ"},
+      {"word": "बाँस", "meaning": "bamboo", "wrong": "बांस"},
+      {"word": "बाँह", "meaning": "arm", "wrong": "बांह"},
+      {"word": "भाँग", "meaning": "hemp", "wrong": "भांग"},
+      {"word": "माँ", "meaning": "mother", "wrong": "मां"},
+      {"word": "माँग", "meaning": "demand/parting", "wrong": "मांग"},
+      {"word": "मूँछ", "meaning": "moustache", "wrong": "मूंछ"},
+      {"word": "यहाँ", "meaning": "here", "wrong": "यहां"},
+      {"word": "वहाँ", "meaning": "there", "wrong": "वहां"},
+      {"word": "साँप", "meaning": "snake", "wrong": "सांप"},
+      {"word": "साँस", "meaning": "breath", "wrong": "सांस"},
+      {"word": "हँसना", "meaning": "to laugh", "wrong": "हंसना"},
+      {"word": "हाँ", "meaning": "yes", "wrong": "हां"}
+    ]
+  },
+  "common_words_anusvara": {
+    "description": "Words that correctly use अनुस्वार (ं)",
+    "entries": [
+      {"word": "अंक", "meaning": "number/mark"},
+      {"word": "अंग", "meaning": "body part"},
+      {"word": "अंत", "meaning": "end"},
+      {"word": "अंदर", "meaning": "inside"},
+      {"word": "कंप्यूटर", "meaning": "computer"},
+      {"word": "गंगा", "meaning": "Ganges river"},
+      {"word": "चंचल", "meaning": "restless"},
+      {"word": "जंगल", "meaning": "forest"},
+      {"word": "पंख", "meaning": "wing"},
+      {"word": "पंजाब", "meaning": "Punjab"},
+      {"word": "बंद", "meaning": "closed"},
+      {"word": "मंदिर", "meaning": "temple"},
+      {"word": "संगीत", "meaning": "music"},
+      {"word": "संत", "meaning": "saint"},
+      {"word": "हिंदी", "meaning": "Hindi language"},
+      {"word": "हिंदुस्तान", "meaning": "Hindustan/India"}
+    ]
+  },
+  "acceptable_variations": {
+    "description": "Cases where both forms are seen (though one is technically more correct)",
+    "note": "Modern Hindi often accepts anusvara where chandrabindu is standard",
+    "examples": [
+      {"standard": "गाँव", "variant": "गांव", "status": "both acceptable"},
+      {"standard": "चाँद", "variant": "चांद", "status": "both acceptable"},
+      {"standard": "आँख", "variant": "आंख", "status": "chandrabindu preferred"}
+    ]
+  },
+  "detection_rules": {
+    "rule_for_checker": {
+      "step_1": "Check if vowel matra is above शिरोरेखा",
+      "step_2": "If YES (इ, ई, ए, ऐ, ओ, औ) → anusvara (ं) is correct",
+      "step_3": "If NO (अ, आ, उ, ऊ) → chandrabindu (ँ) is correct",
+      "step_4": "Check if before varga consonant → anusvara correct",
+      "step_5": "Cross-reference with known word list"
+    }
+  },
+  "common_mistakes": {
+    "mistake_1": {
+      "description": "Using anusvara everywhere (lazy typing)",
+      "wrong": ["आंख", "गांव", "चांद", "मां"],
+      "correct": ["आँख", "गाँव", "चाँद", "माँ"],
+      "frequency": "very_high"
+    },
+    "mistake_2": {
+      "description": "Confusing हँसना (laugh) with हंस (swan)",
+      "note": "हँसना = to laugh, हंस = swan - different words!",
+      "frequency": "high"
+    }
+  }
+}

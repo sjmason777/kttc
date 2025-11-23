@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import typer
 from rich.console import Console
@@ -80,6 +81,35 @@ def list_glossaries() -> None:
         raise typer.Exit(code=1)
 
 
+def _filter_by_lang_pair(entries: list[Any], lang_pair: str | None) -> list[Any]:
+    """Filter entries by language pair."""
+    if not lang_pair:
+        return entries
+    try:
+        src, tgt = lang_pair.split("-")
+        filtered = [e for e in entries if e.source_lang == src and e.target_lang == tgt]
+        console.print(f"[dim]Filtered to {src}→{tgt}[/dim]\n")
+        return filtered
+    except ValueError:
+        console.print("[red]Error: Invalid language pair format. Use 'en-ru' format[/red]")
+        raise typer.Exit(code=1)
+
+
+def _build_entry_row(entry: Any) -> tuple[str, str, str, str, str]:
+    """Build table row for glossary entry."""
+    lang = f"{entry.source_lang}→{entry.target_lang}"
+    domain = entry.domain or "-"
+    notes = entry.notes or ""
+    markers = []
+    if entry.do_not_translate:
+        markers.append("[red]DNT[/red]")
+    if entry.case_sensitive:
+        markers.append("[yellow]CS[/yellow]")
+    if markers:
+        notes = f"{' '.join(markers)} {notes}".strip()
+    return entry.source, entry.target, lang, domain, notes
+
+
 @glossary_app.command("show")
 def show_glossary(
     name: str = typer.Argument(..., help="Glossary name"),
@@ -110,28 +140,16 @@ def show_glossary(
                 console.print(f"[dim]Description: {glossary.metadata.description}[/dim]")
         console.print()
 
-        entries = glossary.entries
-
-        # Filter by language pair if specified
-        if lang_pair:
-            try:
-                src, tgt = lang_pair.split("-")
-                entries = [e for e in entries if e.source_lang == src and e.target_lang == tgt]
-                console.print(f"[dim]Filtered to {src}→{tgt}[/dim]\n")
-            except ValueError:
-                console.print("[red]Error: Invalid language pair format. Use 'en-ru' format[/red]")
-                raise typer.Exit(code=1)
+        entries = _filter_by_lang_pair(glossary.entries, lang_pair)
 
         if not entries:
             console.print("[yellow]No terms found[/yellow]")
             return
 
-        # Limit display
         if len(entries) > limit:
             console.print(f"[yellow]Showing first {limit} of {len(entries)} terms[/yellow]\n")
             entries = entries[:limit]
 
-        # Create table
         table = Table(show_header=True, show_lines=False)
         table.add_column("Source", style="cyan", max_width=30)
         table.add_column("Target", style="green", max_width=30)
@@ -140,21 +158,7 @@ def show_glossary(
         table.add_column("Notes", style="dim", max_width=40)
 
         for entry in entries:
-            lang = f"{entry.source_lang}→{entry.target_lang}"
-            domain = entry.domain or "-"
-            notes = entry.notes or ""
-
-            # Add special markers
-            markers = []
-            if entry.do_not_translate:
-                markers.append("[red]DNT[/red]")
-            if entry.case_sensitive:
-                markers.append("[yellow]CS[/yellow]")
-
-            if markers:
-                notes = f"{' '.join(markers)} {notes}".strip()
-
-            table.add_row(entry.source, entry.target, lang, domain, notes)
+            table.add_row(*_build_entry_row(entry))
 
         console.print(table)
         console.print(f"\n[dim]Total terms shown: {len(entries)}[/dim]")
@@ -307,6 +311,38 @@ def export_glossary(
         raise typer.Exit(code=1)
 
 
+def _find_duplicate_entries(entries: list[Any]) -> list[str]:
+    """Find duplicate entries in glossary."""
+    issues = []
+    seen: dict[tuple[str, str, str], list[int]] = {}
+    for idx, entry in enumerate(entries):
+        key = (entry.source.lower(), entry.source_lang, entry.target_lang)
+        if key not in seen:
+            seen[key] = []
+        seen[key].append(idx + 1)
+
+    duplicates = {k: v for k, v in seen.items() if len(v) > 1}
+    if duplicates:
+        issues.append(f"Found {len(duplicates)} duplicate terms")
+        for (source, src_lang, tgt_lang), indices in list(duplicates.items())[:5]:
+            issues.append(
+                f"  • '{source}' ({src_lang}→{tgt_lang}) at positions: {', '.join(map(str, indices))}"
+            )
+    return issues
+
+
+def _find_empty_entries(entries: list[Any]) -> list[str]:
+    """Find entries with empty fields."""
+    issues = []
+    empty_sources = sum(1 for e in entries if not e.source.strip())
+    empty_targets = sum(1 for e in entries if not e.target.strip())
+    if empty_sources:
+        issues.append(f"Found {empty_sources} entries with empty source terms")
+    if empty_targets:
+        issues.append(f"Found {empty_targets} entries with empty target translations")
+    return issues
+
+
 @glossary_app.command("validate")
 def validate_glossary(file: Path = typer.Argument(..., help="Glossary file to validate")) -> None:
     """Validate glossary file format.
@@ -334,32 +370,8 @@ def validate_glossary(file: Path = typer.Argument(..., help="Glossary file to va
             raise typer.Exit(code=1)
 
         # Validation checks
-        issues = []
-
-        # Check for duplicates
-        seen: dict[tuple[str, str, str], list[int]] = {}
-        for idx, entry in enumerate(glossary.entries):
-            key = (entry.source.lower(), entry.source_lang, entry.target_lang)
-            if key not in seen:
-                seen[key] = []
-            seen[key].append(idx + 1)
-
-        duplicates = {k: v for k, v in seen.items() if len(v) > 1}
-        if duplicates:
-            issues.append(f"Found {len(duplicates)} duplicate terms")
-            for (source, src_lang, tgt_lang), indices in list(duplicates.items())[:5]:
-                issues.append(
-                    f"  • '{source}' ({src_lang}→{tgt_lang}) at positions: {', '.join(map(str, indices))}"
-                )
-
-        # Check for empty fields
-        empty_sources = sum(1 for e in glossary.entries if not e.source.strip())
-        empty_targets = sum(1 for e in glossary.entries if not e.target.strip())
-
-        if empty_sources:
-            issues.append(f"Found {empty_sources} entries with empty source terms")
-        if empty_targets:
-            issues.append(f"Found {empty_targets} entries with empty target translations")
+        issues = _find_duplicate_entries(glossary.entries)
+        issues.extend(_find_empty_entries(glossary.entries))
 
         # Display results
         console.print()

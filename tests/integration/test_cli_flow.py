@@ -498,7 +498,7 @@ class TestOutputFormatsIntegration:
             assert "mqm_score" in data
             assert "errors" in data
             assert "status" in data
-            assert isinstance(data["mqm_score"], (int, float))
+            assert isinstance(data["mqm_score"], int | float)
             assert isinstance(data["errors"], list)
             assert data["status"] in ["pass", "fail"]
 

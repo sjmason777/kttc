@@ -1,0 +1,312 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "Colloquial vs Formal Persian (Diglossia)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Differences between written/formal Persian and spoken/colloquial Persian. Essential for translation register accuracy.",
+    "sources": [
+      "Farsi School - Colloquial vs Written Persian",
+      "Persian Language Online",
+      "Academic studies on Persian diglossia"
+    ],
+    "total_entries": 60
+  },
+  "diglossia_overview": {
+    "term_fa": "دوگانگی زبانی",
+    "term_en": "Diglossia",
+    "definition": "The existence of two distinct varieties of a language used in different social contexts",
+    "key_point": "Formal Persian has no native speakers - children learn colloquial, formal is taught in school",
+    "importance": "The difference between colloquial and written Persian is MUCH deeper than English formal/informal",
+    "varieties": {
+      "formal": {
+        "name_fa": "زبان رسمی / نوشتاری",
+        "name_en": "Formal/Written Persian",
+        "usage": ["Books", "Newspapers", "TV news", "Official documents", "Poetry", "Formal speeches"]
+      },
+      "colloquial": {
+        "name_fa": "زبان محاوره‌ای / گفتاری",
+        "name_en": "Colloquial/Spoken Persian",
+        "usage": ["Daily conversation", "Informal writing", "Social media", "Text messages"]
+      }
+    }
+  },
+  "verb_contractions": {
+    "description": "Verb forms that contract in colloquial speech",
+    "entries": {
+      "است": {
+        "formal": "است (ast)",
+        "colloquial": ["ـه (e)", "ـس (s/es)"],
+        "meaning": "is",
+        "example_formal": "این کتاب خوب است",
+        "example_colloquial": "این کتاب خوبه / خوبس",
+        "severity": "major",
+        "note": "Most common contraction in Persian"
+      },
+      "می‌روم": {
+        "formal": "می‌روم (mīravam)",
+        "colloquial": "میرم (mīram)",
+        "meaning": "I go",
+        "note": "Vowel reduction: a→∅"
+      },
+      "می‌روی": {
+        "formal": "می‌روی (mīravī)",
+        "colloquial": "میری (mīrī)",
+        "meaning": "you go"
+      },
+      "می‌رود": {
+        "formal": "می‌رود (mīravad)",
+        "colloquial": "میره (mīre)",
+        "meaning": "he/she goes"
+      },
+      "می‌رویم": {
+        "formal": "می‌رویم (mīravīm)",
+        "colloquial": "میریم (mīrīm)",
+        "meaning": "we go"
+      },
+      "می‌روید": {
+        "formal": "می‌روید (mīravīd)",
+        "colloquial": "میرید (mīrīd) / میرین (mīrīn)",
+        "meaning": "you (pl/formal) go"
+      },
+      "می‌روند": {
+        "formal": "می‌روند (mīravand)",
+        "colloquial": "میرن (mīran)",
+        "meaning": "they go"
+      },
+      "می‌خواهم": {
+        "formal": "می‌خواهم (mīxāham)",
+        "colloquial": "میخوام (mīxām)",
+        "meaning": "I want"
+      },
+      "می‌دانم": {
+        "formal": "می‌دانم (mīdānam)",
+        "colloquial": "میدونم (mīdūnam)",
+        "meaning": "I know",
+        "note": "Vowel change: ā→ū"
+      },
+      "نمی‌دانم": {
+        "formal": "نمی‌دانم (namīdānam)",
+        "colloquial": "نمیدونم (namīdūnam) / نمیدنم (namīdnam)",
+        "meaning": "I don't know"
+      },
+      "می‌گویم": {
+        "formal": "می‌گویم (mīgūyam)",
+        "colloquial": "میگم (mīgam)",
+        "meaning": "I say"
+      },
+      "هستم": {
+        "formal": "هستم (hastam)",
+        "colloquial": "ـم (-am) attached to previous word",
+        "meaning": "I am",
+        "example": "خوبم (xūbam) = I'm fine"
+      },
+      "بودم": {
+        "formal": "بودم (būdam)",
+        "colloquial": "بودم (būdam) - less change",
+        "meaning": "I was"
+      },
+      "خواهم_رفت": {
+        "formal": "خواهم رفت (xāham raft)",
+        "colloquial": "میخوام برم (mīxām beram)",
+        "meaning": "I will go",
+        "note": "Future tense restructured entirely"
+      }
+    }
+  },
+  "particle_changes": {
+    "description": "Grammatical particles that change in colloquial speech",
+    "entries": {
+      "را": {
+        "formal": "را (rā)",
+        "colloquial": "رو (ro) / ـو (-o attached)",
+        "function": "Direct object marker",
+        "example_formal": "کتاب را خواندم",
+        "example_colloquial": "کتابو خوندم / کتاب رو خوندم",
+        "severity": "major",
+        "note": "Very common marker - always contracted in speech"
+      },
+      "این": {
+        "formal": "این (īn)",
+        "colloquial": "این (īn) - sometimes ای (ī)",
+        "function": "This",
+        "note": "Less change than other elements"
+      },
+      "آن": {
+        "formal": "آن (ān)",
+        "colloquial": "اون (ūn)",
+        "function": "That",
+        "severity": "major",
+        "note": "Vowel change ā→ū very common"
+      },
+      "چرا": {
+        "formal": "چرا (čerā)",
+        "colloquial": "چرا (čerā) / چه‌را (če-rā)",
+        "function": "Why",
+        "note": "Minimal change"
+      },
+      "بله": {
+        "formal": "بله (bale)",
+        "colloquial": "آره (āre)",
+        "function": "Yes",
+        "severity": "major"
+      },
+      "خیر": {
+        "formal": "خیر (xeyr)",
+        "colloquial": "نه (na)",
+        "function": "No",
+        "severity": "major"
+      }
+    }
+  },
+  "vocabulary_differences": {
+    "description": "Words that differ between formal and colloquial registers",
+    "entries": {
+      "very": {
+        "formal": "بسیار (besyār)",
+        "colloquial": "خیلی (xeylī)",
+        "meaning": "very, much"
+      },
+      "now": {
+        "formal": "اکنون (aknūn) / الان (alān)",
+        "colloquial": "الان (alān) / حالا (hālā)",
+        "meaning": "now"
+      },
+      "here": {
+        "formal": "اینجا (īnjā)",
+        "colloquial": "اینجا (īnjā) / اینجاست (injāst)",
+        "meaning": "here"
+      },
+      "there": {
+        "formal": "آنجا (ānjā)",
+        "colloquial": "اونجا (ūnjā)",
+        "meaning": "there"
+      },
+      "beautiful": {
+        "formal": "زیبا (zībā)",
+        "colloquial": "قشنگ (qašang) / خوشگل (xošgel)",
+        "meaning": "beautiful"
+      },
+      "child": {
+        "formal": "کودک (kūdak)",
+        "colloquial": "بچه (bačče)",
+        "meaning": "child"
+      },
+      "father": {
+        "formal": "پدر (pedar)",
+        "colloquial": "بابا (bābā)",
+        "meaning": "father"
+      },
+      "mother": {
+        "formal": "مادر (mādar)",
+        "colloquial": "مامان (māmān)",
+        "meaning": "mother"
+      },
+      "what": {
+        "formal": "چه (če)",
+        "colloquial": "چی (čī)",
+        "meaning": "what"
+      },
+      "when": {
+        "formal": "چه وقت (če vaqt)",
+        "colloquial": "کِی (key)",
+        "meaning": "when"
+      },
+      "must": {
+        "formal": "باید (bāyad)",
+        "colloquial": "باید (bāyad) / باس (bās)",
+        "meaning": "must, should"
+      }
+    }
+  },
+  "phonological_changes": {
+    "description": "Sound changes in colloquial Persian",
+    "patterns": {
+      "vowel_reduction": {
+        "description": "Short vowels often reduced or dropped",
+        "examples": [
+          "می‌روم → میرم (mīravam → mīram)",
+          "می‌گویم → میگم (mīgūyam → mīgam)"
+        ]
+      },
+      "vowel_shift_a_to_u": {
+        "description": "ā often becomes ū",
+        "examples": [
+          "آن → اون (ān → ūn)",
+          "می‌دانم → میدونم (mīdānam → mīdūnam)"
+        ]
+      },
+      "consonant_assimilation": {
+        "description": "Consonant clusters simplified",
+        "examples": [
+          "نمی‌خواهم → نمیخوام (namīxāham → namīxām)"
+        ]
+      },
+      "final_d_deletion": {
+        "description": "Final -ad often becomes -e",
+        "examples": [
+          "می‌رود → میره (mīravad → mīre)",
+          "می‌خواهد → میخواد/میخاد (mīxāhad → mīxād)"
+        ]
+      }
+    }
+  },
+  "ezafe_in_speech": {
+    "description": "How ezafe (اضافه) behaves in colloquial speech",
+    "formal_rule": "Ezafe (-e/-ye) connects nouns to adjectives/possessors",
+    "colloquial_behavior": {
+      "omission": "Ezafe sometimes omitted in very casual speech",
+      "example_formal": "کتابِ من (ketāb-e man)",
+      "example_colloquial": "کتاب من (ketāb man) - ezafe may be dropped",
+      "regional": "Isfahani dialect uses -i instead of -e for ezafe"
+    },
+    "severity": "minor",
+    "note": "Ezafe is generally preserved in careful speech"
+  },
+  "register_mixing_errors": {
+    "description": "Common errors when mixing formal and colloquial registers",
+    "types": {
+      "formal_in_casual": {
+        "description": "Using overly formal language in casual context",
+        "error": "اکنون به کجا می‌روید؟ (to a friend)",
+        "correct": "الان کجا میری؟",
+        "note": "Sounds stiff and unnatural"
+      },
+      "casual_in_formal": {
+        "description": "Using colloquial forms in formal writing",
+        "error": "این کتاب خوبه و میتونید بخونیدش",
+        "correct": "این کتاب خوب است و می‌توانید آن را بخوانید",
+        "severity": "major",
+        "note": "Inappropriate in academic/official documents"
+      },
+      "inconsistent_register": {
+        "description": "Mixing formal and colloquial in same sentence",
+        "error": "من می‌خواهم که بریم بیرون",
+        "correct_formal": "من می‌خواهم که به بیرون برویم",
+        "correct_colloquial": "میخوام بریم بیرون",
+        "severity": "major"
+      }
+    }
+  },
+  "translation_guidelines": {
+    "for_formal_target": [
+      "Use full verb forms (می‌روم not میرم)",
+      "Use را not رو",
+      "Use formal vocabulary (بسیار not خیلی)",
+      "Maintain proper ezafe marking",
+      "Use آن not اون"
+    ],
+    "for_colloquial_target": [
+      "Contract verbs appropriately",
+      "Use رو for object marker",
+      "Use colloquial vocabulary",
+      "Allow natural speech patterns",
+      "Consider regional variations"
+    ],
+    "register_detection_hints": {
+      "formal_indicators": ["است", "می‌", "را", "بسیار", "آنجا", "بله"],
+      "colloquial_indicators": ["ـه/ـس", "میـ (without nim-fasele)", "رو", "خیلی", "اونجا", "آره"]
+    }
+  }
+}

@@ -1,0 +1,477 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Idioms - Cannot Translate Literally",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Common English idioms that cannot be translated word-for-word. Requires finding equivalent expressions in target language.",
+    "sources": [
+      "Cambridge Idioms Dictionary",
+      "Oxford Dictionary of Idioms",
+      "The Free Dictionary Idioms",
+      "Merriam-Webster"
+    ],
+    "total_terms": 100,
+    "usage": "Translation QA, literal translation detection, fluency assessment, MT error detection"
+  },
+  "overview": {
+    "definition": "Idioms are expressions whose meaning cannot be deduced from the individual words",
+    "importance": "CRITICAL for translation - literal translation creates nonsense or wrong meaning",
+    "translation_rule": "Find equivalent idiom/expression in target language, or explain meaning",
+    "severity": "critical if translated literally"
+  },
+  "weather_idioms": {
+    "category": "Weather and Nature",
+    "idioms": {
+      "raining_cats_and_dogs": {
+        "idiom": "It's raining cats and dogs",
+        "meaning": "It's raining very heavily",
+        "literal_translation_error": "Идёт дождь из кошек и собак",
+        "equivalents": {
+          "ru": "Льёт как из ведра",
+          "es": "Llueve a cántaros",
+          "de": "Es regnet in Strömen",
+          "fr": "Il pleut des cordes"
+        }
+      },
+      "under_the_weather": {
+        "idiom": "to feel under the weather",
+        "meaning": "to feel slightly ill or depressed",
+        "literal_translation_error": "чувствовать себя под погодой",
+        "equivalents": {
+          "ru": "чувствовать себя неважно",
+          "es": "sentirse mal"
+        }
+      },
+      "break_the_ice": {
+        "idiom": "to break the ice",
+        "meaning": "to overcome initial social awkwardness",
+        "literal_translation_error": "сломать лёд",
+        "equivalents": {
+          "ru": "растопить лёд / разрядить обстановку"
+        }
+      },
+      "storm_in_a_teacup": {
+        "idiom": "a storm in a teacup",
+        "meaning": "exaggerated reaction to a small problem",
+        "american_variant": "tempest in a teapot",
+        "equivalents": {
+          "ru": "буря в стакане воды"
+        }
+      }
+    }
+  },
+  "body_part_idioms": {
+    "category": "Body Parts",
+    "idioms": {
+      "break_a_leg": {
+        "idiom": "Break a leg!",
+        "meaning": "Good luck! (especially in theater)",
+        "literal_translation_error": "Сломай ногу!",
+        "context": "Said to performers before a show",
+        "equivalents": {
+          "ru": "Ни пуха, ни пера!",
+          "de": "Hals- und Beinbruch!"
+        }
+      },
+      "cost_arm_and_leg": {
+        "idiom": "to cost an arm and a leg",
+        "meaning": "to be very expensive",
+        "literal_translation_error": "стоить руку и ногу",
+        "equivalents": {
+          "ru": "стоить целое состояние / бешеных денег"
+        }
+      },
+      "keep_eye_on": {
+        "idiom": "to keep an eye on",
+        "meaning": "to watch carefully, to monitor",
+        "example": "Keep an eye on the kids.",
+        "equivalents": {
+          "ru": "присматривать за"
+        }
+      },
+      "put_foot_in_mouth": {
+        "idiom": "to put your foot in your mouth",
+        "meaning": "to say something embarrassing or tactless",
+        "literal_translation_error": "засунуть ногу в рот",
+        "equivalents": {
+          "ru": "ляпнуть / сказать глупость"
+        }
+      },
+      "give_cold_shoulder": {
+        "idiom": "to give someone the cold shoulder",
+        "meaning": "to deliberately ignore someone",
+        "equivalents": {
+          "ru": "холодно относиться / игнорировать"
+        }
+      },
+      "bite_tongue": {
+        "idiom": "to bite your tongue",
+        "meaning": "to stop yourself from saying something",
+        "equivalents": {
+          "ru": "прикусить язык"
+        }
+      },
+      "all_ears": {
+        "idiom": "to be all ears",
+        "meaning": "to listen attentively",
+        "example": "Tell me, I'm all ears.",
+        "equivalents": {
+          "ru": "весь внимание"
+        }
+      },
+      "get_off_chest": {
+        "idiom": "to get something off your chest",
+        "meaning": "to tell someone about something that has been worrying you",
+        "equivalents": {
+          "ru": "выговориться / облегчить душу"
+        }
+      },
+      "head_over_heels": {
+        "idiom": "head over heels (in love)",
+        "meaning": "completely in love",
+        "equivalents": {
+          "ru": "по уши (влюблён)"
+        }
+      }
+    }
+  },
+  "animal_idioms": {
+    "category": "Animals",
+    "idioms": {
+      "elephant_in_room": {
+        "idiom": "the elephant in the room",
+        "meaning": "an obvious problem that no one wants to discuss",
+        "literal_translation_error": "слон в комнате",
+        "equivalents": {
+          "ru": "очевидная проблема, которую все игнорируют"
+        }
+      },
+      "let_cat_out": {
+        "idiom": "to let the cat out of the bag",
+        "meaning": "to reveal a secret accidentally",
+        "equivalents": {
+          "ru": "проболтаться / выдать секрет"
+        }
+      },
+      "when_pigs_fly": {
+        "idiom": "when pigs fly",
+        "meaning": "never (something impossible)",
+        "equivalents": {
+          "ru": "когда рак на горе свистнет"
+        }
+      },
+      "kill_two_birds": {
+        "idiom": "to kill two birds with one stone",
+        "meaning": "to accomplish two things with one action",
+        "equivalents": {
+          "ru": "убить двух зайцев одним выстрелом"
+        }
+      },
+      "hold_horses": {
+        "idiom": "hold your horses",
+        "meaning": "wait, be patient, slow down",
+        "equivalents": {
+          "ru": "не торопись / погоди"
+        }
+      },
+      "dark_horse": {
+        "idiom": "a dark horse",
+        "meaning": "an unknown person who unexpectedly wins or succeeds",
+        "equivalents": {
+          "ru": "тёмная лошадка"
+        }
+      },
+      "fish_out_of_water": {
+        "idiom": "like a fish out of water",
+        "meaning": "uncomfortable in unfamiliar surroundings",
+        "equivalents": {
+          "ru": "как рыба, вынутая из воды / не в своей тарелке"
+        }
+      },
+      "crocodile_tears": {
+        "idiom": "crocodile tears",
+        "meaning": "insincere display of grief",
+        "equivalents": {
+          "ru": "крокодиловы слёзы"
+        }
+      }
+    }
+  },
+  "color_idioms": {
+    "category": "Colors",
+    "idioms": {
+      "feeling_blue": {
+        "idiom": "to feel blue",
+        "meaning": "to feel sad or depressed",
+        "literal_translation_error": "чувствовать себя синим",
+        "equivalents": {
+          "ru": "хандрить / грустить"
+        }
+      },
+      "green_with_envy": {
+        "idiom": "green with envy",
+        "meaning": "very jealous",
+        "equivalents": {
+          "ru": "позеленеть от зависти"
+        }
+      },
+      "see_red": {
+        "idiom": "to see red",
+        "meaning": "to become very angry",
+        "equivalents": {
+          "ru": "прийти в ярость"
+        }
+      },
+      "white_lie": {
+        "idiom": "a white lie",
+        "meaning": "a harmless lie told to avoid hurting feelings",
+        "equivalents": {
+          "ru": "ложь во спасение / невинная ложь"
+        }
+      },
+      "black_sheep": {
+        "idiom": "the black sheep (of the family)",
+        "meaning": "a person who is different or embarrassing",
+        "equivalents": {
+          "ru": "белая ворона / паршивая овца"
+        }
+      },
+      "out_of_blue": {
+        "idiom": "out of the blue",
+        "meaning": "unexpectedly, without warning",
+        "example": "He called me out of the blue.",
+        "equivalents": {
+          "ru": "как гром среди ясного неба / неожиданно"
+        }
+      },
+      "tickled_pink": {
+        "idiom": "tickled pink",
+        "meaning": "very pleased",
+        "equivalents": {
+          "ru": "очень довольный / в восторге"
+        }
+      }
+    }
+  },
+  "food_idioms": {
+    "category": "Food",
+    "idioms": {
+      "piece_of_cake": {
+        "idiom": "a piece of cake",
+        "meaning": "very easy",
+        "literal_translation_error": "кусок торта",
+        "equivalents": {
+          "ru": "как два пальца об асфальт / проще простого"
+        }
+      },
+      "spill_the_beans": {
+        "idiom": "to spill the beans",
+        "meaning": "to reveal a secret",
+        "equivalents": {
+          "ru": "проболтаться / выдать секрет"
+        }
+      },
+      "cry_over_spilled_milk": {
+        "idiom": "don't cry over spilled milk",
+        "meaning": "don't worry about past mistakes",
+        "equivalents": {
+          "ru": "что было, то прошло / слезами горю не поможешь"
+        }
+      },
+      "apple_of_eye": {
+        "idiom": "the apple of someone's eye",
+        "meaning": "someone who is cherished above all others",
+        "equivalents": {
+          "ru": "зеница ока"
+        }
+      },
+      "butter_someone_up": {
+        "idiom": "to butter someone up",
+        "meaning": "to flatter someone to get something",
+        "equivalents": {
+          "ru": "подлизываться / льстить"
+        }
+      },
+      "in_a_nutshell": {
+        "idiom": "in a nutshell",
+        "meaning": "in summary, briefly",
+        "equivalents": {
+          "ru": "в двух словах / короче говоря"
+        }
+      },
+      "cool_as_cucumber": {
+        "idiom": "cool as a cucumber",
+        "meaning": "very calm, not nervous",
+        "equivalents": {
+          "ru": "спокойный как удав"
+        }
+      },
+      "bad_apple": {
+        "idiom": "a bad apple",
+        "meaning": "a troublemaker who affects others negatively",
+        "equivalents": {
+          "ru": "паршивая овца"
+        }
+      }
+    }
+  },
+  "money_idioms": {
+    "category": "Money and Business",
+    "idioms": {
+      "break_the_bank": {
+        "idiom": "to break the bank",
+        "meaning": "to cost more than one can afford",
+        "example": "This won't break the bank.",
+        "equivalents": {
+          "ru": "разорить"
+        }
+      },
+      "time_is_money": {
+        "idiom": "time is money",
+        "meaning": "time is valuable, don't waste it",
+        "equivalents": {
+          "ru": "время - деньги"
+        }
+      },
+      "foot_the_bill": {
+        "idiom": "to foot the bill",
+        "meaning": "to pay for something",
+        "equivalents": {
+          "ru": "оплатить счёт"
+        }
+      },
+      "penny_for_thoughts": {
+        "idiom": "a penny for your thoughts",
+        "meaning": "asking what someone is thinking about",
+        "equivalents": {
+          "ru": "о чём задумался?"
+        }
+      },
+      "hit_jackpot": {
+        "idiom": "to hit the jackpot",
+        "meaning": "to have great success, especially financial",
+        "equivalents": {
+          "ru": "сорвать куш"
+        }
+      }
+    }
+  },
+  "time_idioms": {
+    "category": "Time",
+    "idioms": {
+      "once_in_blue_moon": {
+        "idiom": "once in a blue moon",
+        "meaning": "very rarely",
+        "equivalents": {
+          "ru": "раз в сто лет / очень редко"
+        }
+      },
+      "call_it_a_day": {
+        "idiom": "to call it a day",
+        "meaning": "to stop working for the day",
+        "example": "Let's call it a day.",
+        "equivalents": {
+          "ru": "заканчивать на сегодня"
+        }
+      },
+      "beat_around_bush": {
+        "idiom": "to beat around the bush",
+        "meaning": "to avoid the main topic",
+        "equivalents": {
+          "ru": "ходить вокруг да около"
+        }
+      },
+      "better_late_than_never": {
+        "idiom": "better late than never",
+        "meaning": "it's preferable to do something late than not at all",
+        "equivalents": {
+          "ru": "лучше поздно, чем никогда"
+        }
+      },
+      "at_eleventh_hour": {
+        "idiom": "at the eleventh hour",
+        "meaning": "at the last possible moment",
+        "equivalents": {
+          "ru": "в последний момент"
+        }
+      }
+    }
+  },
+  "common_expressions": {
+    "category": "Everyday Expressions",
+    "idioms": {
+      "hit_nail_on_head": {
+        "idiom": "to hit the nail on the head",
+        "meaning": "to be exactly right",
+        "equivalents": {
+          "ru": "попасть в точку"
+        }
+      },
+      "bite_off_more": {
+        "idiom": "to bite off more than you can chew",
+        "meaning": "to take on more than you can handle",
+        "equivalents": {
+          "ru": "взять на себя слишком много"
+        }
+      },
+      "get_act_together": {
+        "idiom": "to get your act together",
+        "meaning": "to organize yourself, to behave properly",
+        "equivalents": {
+          "ru": "взять себя в руки"
+        }
+      },
+      "back_to_square_one": {
+        "idiom": "back to square one",
+        "meaning": "back to the beginning",
+        "equivalents": {
+          "ru": "вернуться к началу"
+        }
+      },
+      "on_same_page": {
+        "idiom": "to be on the same page",
+        "meaning": "to have the same understanding",
+        "equivalents": {
+          "ru": "быть на одной волне / понимать друг друга"
+        }
+      },
+      "ball_in_your_court": {
+        "idiom": "the ball is in your court",
+        "meaning": "it's your decision/turn to act",
+        "equivalents": {
+          "ru": "ход за тобой"
+        }
+      },
+      "through_thick_and_thin": {
+        "idiom": "through thick and thin",
+        "meaning": "in good times and bad times",
+        "equivalents": {
+          "ru": "в горе и в радости / что бы ни случилось"
+        }
+      },
+      "actions_speak_louder": {
+        "idiom": "actions speak louder than words",
+        "meaning": "what you do matters more than what you say",
+        "equivalents": {
+          "ru": "дела говорят громче слов"
+        }
+      }
+    }
+  },
+  "translation_guidelines": {
+    "rules": [
+      "NEVER translate idioms word-for-word",
+      "First find equivalent idiom in target language",
+      "If no equivalent, explain the meaning",
+      "Preserve the register/tone of the original",
+      "Consider cultural context"
+    ],
+    "common_mt_errors": [
+      "'piece of cake' → 'кусок торта' instead of 'пустяк'",
+      "'break a leg' → 'сломай ногу' instead of 'удачи!'",
+      "'raining cats and dogs' → literal animal translation"
+    ]
+  }
+}

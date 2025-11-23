@@ -1,0 +1,287 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "Persian Idioms and Expressions",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Persian idioms (اصطلاحات) that cannot be translated literally. Critical for avoiding translation errors.",
+    "sources": [
+      "Persian Language Resources",
+      "Iranian Cultural Studies",
+      "Native speaker consultations"
+    ],
+    "total_entries": 50
+  },
+  "idiom_categories": {
+    "body_parts": {
+      "description": "Idioms involving body parts",
+      "entries": {
+        "دست_از_سر_برداشتن": {
+          "idiom_fa": "دست از سر کسی برداشتن",
+          "literal": "to lift hand from someone's head",
+          "meaning": "to leave someone alone, to stop bothering",
+          "english_equivalent": "to get off someone's back",
+          "example": "دست از سرم بردار! (Leave me alone!)",
+          "severity": "critical_if_literal"
+        },
+        "سر_کسی_کلاه_گذاشتن": {
+          "idiom_fa": "سر کسی کلاه گذاشتن",
+          "literal": "to put a hat on someone's head",
+          "meaning": "to cheat/deceive someone",
+          "english_equivalent": "to pull the wool over someone's eyes",
+          "example": "سرش کلاه گذاشتند (They cheated him)",
+          "severity": "critical_if_literal"
+        },
+        "چشم_به_راه_بودن": {
+          "idiom_fa": "چشم به راه بودن",
+          "literal": "to have eyes on the road",
+          "meaning": "to wait eagerly/anxiously for someone",
+          "english_equivalent": "to look forward to / await eagerly",
+          "example": "چشم به راه تو هستم (I'm eagerly waiting for you)",
+          "severity": "major"
+        },
+        "دست_و_پا_چلفتی": {
+          "idiom_fa": "دست و پا چلفتی",
+          "literal": "clumsy hands and feet",
+          "meaning": "clumsy person",
+          "english_equivalent": "butterfingers, klutz",
+          "example": "چقدر دست و پا چلفتی هستی! (How clumsy you are!)",
+          "severity": "minor"
+        },
+        "زبان_دراز": {
+          "idiom_fa": "زبان دراز",
+          "literal": "long tongue",
+          "meaning": "sharp-tongued, impudent person",
+          "english_equivalent": "having a sharp tongue",
+          "example": "زبانش خیلی درازه (He has a sharp tongue)",
+          "severity": "major"
+        },
+        "دل_و_جرئت_داشتن": {
+          "idiom_fa": "دل و جرئت داشتن",
+          "literal": "to have heart and courage",
+          "meaning": "to be brave, to have guts",
+          "english_equivalent": "to have guts",
+          "example": "دل و جرئت نداری (You don't have the guts)",
+          "severity": "minor"
+        },
+        "سر_به_سر_گذاشتن": {
+          "idiom_fa": "سر به سر کسی گذاشتن",
+          "literal": "to put head to head with someone",
+          "meaning": "to tease, to joke with",
+          "english_equivalent": "to pull someone's leg",
+          "example": "سرش را به سر نگذار (Don't tease him)",
+          "severity": "major"
+        },
+        "دست_از_پا_درازتر": {
+          "idiom_fa": "دست از پا درازتر برگشتن",
+          "literal": "to return with hands longer than feet",
+          "meaning": "to return empty-handed, disappointed",
+          "english_equivalent": "to come back empty-handed",
+          "example": "دست از پا درازتر برگشت (He came back empty-handed)",
+          "severity": "critical_if_literal"
+        },
+        "دست_کسی_رو_شدن": {
+          "idiom_fa": "دست کسی رو شدن",
+          "literal": "someone's hand became exposed",
+          "meaning": "to be exposed/caught",
+          "english_equivalent": "to be found out",
+          "example": "دستش رو شد (He was found out)",
+          "severity": "major"
+        }
+      }
+    },
+    "animal_idioms": {
+      "description": "Idioms involving animals",
+      "entries": {
+        "مرغ_یک_پا_دارد": {
+          "idiom_fa": "مرغ یک پا دارد",
+          "literal": "the chicken has one leg",
+          "meaning": "to stubbornly insist on something",
+          "english_equivalent": "my way or the highway",
+          "example": "مرغش یک پا داره (He won't change his mind)",
+          "severity": "critical_if_literal"
+        },
+        "الاغ_را_گفتند_یابو": {
+          "idiom_fa": "الاغ را گفتند یابو شدی خوشحالی",
+          "literal": "they called the donkey 'mule' and he became happy",
+          "meaning": "foolishly pleased by a small/fake compliment",
+          "english_equivalent": "easily flattered fool",
+          "severity": "major"
+        },
+        "خر_تو_خر": {
+          "idiom_fa": "خر تو خر",
+          "literal": "donkey in donkey",
+          "meaning": "complete chaos, confusion",
+          "english_equivalent": "total chaos",
+          "example": "اینجا خر تو خره (It's chaos here)",
+          "severity": "major"
+        },
+        "مار_خورده_افعی_شده": {
+          "idiom_fa": "مار خورده افعی شده",
+          "literal": "ate a snake and became a viper",
+          "meaning": "someone who has become more cunning after experience",
+          "english_equivalent": "battle-hardened, wiser from experience",
+          "severity": "major"
+        },
+        "گاو_پیشانی_سفید": {
+          "idiom_fa": "گاو پیشانی سفید",
+          "literal": "cow with white forehead",
+          "meaning": "scapegoat, someone always blamed",
+          "english_equivalent": "scapegoat",
+          "severity": "major"
+        }
+      }
+    },
+    "food_idioms": {
+      "description": "Idioms involving food and eating",
+      "entries": {
+        "نمک_خوردن_نمکدان_شکستن": {
+          "idiom_fa": "نمک خوردن و نمکدان شکستن",
+          "literal": "to eat salt and break the salt shaker",
+          "meaning": "to betray someone who helped you",
+          "english_equivalent": "to bite the hand that feeds you",
+          "example": "نمک‌خوردی نمکدان شکستی (You betrayed those who helped you)",
+          "severity": "critical_if_literal"
+        },
+        "آب_از_سرش_گذشته": {
+          "idiom_fa": "آب از سرش گذشته",
+          "literal": "water has passed over his head",
+          "meaning": "past the point of no return, nothing left to lose",
+          "english_equivalent": "in too deep, past caring",
+          "example": "آب از سرش گذشته (He's past caring)",
+          "severity": "critical_if_literal"
+        },
+        "نان_کسی_را_آجر_کردن": {
+          "idiom_fa": "نان کسی را آجر کردن",
+          "literal": "to turn someone's bread into brick",
+          "meaning": "to make life difficult for someone",
+          "english_equivalent": "to make someone's life hell",
+          "severity": "critical_if_literal"
+        },
+        "از_آب_گل‌آلود_ماهی_گرفتن": {
+          "idiom_fa": "از آب گل‌آلود ماهی گرفتن",
+          "literal": "to catch fish from muddy water",
+          "meaning": "to take advantage of confusion",
+          "english_equivalent": "to fish in troubled waters",
+          "example": "از آب گل‌آلود ماهی می‌گیره (He takes advantage of the situation)",
+          "severity": "minor"
+        }
+      }
+    },
+    "nature_idioms": {
+      "description": "Idioms involving nature and weather",
+      "entries": {
+        "باد_آورده_را_باد_می‌برد": {
+          "idiom_fa": "باد آورده را باد می‌برد",
+          "literal": "what the wind brought, the wind takes",
+          "meaning": "easy come, easy go",
+          "english_equivalent": "easy come, easy go",
+          "example": "این پول باد آورده است، باد هم می‌بره",
+          "severity": "minor"
+        },
+        "تا_تنور_گرمه_نان_بچسبان": {
+          "idiom_fa": "تا تنور گرمه نان بچسبان",
+          "literal": "while the oven is hot, stick the bread",
+          "meaning": "strike while the iron is hot",
+          "english_equivalent": "strike while the iron is hot",
+          "severity": "minor"
+        },
+        "کوه_به_کوه_نمی‌رسد": {
+          "idiom_fa": "کوه به کوه نمی‌رسد، آدم به آدم می‌رسد",
+          "literal": "mountain doesn't reach mountain, but person reaches person",
+          "meaning": "paths will cross again",
+          "english_equivalent": "what goes around comes around",
+          "severity": "minor"
+        },
+        "آب_از_آب_تکان_نخوردن": {
+          "idiom_fa": "آب از آب تکان نخوردن",
+          "literal": "water not moving from water",
+          "meaning": "nothing happens, calm situation",
+          "english_equivalent": "not a ripple, quiet as a grave",
+          "example": "آب از آب تکان نخورد (Nothing happened)",
+          "severity": "major"
+        }
+      }
+    },
+    "everyday_expressions": {
+      "description": "Common everyday idiomatic expressions",
+      "entries": {
+        "دو_دوتا_چهارتا": {
+          "idiom_fa": "دو دوتا چهارتا",
+          "literal": "two and two is four",
+          "meaning": "simple/obvious truth, basic math",
+          "english_equivalent": "it's as simple as that",
+          "example": "دو دوتا چهارتا، این کار درست نیست",
+          "severity": "minor"
+        },
+        "انگشت_به_دهان_ماندن": {
+          "idiom_fa": "انگشت به دهان ماندن",
+          "literal": "finger stayed in mouth",
+          "meaning": "to be amazed/speechless",
+          "english_equivalent": "jaw-dropping, speechless",
+          "example": "همه انگشت به دهان ماندند (Everyone was amazed)",
+          "severity": "major"
+        },
+        "پا_تو_کفش_کسی_کردن": {
+          "idiom_fa": "پا تو کفش کسی کردن",
+          "literal": "to put foot in someone's shoe",
+          "meaning": "to meddle in someone's affairs",
+          "english_equivalent": "to stick one's nose in someone's business",
+          "severity": "major"
+        },
+        "سنگ_پیش_پا_انداختن": {
+          "idiom_fa": "سنگ پیش پای کسی انداختن",
+          "literal": "to throw a stone in front of someone's feet",
+          "meaning": "to create obstacles for someone",
+          "english_equivalent": "to throw a wrench in the works",
+          "severity": "major"
+        },
+        "تیر_خلاص_زدن": {
+          "idiom_fa": "تیر خلاص زدن",
+          "literal": "to shoot the finishing bullet",
+          "meaning": "to deliver the final blow",
+          "english_equivalent": "to deliver the coup de grâce",
+          "example": "تیر خلاص را زد (He delivered the final blow)",
+          "severity": "major"
+        },
+        "آستین_بالا_زدن": {
+          "idiom_fa": "آستین بالا زدن",
+          "literal": "to roll up sleeves",
+          "meaning": "to get ready for work",
+          "english_equivalent": "to roll up one's sleeves",
+          "example": "آستین بالا زد و شروع کرد (He rolled up his sleeves and started)",
+          "severity": "minor"
+        },
+        "روی_کسی_را_زمین_انداختن": {
+          "idiom_fa": "روی کسی را زمین انداختن",
+          "literal": "to throw someone's face on the ground",
+          "meaning": "to reject/refuse someone rudely",
+          "english_equivalent": "to turn someone down flat",
+          "severity": "major"
+        },
+        "به_خاک_سیاه_نشاندن": {
+          "idiom_fa": "به خاک سیاه نشاندن",
+          "literal": "to seat in black soil",
+          "meaning": "to bring someone to ruin",
+          "english_equivalent": "to ruin someone completely",
+          "severity": "critical_if_literal"
+        }
+      }
+    }
+  },
+  "translation_guidelines": {
+    "rules": [
+      "NEVER translate idioms word-for-word",
+      "Find equivalent idiom in target language if exists",
+      "If no equivalent, explain the meaning",
+      "Consider adding translator's note for cultural context",
+      "Preserve the register/tone of the original"
+    ],
+    "severity_explanation": {
+      "critical_if_literal": "Will be completely nonsensical or offensive if translated literally",
+      "major": "Will be confusing but not completely wrong",
+      "minor": "Has some overlap with literal meaning, less risky"
+    }
+  }
+}

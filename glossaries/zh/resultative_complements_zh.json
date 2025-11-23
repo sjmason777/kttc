@@ -1,0 +1,428 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Resultative Complements (结果补语)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Chinese resultative verb complements - elements that indicate the result or outcome of an action",
+    "sources": [
+      "HSK Grammar Standards",
+      "Chinese Language Translation Quality 2025 Research",
+      "MQM Core Chinese Terminology"
+    ],
+    "total_terms": 100,
+    "usage": "Grammar checking, translation quality assessment, fluency evaluation"
+  },
+  "overview": {
+    "term_zh": "结果补语",
+    "term_en": "Resultative Complement / Verb Complement",
+    "pinyin": "jiéguǒ bǔyǔ",
+    "definition": "A complement that follows a verb to indicate the result, degree, or outcome of the action",
+    "definition_zh": "用在动词后面，表示动作的结果",
+    "structure": "Verb + Complement (V + C)",
+    "importance": "Essential for expressing completed actions with results - core feature of Chinese grammar",
+    "types": [
+      "结果补语 - Resultative complement (result)",
+      "程度补语 - Degree complement (extent)",
+      "可能补语 - Potential complement (possibility)",
+      "趋向补语 - Directional complement (direction)"
+    ]
+  },
+  "resultative_complements": {
+    "completion_results": {
+      "category": "Complements indicating completion",
+      "complements": {
+        "完": {
+          "pinyin": "wán",
+          "meaning": "finish, complete",
+          "examples": [
+            {"compound": "看完", "meaning": "finish reading/watching", "sentence": "我看完了这本书"},
+            {"compound": "吃完", "meaning": "finish eating", "sentence": "饭吃完了"},
+            {"compound": "做完", "meaning": "finish doing", "sentence": "作业做完了"},
+            {"compound": "说完", "meaning": "finish speaking", "sentence": "让我说完"},
+            {"compound": "写完", "meaning": "finish writing", "sentence": "报告写完了"}
+          ]
+        },
+        "好": {
+          "pinyin": "hǎo",
+          "meaning": "done well, ready",
+          "examples": [
+            {"compound": "做好", "meaning": "do well, prepare", "sentence": "饭做好了"},
+            {"compound": "准备好", "meaning": "prepared, ready", "sentence": "我准备好了"},
+            {"compound": "想好", "meaning": "thought through", "sentence": "你想好了吗？"},
+            {"compound": "说好", "meaning": "agreed upon", "sentence": "我们说好了明天见"},
+            {"compound": "安排好", "meaning": "arranged", "sentence": "一切都安排好了"}
+          ]
+        },
+        "成": {
+          "pinyin": "chéng",
+          "meaning": "become, accomplish",
+          "examples": [
+            {"compound": "变成", "meaning": "become, turn into", "sentence": "毛毛虫变成了蝴蝶"},
+            {"compound": "做成", "meaning": "succeed in making", "sentence": "这件事做成了"},
+            {"compound": "翻译成", "meaning": "translate into", "sentence": "把它翻译成中文"},
+            {"compound": "改成", "meaning": "change into", "sentence": "把名字改成新的"}
+          ]
+        }
+      }
+    },
+    "state_change_results": {
+      "category": "Complements indicating state change",
+      "complements": {
+        "开": {
+          "pinyin": "kāi",
+          "meaning": "open, apart",
+          "examples": [
+            {"compound": "打开", "meaning": "open", "sentence": "请打开窗户"},
+            {"compound": "拉开", "meaning": "pull apart", "sentence": "把窗帘拉开"},
+            {"compound": "分开", "meaning": "separate", "sentence": "他们分开了"},
+            {"compound": "离开", "meaning": "leave", "sentence": "我要离开了"},
+            {"compound": "解开", "meaning": "untie, solve", "sentence": "解开这个谜"}
+          ]
+        },
+        "上": {
+          "pinyin": "shàng",
+          "meaning": "up, on, closed",
+          "examples": [
+            {"compound": "关上", "meaning": "close", "sentence": "关上门"},
+            {"compound": "穿上", "meaning": "put on", "sentence": "穿上外套"},
+            {"compound": "戴上", "meaning": "put on (accessories)", "sentence": "戴上眼镜"},
+            {"compound": "爱上", "meaning": "fall in love with", "sentence": "我爱上了她"},
+            {"compound": "锁上", "meaning": "lock", "sentence": "把门锁上"}
+          ]
+        },
+        "下": {
+          "pinyin": "xià",
+          "meaning": "down, off",
+          "examples": [
+            {"compound": "放下", "meaning": "put down", "sentence": "把书放下"},
+            {"compound": "坐下", "meaning": "sit down", "sentence": "请坐下"},
+            {"compound": "停下", "meaning": "stop", "sentence": "车停下了"},
+            {"compound": "留下", "meaning": "leave behind, stay", "sentence": "他留下了"},
+            {"compound": "记下", "meaning": "note down", "sentence": "把电话记下"}
+          ]
+        },
+        "掉": {
+          "pinyin": "diào",
+          "meaning": "away, off (removal)",
+          "examples": [
+            {"compound": "扔掉", "meaning": "throw away", "sentence": "把垃圾扔掉"},
+            {"compound": "删掉", "meaning": "delete", "sentence": "把这段删掉"},
+            {"compound": "忘掉", "meaning": "forget", "sentence": "忘掉过去"},
+            {"compound": "卖掉", "meaning": "sell off", "sentence": "把房子卖掉了"},
+            {"compound": "擦掉", "meaning": "wipe off", "sentence": "把字擦掉"}
+          ]
+        },
+        "住": {
+          "pinyin": "zhù",
+          "meaning": "firmly, stable",
+          "examples": [
+            {"compound": "抓住", "meaning": "grab, catch", "sentence": "抓住机会"},
+            {"compound": "记住", "meaning": "remember", "sentence": "记住这个地址"},
+            {"compound": "站住", "meaning": "stop (stand still)", "sentence": "站住！"},
+            {"compound": "拿住", "meaning": "hold firmly", "sentence": "把它拿住"},
+            {"compound": "停住", "meaning": "stop", "sentence": "脚步停住了"}
+          ]
+        }
+      }
+    },
+    "physical_results": {
+      "category": "Complements indicating physical outcomes",
+      "complements": {
+        "破": {
+          "pinyin": "pò",
+          "meaning": "broken, torn",
+          "examples": [
+            {"compound": "打破", "meaning": "break (by hitting)", "sentence": "窗户打破了"},
+            {"compound": "撕破", "meaning": "tear", "sentence": "衣服撕破了"},
+            {"compound": "摔破", "meaning": "break by dropping", "sentence": "杯子摔破了"}
+          ]
+        },
+        "碎": {
+          "pinyin": "suì",
+          "meaning": "shattered",
+          "examples": [
+            {"compound": "打碎", "meaning": "shatter", "sentence": "玻璃打碎了"},
+            {"compound": "摔碎", "meaning": "break into pieces", "sentence": "花瓶摔碎了"}
+          ]
+        },
+        "坏": {
+          "pinyin": "huài",
+          "meaning": "broken, bad",
+          "examples": [
+            {"compound": "弄坏", "meaning": "break, damage", "sentence": "电脑弄坏了"},
+            {"compound": "吓坏", "meaning": "scare badly", "sentence": "把我吓坏了"},
+            {"compound": "累坏", "meaning": "exhausted", "sentence": "累坏了"}
+          ]
+        },
+        "死": {
+          "pinyin": "sǐ",
+          "meaning": "extremely (intensifier), to death",
+          "examples": [
+            {"compound": "饿死", "meaning": "starving", "sentence": "我快饿死了"},
+            {"compound": "累死", "meaning": "exhausted to death", "sentence": "累死了"},
+            {"compound": "笑死", "meaning": "laughing to death", "sentence": "笑死我了"},
+            {"compound": "气死", "meaning": "furious", "sentence": "气死我了"},
+            {"compound": "急死", "meaning": "extremely anxious", "sentence": "急死了"}
+          ],
+          "note": "Often used as exaggeration intensifier"
+        },
+        "湿": {
+          "pinyin": "shī",
+          "meaning": "wet",
+          "examples": [
+            {"compound": "打湿", "meaning": "get wet", "sentence": "雨把衣服打湿了"},
+            {"compound": "弄湿", "meaning": "make wet", "sentence": "别把地弄湿"}
+          ]
+        },
+        "干": {
+          "pinyin": "gān",
+          "meaning": "dry",
+          "examples": [
+            {"compound": "晾干", "meaning": "air dry", "sentence": "衣服晾干了"},
+            {"compound": "擦干", "meaning": "wipe dry", "sentence": "把手擦干"}
+          ]
+        },
+        "干净": {
+          "pinyin": "gānjìng",
+          "meaning": "clean",
+          "examples": [
+            {"compound": "洗干净", "meaning": "wash clean", "sentence": "把碗洗干净"},
+            {"compound": "打扫干净", "meaning": "clean up", "sentence": "房间打扫干净了"}
+          ]
+        }
+      }
+    },
+    "perception_cognition_results": {
+      "category": "Complements for perception and cognition",
+      "complements": {
+        "见": {
+          "pinyin": "jiàn",
+          "meaning": "perceive, see",
+          "examples": [
+            {"compound": "看见", "meaning": "see", "sentence": "我看见他了"},
+            {"compound": "听见", "meaning": "hear", "sentence": "你听见了吗？"},
+            {"compound": "遇见", "meaning": "meet, encounter", "sentence": "我遇见了老朋友"},
+            {"compound": "碰见", "meaning": "run into", "sentence": "碰见了他"}
+          ]
+        },
+        "到": {
+          "pinyin": "dào",
+          "meaning": "achieve, reach, perceive",
+          "examples": [
+            {"compound": "看到", "meaning": "see", "sentence": "我看到了"},
+            {"compound": "听到", "meaning": "hear", "sentence": "听到消息了"},
+            {"compound": "找到", "meaning": "find", "sentence": "钥匙找到了"},
+            {"compound": "想到", "meaning": "think of", "sentence": "我想到了一个办法"},
+            {"compound": "收到", "meaning": "receive", "sentence": "收到礼物了"},
+            {"compound": "做到", "meaning": "achieve", "sentence": "你能做到吗？"},
+            {"compound": "买到", "meaning": "manage to buy", "sentence": "票买到了"}
+          ]
+        },
+        "懂": {
+          "pinyin": "dǒng",
+          "meaning": "understand",
+          "examples": [
+            {"compound": "听懂", "meaning": "understand (by listening)", "sentence": "你听懂了吗？"},
+            {"compound": "看懂", "meaning": "understand (by reading)", "sentence": "这本书我看懂了"},
+            {"compound": "搞懂", "meaning": "figure out", "sentence": "终于搞懂了"}
+          ]
+        },
+        "清楚": {
+          "pinyin": "qīngchu",
+          "meaning": "clearly",
+          "examples": [
+            {"compound": "说清楚", "meaning": "explain clearly", "sentence": "请说清楚"},
+            {"compound": "看清楚", "meaning": "see clearly", "sentence": "看清楚了"},
+            {"compound": "听清楚", "meaning": "hear clearly", "sentence": "没听清楚"}
+          ]
+        },
+        "错": {
+          "pinyin": "cuò",
+          "meaning": "wrong, mistake",
+          "examples": [
+            {"compound": "说错", "meaning": "say wrong", "sentence": "我说错了"},
+            {"compound": "写错", "meaning": "write wrong", "sentence": "字写错了"},
+            {"compound": "做错", "meaning": "do wrong", "sentence": "做错了事"},
+            {"compound": "认错", "meaning": "mistake (identity)", "sentence": "认错人了"},
+            {"compound": "搞错", "meaning": "get wrong", "sentence": "搞错了"}
+          ]
+        },
+        "会": {
+          "pinyin": "huì",
+          "meaning": "learned, mastered",
+          "examples": [
+            {"compound": "学会", "meaning": "learn (successfully)", "sentence": "我学会游泳了"}
+          ]
+        }
+      }
+    }
+  },
+  "directional_complements": {
+    "term_zh": "趋向补语",
+    "description": "Complements indicating direction of action",
+    "simple_directionals": {
+      "来": {
+        "pinyin": "lái",
+        "meaning": "toward speaker",
+        "examples": [
+          {"compound": "进来", "meaning": "come in", "sentence": "请进来"},
+          {"compound": "出来", "meaning": "come out", "sentence": "太阳出来了"},
+          {"compound": "上来", "meaning": "come up", "sentence": "上来吧"},
+          {"compound": "下来", "meaning": "come down", "sentence": "从树上下来"},
+          {"compound": "回来", "meaning": "come back", "sentence": "他回来了"},
+          {"compound": "过来", "meaning": "come over", "sentence": "过来一下"}
+        ]
+      },
+      "去": {
+        "pinyin": "qù",
+        "meaning": "away from speaker",
+        "examples": [
+          {"compound": "进去", "meaning": "go in", "sentence": "进去看看"},
+          {"compound": "出去", "meaning": "go out", "sentence": "出去玩"},
+          {"compound": "上去", "meaning": "go up", "sentence": "上去吧"},
+          {"compound": "下去", "meaning": "go down", "sentence": "继续下去"},
+          {"compound": "回去", "meaning": "go back", "sentence": "我要回去了"},
+          {"compound": "过去", "meaning": "go over", "sentence": "走过去"}
+        ]
+      }
+    },
+    "compound_directionals": {
+      "起来": {
+        "pinyin": "qǐlái",
+        "meaning": "up and start / begin",
+        "examples": [
+          {"compound": "站起来", "meaning": "stand up", "sentence": "请站起来"},
+          {"compound": "想起来", "meaning": "remember", "sentence": "我想起来了"},
+          {"compound": "笑起来", "meaning": "start laughing", "sentence": "他笑起来了"},
+          {"compound": "唱起来", "meaning": "start singing", "sentence": "大家唱起来"},
+          {"compound": "看起来", "meaning": "looks like", "sentence": "看起来不错"}
+        ]
+      },
+      "下去": {
+        "pinyin": "xiàqù",
+        "meaning": "continue (downward)",
+        "examples": [
+          {"compound": "说下去", "meaning": "continue speaking", "sentence": "请说下去"},
+          {"compound": "活下去", "meaning": "continue living", "sentence": "要坚强地活下去"},
+          {"compound": "坚持下去", "meaning": "persevere", "sentence": "一定要坚持下去"}
+        ]
+      },
+      "出来": {
+        "pinyin": "chūlái",
+        "meaning": "out (result visible)",
+        "examples": [
+          {"compound": "说出来", "meaning": "speak out", "sentence": "把想法说出来"},
+          {"compound": "看出来", "meaning": "see/recognize", "sentence": "我看出来了"},
+          {"compound": "听出来", "meaning": "hear/recognize", "sentence": "你听出来了吗？"},
+          {"compound": "做出来", "meaning": "make/create", "sentence": "把东西做出来"}
+        ]
+      }
+    }
+  },
+  "potential_complements": {
+    "term_zh": "可能补语",
+    "description": "Complements expressing possibility using 得/不",
+    "structure": {
+      "positive": "Verb + 得 + Complement (能做到)",
+      "negative": "Verb + 不 + Complement (做不到)"
+    },
+    "examples": [
+      {
+        "positive": "看得见",
+        "negative": "看不见",
+        "meaning": "can/cannot see"
+      },
+      {
+        "positive": "听得懂",
+        "negative": "听不懂",
+        "meaning": "can/cannot understand"
+      },
+      {
+        "positive": "做得完",
+        "negative": "做不完",
+        "meaning": "can/cannot finish"
+      },
+      {
+        "positive": "吃得下",
+        "negative": "吃不下",
+        "meaning": "can/cannot eat (have appetite)"
+      },
+      {
+        "positive": "睡得着",
+        "negative": "睡不着",
+        "meaning": "can/cannot sleep"
+      },
+      {
+        "positive": "来得及",
+        "negative": "来不及",
+        "meaning": "can/cannot make it in time"
+      },
+      {
+        "positive": "买得起",
+        "negative": "买不起",
+        "meaning": "can/cannot afford"
+      },
+      {
+        "positive": "受得了",
+        "negative": "受不了",
+        "meaning": "can/cannot stand/bear"
+      }
+    ]
+  },
+  "degree_complements": {
+    "term_zh": "程度补语",
+    "description": "Complements indicating degree or extent",
+    "structure": "Verb + 得 + Adjective/Description",
+    "marker": "得 (de) is required for degree complements",
+    "examples": [
+      {
+        "sentence": "他跑得很快",
+        "meaning": "He runs very fast",
+        "structure": "跑 + 得 + 很快"
+      },
+      {
+        "sentence": "她唱得非常好",
+        "meaning": "She sings very well",
+        "structure": "唱 + 得 + 非常好"
+      },
+      {
+        "sentence": "我累得走不动了",
+        "meaning": "I'm so tired I can't walk",
+        "structure": "累 + 得 + 走不动了"
+      },
+      {
+        "sentence": "他高兴得跳起来",
+        "meaning": "He was so happy he jumped up",
+        "structure": "高兴 + 得 + 跳起来"
+      }
+    ]
+  },
+  "detection_rules": {
+    "rule_1": {
+      "name": "Missing resultative complement",
+      "description": "Flag verbs that typically require resultative complement but are missing",
+      "severity": "minor",
+      "example": "*我做了作业 → 我做完了作业 (when completion is implied)"
+    },
+    "rule_2": {
+      "name": "Wrong complement choice",
+      "description": "Flag incorrect complement for the action type",
+      "severity": "major",
+      "example": "*打好玻璃 → 打破玻璃"
+    },
+    "rule_3": {
+      "name": "得/的 confusion with complements",
+      "description": "Flag using 的 instead of 得 for degree complements",
+      "severity": "critical",
+      "example": "*跑的很快 → 跑得很快"
+    },
+    "rule_4": {
+      "name": "Potential complement error",
+      "description": "Flag incorrect potential complement formation",
+      "severity": "major",
+      "example": "*看不得见 → 看不见"
+    }
+  }
+}

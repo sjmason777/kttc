@@ -1,0 +1,293 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Hindi Idioms and Proverbs (मुहावरे और लोकोक्तियाँ)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "हिन्दी मुहावरे और लोकोक्तियाँ - CANNOT be translated literally",
+    "sources": [
+      "हिन्दी मुहावरा कोश - राजेंद्र सिंह",
+      "Adda247 Hindi Grammar",
+      "NCERT Hindi Textbooks",
+      "Hindi Webdunia - Proverbs Collection"
+    ],
+    "total_terms": 100
+  },
+  "muhavare_overview": {
+    "definition": "मुहावरा: ऐसे वाक्यांश जिनका शाब्दिक अर्थ लाक्षणिक अर्थ से भिन्न होता है",
+    "translation_warning": "CRITICAL: Literal translation = WRONG translation",
+    "difference_from_proverb": "मुहावरा अकेला वाक्य नहीं बनाता; लोकोक्ति पूर्ण वाक्य है"
+  },
+  "body_parts_idioms": {
+    "description": "शरीर के अंगों से संबंधित मुहावरे",
+    "severity": "critical_if_literal",
+    "entries": {
+      "आँखों_में_धूल_झोंकना": {
+        "idiom": "आँखों में धूल झोंकना",
+        "literal_en": "to throw dust in eyes",
+        "literal_ru": "бросать пыль в глаза",
+        "actual_meaning_en": "to deceive, to trick",
+        "actual_meaning_ru": "обманывать, вводить в заблуждение",
+        "english_equivalent": "to pull the wool over someone's eyes",
+        "example": "उसने सबकी आँखों में धूल झोंक दी",
+        "example_translation": "He deceived everyone"
+      },
+      "नाक_में_दम_करना": {
+        "idiom": "नाक में दम करना",
+        "literal_en": "to put breath in nose",
+        "actual_meaning_en": "to harass, to annoy greatly",
+        "actual_meaning_ru": "изводить, сильно надоедать",
+        "english_equivalent": "to drive someone up the wall",
+        "example": "बच्चों ने माँ की नाक में दम कर दिया"
+      },
+      "कान_भरना": {
+        "idiom": "कान भरना",
+        "literal_en": "to fill ears",
+        "actual_meaning_en": "to instigate against someone, to poison someone's mind",
+        "actual_meaning_ru": "настраивать против кого-то",
+        "english_equivalent": "to poison someone's ear",
+        "example": "किसी ने उसके कान भर दिए"
+      },
+      "मुँह_की_खाना": {
+        "idiom": "मुँह की खाना",
+        "literal_en": "to eat of the mouth",
+        "actual_meaning_en": "to be defeated, to be humiliated",
+        "actual_meaning_ru": "потерпеть поражение",
+        "example": "चुनाव में विपक्ष को मुँह की खानी पड़ी"
+      },
+      "सिर_पर_सवार_होना": {
+        "idiom": "सिर पर सवार होना",
+        "literal_en": "to ride on head",
+        "actual_meaning_en": "to bother persistently",
+        "actual_meaning_ru": "не давать покоя",
+        "example": "यह समस्या सिर पर सवार है"
+      },
+      "हाथ_पैर_मारना": {
+        "idiom": "हाथ-पैर मारना",
+        "literal_en": "to hit hands and feet",
+        "actual_meaning_en": "to make great efforts",
+        "actual_meaning_ru": "прилагать большие усилия",
+        "english_equivalent": "to struggle hard",
+        "example": "नौकरी पाने के लिए बहुत हाथ-पैर मारे"
+      },
+      "पेट_में_चूहे_दौड़ना": {
+        "idiom": "पेट में चूहे दौड़ना",
+        "literal_en": "mice running in stomach",
+        "actual_meaning_en": "to be very hungry",
+        "actual_meaning_ru": "быть очень голодным",
+        "english_equivalent": "stomach is growling",
+        "example": "सुबह से कुछ नहीं खाया, पेट में चूहे दौड़ रहे हैं"
+      },
+      "दाँत_खट्टे_करना": {
+        "idiom": "दाँत खट्टे करना",
+        "literal_en": "to make teeth sour",
+        "actual_meaning_en": "to defeat decisively",
+        "actual_meaning_ru": "нанести сокрушительное поражение",
+        "example": "भारतीय सेना ने दुश्मनों के दाँत खट्टे कर दिए"
+      },
+      "आँखें_फेरना": {
+        "idiom": "आँखें फेरना",
+        "literal_en": "to turn eyes",
+        "actual_meaning_en": "to ignore, to look away, to become indifferent",
+        "actual_meaning_ru": "отворачиваться, игнорировать",
+        "example": "पैसे मिलते ही उसने आँखें फेर लीं"
+      },
+      "कलेजा_ठंडा_होना": {
+        "idiom": "कलेजा ठंडा होना",
+        "literal_en": "liver becoming cold",
+        "actual_meaning_en": "to feel relieved, satisfied",
+        "actual_meaning_ru": "почувствовать облегчение",
+        "example": "बेटे की सफलता से माँ का कलेजा ठंडा हुआ"
+      }
+    }
+  },
+  "animal_idioms": {
+    "description": "जानवरों से संबंधित मुहावरे",
+    "severity": "critical_if_literal",
+    "entries": {
+      "मक्खी_पर_मक्खी_मारना": {
+        "idiom": "मक्खी पर मक्खी मारना",
+        "literal_en": "to hit fly upon fly",
+        "actual_meaning_en": "to blindly copy someone",
+        "actual_meaning_ru": "слепо копировать",
+        "example": "दूसरों की मक्खी पर मक्खी मत मारो"
+      },
+      "घोड़े_बेचकर_सोना": {
+        "idiom": "घोड़े बेचकर सोना",
+        "literal_en": "to sleep after selling horses",
+        "actual_meaning_en": "to sleep deeply without any worry",
+        "actual_meaning_ru": "спать крепким сном без забот",
+        "example": "परीक्षा खत्म होते ही वह घोड़े बेचकर सो गया"
+      },
+      "ऊँट_के_मुँह_में_जीरा": {
+        "idiom": "ऊँट के मुँह में जीरा",
+        "literal_en": "cumin in camel's mouth",
+        "actual_meaning_en": "too little for someone's needs",
+        "actual_meaning_ru": "капля в море",
+        "english_equivalent": "a drop in the bucket",
+        "example": "इतने बड़े परिवार के लिए यह पैसा ऊँट के मुँह में जीरा है"
+      },
+      "कुत्ते_की_पूँछ_टेढ़ी": {
+        "idiom": "कुत्ते की पूँछ टेढ़ी की टेढ़ी",
+        "literal_en": "dog's tail remains crooked",
+        "actual_meaning_en": "bad habits don't change",
+        "actual_meaning_ru": "горбатого могила исправит",
+        "example": "उसे कितना भी समझाओ, कुत्ते की पूँछ टेढ़ी की टेढ़ी"
+      },
+      "बिल्ली_के_भाग्य_से_छींका_टूटना": {
+        "idiom": "बिल्ली के भाग्य से छींका टूटना",
+        "literal_en": "pot breaking by cat's luck",
+        "actual_meaning_en": "unexpected good fortune",
+        "actual_meaning_ru": "неожиданная удача"
+      },
+      "काला_अक्षर_भैंस_बराबर": {
+        "idiom": "काला अक्षर भैंस बराबर",
+        "literal_en": "black letter equals buffalo",
+        "actual_meaning_en": "completely illiterate",
+        "actual_meaning_ru": "полностью неграмотный",
+        "example": "उसके लिए यह किताब काला अक्षर भैंस बराबर है"
+      }
+    }
+  },
+  "number_idioms": {
+    "description": "संख्याओं से संबंधित मुहावरे",
+    "severity": "critical_if_literal",
+    "entries": {
+      "नौ_दो_ग्यारह_होना": {
+        "idiom": "नौ दो ग्यारह होना",
+        "literal_en": "nine two eleven become",
+        "actual_meaning_en": "to run away, to flee",
+        "actual_meaning_ru": "сбежать, скрыться",
+        "cultural_note": "9+2=11, mathematical wordplay",
+        "example": "पुलिस को देखकर चोर नौ दो ग्यारह हो गए"
+      },
+      "एक_पंथ_दो_काज": {
+        "idiom": "एक पंथ दो काज",
+        "literal_en": "one path two tasks",
+        "actual_meaning_en": "to accomplish two things at once",
+        "actual_meaning_ru": "убить двух зайцев одним выстрелом",
+        "english_equivalent": "to kill two birds with one stone",
+        "example": "दिल्ली जाकर काम भी हो जाएगा और रिश्तेदारों से भी मिलना हो जाएगा - एक पंथ दो काज"
+      },
+      "तीन_तेरह_होना": {
+        "idiom": "तीन-तेरह होना",
+        "literal_en": "three-thirteen become",
+        "actual_meaning_en": "to scatter, to disperse",
+        "actual_meaning_ru": "разбежаться",
+        "example": "बारिश शुरू होते ही लोग तीन-तेरह हो गए"
+      },
+      "चार_चाँद_लगाना": {
+        "idiom": "चार चाँद लगाना",
+        "literal_en": "to attach four moons",
+        "actual_meaning_en": "to add glory, to enhance beauty",
+        "actual_meaning_ru": "придать блеск, украсить",
+        "example": "आपकी उपस्थिति ने समारोह में चार चाँद लगा दिए"
+      },
+      "छत्तीस_का_आँकड़ा": {
+        "idiom": "छत्तीस का आँकड़ा",
+        "literal_en": "figure of thirty-six",
+        "actual_meaning_en": "enmity, opposition",
+        "actual_meaning_ru": "вражда, противостояние",
+        "example": "उन दोनों में छत्तीस का आँकड़ा है"
+      }
+    }
+  },
+  "food_idioms": {
+    "description": "खाने से संबंधित मुहावरे",
+    "severity": "critical_if_literal",
+    "entries": {
+      "घी_के_दीये_जलाना": {
+        "idiom": "घी के दीये जलाना",
+        "literal_en": "to light ghee lamps",
+        "actual_meaning_en": "to celebrate with joy",
+        "actual_meaning_ru": "праздновать с радостью",
+        "example": "परीक्षा में पास होने पर घी के दीये जलाए"
+      },
+      "दाल_में_काला_होना": {
+        "idiom": "दाल में काला होना",
+        "literal_en": "black in the lentils",
+        "actual_meaning_en": "something suspicious, something fishy",
+        "actual_meaning_ru": "что-то подозрительное",
+        "english_equivalent": "something fishy",
+        "example": "इस सौदे में कुछ दाल में काला है"
+      },
+      "अपनी_खिचड़ी_अलग_पकाना": {
+        "idiom": "अपनी खिचड़ी अलग पकाना",
+        "literal_en": "to cook one's own khichdi separately",
+        "actual_meaning_en": "to keep to oneself, to be selfish",
+        "actual_meaning_ru": "быть особняком, быть эгоистичным",
+        "example": "वह हमेशा अपनी खिचड़ी अलग पकाता है"
+      },
+      "आटे_दाल_का_भाव_मालूम_होना": {
+        "idiom": "आटे-दाल का भाव मालूम होना",
+        "literal_en": "to know the price of flour and lentils",
+        "actual_meaning_en": "to learn about life's hardships",
+        "actual_meaning_ru": "узнать цену жизни",
+        "example": "शादी के बाद आटे-दाल का भाव मालूम होगा"
+      }
+    }
+  },
+  "proverbs_lokokti": {
+    "description": "लोकोक्तियाँ - Complete sentences expressing wisdom",
+    "severity": "critical_if_literal",
+    "entries": {
+      "जैसा_देश_वैसा_भेष": {
+        "proverb": "जैसा देश वैसा भेष",
+        "literal_en": "as is the country, so is the dress",
+        "actual_meaning_en": "adapt to local customs",
+        "english_equivalent": "When in Rome, do as the Romans do"
+      },
+      "अंधों_में_काना_राजा": {
+        "proverb": "अंधों में काना राजा",
+        "literal_en": "one-eyed is king among blind",
+        "actual_meaning_en": "mediocre person seems great among incompetent ones",
+        "english_equivalent": "In the land of the blind, the one-eyed man is king"
+      },
+      "जल_में_रहकर_मगर_से_बैर": {
+        "proverb": "जल में रहकर मगर से बैर",
+        "literal_en": "living in water, enmity with crocodile",
+        "actual_meaning_en": "don't antagonize those you depend on"
+      },
+      "दूर_के_ढोल_सुहावने": {
+        "proverb": "दूर के ढोल सुहावने",
+        "literal_en": "distant drums sound pleasant",
+        "actual_meaning_en": "things seem better from afar",
+        "english_equivalent": "The grass is always greener on the other side"
+      },
+      "अधजल_गगरी_छलकत_जाए": {
+        "proverb": "अधजल गगरी छलकत जाए",
+        "literal_en": "half-filled pot splashes",
+        "actual_meaning_en": "superficial knowledge leads to showing off",
+        "english_equivalent": "Empty vessels make the most noise"
+      },
+      "चोर_की_दाढ़ी_में_तिनका": {
+        "proverb": "चोर की दाढ़ी में तिनका",
+        "literal_en": "straw in thief's beard",
+        "actual_meaning_en": "guilty conscience betrays itself",
+        "english_equivalent": "A guilty conscience needs no accuser"
+      },
+      "बंदर_क्या_जाने_अदरक_का_स्वाद": {
+        "proverb": "बंदर क्या जाने अदरक का स्वाद",
+        "literal_en": "what does a monkey know of ginger's taste",
+        "actual_meaning_en": "fools can't appreciate valuable things"
+      },
+      "नाच_न_जाने_आँगन_टेढ़ा": {
+        "proverb": "नाच न जाने आँगन टेढ़ा",
+        "literal_en": "doesn't know dancing, blames crooked courtyard",
+        "actual_meaning_en": "a bad workman blames his tools"
+      }
+    }
+  },
+  "translation_rules": {
+    "rule_1": "NEVER translate idioms literally",
+    "rule_2": "Find equivalent idiom in target language if exists",
+    "rule_3": "If no equivalent, explain the meaning",
+    "rule_4": "Mark untranslatable cultural concepts",
+    "severity_levels": {
+      "critical": "Literal translation completely wrong",
+      "major": "Literal translation confusing",
+      "minor": "Nuance lost in translation"
+    }
+  }
+}

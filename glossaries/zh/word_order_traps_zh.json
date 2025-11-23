@@ -1,0 +1,420 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Word Order Traps (字序陷阱)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Chinese word pairs where character order changes meaning completely - a common translation pitfall",
+    "sources": [
+      "Chinese Language Translation Quality 2025 Research",
+      "Common MT Error Analysis",
+      "HSK Teaching Materials"
+    ],
+    "total_pairs": 50,
+    "usage": "Translation quality assessment, semantic swap detection, MT error identification"
+  },
+  "overview": {
+    "phenomenon_zh": "字序陷阱",
+    "phenomenon_en": "Word Order Traps / Character Sequence Reversal",
+    "description": "Same characters in different order create completely different meanings",
+    "description_zh": "相同的字，不同的顺序，完全不同的意思",
+    "importance": "Critical for translation quality - machine translation often confuses these pairs",
+    "detection_method": "Check if reversed character sequence exists and has different meaning"
+  },
+  "semantic_swap_pairs": {
+    "category": "Pairs where reversal changes meaning category entirely",
+    "pairs": [
+      {
+        "word_a": "蜜蜂",
+        "pinyin_a": "mìfēng",
+        "meaning_a": "bee (insect)",
+        "word_b": "蜂蜜",
+        "pinyin_b": "fēngmì",
+        "meaning_b": "honey (food)",
+        "category_change": "animal → food product",
+        "common_error": "MT may confuse in cooking/nature contexts",
+        "example_error": "The 蜂蜜 flew to the flower → should be 蜜蜂"
+      },
+      {
+        "word_a": "故事",
+        "pinyin_a": "gùshi",
+        "meaning_a": "story, tale",
+        "word_b": "事故",
+        "pinyin_b": "shìgù",
+        "meaning_b": "accident, incident",
+        "category_change": "narrative → event",
+        "common_error": "News articles may have wrong word",
+        "example_error": "A traffic 故事 occurred → should be 事故"
+      },
+      {
+        "word_a": "牛奶",
+        "pinyin_a": "niúnǎi",
+        "meaning_a": "milk (drink)",
+        "word_b": "奶牛",
+        "pinyin_b": "nǎiniú",
+        "meaning_b": "dairy cow (animal)",
+        "category_change": "drink → animal",
+        "common_error": "Farm/food contexts",
+        "example_error": "The farmer milked the 牛奶 → should be 奶牛"
+      },
+      {
+        "word_a": "上海",
+        "pinyin_a": "shànghǎi",
+        "meaning_a": "Shanghai (city name)",
+        "word_b": "海上",
+        "pinyin_b": "hǎishàng",
+        "meaning_b": "at sea, on the ocean",
+        "category_change": "proper noun → location phrase",
+        "common_error": "Travel/geography contexts",
+        "example_error": "The ship sailed to 海上 → context-dependent"
+      },
+      {
+        "word_a": "人名",
+        "pinyin_a": "rénmíng",
+        "meaning_a": "person's name",
+        "word_b": "名人",
+        "pinyin_b": "míngrén",
+        "meaning_b": "celebrity, famous person",
+        "category_change": "concept → person type",
+        "common_error": "Interview/biography contexts"
+      },
+      {
+        "word_a": "演讲",
+        "pinyin_a": "yǎnjiǎng",
+        "meaning_a": "speech, lecture",
+        "word_b": "讲演",
+        "pinyin_b": "jiǎngyǎn",
+        "meaning_b": "lecture, presentation (formal)",
+        "category_change": "similar but different register",
+        "note": "讲演 is more formal/academic"
+      },
+      {
+        "word_a": "气生",
+        "pinyin_a": "qìshēng",
+        "meaning_a": "to get angry (at someone)",
+        "word_b": "生气",
+        "pinyin_b": "shēngqì",
+        "meaning_b": "angry, to be angry",
+        "category_change": "verb phrase → adjective/state",
+        "common_error": "Emotion descriptions"
+      },
+      {
+        "word_a": "蛋鸡",
+        "pinyin_a": "dànjī",
+        "meaning_a": "laying hen",
+        "word_b": "鸡蛋",
+        "pinyin_b": "jīdàn",
+        "meaning_b": "chicken egg",
+        "category_change": "animal → food",
+        "common_error": "Farm/cooking contexts"
+      },
+      {
+        "word_a": "白雪",
+        "pinyin_a": "báixuě",
+        "meaning_a": "white snow",
+        "word_b": "雪白",
+        "pinyin_b": "xuěbái",
+        "meaning_b": "snow-white (color adjective)",
+        "category_change": "noun → adjective",
+        "common_error": "Color descriptions"
+      },
+      {
+        "word_a": "算计",
+        "pinyin_a": "suànji",
+        "meaning_a": "to scheme, to plot against",
+        "word_b": "计算",
+        "pinyin_b": "jìsuàn",
+        "meaning_b": "to calculate, computation",
+        "category_change": "negative intent → neutral math",
+        "common_error": "Business/technical contexts"
+      }
+    ]
+  },
+  "location_direction_pairs": {
+    "category": "Place names and directional phrases",
+    "pairs": [
+      {
+        "word_a": "东西",
+        "pinyin_a": "dōngxi",
+        "meaning_a": "thing, stuff (colloquial)",
+        "word_b": "西东",
+        "pinyin_b": "xīdōng",
+        "meaning_b": "west-east (rarely used)",
+        "note": "东西 as 'thing' is idiomatic, not directional"
+      },
+      {
+        "word_a": "北京",
+        "pinyin_a": "běijīng",
+        "meaning_a": "Beijing (city)",
+        "word_b": "京北",
+        "pinyin_b": "jīngběi",
+        "meaning_b": "north of Beijing (area)",
+        "category_change": "city name → location reference"
+      },
+      {
+        "word_a": "中国",
+        "pinyin_a": "zhōngguó",
+        "meaning_a": "China (country)",
+        "word_b": "国中",
+        "pinyin_b": "guózhōng",
+        "meaning_b": "in the country / junior high (Taiwan)",
+        "category_change": "country → phrase/school level"
+      },
+      {
+        "word_a": "山东",
+        "pinyin_a": "shāndōng",
+        "meaning_a": "Shandong (province)",
+        "word_b": "东山",
+        "pinyin_b": "dōngshān",
+        "meaning_b": "eastern mountain / place name",
+        "category_change": "province → geographic feature"
+      }
+    ]
+  },
+  "action_state_pairs": {
+    "category": "Verbs and states that change meaning with order",
+    "pairs": [
+      {
+        "word_a": "开放",
+        "pinyin_a": "kāifàng",
+        "meaning_a": "open (policy), liberal",
+        "word_b": "放开",
+        "pinyin_b": "fàngkāi",
+        "meaning_b": "let go, release",
+        "category_change": "state/policy → action"
+      },
+      {
+        "word_a": "觉睡",
+        "pinyin_a": "jiàoshuì",
+        "meaning_a": "(not standard)",
+        "word_b": "睡觉",
+        "pinyin_b": "shuìjiào",
+        "meaning_b": "to sleep",
+        "note": "Only 睡觉 is correct"
+      },
+      {
+        "word_a": "吃早",
+        "pinyin_a": "chīzǎo",
+        "meaning_a": "(not standard)",
+        "word_b": "早吃",
+        "pinyin_b": "zǎochī",
+        "meaning_b": "eat early",
+        "note": "Word order affects meaning: 吃早餐 (eat breakfast)"
+      },
+      {
+        "word_a": "喜欢",
+        "pinyin_a": "xǐhuan",
+        "meaning_a": "to like",
+        "word_b": "欢喜",
+        "pinyin_b": "huānxǐ",
+        "meaning_b": "joy, happiness (literary)",
+        "category_change": "verb → noun (literary)"
+      },
+      {
+        "word_a": "感情",
+        "pinyin_a": "gǎnqíng",
+        "meaning_a": "emotion, feeling, relationship",
+        "word_b": "情感",
+        "pinyin_b": "qínggǎn",
+        "meaning_b": "emotion, sentiment (more abstract)",
+        "category_change": "concrete → abstract"
+      },
+      {
+        "word_a": "代替",
+        "pinyin_a": "dàitì",
+        "meaning_a": "to replace, substitute",
+        "word_b": "替代",
+        "pinyin_b": "tìdài",
+        "meaning_b": "to substitute, replacement",
+        "note": "Similar meaning but 替代 is more formal"
+      }
+    ]
+  },
+  "body_nature_pairs": {
+    "category": "Body parts and natural objects",
+    "pairs": [
+      {
+        "word_a": "花生",
+        "pinyin_a": "huāshēng",
+        "meaning_a": "peanut",
+        "word_b": "生花",
+        "pinyin_b": "shēnghuā",
+        "meaning_b": "to bloom, produce flowers",
+        "category_change": "food → action"
+      },
+      {
+        "word_a": "羊毛",
+        "pinyin_a": "yángmáo",
+        "meaning_a": "wool (material)",
+        "word_b": "毛羊",
+        "pinyin_b": "máoyáng",
+        "meaning_b": "woolly sheep (type of sheep)",
+        "category_change": "material → animal type"
+      },
+      {
+        "word_a": "肉牛",
+        "pinyin_a": "ròuniú",
+        "meaning_a": "beef cattle",
+        "word_b": "牛肉",
+        "pinyin_b": "niúròu",
+        "meaning_b": "beef (meat)",
+        "category_change": "animal → food"
+      },
+      {
+        "word_a": "猪肉",
+        "pinyin_a": "zhūròu",
+        "meaning_a": "pork (meat)",
+        "word_b": "肉猪",
+        "pinyin_b": "ròuzhū",
+        "meaning_b": "pig for meat (as opposed to breeding)",
+        "category_change": "food → animal category"
+      },
+      {
+        "word_a": "水果",
+        "pinyin_a": "shuǐguǒ",
+        "meaning_a": "fruit",
+        "word_b": "果水",
+        "pinyin_b": "guǒshuǐ",
+        "meaning_b": "fruit juice (less common than 果汁)",
+        "category_change": "food → drink"
+      }
+    ]
+  },
+  "abstract_concept_pairs": {
+    "category": "Abstract concepts and compound words",
+    "pairs": [
+      {
+        "word_a": "法国",
+        "pinyin_a": "fǎguó",
+        "meaning_a": "France (country)",
+        "word_b": "国法",
+        "pinyin_b": "guófǎ",
+        "meaning_b": "national law",
+        "category_change": "country → legal concept"
+      },
+      {
+        "word_a": "心中",
+        "pinyin_a": "xīnzhōng",
+        "meaning_a": "in one's heart/mind",
+        "word_b": "中心",
+        "pinyin_b": "zhōngxīn",
+        "meaning_b": "center, core",
+        "category_change": "emotional location → physical/abstract center"
+      },
+      {
+        "word_a": "人工",
+        "pinyin_a": "réngōng",
+        "meaning_a": "artificial, man-made",
+        "word_b": "工人",
+        "pinyin_b": "gōngrén",
+        "meaning_b": "worker, laborer",
+        "category_change": "adjective → person"
+      },
+      {
+        "word_a": "科学",
+        "pinyin_a": "kēxué",
+        "meaning_a": "science",
+        "word_b": "学科",
+        "pinyin_b": "xuékē",
+        "meaning_b": "subject, discipline",
+        "category_change": "general field → specific subject"
+      },
+      {
+        "word_a": "民人",
+        "pinyin_a": "mínrén",
+        "meaning_a": "(not standard)",
+        "word_b": "人民",
+        "pinyin_b": "rénmín",
+        "meaning_b": "the people, citizens",
+        "note": "Only 人民 is correct"
+      },
+      {
+        "word_a": "会社",
+        "pinyin_a": "huìshè",
+        "meaning_a": "association (Japanese loanword)",
+        "word_b": "社会",
+        "pinyin_b": "shèhuì",
+        "meaning_b": "society",
+        "category_change": "organization → concept"
+      },
+      {
+        "word_a": "文化",
+        "pinyin_a": "wénhuà",
+        "meaning_a": "culture",
+        "word_b": "化文",
+        "pinyin_b": "huàwén",
+        "meaning_b": "(not standard)",
+        "note": "Only 文化 is correct"
+      },
+      {
+        "word_a": "适合",
+        "pinyin_a": "shìhé",
+        "meaning_a": "suitable, fit",
+        "word_b": "合适",
+        "pinyin_b": "héshì",
+        "meaning_b": "appropriate, fitting",
+        "note": "Both correct, 合适 more colloquial"
+      }
+    ]
+  },
+  "time_sequence_pairs": {
+    "category": "Time-related expressions",
+    "pairs": [
+      {
+        "word_a": "前天",
+        "pinyin_a": "qiántiān",
+        "meaning_a": "day before yesterday",
+        "word_b": "天前",
+        "pinyin_b": "tiānqián",
+        "meaning_b": "days ago (requires number: X天前)",
+        "category_change": "specific day → relative time"
+      },
+      {
+        "word_a": "年前",
+        "pinyin_a": "niánqián",
+        "meaning_a": "X years ago / before New Year",
+        "word_b": "前年",
+        "pinyin_b": "qiánnián",
+        "meaning_b": "year before last",
+        "category_change": "relative time → specific year"
+      },
+      {
+        "word_a": "明天",
+        "pinyin_a": "míngtiān",
+        "meaning_a": "tomorrow",
+        "word_b": "天明",
+        "pinyin_b": "tiānmíng",
+        "meaning_b": "daybreak, dawn",
+        "category_change": "future day → time of day"
+      }
+    ]
+  },
+  "detection_rules": {
+    "rule_1": {
+      "name": "Exact reversal check",
+      "description": "Check if the exact character reversal exists in the glossary",
+      "implementation": "For each noun/verb phrase, check if reversed form has different meaning"
+    },
+    "rule_2": {
+      "name": "Context validation",
+      "description": "Validate word choice against sentence context",
+      "implementation": "Use surrounding words to determine correct form"
+    },
+    "rule_3": {
+      "name": "Category mismatch",
+      "description": "Flag if word category doesn't match expected usage",
+      "implementation": "Check if animal word used in food context or vice versa"
+    }
+  },
+  "common_mt_errors": {
+    "description": "Machine translation systems frequently confuse these pairs",
+    "high_frequency_errors": [
+      "蜜蜂/蜂蜜 - Bees and honey",
+      "故事/事故 - Stories and accidents",
+      "牛奶/奶牛 - Milk and cows",
+      "人工/工人 - Artificial and workers"
+    ],
+    "detection_importance": "These errors significantly impact translation quality and should be flagged as major errors"
+  }
+}

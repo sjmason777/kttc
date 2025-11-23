@@ -229,6 +229,61 @@ Common terms: {common_terms}
 
         logger.info(f"Loaded {len(self.training_samples)} training samples from {data_path}")
 
+    def _extract_common_terms(self) -> list[str]:
+        """Extract common domain terms from training samples."""
+        all_source_words: list[str] = []
+        for sample in self.training_samples:
+            all_source_words.extend(sample["source"].split())
+
+        source_counter = Counter(all_source_words)
+        return [
+            word for word, _ in source_counter.most_common(50) if len(word) > 3 and word.isalpha()
+        ][:20]
+
+    def _extract_error_patterns(self) -> dict[str, list[str]]:
+        """Extract error patterns categorized by type."""
+        error_patterns: dict[str, list[str]] = {}
+        for sample in self.training_samples:
+            for error in sample.get("errors", []):
+                category = error.get("category", "other")
+                if category not in error_patterns:
+                    error_patterns[category] = []
+                description = error.get("description", "")
+                if description:
+                    error_patterns[category].append(description)
+        return error_patterns
+
+    def _extract_terminology_pairs(self) -> dict[str, str]:
+        """Extract terminology pairs from training samples."""
+        terminology_pairs: dict[str, str] = {}
+        for sample in self.training_samples:
+            if sample.get("terminology"):
+                terminology_pairs.update(sample["terminology"])
+        return terminology_pairs
+
+    def _calculate_severity_weights(self) -> dict[str, float]:
+        """Calculate severity weights based on error distribution."""
+        severity_counts: Counter[str] = Counter()
+        for sample in self.training_samples:
+            for error in sample.get("errors", []):
+                severity_counts[error.get("severity", "minor")] += 1
+
+        total_errors = sum(severity_counts.values())
+        if total_errors == 0:
+            return {}
+        return {severity: count / total_errors for severity, count in severity_counts.items()}
+
+    def _collect_examples(self) -> list[dict[str, str]]:
+        """Collect example translations from training samples."""
+        return [
+            {
+                "source": sample["source"][:100],
+                "translation": sample["translation"][:100],
+                "quality": "good" if len(sample.get("errors", [])) == 0 else "needs_review",
+            }
+            for sample in self.training_samples[:10]
+        ]
+
     def extract_patterns(self) -> DomainPatterns:
         """Extract domain patterns from training data.
 
@@ -247,69 +302,11 @@ Common terms: {common_terms}
 
         logger.info(f"Extracting patterns from {len(self.training_samples)} samples...")
 
-        # Extract common terms
-        all_source_words = []
-        all_target_words = []
-
-        for sample in self.training_samples:
-            all_source_words.extend(sample["source"].split())
-            all_target_words.extend(sample["translation"].split())
-
-        # Get most common terms (exclude very common words)
-        source_counter = Counter(all_source_words)
-
-        # Filter out common stop words and get top domain terms
-        common_terms = [
-            word
-            for word, count in source_counter.most_common(50)
-            if len(word) > 3 and word.isalpha()
-        ][:20]
-
-        # Extract error patterns
-        error_patterns: dict[str, list[str]] = {}
-
-        for sample in self.training_samples:
-            for error in sample.get("errors", []):
-                category = error.get("category", "other")
-                if category not in error_patterns:
-                    error_patterns[category] = []
-
-                description = error.get("description", "")
-                if description:
-                    error_patterns[category].append(description)
-
-        # Extract terminology pairs
-        terminology_pairs = {}
-
-        for sample in self.training_samples:
-            if sample.get("terminology"):
-                terminology_pairs.update(sample["terminology"])
-
-        # Calculate severity weights
-        severity_counts: Counter[str] = Counter()
-
-        for sample in self.training_samples:
-            for error in sample.get("errors", []):
-                severity = error.get("severity", "minor")
-                severity_counts[severity] += 1
-
-        total_errors = sum(severity_counts.values())
-        severity_weights = {}
-
-        if total_errors > 0:
-            for severity, count in severity_counts.items():
-                # Higher weight for more common error severities in this domain
-                severity_weights[severity] = count / total_errors
-
-        # Collect example translations
-        examples = [
-            {
-                "source": sample["source"][:100],  # Truncate for brevity
-                "translation": sample["translation"][:100],
-                "quality": "good" if len(sample.get("errors", [])) == 0 else "needs_review",
-            }
-            for sample in self.training_samples[:10]  # Top 10 examples
-        ]
+        common_terms = self._extract_common_terms()
+        error_patterns = self._extract_error_patterns()
+        terminology_pairs = self._extract_terminology_pairs()
+        severity_weights = self._calculate_severity_weights()
+        examples = self._collect_examples()
 
         patterns = DomainPatterns(
             domain=self.domain,

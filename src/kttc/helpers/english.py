@@ -333,6 +333,69 @@ class EnglishLanguageHelper(LanguageHelper):
 
         return True
 
+    def _analyze_verb_tenses(self, doc: Any) -> dict[str, dict[str, str]]:
+        """Extract verb tense information from document."""
+        verb_tenses: dict[str, dict[str, str]] = {}
+        for token in doc:
+            if token.pos_ != "VERB":
+                continue
+            tense = token.morph.get("Tense")
+            if tense:
+                verb_tenses[token.text] = {
+                    "tense": tense[0],
+                    "aspect": token.morph.get("Aspect", [""])[0],
+                    "person": token.morph.get("Person", [""])[0],
+                    "number": token.morph.get("Number", [""])[0],
+                }
+        return verb_tenses
+
+    def _analyze_article_noun_pairs(self, doc: Any) -> list[dict[str, Any]]:
+        """Extract article-noun patterns from document."""
+        pairs: list[dict[str, Any]] = []
+        for i, token in enumerate(doc):
+            if token.pos_ != "DET" or token.text.lower() not in ["a", "an", "the"]:
+                continue
+            for j in range(i + 1, min(i + 5, len(doc))):
+                if doc[j].pos_ not in ["NOUN", "PROPN"]:
+                    continue
+                next_word = doc[i + 1].text if i + 1 < len(doc) else ""
+                correct = "an" if next_word and next_word[0].lower() in "aeiou" else "a"
+                is_correct = token.text.lower() == correct if token.text.lower() != "the" else True
+                pairs.append(
+                    {
+                        "article": token.text.lower(),
+                        "noun": doc[j].text,
+                        "distance": j - i,
+                        "correct": is_correct,
+                    }
+                )
+                break
+        return pairs
+
+    def _analyze_subject_verb_pairs(self, doc: Any) -> list[dict[str, Any]]:
+        """Extract subject-verb pairs for agreement checking."""
+        pairs: list[dict[str, Any]] = []
+        for token in doc:
+            if token.dep_ != "nsubj":
+                continue
+            verb = token.head
+            if verb.pos_ != "VERB":
+                continue
+            subject_number = token.morph.get("Number")
+            verb_number = verb.morph.get("Number")
+            pairs.append(
+                {
+                    "subject": token.text,
+                    "verb": verb.text,
+                    "subject_number": subject_number[0] if subject_number else None,
+                    "verb_number": verb_number[0] if verb_number else None,
+                    "agreement": (
+                        subject_number == verb_number if subject_number and verb_number else None
+                    ),
+                }
+            )
+        return pairs
+
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
         """Get comprehensive linguistic data for enriching LLM prompts.
 
@@ -355,69 +418,6 @@ class EnglishLanguageHelper(LanguageHelper):
 
         doc = self._nlp(text)
 
-        # Verb tense analysis
-        verb_tenses = {}
-        for token in doc:
-            if token.pos_ == "VERB":
-                tense = token.morph.get("Tense")
-                if tense:
-                    verb_tenses[token.text] = {
-                        "tense": tense[0],
-                        "aspect": token.morph.get("Aspect", [""])[0],
-                        "person": token.morph.get("Person", [""])[0],
-                        "number": token.morph.get("Number", [""])[0],
-                    }
-
-        # Article-noun patterns
-        article_noun_pairs = []
-        for i, token in enumerate(doc):
-            if token.pos_ == "DET" and token.text.lower() in ["a", "an", "the"]:
-                # Find associated noun (look ahead up to 5 tokens)
-                for j in range(i + 1, min(i + 5, len(doc))):
-                    if doc[j].pos_ in ["NOUN", "PROPN"]:
-                        # Check if article matches (a vs an)
-                        next_word = doc[i + 1].text if i + 1 < len(doc) else ""
-                        correct_article = (
-                            "an" if next_word and next_word[0].lower() in "aeiou" else "a"
-                        )
-
-                        article_noun_pairs.append(
-                            {
-                                "article": token.text.lower(),
-                                "noun": doc[j].text,
-                                "distance": j - i,
-                                "correct": (
-                                    token.text.lower() == correct_article
-                                    if token.text.lower() != "the"
-                                    else True
-                                ),
-                            }
-                        )
-                        break
-
-        # Subject-verb pairs (for agreement checking)
-        subject_verb_pairs = []
-        for token in doc:
-            if token.dep_ == "nsubj":  # Nominal subject
-                verb = token.head
-                if verb.pos_ == "VERB":
-                    subject_number = token.morph.get("Number")
-                    verb_number = verb.morph.get("Number")
-
-                    subject_verb_pairs.append(
-                        {
-                            "subject": token.text,
-                            "verb": verb.text,
-                            "subject_number": subject_number[0] if subject_number else None,
-                            "verb_number": verb_number[0] if verb_number else None,
-                            "agreement": (
-                                subject_number == verb_number
-                                if subject_number and verb_number
-                                else None
-                            ),
-                        }
-                    )
-
         # Count parts of speech
         pos_counts: dict[str, int] = {}
         for token in doc:
@@ -425,29 +425,20 @@ class EnglishLanguageHelper(LanguageHelper):
                 pos_counts[token.pos_] = pos_counts.get(token.pos_, 0) + 1
 
         # Extract named entities
-        entities = []
-        for ent in doc.ents:
-            entities.append(
-                {
-                    "text": ent.text,
-                    "label": ent.label_,
-                    "start": ent.start_char,
-                    "end": ent.end_char,
-                }
-            )
-
-        # Count sentences
-        sent_count = len(list(doc.sents))
+        entities = [
+            {"text": ent.text, "label": ent.label_, "start": ent.start_char, "end": ent.end_char}
+            for ent in doc.ents
+        ]
 
         return {
             "has_morphology": True,
             "word_count": len([token for token in doc if not token.is_punct]),
-            "verb_tenses": verb_tenses,
-            "article_noun_pairs": article_noun_pairs,
-            "subject_verb_pairs": subject_verb_pairs,
+            "verb_tenses": self._analyze_verb_tenses(doc),
+            "article_noun_pairs": self._analyze_article_noun_pairs(doc),
+            "subject_verb_pairs": self._analyze_subject_verb_pairs(doc),
             "pos_distribution": pos_counts,
             "entities": entities,
-            "sentence_count": sent_count,
+            "sentence_count": len(list(doc.sents)),
         }
 
     def extract_entities(self, text: str) -> list[dict[str, Any]]:

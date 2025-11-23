@@ -1,0 +1,509 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Hindi Gender Traps and Exceptions",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "हिन्दी लिंग प्रणाली के अपवाद और ट्रैप्स - Gender system exceptions that confuse foreign learners",
+    "sources": [
+      "Modern Hindi Grammar - Omkar N. Koul",
+      "Hindi Language Blog - Grammatical Gender",
+      "HindiPod101 - Guide to Hindi Gender Rules",
+      "Academic research on Hindi gender assignment"
+    ],
+    "total_terms": 120
+  },
+  "gender_system_overview": {
+    "description": "Hindi has two grammatical genders: masculine (पुल्लिंग) and feminine (स्त्रीलिंग). NO neuter gender.",
+    "general_rules": {
+      "masculine_endings": ["-आ (-ā)", "consonant ending (often)"],
+      "feminine_endings": ["-ई (-ī)", "-इ (-i)", "-इया (-iyā)"],
+      "warning": "These rules have MANY exceptions. Gender must often be memorized."
+    },
+    "importance": "Gender affects: adjective agreement, verb agreement, postposition forms (का/की/के)"
+  },
+  "exceptions_aa_ending_feminine": {
+    "description": "Words ending in -आ (-ā) that are FEMININE (expected masculine)",
+    "severity": "critical",
+    "entries": {
+      "माता": {
+        "word": "माता",
+        "transliteration": "mātā",
+        "gender": "feminine",
+        "meaning_en": "mother",
+        "meaning_ru": "мать",
+        "expected_gender": "masculine",
+        "example_correct": "मेरी माता अच्छी हैं",
+        "example_wrong": "मेरा माता अच्छा है",
+        "note": "Despite -आ ending, always feminine"
+      },
+      "भाषा": {
+        "word": "भाषा",
+        "transliteration": "bhāṣā",
+        "gender": "feminine",
+        "meaning_en": "language",
+        "meaning_ru": "язык",
+        "expected_gender": "masculine",
+        "example_correct": "हिन्दी भाषा सुंदर है",
+        "example_wrong": "हिन्दी भाषा सुंदर हैं"
+      },
+      "दया": {
+        "word": "दया",
+        "transliteration": "dayā",
+        "gender": "feminine",
+        "meaning_en": "mercy, compassion",
+        "meaning_ru": "милосердие",
+        "expected_gender": "masculine"
+      },
+      "कविता": {
+        "word": "कविता",
+        "transliteration": "kavitā",
+        "gender": "feminine",
+        "meaning_en": "poem",
+        "meaning_ru": "стихотворение"
+      },
+      "सभा": {
+        "word": "सभा",
+        "transliteration": "sabhā",
+        "gender": "feminine",
+        "meaning_en": "assembly, meeting",
+        "meaning_ru": "собрание"
+      },
+      "कथा": {
+        "word": "कथा",
+        "transliteration": "kathā",
+        "gender": "feminine",
+        "meaning_en": "story",
+        "meaning_ru": "история, рассказ"
+      },
+      "विद्या": {
+        "word": "विद्या",
+        "transliteration": "vidyā",
+        "gender": "feminine",
+        "meaning_en": "knowledge, education",
+        "meaning_ru": "знание, образование"
+      },
+      "सेना": {
+        "word": "सेना",
+        "transliteration": "senā",
+        "gender": "feminine",
+        "meaning_en": "army",
+        "meaning_ru": "армия"
+      },
+      "शिक्षा": {
+        "word": "शिक्षा",
+        "transliteration": "śikṣā",
+        "gender": "feminine",
+        "meaning_en": "education",
+        "meaning_ru": "образование"
+      },
+      "दिशा": {
+        "word": "दिशा",
+        "transliteration": "diśā",
+        "gender": "feminine",
+        "meaning_en": "direction",
+        "meaning_ru": "направление"
+      },
+      "आशा": {
+        "word": "आशा",
+        "transliteration": "āśā",
+        "gender": "feminine",
+        "meaning_en": "hope",
+        "meaning_ru": "надежда"
+      },
+      "इच्छा": {
+        "word": "इच्छा",
+        "transliteration": "icchā",
+        "gender": "feminine",
+        "meaning_en": "wish, desire",
+        "meaning_ru": "желание"
+      },
+      "परीक्षा": {
+        "word": "परीक्षा",
+        "transliteration": "parīkṣā",
+        "gender": "feminine",
+        "meaning_en": "exam",
+        "meaning_ru": "экзамен"
+      },
+      "समस्या": {
+        "word": "समस्या",
+        "transliteration": "samasyā",
+        "gender": "feminine",
+        "meaning_en": "problem",
+        "meaning_ru": "проблема"
+      },
+      "प्रतिज्ञा": {
+        "word": "प्रतिज्ञा",
+        "transliteration": "pratijñā",
+        "gender": "feminine",
+        "meaning_en": "promise, vow",
+        "meaning_ru": "обещание, клятва"
+      },
+      "याचना": {
+        "word": "याचना",
+        "transliteration": "yācanā",
+        "gender": "feminine",
+        "meaning_en": "request, plea",
+        "meaning_ru": "просьба"
+      },
+      "प्रार्थना": {
+        "word": "प्रार्थना",
+        "transliteration": "prārthanā",
+        "gender": "feminine",
+        "meaning_en": "prayer",
+        "meaning_ru": "молитва"
+      },
+      "घटना": {
+        "word": "घटना",
+        "transliteration": "ghaṭnā",
+        "gender": "feminine",
+        "meaning_en": "incident, event",
+        "meaning_ru": "событие, инцидент"
+      }
+    }
+  },
+  "exceptions_ii_ending_masculine": {
+    "description": "Words ending in -ई (-ī) or -इ (-i) that are MASCULINE (expected feminine)",
+    "severity": "critical",
+    "entries": {
+      "पानी": {
+        "word": "पानी",
+        "transliteration": "pānī",
+        "gender": "masculine",
+        "meaning_en": "water",
+        "meaning_ru": "вода",
+        "expected_gender": "feminine",
+        "example_correct": "ठंडा पानी",
+        "example_wrong": "ठंडी पानी",
+        "note": "Very common mistake"
+      },
+      "मोती": {
+        "word": "मोती",
+        "transliteration": "motī",
+        "gender": "masculine",
+        "meaning_en": "pearl",
+        "meaning_ru": "жемчужина",
+        "expected_gender": "feminine"
+      },
+      "दही": {
+        "word": "दही",
+        "transliteration": "dahī",
+        "gender": "masculine",
+        "meaning_en": "yogurt, curd",
+        "meaning_ru": "йогурт",
+        "expected_gender": "feminine"
+      },
+      "घी": {
+        "word": "घी",
+        "transliteration": "ghī",
+        "gender": "masculine",
+        "meaning_en": "clarified butter",
+        "meaning_ru": "топлёное масло",
+        "expected_gender": "feminine"
+      },
+      "हाथी": {
+        "word": "हाथी",
+        "transliteration": "hāthī",
+        "gender": "masculine",
+        "meaning_en": "elephant",
+        "meaning_ru": "слон",
+        "note": "Refers to male elephant; हथिनी for female"
+      },
+      "मुनि": {
+        "word": "मुनि",
+        "transliteration": "muni",
+        "gender": "masculine",
+        "meaning_en": "sage, saint",
+        "meaning_ru": "мудрец, святой"
+      },
+      "कवि": {
+        "word": "कवि",
+        "transliteration": "kavi",
+        "gender": "masculine",
+        "meaning_en": "poet",
+        "meaning_ru": "поэт",
+        "note": "कवयित्री for female poet"
+      },
+      "पति": {
+        "word": "पति",
+        "transliteration": "pati",
+        "gender": "masculine",
+        "meaning_en": "husband",
+        "meaning_ru": "муж"
+      },
+      "ऋषि": {
+        "word": "ऋषि",
+        "transliteration": "ṛṣi",
+        "gender": "masculine",
+        "meaning_en": "sage, seer",
+        "meaning_ru": "риши, мудрец"
+      },
+      "जादूगरी": {
+        "word": "जादू",
+        "transliteration": "jādū",
+        "gender": "masculine",
+        "meaning_en": "magic",
+        "meaning_ru": "магия"
+      },
+      "आलू": {
+        "word": "आलू",
+        "transliteration": "ālū",
+        "gender": "masculine",
+        "meaning_en": "potato",
+        "meaning_ru": "картофель"
+      }
+    }
+  },
+  "consonant_ending_feminine": {
+    "description": "Words ending in consonants that are FEMININE",
+    "severity": "major",
+    "entries": {
+      "रात": {
+        "word": "रात",
+        "transliteration": "rāt",
+        "gender": "feminine",
+        "meaning_en": "night",
+        "meaning_ru": "ночь",
+        "example_correct": "काली रात"
+      },
+      "बात": {
+        "word": "बात",
+        "transliteration": "bāt",
+        "gender": "feminine",
+        "meaning_en": "matter, thing, talk",
+        "meaning_ru": "дело, разговор",
+        "example_correct": "यह बात सच है"
+      },
+      "आग": {
+        "word": "आग",
+        "transliteration": "āg",
+        "gender": "feminine",
+        "meaning_en": "fire",
+        "meaning_ru": "огонь"
+      },
+      "धूप": {
+        "word": "धूप",
+        "transliteration": "dhūp",
+        "gender": "feminine",
+        "meaning_en": "sunshine",
+        "meaning_ru": "солнечный свет"
+      },
+      "छाँव": {
+        "word": "छाँव",
+        "transliteration": "chā̃v",
+        "gender": "feminine",
+        "meaning_en": "shade",
+        "meaning_ru": "тень"
+      },
+      "लाश": {
+        "word": "लाश",
+        "transliteration": "lāś",
+        "gender": "feminine",
+        "meaning_en": "corpse",
+        "meaning_ru": "труп"
+      },
+      "खबर": {
+        "word": "खबर",
+        "transliteration": "khabar",
+        "gender": "feminine",
+        "meaning_en": "news",
+        "meaning_ru": "новость"
+      },
+      "किताब": {
+        "word": "किताब",
+        "transliteration": "kitāb",
+        "gender": "feminine",
+        "meaning_en": "book",
+        "meaning_ru": "книга"
+      },
+      "सड़क": {
+        "word": "सड़क",
+        "transliteration": "saṛak",
+        "gender": "feminine",
+        "meaning_en": "road",
+        "meaning_ru": "дорога"
+      },
+      "जेब": {
+        "word": "जेब",
+        "transliteration": "jeb",
+        "gender": "feminine",
+        "meaning_en": "pocket",
+        "meaning_ru": "карман"
+      },
+      "दाल": {
+        "word": "दाल",
+        "transliteration": "dāl",
+        "gender": "feminine",
+        "meaning_en": "lentils",
+        "meaning_ru": "чечевица"
+      },
+      "ट्रेन": {
+        "word": "ट्रेन",
+        "transliteration": "ṭren",
+        "gender": "feminine",
+        "meaning_en": "train",
+        "meaning_ru": "поезд",
+        "note": "English loanword, assigned feminine"
+      }
+    }
+  },
+  "english_loanwords_gender": {
+    "description": "Gender assignment for English loanwords in Hindi",
+    "severity": "major",
+    "rule": "Most English loanwords are masculine, but there are patterns",
+    "patterns": {
+      "masculine_default": {
+        "description": "Most English words default to masculine",
+        "examples": ["कंप्यूटर", "फ़ोन", "टीवी", "रेडियो", "बस", "स्कूल"]
+      },
+      "feminine_by_form": {
+        "description": "Words ending in sounds associated with feminine become feminine",
+        "examples": ["ट्रेन", "बोतल (bottle)", "फ़िल्म", "टेबल"]
+      },
+      "context_dependent": {
+        "description": "Some words vary by speaker/region",
+        "examples": ["ईमेल", "वेबसाइट"]
+      }
+    },
+    "entries": {
+      "कंप्यूटर": {
+        "word": "कंप्यूटर",
+        "source": "computer",
+        "gender": "masculine",
+        "example": "मेरा कंप्यूटर"
+      },
+      "फ़ोन": {
+        "word": "फ़ोन",
+        "source": "phone",
+        "gender": "masculine",
+        "example": "मेरा फ़ोन"
+      },
+      "ट्रेन": {
+        "word": "ट्रेन",
+        "source": "train",
+        "gender": "feminine",
+        "example": "यह ट्रेन लेट है"
+      },
+      "फ़िल्म": {
+        "word": "फ़िल्म",
+        "source": "film",
+        "gender": "feminine",
+        "example": "यह फ़िल्म अच्छी है"
+      },
+      "बस": {
+        "word": "बस",
+        "source": "bus",
+        "gender": "feminine",
+        "example": "बस आ गई"
+      },
+      "कार": {
+        "word": "कार",
+        "source": "car",
+        "gender": "feminine",
+        "example": "नई कार"
+      },
+      "बोतल": {
+        "word": "बोतल",
+        "source": "bottle",
+        "gender": "feminine",
+        "example": "पानी की बोतल"
+      }
+    }
+  },
+  "semantic_gender_rules": {
+    "description": "Gender based on semantic categories",
+    "rules": {
+      "days_of_week": {
+        "gender": "masculine",
+        "examples": ["सोमवार", "मंगलवार", "बुधवार"]
+      },
+      "months": {
+        "gender": "masculine",
+        "examples": ["जनवरी", "फरवरी"]
+      },
+      "rivers": {
+        "gender": "feminine",
+        "examples": ["गंगा", "यमुना", "नर्मदा"],
+        "note": "Exception: ब्रह्मपुत्र is masculine"
+      },
+      "mountains": {
+        "gender": "masculine",
+        "examples": ["हिमालय", "विंध्य"]
+      },
+      "countries": {
+        "gender": "masculine",
+        "examples": ["भारत", "पाकिस्तान", "चीन"]
+      },
+      "languages": {
+        "gender": "feminine",
+        "examples": ["हिन्दी", "अंग्रेज़ी", "रूसी"],
+        "note": "भाषा is feminine, so languages follow"
+      },
+      "metals": {
+        "gender": "masculine",
+        "examples": ["सोना", "चाँदी", "लोहा"],
+        "note": "Exception: चाँदी is feminine"
+      },
+      "body_parts_paired": {
+        "gender": "feminine",
+        "examples": ["आँख", "उँगली", "टाँग"],
+        "note": "Many paired body parts are feminine"
+      }
+    }
+  },
+  "agreement_patterns": {
+    "description": "How gender affects other parts of speech",
+    "adjective_agreement": {
+      "masculine_singular": "-आ ending → बड़ा, छोटा, अच्छा",
+      "masculine_plural": "-ए ending → बड़े, छोटे, अच्छे",
+      "feminine_all": "-ई ending → बड़ी, छोटी, अच्छी",
+      "examples": {
+        "correct": ["बड़ा घर", "बड़े घर", "बड़ी किताब", "बड़ी किताबें"],
+        "incorrect": ["बड़ी घर", "बड़ा किताब"]
+      }
+    },
+    "verb_agreement": {
+      "masculine_singular": "-आ/-ता ending",
+      "masculine_plural": "-ए/-ते ending",
+      "feminine_all": "-ई/-ती ending",
+      "examples": {
+        "correct": ["लड़का गया", "लड़के गए", "लड़की गई", "लड़कियाँ गईं"],
+        "incorrect": ["लड़का गई", "लड़की गया"]
+      }
+    },
+    "possessive_agreement": {
+      "rule": "का/की/के agrees with POSSESSED noun, not possessor",
+      "examples": {
+        "correct": ["राम की किताब (किताब=fem)", "सीता का भाई (भाई=masc)"],
+        "incorrect": ["राम का किताब", "सीता की भाई"]
+      }
+    }
+  },
+  "common_mistakes": {
+    "पानी_mistake": {
+      "description": "पानी is masculine despite -ई ending",
+      "wrong": "ठंडी पानी, गर्मी पानी",
+      "correct": "ठंडा पानी, गर्म पानी",
+      "frequency": "very_high"
+    },
+    "भाषा_mistake": {
+      "description": "भाषा is feminine despite -आ ending",
+      "wrong": "हिन्दी भाषा अच्छा है",
+      "correct": "हिन्दी भाषा अच्छी है",
+      "frequency": "high"
+    },
+    "किताब_mistake": {
+      "description": "किताब is feminine (consonant ending)",
+      "wrong": "मेरा किताब, नया किताब",
+      "correct": "मेरी किताब, नई किताब",
+      "frequency": "high"
+    },
+    "possessive_confusion": {
+      "description": "का/की/के must agree with possessed, not possessor",
+      "wrong": "लड़की का किताब (किताब is feminine!)",
+      "correct": "लड़की की किताब",
+      "frequency": "very_high"
+    }
+  }
+}

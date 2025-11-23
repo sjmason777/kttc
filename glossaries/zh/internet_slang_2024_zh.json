@@ -1,0 +1,379 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Internet Slang 2024-2025 (网络流行语)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "valid_until": "2025-12",
+    "description": "Chinese internet buzzwords and slang from 2024-2025 - rapidly evolving vocabulary",
+    "sources": [
+      "国家语言资源监测与研究中心 2024年度十大网络用语",
+      "《咬文嚼字》2024年十大流行语",
+      "百度百科 2024年十大网络流行语",
+      "Chinese Language Translation Quality 2025 Research"
+    ],
+    "total_terms": 60,
+    "usage": "Understanding modern Chinese communication, translation of informal content, social media analysis",
+    "warning": "网络流行语变化快，本词汇表需定期更新 - Internet slang changes rapidly, requires regular updates"
+  },
+  "overview": {
+    "phenomenon_zh": "网络流行语",
+    "phenomenon_en": "Internet Slang / Buzzwords",
+    "description": "Modern Chinese internet vocabulary reflects current social trends and events",
+    "characteristics": [
+      "Short lifespan (3-7 months average)",
+      "Often derived from viral content, memes, or events",
+      "Mix of Chinese characters, pinyin abbreviations, and English",
+      "Highly context-dependent meaning",
+      "May be incomprehensible to older generations"
+    ],
+    "translation_challenge": "Difficult to translate without losing cultural context; often requires explanation"
+  },
+  "official_2024_buzzwords": {
+    "source": "国家语言资源监测与研究中心发布",
+    "terms": {
+      "新质生产力": {
+        "pinyin": "xīnzhì shēngchǎnlì",
+        "meaning": "New quality productive forces",
+        "meaning_zh": "创新驱动的高质量生产力",
+        "context": "Economic policy term from government reports",
+        "register": "formal",
+        "translation_note": "Official term, translate literally with context"
+      },
+      "黑神话悟空": {
+        "pinyin": "hēi shénhuà wùkōng",
+        "meaning": "Black Myth: Wukong (video game title)",
+        "meaning_zh": "2024年爆火的中国3A游戏大作",
+        "context": "Major Chinese AAA game release in 2024",
+        "register": "neutral",
+        "translation_note": "Keep original English title 'Black Myth: Wukong'"
+      },
+      "人工智能+": {
+        "pinyin": "réngōng zhìnéng jiā",
+        "meaning": "AI Plus / AI+",
+        "meaning_zh": "人工智能与各行业深度融合",
+        "context": "Policy term for AI integration across industries",
+        "register": "formal"
+      },
+      "City不City": {
+        "pinyin": "city bù city",
+        "meaning": "Is it city? / How urban/modern!",
+        "meaning_zh": "时髦、洋气、现代化、刺激",
+        "origin": "美国博主保保熊与妹妹对话",
+        "context": "Used to describe modern, exciting experiences",
+        "register": "very informal",
+        "example": "上海city不city啊？好city啊！",
+        "translation_note": "Cannot be translated literally; explain as 'modern/exciting'"
+      },
+      "班味儿": {
+        "pinyin": "bān wèir",
+        "meaning": "Work smell / Office worker aura",
+        "meaning_zh": "上班后那种疲惫、沧桑的状态和气质",
+        "context": "Describes the exhausted appearance of office workers",
+        "register": "informal",
+        "example": "一看你就班味儿很重 (You look very office-worker-tired)",
+        "related": "打工人 (worker)"
+      },
+      "松弛感": {
+        "pinyin": "sōngchí gǎn",
+        "meaning": "Relaxed vibe / Chill energy",
+        "meaning_zh": "从容应对、不焦虑的心理状态",
+        "context": "Popular during 2024 Paris Olympics describing Gen-Z athletes",
+        "register": "neutral",
+        "example": "她很有松弛感 (She has a very relaxed vibe)"
+      },
+      "含金量还在上升": {
+        "pinyin": "hán jīn liàng hái zài shàngshēng",
+        "meaning": "The gold content is still rising",
+        "meaning_zh": "某人或某物的价值随时间逐渐显现和提升",
+        "context": "Used to praise someone whose value is being recognized over time",
+        "register": "informal",
+        "example": "这个选择的含金量还在上升"
+      },
+      "浓人淡人": {
+        "pinyin": "nóng rén dàn rén",
+        "meaning": "Intense person vs Mild person",
+        "meaning_zh": "浓人精力充沛外向活跃，淡人内敛低调",
+        "context": "Personality type classification trending in 2024",
+        "register": "informal",
+        "浓人": "Intense personality - energetic, extroverted",
+        "淡人": "Mild personality - introverted, low-key"
+      },
+      "主理人": {
+        "pinyin": "zhǔlǐrén",
+        "meaning": "Manager / Creative director / Brand owner",
+        "meaning_zh": "负责品牌或项目运营的核心人物",
+        "context": "Originally from streetwear culture, now broader usage",
+        "register": "neutral"
+      }
+    }
+  },
+  "abbreviation_slang": {
+    "category": "Pinyin initial abbreviations (首字母缩写)",
+    "description": "Common online abbreviations using first letter of each character's pinyin",
+    "terms": {
+      "xswl": {
+        "full_form": "笑死我了",
+        "pinyin": "xiào sǐ wǒ le",
+        "meaning": "Laughing to death / LMAO",
+        "usage": "Express something is very funny",
+        "register": "very informal"
+      },
+      "srds": {
+        "full_form": "虽然但是",
+        "pinyin": "suīrán dànshì",
+        "meaning": "Although... but...",
+        "usage": "Introduce a contrasting point",
+        "register": "very informal"
+      },
+      "yyds": {
+        "full_form": "永远的神",
+        "pinyin": "yǒngyuǎn de shén",
+        "meaning": "Eternal god / The GOAT",
+        "usage": "Express admiration for something/someone",
+        "register": "very informal",
+        "note": "Still popular but slightly dated"
+      },
+      "nsdd": {
+        "full_form": "你说得对",
+        "pinyin": "nǐ shuō de duì",
+        "meaning": "You're right",
+        "usage": "Agreement, sometimes sarcastic",
+        "register": "very informal"
+      },
+      "zqsg": {
+        "full_form": "真情实感",
+        "pinyin": "zhēnqíng shígǎn",
+        "meaning": "Genuine feelings",
+        "usage": "Describe sincere emotional investment",
+        "register": "informal"
+      },
+      "dbq": {
+        "full_form": "对不起",
+        "pinyin": "duìbuqǐ",
+        "meaning": "Sorry",
+        "register": "very informal"
+      },
+      "awsl": {
+        "full_form": "啊我死了",
+        "pinyin": "a wǒ sǐ le",
+        "meaning": "Oh I'm dead / So cute I could die",
+        "usage": "React to something extremely cute",
+        "register": "very informal"
+      },
+      "plmm": {
+        "full_form": "漂亮妹妹",
+        "pinyin": "piàoliang mèimei",
+        "meaning": "Pretty girl",
+        "register": "very informal"
+      },
+      "plgg": {
+        "full_form": "漂亮哥哥",
+        "pinyin": "piàoliang gēge",
+        "meaning": "Handsome guy",
+        "register": "very informal"
+      },
+      "u1s1": {
+        "full_form": "有一说一",
+        "pinyin": "yǒu yī shuō yī",
+        "meaning": "To be honest / TBH",
+        "usage": "Preface to honest opinion",
+        "register": "very informal"
+      }
+    }
+  },
+  "gaming_derived_slang": {
+    "category": "Terms originating from video games",
+    "terms": {
+      "硬控": {
+        "pinyin": "yìng kòng",
+        "original_meaning": "Hard crowd control (makes character unable to move)",
+        "internet_meaning": "To be captivated, unable to look away",
+        "example": "这个视频硬控我三分钟 (This video captivated me for 3 minutes)",
+        "register": "informal"
+      },
+      "输出": {
+        "pinyin": "shūchū",
+        "original_meaning": "DPS / Damage output",
+        "internet_meaning": "To express opinions intensely, to rant",
+        "example": "他开始疯狂输出 (He started ranting intensely)",
+        "register": "informal"
+      },
+      "破防": {
+        "pinyin": "pò fáng",
+        "original_meaning": "Break defense (in games)",
+        "internet_meaning": "Emotionally affected, moved to tears",
+        "example": "这个故事让我破防了 (This story made me cry)",
+        "register": "informal"
+      },
+      "上头": {
+        "pinyin": "shàng tóu",
+        "original_meaning": "Getting dizzy (from alcohol)",
+        "internet_meaning": "Getting obsessed, losing control",
+        "example": "追剧追得太上头了 (Got too obsessed watching this drama)",
+        "register": "informal"
+      },
+      "下头": {
+        "pinyin": "xià tóu",
+        "meaning": "Turn-off, mood killer",
+        "example": "这个结局太下头了 (This ending is such a turn-off)",
+        "register": "informal"
+      },
+      "大招": {
+        "pinyin": "dà zhāo",
+        "original_meaning": "Ultimate skill (in games)",
+        "internet_meaning": "Big move, trump card",
+        "register": "informal"
+      }
+    }
+  },
+  "emotional_expression_slang": {
+    "category": "Terms for expressing emotions",
+    "terms": {
+      "绝绝子": {
+        "pinyin": "jué jué zi",
+        "meaning": "Amazing! Incredible! Absolute perfection!",
+        "usage": "Express extreme approval or amazement",
+        "register": "very informal",
+        "note": "Popular but considered overused by some"
+      },
+      "emo": {
+        "pinyin": "emo",
+        "meaning": "Feeling emotional/sad/melancholic",
+        "usage": "我今天有点emo (I'm feeling a bit down today)",
+        "origin": "From English 'emotional'",
+        "register": "informal"
+      },
+      "i人/e人": {
+        "pinyin": "i rén / e rén",
+        "meaning": "Introvert / Extrovert (from MBTI)",
+        "usage": "Describe personality types",
+        "example": "我是i人，不太喜欢社交",
+        "register": "informal"
+      },
+      "社恐": {
+        "pinyin": "shè kǒng",
+        "full_form": "社交恐惧",
+        "meaning": "Social anxiety / Socially anxious",
+        "register": "informal"
+      },
+      "社牛": {
+        "pinyin": "shè niú",
+        "full_form": "社交牛人",
+        "meaning": "Social butterfly / Very outgoing person",
+        "register": "informal"
+      },
+      "无语": {
+        "pinyin": "wú yǔ",
+        "meaning": "Speechless (from exasperation)",
+        "usage": "我真的无语了 (I'm truly speechless)",
+        "register": "informal"
+      },
+      "离谱": {
+        "pinyin": "lí pǔ",
+        "meaning": "Outrageous, absurd, unbelievable",
+        "usage": "这也太离谱了吧 (This is too outrageous)",
+        "register": "informal"
+      },
+      "炸裂": {
+        "pinyin": "zhà liè",
+        "meaning": "Mind-blowing, explosive (positively)",
+        "usage": "这个表演太炸裂了 (This performance is mind-blowing)",
+        "register": "informal"
+      }
+    }
+  },
+  "work_life_slang": {
+    "category": "Terms about work and life",
+    "terms": {
+      "打工人": {
+        "pinyin": "dǎgōng rén",
+        "meaning": "Worker / Office worker (self-deprecating)",
+        "usage": "打工人打工魂 (Worker's soul, worker's spirit)",
+        "register": "informal"
+      },
+      "内卷": {
+        "pinyin": "nèi juǎn",
+        "meaning": "Involution - excessive competition without real progress",
+        "usage": "现在太内卷了 (Things are too competitive now)",
+        "register": "informal/neutral"
+      },
+      "躺平": {
+        "pinyin": "tǎng píng",
+        "meaning": "Lie flat - give up on ambition, do minimum",
+        "usage": "我决定躺平了 (I've decided to lie flat)",
+        "context": "Reaction to 内卷 culture",
+        "register": "informal"
+      },
+      "摆烂": {
+        "pinyin": "bǎi làn",
+        "meaning": "Let it rot - give up completely",
+        "usage": "More extreme than 躺平",
+        "register": "very informal"
+      },
+      "卷王": {
+        "pinyin": "juǎn wáng",
+        "meaning": "King of competition - someone who works excessively hard",
+        "usage": "Often used sarcastically",
+        "register": "informal"
+      },
+      "画饼": {
+        "pinyin": "huà bǐng",
+        "meaning": "Draw a pie - make empty promises",
+        "usage": "老板又在画饼了 (The boss is making empty promises again)",
+        "register": "informal"
+      }
+    }
+  },
+  "modifier_slang": {
+    "category": "Adjective-like modifiers",
+    "terms": {
+      "水灵灵地": {
+        "pinyin": "shuǐlínglíng de",
+        "original_meaning": "Dewy, fresh-looking",
+        "internet_meaning": "Vividly, freshly, in an eye-catching way",
+        "usage": "水灵灵地上班 (Going to work all fresh)",
+        "register": "informal"
+      },
+      "遥遥领先": {
+        "pinyin": "yáoyáo lǐngxiān",
+        "meaning": "Far ahead / Leading by a mile",
+        "context": "Huawei marketing phrase that became meme",
+        "register": "informal/ironic"
+      },
+      "拿捏": {
+        "pinyin": "ná niē",
+        "meaning": "To handle/master something perfectly",
+        "usage": "这个造型被她拿捏了 (She nailed this look)",
+        "register": "informal"
+      },
+      "整活": {
+        "pinyin": "zhěng huó",
+        "meaning": "To do something creative/funny/unexpected",
+        "usage": "又在整活了 (Doing something creative again)",
+        "register": "informal"
+      }
+    }
+  },
+  "translation_guidelines": {
+    "general_rules": [
+      "Do not translate slang literally",
+      "Provide context or explanation when necessary",
+      "Consider target audience age and familiarity with Chinese internet culture",
+      "Some terms may be better left in pinyin with explanation"
+    ],
+    "strategies": {
+      "formal_contexts": "Avoid using slang; use standard Chinese equivalent",
+      "informal_contexts": "Can use English internet slang equivalents (e.g., YYDS → GOAT)",
+      "localization": "Adapt to local internet slang of target language",
+      "subtitling": "May need translator notes or glossary"
+    },
+    "common_mistakes": [
+      "Translating abbreviations literally (xswl → 'xswl')",
+      "Using outdated slang",
+      "Misunderstanding ironic usage",
+      "Applying slang in formal contexts"
+    ]
+  }
+}

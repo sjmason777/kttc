@@ -1,0 +1,247 @@
+{
+  "metadata": {
+    "language": "ru",
+    "language_name": "Русский",
+    "glossary_type": "Russian Untranslatable Words",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Непереводимые русские слова - уникальные концепции без точных аналогов",
+    "sources": [
+      "Набоков В.В. Комментарии к 'Евгению Онегину'",
+      "Wierzbicka A. Understanding Cultures through Their Key Words",
+      "Zaliznyak A. et al. Key Ideas of Russian Language World View"
+    ],
+    "total_terms": 35
+  },
+  "untranslatable_words": {
+    "description": "Слова, отражающие уникальные аспекты русской культуры и менталитета",
+    "translation_strategy": "Транслитерация + описательный перевод или комментарий",
+    "emotional_states": {
+      "тоска": {
+        "approximate_translations": ["melancholy", "longing", "yearning", "anguish"],
+        "why_untranslatable": "Melancholy слишком возвышенно, longing слишком романтично. Тоска - это боль + тишина + ожидание + безысходность одновременно",
+        "semantic_field": {
+          "components": ["глубокая печаль", "душевная боль", "ностальгия", "одиночество", "томление"],
+          "physical_sensation": "Может ощущаться физически - 'тоска сжимает сердце'"
+        },
+        "nabokov_quote": "No single word in English renders all the shades of toska",
+        "translation_strategies": [
+          "Транслитерация: 'toska'",
+          "Описательный: 'a deep spiritual anguish'",
+          "Контекстный: выбрать ближайшее значение по контексту"
+        ],
+        "examples": [
+          {"russian": "Тоска по родине", "english": "Homesickness / Longing for homeland"},
+          {"russian": "На душе тоска", "english": "A heavy feeling in my heart"},
+          {"russian": "Смертная тоска", "english": "Deathly boredom / Unbearable ennui"}
+        ],
+        "severity": "critical"
+      },
+      "надрыв": {
+        "approximate_translations": ["emotional strain", "breakdown", "overwrought emotion"],
+        "why_untranslatable": "Уникальное сочетание эмоционального надлома с его демонстрацией",
+        "semantic_field": {
+          "components": ["эмоциональное напряжение", "надлом", "экзальтация", "истерика"],
+          "dostoevsky_connection": "Характерно для персонажей Достоевского"
+        },
+        "examples": [
+          {"russian": "Говорить с надрывом", "english": "To speak with emotional strain"},
+          {"russian": "В его голосе слышался надрыв", "english": "His voice betrayed inner turmoil"}
+        ]
+      },
+      "удаль": {
+        "approximate_translations": ["daring", "bravado", "reckless courage"],
+        "why_untranslatable": "Bravado негативно окрашено, daring слишком нейтрально. Удаль - молодецкая отвага с удовольствием от риска",
+        "semantic_field": {
+          "components": ["смелость", "лихость", "молодечество", "бесшабашность"],
+          "positive_connotation": true
+        },
+        "examples": [
+          {"russian": "Молодецкая удаль", "english": "Youthful daring / Bravado"},
+          {"russian": "Удаль русская", "english": "Russian spirit of daring"}
+        ]
+      },
+      "хандра": {
+        "approximate_translations": ["the blues", "melancholy", "spleen"],
+        "why_untranslatable": "Blues слишком легковесно, melancholy слишком глубоко. Хандра - состояние между скукой и депрессией",
+        "literary_connection": "'Им овладела хандра' - о Евгении Онегине",
+        "examples": [
+          {"russian": "На меня напала хандра", "english": "I've got a case of the blues"},
+          {"russian": "Осенняя хандра", "english": "Autumn melancholy"}
+        ]
+      }
+    },
+    "philosophical_concepts": {
+      "авось": {
+        "approximate_translations": ["maybe", "perhaps", "reliance on luck"],
+        "why_untranslatable": "Это не просто 'возможно', а жизненная установка - делать что-то без уверенности в результате, надеясь на удачу",
+        "semantic_field": {
+          "components": ["надежда на случай", "фатализм", "оптимизм", "безрассудство"],
+          "cultural_significance": "Отражает русский фаталистичный оптимизм"
+        },
+        "related_words": ["небось", "как-нибудь", "само образуется"],
+        "examples": [
+          {"russian": "Авось пронесёт", "english": "Maybe we'll get lucky / Hopefully it'll work out"},
+          {"russian": "Надеяться на авось", "english": "To rely on blind luck"}
+        ],
+        "severity": "major"
+      },
+      "небось": {
+        "approximate_translations": ["probably", "I bet", "surely"],
+        "why_untranslatable": "Содержит оттенок интуитивной уверенности + успокоение. От 'не бойся'",
+        "examples": [
+          {"russian": "Небось, не пропадём", "english": "We'll be fine, don't worry"},
+          {"russian": "Ты небось голодный?", "english": "I bet you're hungry, aren't you?"}
+        ]
+      },
+      "судьба": {
+        "approximate_translations": ["fate", "destiny", "fortune"],
+        "why_untranslatable": "В русском судьба более персональна и фаталистична, чем английское fate",
+        "semantic_field": {
+          "components": ["предопределение", "доля", "участь", "рок"],
+          "cultural_weight": "Глубже укоренена в русском менталитете"
+        },
+        "examples": [
+          {"russian": "Не судьба", "english": "It wasn't meant to be"},
+          {"russian": "Судьба-злодейка", "english": "Cruel fate"}
+        ]
+      },
+      "пошлость": {
+        "approximate_translations": ["vulgarity", "banality", "kitsch", "philistinism"],
+        "why_untranslatable": "Набоков посвятил этому слову целое эссе. Это не просто вульгарность, а внутренняя фальшь + безвкусие + претензия на красоту",
+        "nabokov_definition": "Corny trash, vulgar clichés, Philistinism in all its phases",
+        "semantic_field": {
+          "components": ["безвкусица", "мещанство", "фальшь", "банальность"],
+          "includes_pretension": true
+        },
+        "examples": [
+          {"russian": "Какая пошлость!", "english": "How vulgar/tacky!"},
+          {"russian": "Пошлость жизни", "english": "The banality of life"}
+        ],
+        "severity": "major"
+      },
+      "совесть": {
+        "approximate_translations": ["conscience"],
+        "why_untranslatable": "Русская совесть имеет религиозный оттенок - ответственность перед Богом, не только перед обществом",
+        "semantic_field": {
+          "components": ["внутренний голос", "нравственное чувство", "чувство вины"],
+          "expressions": ["угрызения совести", "чистая совесть", "на совесть"]
+        },
+        "examples": [
+          {"russian": "Сделано на совесть", "english": "Done conscientiously / Done properly"},
+          {"russian": "Совесть заела", "english": "Conscience is nagging"}
+        ]
+      }
+    },
+    "time_space": {
+      "сутки": {
+        "approximate_translations": ["24 hours", "a day and night", "round the clock"],
+        "why_untranslatable": "В русском это отдельное понятие, в английском - описание '24 hours'",
+        "usage": "Измерение времени как единое целое (день + ночь)",
+        "examples": [
+          {"russian": "Двое суток", "english": "48 hours / Two days and nights"},
+          {"russian": "Работать сутками", "english": "To work around the clock"}
+        ],
+        "severity": "major"
+      },
+      "простор": {
+        "approximate_translations": ["expanse", "open space", "vastness"],
+        "why_untranslatable": "Содержит эмоциональный компонент - чувство свободы и раздолья",
+        "semantic_field": {
+          "components": ["широта", "свобода", "раздолье", "воля"],
+          "emotional_component": "Чувство освобождения"
+        },
+        "examples": [
+          {"russian": "Русский простор", "english": "Russian vastness / Wide open spaces"},
+          {"russian": "Душа просит простора", "english": "The soul craves freedom/space"}
+        ]
+      },
+      "даль": {
+        "approximate_translations": ["distance", "far-off places", "the beyond"],
+        "why_untranslatable": "Романтическое понятие недостижимой дали с оттенком тоски",
+        "examples": [
+          {"russian": "Синяя даль", "english": "Blue distance / Distant horizons"},
+          {"russian": "Глядеть в даль", "english": "To gaze into the distance"}
+        ]
+      }
+    },
+    "social_relations": {
+      "кум_кума": {
+        "approximate_translations": ["godfather/godmother", "close family friend"],
+        "why_untranslatable": "Godparent не передаёт степень близости и фамильярности. Кум - почти родственник через обряд крещения",
+        "cultural_note": "Особые, почти родственные отношения",
+        "examples": [
+          {"russian": "Мой кум", "english": "My child's godfather / My close family friend"},
+          {"russian": "Кумовство", "english": "Nepotism / Cronyism"}
+        ]
+      },
+      "свекровь_тёща": {
+        "why_unique": "Английский mother-in-law не различает мать мужа и мать жены",
+        "свекровь": {
+          "definition": "Мать мужа",
+          "english": "Mother-in-law (husband's mother)"
+        },
+        "тёща": {
+          "definition": "Мать жены",
+          "english": "Mother-in-law (wife's mother)",
+          "cultural_note": "Особый статус в русской культуре, много анекдотов"
+        },
+        "related_distinctions": [
+          {"russian": "свёкор", "english": "Father-in-law (husband's father)"},
+          {"russian": "тесть", "english": "Father-in-law (wife's father)"},
+          {"russian": "деверь", "english": "Brother-in-law (husband's brother)"},
+          {"russian": "шурин", "english": "Brother-in-law (wife's brother)"},
+          {"russian": "золовка", "english": "Sister-in-law (husband's sister)"},
+          {"russian": "свояченица", "english": "Sister-in-law (wife's sister)"}
+        ]
+      },
+      "быт": {
+        "approximate_translations": ["everyday life", "daily routine", "household"],
+        "why_untranslatable": "Содержит оттенок рутины, иногда негативный - 'быт заел'",
+        "examples": [
+          {"russian": "Бытовые проблемы", "english": "Everyday/domestic problems"},
+          {"russian": "Быт заедает", "english": "Daily routine is grinding one down"}
+        ]
+      }
+    },
+    "uniquely_russian": {
+      "беспредел": {
+        "approximate_translations": ["lawlessness", "chaos", "mayhem"],
+        "why_untranslatable": "Появилось в 90-е, означает полное беззаконие и отсутствие границ",
+        "examples": [
+          {"russian": "Полный беспредел", "english": "Total chaos / Complete lawlessness"}
+        ]
+      },
+      "стушеваться": {
+        "approximate_translations": ["to become embarrassed", "to fade into background"],
+        "why_untranslatable": "Слово введено Достоевским, означает смущённо отступить, стать незаметным",
+        "origin": "От 'тушевать' (растушёвывать рисунок)",
+        "examples": [
+          {"russian": "Он стушевался", "english": "He became flustered and retreated"}
+        ]
+      },
+      "юродивый": {
+        "approximate_translations": ["holy fool", "God's fool"],
+        "why_untranslatable": "Уникальное русское религиозно-культурное явление",
+        "cultural_note": "Человек, притворяющийся безумным ради Христа"
+      }
+    }
+  },
+  "translation_guidelines": {
+    "strategies": {
+      "transliteration": {
+        "when": "Когда слово стало заимствованием (toska, gulag, glasnost)",
+        "how": "Использовать латиницу + сноску с объяснением"
+      },
+      "descriptive": {
+        "when": "Когда нужна точность понимания",
+        "how": "Развёрнутое описание значения"
+      },
+      "contextual": {
+        "when": "В художественном переводе",
+        "how": "Выбрать ближайший эквивалент по контексту"
+      }
+    },
+    "warning": "Избегайте буквального перевода - он не передаст культурную глубину слова"
+  }
+}

@@ -1,0 +1,435 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Preposition Traps - Common Mistakes",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "English preposition errors - one of the top 3 difficulties for non-native speakers. Includes time, place, and verb collocations.",
+    "sources": [
+      "Grammarly: English Prepositions In, On, At",
+      "Cambridge Dictionary: Preposition Usage",
+      "British Council: Common Preposition Mistakes",
+      "IELTS Online Tests: Preposition Errors"
+    ],
+    "total_rules": 100,
+    "usage": "Grammar checking, fluency assessment, translation QA, ESL error detection"
+  },
+  "overview": {
+    "definition": "Prepositions are words that show relationships between nouns/pronouns and other words (location, time, direction, etc.)",
+    "importance": "Preposition choice is often idiomatic and must be memorized - logic doesn't always apply",
+    "difficulty_reason": "Different languages use different prepositions for the same concept; no universal rules",
+    "severity": "minor to major - can cause confusion or sound unnatural"
+  },
+  "time_prepositions": {
+    "description": "Prepositions for expressing time",
+    "rules": {
+      "at": {
+        "use_for": ["specific times", "mealtimes", "certain expressions"],
+        "examples": {
+          "correct": ["at 3 PM", "at noon", "at midnight", "at night", "at breakfast", "at the moment", "at the weekend (British)"],
+          "incorrect": ["at Monday", "at July", "at 2024"]
+        }
+      },
+      "on": {
+        "use_for": ["days", "dates", "specific day parts"],
+        "examples": {
+          "correct": ["on Monday", "on January 15th", "on Christmas Day", "on my birthday", "on the weekend (American)", "on Monday morning"],
+          "incorrect": ["on night", "on 3 PM", "on July"]
+        }
+      },
+      "in": {
+        "use_for": ["months", "years", "seasons", "centuries", "long periods", "parts of day (except night)"],
+        "examples": {
+          "correct": ["in July", "in 2024", "in summer", "in the morning", "in the afternoon", "in the evening", "in the 21st century", "in the past"],
+          "incorrect": ["in Monday", "in 3 PM", "in night"]
+        }
+      }
+    },
+    "common_errors": [
+      {
+        "incorrect": "I was born on 1995",
+        "correct": "I was born in 1995",
+        "rule": "Use 'in' for years"
+      },
+      {
+        "incorrect": "She goes out in the night",
+        "correct": "She goes out at night",
+        "rule": "Exception: 'at night' not 'in the night'"
+      },
+      {
+        "incorrect": "We met in Monday",
+        "correct": "We met on Monday",
+        "rule": "Use 'on' for days"
+      },
+      {
+        "incorrect": "I'll see you on the morning",
+        "correct": "I'll see you in the morning",
+        "rule": "Use 'in' for parts of day"
+      },
+      {
+        "incorrect": "I'll see you on Monday on the morning",
+        "correct": "I'll see you on Monday morning",
+        "rule": "Day + time = 'on Monday morning' (no preposition before morning)"
+      }
+    ],
+    "special_cases": {
+      "night_vs_evening": {
+        "at_night": "general nighttime (no article)",
+        "in_the_evening": "specific part of day (with article)",
+        "in_the_night": "during a specific night (less common)"
+      },
+      "time_expressions_no_preposition": [
+        "last Monday (not 'on last Monday')",
+        "next week (not 'in next week')",
+        "this morning (not 'in this morning')",
+        "every day (not 'on every day')"
+      ]
+    }
+  },
+  "place_prepositions": {
+    "description": "Prepositions for expressing location",
+    "rules": {
+      "at": {
+        "use_for": ["specific points", "addresses", "events", "places as points on a map"],
+        "examples": {
+          "correct": ["at the bus stop", "at the door", "at 123 Main Street", "at the party", "at school", "at work", "at home"],
+          "incorrect": ["at the car", "at London"]
+        }
+      },
+      "on": {
+        "use_for": ["surfaces", "streets (without number)", "floors", "public transport (large)"],
+        "examples": {
+          "correct": ["on the table", "on the wall", "on Main Street", "on the 5th floor", "on the bus", "on the train", "on the plane"],
+          "incorrect": ["on the car (inside)", "on the room"]
+        }
+      },
+      "in": {
+        "use_for": ["enclosed spaces", "cities/countries", "cars/taxis", "water"],
+        "examples": {
+          "correct": ["in the room", "in London", "in England", "in the car", "in a taxi", "in the water", "in the pool"],
+          "incorrect": ["in the table", "in the bus"]
+        }
+      }
+    },
+    "common_errors": [
+      {
+        "incorrect": "The book is in the table",
+        "correct": "The book is on the table",
+        "rule": "Use 'on' for surfaces"
+      },
+      {
+        "incorrect": "I'm on the car",
+        "correct": "I'm in the car",
+        "rule": "Use 'in' for small vehicles (cars, taxis)"
+      },
+      {
+        "incorrect": "I'm in the bus",
+        "correct": "I'm on the bus",
+        "rule": "Use 'on' for large public transport (buses, trains, planes)"
+      },
+      {
+        "incorrect": "She lives at London",
+        "correct": "She lives in London",
+        "rule": "Use 'in' for cities and countries"
+      },
+      {
+        "incorrect": "I arrived to the station",
+        "correct": "I arrived at the station",
+        "rule": "'Arrive' takes 'at' for specific places"
+      },
+      {
+        "incorrect": "I arrived in Paris at the airport",
+        "correct": "I arrived in Paris / I arrived at the airport",
+        "rule": "'Arrive in' for cities/countries, 'arrive at' for specific places"
+      }
+    ],
+    "vehicle_prepositions": {
+      "in": {
+        "vehicles": ["car", "taxi", "helicopter", "small boat"],
+        "reason": "You're enclosed in a small space"
+      },
+      "on": {
+        "vehicles": ["bus", "train", "plane", "ship", "bicycle", "motorcycle", "horse"],
+        "reason": "Large vehicles you walk onto, or vehicles you sit ON"
+      }
+    }
+  },
+  "verb_collocations": {
+    "description": "Verbs that require specific prepositions - must be memorized",
+    "common_errors": [
+      {
+        "incorrect": "depend from/about",
+        "correct": "depend on",
+        "example": "It depends on the weather."
+      },
+      {
+        "incorrect": "interested about/for",
+        "correct": "interested in",
+        "example": "I'm interested in history."
+      },
+      {
+        "incorrect": "afraid from/about",
+        "correct": "afraid of",
+        "example": "She's afraid of spiders."
+      },
+      {
+        "incorrect": "good in",
+        "correct": "good at",
+        "example": "He's good at math."
+      },
+      {
+        "incorrect": "listen the music",
+        "correct": "listen to the music",
+        "example": "I like to listen to music."
+      },
+      {
+        "incorrect": "wait you",
+        "correct": "wait for you",
+        "example": "I'll wait for you."
+      },
+      {
+        "incorrect": "look to/on",
+        "correct": "look at",
+        "example": "Look at this picture."
+      },
+      {
+        "incorrect": "apply a job",
+        "correct": "apply for a job",
+        "example": "She applied for the position."
+      },
+      {
+        "incorrect": "apologize about",
+        "correct": "apologize for",
+        "example": "I apologize for being late."
+      },
+      {
+        "incorrect": "believe to/on",
+        "correct": "believe in",
+        "example": "I believe in you."
+      },
+      {
+        "incorrect": "belong in/at",
+        "correct": "belong to",
+        "example": "This book belongs to me."
+      },
+      {
+        "incorrect": "concentrate in",
+        "correct": "concentrate on",
+        "example": "Concentrate on your work."
+      },
+      {
+        "incorrect": "consist from",
+        "correct": "consist of",
+        "example": "The team consists of five members."
+      },
+      {
+        "incorrect": "deal about",
+        "correct": "deal with",
+        "example": "I'll deal with the problem."
+      },
+      {
+        "incorrect": "participate at",
+        "correct": "participate in",
+        "example": "She participated in the competition."
+      },
+      {
+        "incorrect": "succeed at doing",
+        "correct": "succeed in doing",
+        "example": "He succeeded in passing the exam."
+      },
+      {
+        "incorrect": "suffer of",
+        "correct": "suffer from",
+        "example": "She suffers from allergies."
+      },
+      {
+        "incorrect": "think to/for",
+        "correct": "think about/of",
+        "example": "Think about your future."
+      },
+      {
+        "incorrect": "worry for",
+        "correct": "worry about",
+        "example": "Don't worry about it."
+      }
+    ],
+    "verbs_without_preposition": {
+      "description": "Verbs that DON'T need a preposition (common error to add one)",
+      "examples": [
+        {
+          "incorrect": "discuss about the project",
+          "correct": "discuss the project"
+        },
+        {
+          "incorrect": "enter into the room",
+          "correct": "enter the room"
+        },
+        {
+          "incorrect": "approach to the building",
+          "correct": "approach the building"
+        },
+        {
+          "incorrect": "answer to the question",
+          "correct": "answer the question"
+        },
+        {
+          "incorrect": "emphasize on",
+          "correct": "emphasize (something)"
+        },
+        {
+          "incorrect": "mention about",
+          "correct": "mention (something)"
+        },
+        {
+          "incorrect": "reach at",
+          "correct": "reach (somewhere)"
+        }
+      ]
+    }
+  },
+  "adjective_collocations": {
+    "description": "Adjectives that require specific prepositions",
+    "common_patterns": {
+      "adjective_of": ["afraid of", "aware of", "capable of", "fond of", "full of", "proud of", "tired of", "jealous of", "ashamed of"],
+      "adjective_about": ["worried about", "excited about", "happy about", "sorry about", "curious about", "serious about"],
+      "adjective_at": ["good at", "bad at", "excellent at", "surprised at", "amazed at", "angry at (person)"],
+      "adjective_for": ["famous for", "responsible for", "ready for", "sorry for", "grateful for", "prepared for"],
+      "adjective_in": ["interested in", "involved in", "successful in", "experienced in", "skilled in"],
+      "adjective_to": ["similar to", "different to/from", "married to", "related to", "addicted to", "opposed to", "used to"],
+      "adjective_with": ["satisfied with", "pleased with", "angry with", "bored with", "familiar with", "patient with"]
+    },
+    "common_errors": [
+      {
+        "incorrect": "similar with",
+        "correct": "similar to",
+        "example": "This is similar to that."
+      },
+      {
+        "incorrect": "married with",
+        "correct": "married to",
+        "example": "She's married to John."
+      },
+      {
+        "incorrect": "different with",
+        "correct": "different from/to",
+        "example": "This is different from that."
+      },
+      {
+        "incorrect": "responsible of",
+        "correct": "responsible for",
+        "example": "He's responsible for the project."
+      }
+    ]
+  },
+  "british_vs_american": {
+    "description": "Preposition differences between British and American English",
+    "differences": [
+      {
+        "context": "weekend",
+        "british": "at the weekend",
+        "american": "on the weekend"
+      },
+      {
+        "context": "street",
+        "british": "in the street",
+        "american": "on the street"
+      },
+      {
+        "context": "different",
+        "british": "different to/from",
+        "american": "different from/than"
+      },
+      {
+        "context": "team",
+        "british": "in a team",
+        "american": "on a team"
+      },
+      {
+        "context": "hospital",
+        "british": "in hospital (general)",
+        "american": "in the hospital"
+      },
+      {
+        "context": "university",
+        "british": "at university",
+        "american": "in college/at college"
+      },
+      {
+        "context": "write",
+        "british": "write to someone",
+        "american": "write someone/write to someone"
+      }
+    ]
+  },
+  "no_preposition_cases": {
+    "description": "Common cases where preposition is incorrectly added",
+    "examples": [
+      {
+        "incorrect": "I go to home",
+        "correct": "I go home",
+        "note": "'home' acts as adverb, no preposition needed"
+      },
+      {
+        "incorrect": "I go to there",
+        "correct": "I go there",
+        "note": "'there' is adverb"
+      },
+      {
+        "incorrect": "I go to abroad",
+        "correct": "I go abroad",
+        "note": "'abroad' is adverb"
+      },
+      {
+        "incorrect": "I go to downtown",
+        "correct": "I go downtown",
+        "note": "'downtown' is adverb"
+      },
+      {
+        "incorrect": "What happened to you yesterday?",
+        "correct": "What happened yesterday?",
+        "note": "When asking generally (not about consequences)"
+      }
+    ]
+  },
+  "detection_patterns": {
+    "description": "Patterns for detecting preposition errors",
+    "patterns": [
+      {
+        "pattern": "born + on + year",
+        "error": true,
+        "correction": "born in [year]"
+      },
+      {
+        "pattern": "depend + (from|about|of)",
+        "error": true,
+        "correction": "depend on"
+      },
+      {
+        "pattern": "interested + (about|for|on)",
+        "error": true,
+        "correction": "interested in"
+      },
+      {
+        "pattern": "discuss + about",
+        "error": true,
+        "correction": "discuss (no preposition)"
+      },
+      {
+        "pattern": "arrive + to + place",
+        "error": true,
+        "correction": "arrive at/in"
+      },
+      {
+        "pattern": "good + (in|for) + activity",
+        "error": true,
+        "correction": "good at"
+      },
+      {
+        "pattern": "married + with",
+        "error": true,
+        "correction": "married to"
+      }
+    ]
+  }
+}

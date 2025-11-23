@@ -35,6 +35,7 @@ dependencies = [
     # Core CLI dependencies (lightweight, ~50MB)
     "typer>=0.20.0",
     "rich>=14.2.0",
+    "defusedxml>=0.7.1",  # Secure XML parsing
     "pydantic>=2.12.4",
     "pydantic-settings>=2.11.0",
     "aiohttp>=3.13.2",
@@ -124,6 +125,7 @@ ignore = ["E501"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["ANN"]
+"vulture_whitelist.py" = ["F821"]  # Vulture whitelist uses bare names
 
 # Black configuration
 [tool.black]
@@ -184,6 +186,57 @@ ignore_missing_imports = true
 [[tool.mypy.overrides]]
 module = ["dadmatools", "dadmatools.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["rich", "rich.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["typer", "typer.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["spacy", "spacy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["jieba", "jieba.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["fastapi", "fastapi.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["uvicorn", "uvicorn.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["numpy", "numpy.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["sacrebleu", "sacrebleu.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["pydantic_settings", "pydantic_settings.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["defusedxml", "defusedxml.*"]
+ignore_missing_imports = true
+
+# Allow untyped decorators for CLI commands (typer decorators are not typed)
+[[tool.mypy.overrides]]
+module = ["kttc.cli.*", "kttc.webui.*"]
+disallow_untyped_decorators = false
+
+# Allow subclassing BaseSettings from pydantic_settings
+[[tool.mypy.overrides]]
+module = ["kttc.utils.config"]
+disallow_any_expr = false
+disallow_subclassing_any = false
 
 # Pytest configuration
 [tool.pytest.ini_options]

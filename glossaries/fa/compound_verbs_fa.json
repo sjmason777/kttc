@@ -1,0 +1,548 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "Compound Verbs (Light Verb Constructions)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Persian compound verbs (فعل مرکب) - over 90% of Persian verbs are compound. Critical for translation accuracy.",
+    "sources": [
+      "Persian verbs - Wikipedia",
+      "Persian Grammar studies",
+      "Chai and Conversation - Compound Verbs"
+    ],
+    "total_entries": 100
+  },
+  "compound_verb_overview": {
+    "term_fa": "فعل مرکب",
+    "term_en": "Compound Verb / Light Verb Construction",
+    "definition": "A verb consisting of a non-verbal element (noun/adjective) + light verb (helper verb)",
+    "structure": "Non-verbal element + Light verb",
+    "statistics": {
+      "percentage": "90%+ of Persian verbs are compound",
+      "simple_verbs": "Less than 250 simple verbs in modern Persian",
+      "productivity": "New compound verbs are constantly created"
+    },
+    "importance": "One compound verb in Persian often translates to one simple verb in English",
+    "challenge": "Choosing the correct light verb - each compound verb uses only ONE specific light verb"
+  },
+  "light_verbs": {
+    "description": "Common light verbs (فعل کمکی/سبک) used to form compound verbs",
+    "verbs": {
+      "کردن": {
+        "infinitive": "کردن (kardan)",
+        "meaning": "to do, to make",
+        "past_stem": "کرد (kard)",
+        "present_stem": "کن (kon)",
+        "productivity": "Most productive - combines with thousands of nouns",
+        "semantic_contribution": "Action, doing, performing"
+      },
+      "شدن": {
+        "infinitive": "شدن (shodan)",
+        "meaning": "to become",
+        "past_stem": "شد (shod)",
+        "present_stem": "شو (shav)",
+        "productivity": "Very productive",
+        "semantic_contribution": "Change of state, becoming, passive"
+      },
+      "زدن": {
+        "infinitive": "زدن (zadan)",
+        "meaning": "to hit, to strike",
+        "past_stem": "زد (zad)",
+        "present_stem": "زن (zan)",
+        "productivity": "Highly productive",
+        "semantic_contribution": "Quick action, impact, initiation"
+      },
+      "دادن": {
+        "infinitive": "دادن (dādan)",
+        "meaning": "to give",
+        "past_stem": "داد (dād)",
+        "present_stem": "ده (deh)",
+        "productivity": "Productive",
+        "semantic_contribution": "Giving, producing, showing"
+      },
+      "خوردن": {
+        "infinitive": "خوردن (xordan)",
+        "meaning": "to eat, to hit (receive impact)",
+        "past_stem": "خورد (xord)",
+        "present_stem": "خور (xor)",
+        "productivity": "Moderate",
+        "semantic_contribution": "Receiving impact, experiencing"
+      },
+      "گرفتن": {
+        "infinitive": "گرفتن (gereftan)",
+        "meaning": "to take, to get",
+        "past_stem": "گرفت (gereft)",
+        "present_stem": "گیر (gīr)",
+        "productivity": "Moderate",
+        "semantic_contribution": "Acquiring, starting"
+      },
+      "داشتن": {
+        "infinitive": "داشتن (dāshtan)",
+        "meaning": "to have",
+        "past_stem": "داشت (dāsht)",
+        "present_stem": "دار (dār)",
+        "productivity": "Moderate",
+        "semantic_contribution": "Having, possessing, maintaining"
+      },
+      "کشیدن": {
+        "infinitive": "کشیدن (keshidan)",
+        "meaning": "to pull, to draw",
+        "past_stem": "کشید (keshīd)",
+        "present_stem": "کش (kesh)",
+        "productivity": "Moderate",
+        "semantic_contribution": "Enduring, pulling, drawing"
+      },
+      "آمدن": {
+        "infinitive": "آمدن (āmadan)",
+        "meaning": "to come",
+        "past_stem": "آمد (āmad)",
+        "present_stem": "آ (ā)",
+        "productivity": "Moderate",
+        "semantic_contribution": "Coming, happening, fitting"
+      },
+      "رفتن": {
+        "infinitive": "رفتن (raftan)",
+        "meaning": "to go",
+        "past_stem": "رفت (raft)",
+        "present_stem": "رو (rav)",
+        "productivity": "Limited in compounds",
+        "semantic_contribution": "Going, disappearing"
+      }
+    }
+  },
+  "compound_verbs_with_kardan": {
+    "description": "Compound verbs with کردن (to do/make) - most common",
+    "entries": {
+      "کار_کردن": {
+        "compound": "کار کردن",
+        "transliteration": "kār kardan",
+        "meaning": "to work",
+        "literal": "work + do",
+        "example": "من کار می‌کنم (I work)"
+      },
+      "صحبت_کردن": {
+        "compound": "صحبت کردن",
+        "transliteration": "sohbat kardan",
+        "meaning": "to speak, to talk",
+        "literal": "speech + do",
+        "example": "با دوستم صحبت کردم (I talked with my friend)"
+      },
+      "فکر_کردن": {
+        "compound": "فکر کردن",
+        "transliteration": "fekr kardan",
+        "meaning": "to think",
+        "literal": "thought + do",
+        "example": "باید فکر کنم (I must think)"
+      },
+      "قبول_کردن": {
+        "compound": "قبول کردن",
+        "transliteration": "qabūl kardan",
+        "meaning": "to accept",
+        "literal": "acceptance + do",
+        "example": "پیشنهاد را قبول کرد (He accepted the offer)"
+      },
+      "شروع_کردن": {
+        "compound": "شروع کردن",
+        "transliteration": "shurū' kardan",
+        "meaning": "to start, to begin",
+        "literal": "start + do",
+        "example": "کار را شروع کردم (I started the work)"
+      },
+      "تمام_کردن": {
+        "compound": "تمام کردن",
+        "transliteration": "tamām kardan",
+        "meaning": "to finish",
+        "literal": "complete + do",
+        "example": "کتاب را تمام کردم (I finished the book)"
+      },
+      "درست_کردن": {
+        "compound": "درست کردن",
+        "transliteration": "dorost kardan",
+        "meaning": "to make, to fix, to prepare",
+        "literal": "correct + do",
+        "example": "غذا درست کردم (I made food)"
+      },
+      "امتحان_کردن": {
+        "compound": "امتحان کردن",
+        "transliteration": "emtehān kardan",
+        "meaning": "to test, to try",
+        "literal": "exam + do",
+        "example": "این را امتحان کن (Try this)"
+      },
+      "زندگی_کردن": {
+        "compound": "زندگی کردن",
+        "transliteration": "zendegī kardan",
+        "meaning": "to live",
+        "literal": "life + do",
+        "example": "در تهران زندگی می‌کنم (I live in Tehran)"
+      },
+      "تعریف_کردن": {
+        "compound": "تعریف کردن",
+        "transliteration": "ta'rīf kardan",
+        "meaning": "to define, to praise, to tell (a story)",
+        "literal": "definition + do",
+        "example": "داستان را تعریف کرد (He told the story)"
+      },
+      "دعوت_کردن": {
+        "compound": "دعوت کردن",
+        "transliteration": "da'vat kardan",
+        "meaning": "to invite",
+        "literal": "invitation + do",
+        "example": "دوستانم را دعوت کردم (I invited my friends)"
+      },
+      "استفاده_کردن": {
+        "compound": "استفاده کردن",
+        "transliteration": "estefāde kardan",
+        "meaning": "to use",
+        "literal": "usage + do",
+        "example": "از این استفاده کن (Use this)"
+      },
+      "سعی_کردن": {
+        "compound": "سعی کردن",
+        "transliteration": "sa'y kardan",
+        "meaning": "to try",
+        "literal": "effort + do",
+        "example": "سعی می‌کنم (I'm trying)"
+      },
+      "عوض_کردن": {
+        "compound": "عوض کردن",
+        "transliteration": "'avaz kardan",
+        "meaning": "to change",
+        "literal": "exchange + do",
+        "example": "لباسم را عوض کردم (I changed my clothes)"
+      },
+      "فراموش_کردن": {
+        "compound": "فراموش کردن",
+        "transliteration": "farāmūsh kardan",
+        "meaning": "to forget",
+        "literal": "forgetfulness + do",
+        "example": "فراموش کردم (I forgot)"
+      }
+    }
+  },
+  "compound_verbs_with_shodan": {
+    "description": "Compound verbs with شدن (to become) - often passive or change of state",
+    "entries": {
+      "تمام_شدن": {
+        "compound": "تمام شدن",
+        "transliteration": "tamām shodan",
+        "meaning": "to finish (intransitive), to end",
+        "literal": "complete + become",
+        "example": "فیلم تمام شد (The movie ended)"
+      },
+      "خوب_شدن": {
+        "compound": "خوب شدن",
+        "transliteration": "xūb shodan",
+        "meaning": "to get better, to recover",
+        "literal": "good + become",
+        "example": "مریض خوب شد (The patient recovered)"
+      },
+      "بزرگ_شدن": {
+        "compound": "بزرگ شدن",
+        "transliteration": "bozorg shodan",
+        "meaning": "to grow up",
+        "literal": "big + become",
+        "example": "بچه‌ها بزرگ شدند (The children grew up)"
+      },
+      "شروع_شدن": {
+        "compound": "شروع شدن",
+        "transliteration": "shurū' shodan",
+        "meaning": "to start (intransitive)",
+        "literal": "start + become",
+        "example": "کلاس شروع شد (The class started)"
+      },
+      "عصبانی_شدن": {
+        "compound": "عصبانی شدن",
+        "transliteration": "'asabānī shodan",
+        "meaning": "to get angry",
+        "literal": "angry + become",
+        "example": "عصبانی نشو! (Don't get angry!)"
+      },
+      "خسته_شدن": {
+        "compound": "خسته شدن",
+        "transliteration": "xaste shodan",
+        "meaning": "to get tired",
+        "literal": "tired + become",
+        "example": "خسته شدم (I got tired)"
+      },
+      "آماده_شدن": {
+        "compound": "آماده شدن",
+        "transliteration": "āmāde shodan",
+        "meaning": "to get ready",
+        "literal": "ready + become",
+        "example": "آماده شو! (Get ready!)"
+      },
+      "گم_شدن": {
+        "compound": "گم شدن",
+        "transliteration": "gom shodan",
+        "meaning": "to get lost",
+        "literal": "lost + become",
+        "example": "کلیدم گم شد (My key got lost)"
+      },
+      "متوجه_شدن": {
+        "compound": "متوجه شدن",
+        "transliteration": "motavajjeh shodan",
+        "meaning": "to realize, to notice",
+        "literal": "attentive + become",
+        "example": "متوجه نشدم (I didn't notice)"
+      },
+      "ناراحت_شدن": {
+        "compound": "ناراحت شدن",
+        "transliteration": "nārāhat shodan",
+        "meaning": "to get upset",
+        "literal": "upset + become",
+        "example": "ناراحت نشو (Don't get upset)"
+      }
+    }
+  },
+  "compound_verbs_with_zadan": {
+    "description": "Compound verbs with زدن (to hit) - quick actions, impacts",
+    "entries": {
+      "حرف_زدن": {
+        "compound": "حرف زدن",
+        "transliteration": "harf zadan",
+        "meaning": "to speak, to talk",
+        "literal": "word + hit",
+        "example": "با هم حرف زدیم (We talked together)"
+      },
+      "تلفن_زدن": {
+        "compound": "تلفن زدن",
+        "transliteration": "telefon zadan",
+        "meaning": "to call (phone)",
+        "literal": "telephone + hit",
+        "example": "بهش تلفن زدم (I called him/her)"
+      },
+      "قدم_زدن": {
+        "compound": "قدم زدن",
+        "transliteration": "qadam zadan",
+        "meaning": "to walk, to take a walk",
+        "literal": "step + hit",
+        "example": "در پارک قدم زدیم (We walked in the park)"
+      },
+      "دست_زدن": {
+        "compound": "دست زدن",
+        "transliteration": "dast zadan",
+        "meaning": "to touch, to clap",
+        "literal": "hand + hit",
+        "example": "دست نزن! (Don't touch!)"
+      },
+      "زنگ_زدن": {
+        "compound": "زنگ زدن",
+        "transliteration": "zang zadan",
+        "meaning": "to ring, to call",
+        "literal": "bell + hit",
+        "example": "زنگ در را زد (He rang the doorbell)"
+      },
+      "حدس_زدن": {
+        "compound": "حدس زدن",
+        "transliteration": "hads zadan",
+        "meaning": "to guess",
+        "literal": "guess + hit",
+        "example": "حدس بزن! (Guess!)"
+      },
+      "سر_زدن": {
+        "compound": "سر زدن",
+        "transliteration": "sar zadan",
+        "meaning": "to visit briefly, to drop by",
+        "literal": "head + hit",
+        "example": "به دوستم سر زدم (I dropped by my friend's)"
+      },
+      "آتش_زدن": {
+        "compound": "آتش زدن",
+        "transliteration": "ātash zadan",
+        "meaning": "to set fire",
+        "literal": "fire + hit",
+        "example": "خانه را آتش زدند (They set the house on fire)"
+      }
+    }
+  },
+  "compound_verbs_with_dadan": {
+    "description": "Compound verbs with دادن (to give) - giving, producing, showing",
+    "entries": {
+      "گوش_دادن": {
+        "compound": "گوش دادن",
+        "transliteration": "gūsh dādan",
+        "meaning": "to listen",
+        "literal": "ear + give",
+        "example": "به موسیقی گوش می‌دهم (I listen to music)"
+      },
+      "نشان_دادن": {
+        "compound": "نشان دادن",
+        "transliteration": "neshān dādan",
+        "meaning": "to show",
+        "literal": "sign + give",
+        "example": "عکس را نشانم داد (He showed me the photo)"
+      },
+      "توضیح_دادن": {
+        "compound": "توضیح دادن",
+        "transliteration": "tozīh dādan",
+        "meaning": "to explain",
+        "literal": "explanation + give",
+        "example": "لطفاً توضیح بدهید (Please explain)"
+      },
+      "انجام_دادن": {
+        "compound": "انجام دادن",
+        "transliteration": "anjām dādan",
+        "meaning": "to do, to perform",
+        "literal": "completion + give",
+        "example": "کارم را انجام دادم (I did my work)"
+      },
+      "ادامه_دادن": {
+        "compound": "ادامه دادن",
+        "transliteration": "edāme dādan",
+        "meaning": "to continue",
+        "literal": "continuation + give",
+        "example": "ادامه بدهید (Continue)"
+      },
+      "یاد_دادن": {
+        "compound": "یاد دادن",
+        "transliteration": "yād dādan",
+        "meaning": "to teach",
+        "literal": "memory + give",
+        "example": "فارسی یاد می‌دهم (I teach Persian)"
+      },
+      "جواب_دادن": {
+        "compound": "جواب دادن",
+        "transliteration": "javāb dādan",
+        "meaning": "to answer",
+        "literal": "answer + give",
+        "example": "جواب بده! (Answer!)"
+      },
+      "پول_دادن": {
+        "compound": "پول دادن",
+        "transliteration": "pūl dādan",
+        "meaning": "to pay",
+        "literal": "money + give",
+        "example": "پول دادم (I paid)"
+      }
+    }
+  },
+  "compound_verbs_other": {
+    "description": "Compound verbs with other light verbs",
+    "entries": {
+      "یاد_گرفتن": {
+        "compound": "یاد گرفتن",
+        "light_verb": "گرفتن",
+        "meaning": "to learn",
+        "literal": "memory + take",
+        "example": "فارسی یاد گرفتم (I learned Persian)"
+      },
+      "دوست_داشتن": {
+        "compound": "دوست داشتن",
+        "light_verb": "داشتن",
+        "meaning": "to love, to like",
+        "literal": "friend + have",
+        "example": "تو را دوست دارم (I love you)"
+      },
+      "کتک_خوردن": {
+        "compound": "کتک خوردن",
+        "light_verb": "خوردن",
+        "meaning": "to be beaten",
+        "literal": "beating + eat/receive",
+        "example": "کتک خورد (He was beaten)"
+      },
+      "حرف_خوردن": {
+        "compound": "حرف خوردن",
+        "light_verb": "خوردن",
+        "meaning": "to be scolded",
+        "literal": "word + eat/receive",
+        "example": "حرف خوردم (I was scolded)"
+      },
+      "رنج_کشیدن": {
+        "compound": "رنج کشیدن",
+        "light_verb": "کشیدن",
+        "meaning": "to suffer",
+        "literal": "suffering + pull",
+        "example": "خیلی رنج کشید (He suffered a lot)"
+      },
+      "نفس_کشیدن": {
+        "compound": "نفس کشیدن",
+        "light_verb": "کشیدن",
+        "meaning": "to breathe",
+        "literal": "breath + pull",
+        "example": "نفس بکش (Breathe)"
+      },
+      "خواب_دیدن": {
+        "compound": "خواب دیدن",
+        "light_verb": "دیدن",
+        "meaning": "to dream",
+        "literal": "sleep + see",
+        "example": "خواب دیدم (I dreamed)"
+      }
+    }
+  },
+  "common_errors": {
+    "description": "Common errors in compound verb usage",
+    "entries": {
+      "wrong_light_verb": {
+        "error_type": "Using wrong light verb",
+        "examples": [
+          {
+            "wrong": "حرف کردن",
+            "correct": "حرف زدن",
+            "meaning": "to speak",
+            "note": "حرف only combines with زدن, not کردن"
+          },
+          {
+            "wrong": "گوش کردن",
+            "correct": "گوش دادن",
+            "meaning": "to listen",
+            "note": "گوش only combines with دادن, not کردن"
+          },
+          {
+            "wrong": "تلفن کردن",
+            "correct": "تلفن زدن",
+            "meaning": "to call",
+            "note": "تلفن only combines with زدن, not کردن"
+          }
+        ],
+        "severity": "critical"
+      },
+      "separating_compound": {
+        "error_type": "Incorrectly separating compound verb parts",
+        "correct_separation": "می between noun and verb in present tense",
+        "example_correct": "کار می‌کنم (I work) - می goes between کار and کنم",
+        "severity": "major"
+      }
+    }
+  },
+  "conjugation_rules": {
+    "description": "How to conjugate compound verbs",
+    "rule": "Only the light verb conjugates; the non-verbal element remains unchanged",
+    "example": {
+      "infinitive": "کار کردن (to work)",
+      "present": {
+        "من": "کار می‌کنم",
+        "تو": "کار می‌کنی",
+        "او": "کار می‌کند",
+        "ما": "کار می‌کنیم",
+        "شما": "کار می‌کنید",
+        "آنها": "کار می‌کنند"
+      },
+      "past": {
+        "من": "کار کردم",
+        "تو": "کار کردی",
+        "او": "کار کرد",
+        "ما": "کار کردیم",
+        "شما": "کار کردید",
+        "آنها": "کار کردند"
+      },
+      "negative_present": "کار نمی‌کنم (I don't work)",
+      "negative_past": "کار نکردم (I didn't work)"
+    },
+    "mi_placement": "In present tense, می- comes BETWEEN the noun and verb: کار می‌کنم"
+  },
+  "translation_guidelines": {
+    "persian_to_english": [
+      "One Persian compound verb usually = one English simple verb",
+      "Keep translation natural, don't translate literally",
+      "Example: حرف زدن → 'to talk' (not 'to hit words')"
+    ],
+    "english_to_persian": [
+      "One English verb may have multiple Persian compound equivalents",
+      "Choose the correct light verb based on semantic nuance",
+      "Consider formality level"
+    ]
+  }
+}

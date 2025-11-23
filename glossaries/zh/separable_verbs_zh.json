@@ -1,0 +1,521 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "中文 (Chinese)",
+    "glossary_type": "Separable Verbs (离合词)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Chinese separable verbs (离合词) - verbs that can be split by inserting elements between their components",
+    "sources": [
+      "HSK Grammar Standards",
+      "Chinese Language Translation Quality 2025 Research",
+      "Academic Chinese linguistics resources"
+    ],
+    "total_terms": 80,
+    "usage": "Grammar checking, translation quality assessment, fluency evaluation"
+  },
+  "overview": {
+    "term_zh": "离合词",
+    "term_en": "Separable Verbs / Verb-Object Compounds",
+    "pinyin": "líhécí",
+    "definition": "Two-character verbs that can be split to insert other elements (aspects, complements, etc.)",
+    "definition_zh": "可以拆开使用的动词，中间可以插入其他成分",
+    "structure": "Verb + Object compound that acts as single verb but can separate",
+    "importance": "Critical for natural Chinese - wrong usage marks non-native speaker",
+    "common_error": "Adding object after separable verb (e.g., *见面他 instead of 见他面)"
+  },
+  "separation_patterns": {
+    "aspect_insertion": {
+      "description": "Insert aspect marker (了/过) between verb and object",
+      "pattern": "V + 了/过 + (modifier) + O",
+      "examples": [
+        {
+          "base": "见面",
+          "meaning": "to meet",
+          "separated": "见了面",
+          "translation": "met (once)"
+        },
+        {
+          "base": "睡觉",
+          "meaning": "to sleep",
+          "separated": "睡了觉",
+          "translation": "slept"
+        }
+      ]
+    },
+    "quantifier_insertion": {
+      "description": "Insert number + measure word between verb and object",
+      "pattern": "V + Number + MW + O",
+      "examples": [
+        {
+          "base": "见面",
+          "separated": "见了一次面",
+          "translation": "met once"
+        },
+        {
+          "base": "洗澡",
+          "separated": "洗了一个澡",
+          "translation": "took a bath"
+        }
+      ]
+    },
+    "modifier_insertion": {
+      "description": "Insert adjective/modifier before object",
+      "pattern": "V + 了 + Adj + O",
+      "examples": [
+        {
+          "base": "洗澡",
+          "separated": "洗了个热水澡",
+          "translation": "took a hot bath"
+        },
+        {
+          "base": "睡觉",
+          "separated": "睡了个好觉",
+          "translation": "had a good sleep"
+        }
+      ]
+    },
+    "duration_insertion": {
+      "description": "Insert duration phrase",
+      "pattern": "V + Duration + O",
+      "examples": [
+        {
+          "base": "游泳",
+          "separated": "游了半小时泳",
+          "translation": "swam for half an hour"
+        }
+      ]
+    }
+  },
+  "common_separable_verbs": {
+    "daily_activities": [
+      {
+        "word": "睡觉",
+        "pinyin": "shuìjiào",
+        "meaning": "to sleep",
+        "examples": {
+          "base_usage": "我每天睡觉很早",
+          "separated": "睡了一个好觉",
+          "with_duration": "睡了八小时觉"
+        },
+        "common_error": "*睡觉了八小时"
+      },
+      {
+        "word": "洗澡",
+        "pinyin": "xǐzǎo",
+        "meaning": "to bathe/shower",
+        "examples": {
+          "base_usage": "我每天洗澡",
+          "separated": "洗了个热水澡",
+          "with_aspect": "洗过澡了"
+        }
+      },
+      {
+        "word": "吃饭",
+        "pinyin": "chīfàn",
+        "meaning": "to eat (a meal)",
+        "examples": {
+          "base_usage": "我们去吃饭",
+          "separated": "吃了顿大餐",
+          "question": "吃饭了没？"
+        },
+        "note": "Very common, often just means 'have you eaten?'"
+      },
+      {
+        "word": "起床",
+        "pinyin": "qǐchuáng",
+        "meaning": "to get up",
+        "examples": {
+          "base_usage": "我六点起床",
+          "separated": "起不了床"
+        }
+      },
+      {
+        "word": "刷牙",
+        "pinyin": "shuāyá",
+        "meaning": "to brush teeth",
+        "examples": {
+          "base_usage": "每天刷牙两次",
+          "separated": "刷了牙"
+        }
+      },
+      {
+        "word": "洗脸",
+        "pinyin": "xǐliǎn",
+        "meaning": "to wash face",
+        "examples": {
+          "separated": "洗了把脸"
+        }
+      },
+      {
+        "word": "散步",
+        "pinyin": "sànbù",
+        "meaning": "to take a walk",
+        "examples": {
+          "base_usage": "我们去散步",
+          "separated": "散了一会儿步"
+        }
+      },
+      {
+        "word": "跑步",
+        "pinyin": "pǎobù",
+        "meaning": "to jog/run",
+        "examples": {
+          "separated": "跑了半小时步"
+        }
+      }
+    ],
+    "social_interactions": [
+      {
+        "word": "见面",
+        "pinyin": "jiànmiàn",
+        "meaning": "to meet (in person)",
+        "examples": {
+          "base_usage": "我们明天见面",
+          "separated": "见了一次面",
+          "with_person": "跟他见了面"
+        },
+        "common_error": "*见面他 → correct: 跟他见面"
+      },
+      {
+        "word": "聊天",
+        "pinyin": "liáotiān",
+        "meaning": "to chat",
+        "examples": {
+          "base_usage": "我们聊天吧",
+          "separated": "聊了很久天",
+          "with_person": "跟朋友聊了会儿天"
+        }
+      },
+      {
+        "word": "握手",
+        "pinyin": "wòshǒu",
+        "meaning": "to shake hands",
+        "examples": {
+          "separated": "握了握手"
+        }
+      },
+      {
+        "word": "点头",
+        "pinyin": "diǎntóu",
+        "meaning": "to nod",
+        "examples": {
+          "separated": "点了点头"
+        }
+      },
+      {
+        "word": "打招呼",
+        "pinyin": "dǎzhāohu",
+        "meaning": "to greet",
+        "examples": {
+          "separated": "打了个招呼"
+        }
+      },
+      {
+        "word": "鞠躬",
+        "pinyin": "jūgōng",
+        "meaning": "to bow",
+        "examples": {
+          "separated": "鞠了一躬"
+        }
+      },
+      {
+        "word": "道歉",
+        "pinyin": "dàoqiàn",
+        "meaning": "to apologize",
+        "examples": {
+          "separated": "道了歉"
+        }
+      },
+      {
+        "word": "帮忙",
+        "pinyin": "bāngmáng",
+        "meaning": "to help",
+        "examples": {
+          "base_usage": "请帮忙",
+          "separated": "帮了个忙",
+          "with_person": "帮他一个忙"
+        }
+      },
+      {
+        "word": "结婚",
+        "pinyin": "jiéhūn",
+        "meaning": "to marry",
+        "examples": {
+          "separated": "结了婚",
+          "with_person": "跟她结婚"
+        },
+        "common_error": "*结婚她 → correct: 跟她结婚"
+      },
+      {
+        "word": "离婚",
+        "pinyin": "líhūn",
+        "meaning": "to divorce",
+        "examples": {
+          "separated": "离了婚"
+        }
+      }
+    ],
+    "work_study": [
+      {
+        "word": "上班",
+        "pinyin": "shàngbān",
+        "meaning": "to go to work",
+        "examples": {
+          "base_usage": "我每天上班",
+          "separated": "上了一天班"
+        }
+      },
+      {
+        "word": "下班",
+        "pinyin": "xiàbān",
+        "meaning": "to get off work",
+        "examples": {
+          "separated": "下了班"
+        }
+      },
+      {
+        "word": "上课",
+        "pinyin": "shàngkè",
+        "meaning": "to have class",
+        "examples": {
+          "separated": "上了三节课"
+        }
+      },
+      {
+        "word": "下课",
+        "pinyin": "xiàkè",
+        "meaning": "class ends",
+        "examples": {
+          "separated": "下了课"
+        }
+      },
+      {
+        "word": "毕业",
+        "pinyin": "bìyè",
+        "meaning": "to graduate",
+        "examples": {
+          "separated": "毕了业"
+        }
+      },
+      {
+        "word": "请假",
+        "pinyin": "qǐngjià",
+        "meaning": "to ask for leave",
+        "examples": {
+          "separated": "请了一天假"
+        }
+      },
+      {
+        "word": "加班",
+        "pinyin": "jiābān",
+        "meaning": "to work overtime",
+        "examples": {
+          "separated": "加了班",
+          "with_duration": "加了三小时班"
+        }
+      },
+      {
+        "word": "出差",
+        "pinyin": "chūchāi",
+        "meaning": "to go on business trip",
+        "examples": {
+          "separated": "出了差"
+        }
+      },
+      {
+        "word": "考试",
+        "pinyin": "kǎoshì",
+        "meaning": "to take exam",
+        "examples": {
+          "separated": "考了试"
+        }
+      }
+    ],
+    "emotional_mental": [
+      {
+        "word": "生气",
+        "pinyin": "shēngqì",
+        "meaning": "to be angry",
+        "examples": {
+          "base_usage": "他很生气",
+          "separated": "生了气",
+          "with_degree": "生了很大的气"
+        }
+      },
+      {
+        "word": "担心",
+        "pinyin": "dānxīn",
+        "meaning": "to worry",
+        "examples": {
+          "separated": "担了很多心"
+        }
+      },
+      {
+        "word": "放心",
+        "pinyin": "fàngxīn",
+        "meaning": "to be relieved",
+        "examples": {
+          "separated": "放了心"
+        }
+      },
+      {
+        "word": "操心",
+        "pinyin": "cāoxīn",
+        "meaning": "to worry about",
+        "examples": {
+          "separated": "操了不少心"
+        }
+      },
+      {
+        "word": "伤心",
+        "pinyin": "shāngxīn",
+        "meaning": "to be sad",
+        "examples": {
+          "separated": "伤了心"
+        }
+      },
+      {
+        "word": "动心",
+        "pinyin": "dòngxīn",
+        "meaning": "to be tempted/moved",
+        "examples": {
+          "separated": "动了心"
+        }
+      },
+      {
+        "word": "发愁",
+        "pinyin": "fāchóu",
+        "meaning": "to worry",
+        "examples": {
+          "separated": "发了愁"
+        }
+      }
+    ],
+    "other_common": [
+      {
+        "word": "游泳",
+        "pinyin": "yóuyǒng",
+        "meaning": "to swim",
+        "examples": {
+          "separated": "游了一个小时泳"
+        }
+      },
+      {
+        "word": "唱歌",
+        "pinyin": "chànggē",
+        "meaning": "to sing",
+        "examples": {
+          "separated": "唱了一首歌"
+        }
+      },
+      {
+        "word": "跳舞",
+        "pinyin": "tiàowǔ",
+        "meaning": "to dance",
+        "examples": {
+          "separated": "跳了一支舞"
+        }
+      },
+      {
+        "word": "打架",
+        "pinyin": "dǎjià",
+        "meaning": "to fight",
+        "examples": {
+          "separated": "打了一架"
+        }
+      },
+      {
+        "word": "吵架",
+        "pinyin": "chǎojià",
+        "meaning": "to quarrel",
+        "examples": {
+          "separated": "吵了一架"
+        }
+      },
+      {
+        "word": "发烧",
+        "pinyin": "fāshāo",
+        "meaning": "to have fever",
+        "examples": {
+          "separated": "发了烧"
+        }
+      },
+      {
+        "word": "感冒",
+        "pinyin": "gǎnmào",
+        "meaning": "to catch cold",
+        "examples": {
+          "separated": "感了冒"
+        },
+        "note": "Less commonly separated"
+      },
+      {
+        "word": "过年",
+        "pinyin": "guònián",
+        "meaning": "to celebrate New Year",
+        "examples": {
+          "separated": "过了年"
+        }
+      },
+      {
+        "word": "排队",
+        "pinyin": "páiduì",
+        "meaning": "to queue",
+        "examples": {
+          "separated": "排了很久队"
+        }
+      },
+      {
+        "word": "报名",
+        "pinyin": "bàomíng",
+        "meaning": "to register/sign up",
+        "examples": {
+          "separated": "报了名"
+        }
+      }
+    ]
+  },
+  "grammar_rules": {
+    "cannot_take_direct_object": {
+      "description": "Separable verbs cannot take a direct object after the compound",
+      "correct": "跟他见面",
+      "incorrect": "*见面他",
+      "explanation": "Object must come before the verb with preposition (跟/和)"
+    },
+    "aspect_marker_position": {
+      "description": "Aspect markers (了/过) go between verb and object",
+      "correct": "见了面",
+      "incorrect": "*见面了"
+    },
+    "quantifier_position": {
+      "description": "Quantifiers go between verb and object",
+      "correct": "见了三次面",
+      "incorrect": "*见面了三次"
+    },
+    "potential_complement": {
+      "description": "Potential complements (得/不) can separate the verb",
+      "examples": [
+        "睡得着觉 / 睡不着觉 (can/cannot sleep)",
+        "帮得上忙 / 帮不上忙 (can/cannot help)"
+      ]
+    }
+  },
+  "detection_rules": {
+    "rule_1": {
+      "name": "Object after separable verb",
+      "description": "Flag patterns like '见面他' where object follows separable verb",
+      "severity": "major"
+    },
+    "rule_2": {
+      "name": "Aspect marker misplacement",
+      "description": "Flag '见面了' instead of '见了面' in separation contexts",
+      "severity": "minor"
+    },
+    "rule_3": {
+      "name": "Duration phrase misplacement",
+      "description": "Flag wrong placement of duration with separable verbs",
+      "severity": "minor"
+    }
+  }
+}

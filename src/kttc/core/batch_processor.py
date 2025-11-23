@@ -26,11 +26,12 @@ from __future__ import annotations
 import csv
 import json
 import logging
-import xml.etree.ElementTree as ET
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+import defusedxml.ElementTree as ET  # noqa: N817
 
 from kttc.core.models import TranslationTask
 
@@ -276,6 +277,68 @@ class BatchFileParser:
         return translations
 
     @staticmethod
+    def _detect_xliff_namespace(root: Any) -> dict[str, str]:
+        """Detect XLIFF namespace from root element."""
+        if root.tag.startswith("{urn:oasis:names:tc:xliff:document:1.2}"):
+            return {"xliff": "urn:oasis:names:tc:xliff:document:1.2"}
+        elif root.tag.startswith("{urn:oasis:names:tc:xliff:document:2.0}"):
+            return {"xliff": "urn:oasis:names:tc:xliff:document:2.0"}
+        return {}
+
+    @staticmethod
+    def _find_xliff_elements(parent: Any, paths: list[str], namespace: dict[str, str]) -> list[Any]:
+        """Find elements using multiple XPath patterns with namespace support."""
+        for path in paths:
+            elements = parent.findall(path, namespace) if namespace else parent.findall(path)
+            if elements:
+                return list(elements)
+        return []
+
+    @staticmethod
+    def _parse_trans_unit(
+        trans_unit: Any,
+        idx: int,
+        namespace: dict[str, str],
+        source_lang: str,
+        target_lang: str,
+        domain: str | None,
+        file_path: Path,
+    ) -> BatchTranslation | None:
+        """Parse a single trans-unit element."""
+        unit_id = trans_unit.get("id", str(idx + 1))
+
+        source_elem = (
+            trans_unit.find("xliff:source", namespace) if namespace else trans_unit.find("source")
+        )
+        target_elem = (
+            trans_unit.find("xliff:target", namespace) if namespace else trans_unit.find("target")
+        )
+
+        if source_elem is None:
+            logger.warning(f"Trans-unit {unit_id}: Missing source element, skipping")
+            return None
+        if target_elem is None:
+            logger.warning(f"Trans-unit {unit_id}: Missing target element, skipping")
+            return None
+
+        source_text = "".join(source_elem.itertext()).strip()
+        translation_text = "".join(target_elem.itertext()).strip()
+
+        if not source_text or not translation_text:
+            logger.warning(f"Trans-unit {unit_id}: Empty source or target text, skipping")
+            return None
+
+        return BatchTranslation(
+            source_text=source_text,
+            translation=translation_text,
+            source_lang=source_lang,
+            target_lang=target_lang,
+            domain=domain,
+            context=None,
+            metadata={"trans_unit_id": unit_id, "file": str(file_path)},
+        )
+
+    @staticmethod
     def parse_xliff(file_path: Path) -> list[BatchTranslation]:
         """Parse XLIFF (XML Localization Interchange File Format) file.
 
@@ -309,37 +372,18 @@ class BatchFileParser:
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
 
-        translations = []
+        translations: list[BatchTranslation] = []
 
         try:
             tree = ET.parse(file_path)
             root = tree.getroot()
+            namespace = BatchFileParser._detect_xliff_namespace(root)
 
-            # Handle both XLIFF 1.2 and 2.0 namespaces
-            ns_12 = {"xliff": "urn:oasis:names:tc:xliff:document:1.2"}
-            ns_20 = {"xliff": "urn:oasis:names:tc:xliff:document:2.0"}
-
-            # Try to detect namespace
-            namespace = None
-            if root.tag.startswith("{urn:oasis:names:tc:xliff:document:1.2}"):
-                namespace = ns_12
-            elif root.tag.startswith("{urn:oasis:names:tc:xliff:document:2.0}"):
-                namespace = ns_20
-            else:
-                # No namespace (older files or custom format)
-                namespace = {}
-
-            # Find all file elements
-            file_elements = (
-                root.findall("xliff:file", namespace) if namespace else root.findall("file")
+            file_elements = BatchFileParser._find_xliff_elements(
+                root, ["xliff:file", "file", ".//file"], namespace
             )
 
-            if not file_elements:
-                # If no namespace worked, try without it
-                file_elements = root.findall(".//file")
-
             for file_elem in file_elements:
-                # Get language codes from file element
                 source_lang = file_elem.get("source-language", "").strip()
                 target_lang = file_elem.get("target-language", "").strip()
 
@@ -349,72 +393,19 @@ class BatchFileParser:
                     )
                     continue
 
-                # Get domain from datatype attribute if present
                 domain = file_elem.get("datatype")
-
-                # Find all trans-unit elements
-                trans_units = (
-                    file_elem.findall(".//xliff:trans-unit", namespace)
-                    if namespace
-                    else file_elem.findall(".//trans-unit")
+                trans_units = BatchFileParser._find_xliff_elements(
+                    file_elem,
+                    [".//xliff:trans-unit", ".//trans-unit", ".//xliff:unit", ".//unit"],
+                    namespace,
                 )
 
-                if not trans_units:
-                    # Try alternative path for XLIFF 2.0
-                    trans_units = (
-                        file_elem.findall(".//xliff:unit", namespace)
-                        if namespace
-                        else file_elem.findall(".//unit")
-                    )
-
                 for idx, trans_unit in enumerate(trans_units):
-                    unit_id = trans_unit.get("id", str(idx + 1))
-
-                    # Find source and target elements
-                    source_elem = (
-                        trans_unit.find("xliff:source", namespace)
-                        if namespace
-                        else trans_unit.find("source")
+                    translation = BatchFileParser._parse_trans_unit(
+                        trans_unit, idx, namespace, source_lang, target_lang, domain, file_path
                     )
-                    target_elem = (
-                        trans_unit.find("xliff:target", namespace)
-                        if namespace
-                        else trans_unit.find("target")
-                    )
-
-                    if source_elem is None:
-                        logger.warning(f"Trans-unit {unit_id}: Missing source element, skipping")
-                        continue
-
-                    if target_elem is None:
-                        logger.warning(f"Trans-unit {unit_id}: Missing target element, skipping")
-                        continue
-
-                    # Get text content
-                    source_text = "".join(source_elem.itertext()).strip()
-                    translation_text = "".join(target_elem.itertext()).strip()
-
-                    if not source_text or not translation_text:
-                        logger.warning(
-                            f"Trans-unit {unit_id}: Empty source or target text, skipping"
-                        )
-                        continue
-
-                    # Create BatchTranslation
-                    translation = BatchTranslation(
-                        source_text=source_text,
-                        translation=translation_text,
-                        source_lang=source_lang,
-                        target_lang=target_lang,
-                        domain=domain,
-                        context=None,
-                        metadata={
-                            "trans_unit_id": unit_id,
-                            "file": str(file_path),
-                        },
-                    )
-
-                    translations.append(translation)
+                    if translation:
+                        translations.append(translation)
 
         except ET.ParseError as e:
             logger.error(f"Failed to parse XLIFF file: {e}")

@@ -1,0 +1,240 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Aspiration Traps (अल्पप्राण और महाप्राण)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Aspirated vs unaspirated consonant pairs - meaning changes with aspiration",
+    "sources": [
+      "Hindi Grammar - Alppran Mahapran",
+      "Karl Rock Blog - Hindi Pronunciation",
+      "Hindi Ke Guru",
+      "Linguistic research on Hindi phonology"
+    ],
+    "total_terms": 60
+  },
+  "overview": {
+    "alppran": {
+      "name_hi": "अल्पप्राण",
+      "name_en": "Unaspirated",
+      "definition": "Consonants pronounced with minimal breath",
+      "letters": ["क", "ग", "च", "ज", "ट", "ड", "त", "द", "प", "ब"],
+      "rule": "1st and 3rd letters of each varga (row)"
+    },
+    "mahapran": {
+      "name_hi": "महाप्राण",
+      "name_en": "Aspirated",
+      "definition": "Consonants pronounced with strong breath (h-sound)",
+      "letters": ["ख", "घ", "छ", "झ", "ठ", "ढ", "थ", "ध", "फ", "भ"],
+      "rule": "2nd and 4th letters of each varga (row)"
+    },
+    "trap": "Aspiration CHANGES MEANING - not just accent difference",
+    "test": "Hold hand in front of mouth - aspirated sounds produce breath"
+  },
+  "minimal_pairs": {
+    "description": "Word pairs where ONLY aspiration differs, meaning changes",
+    "severity": "critical",
+    "ka_row": {
+      "kal_khal": {
+        "unaspirated": "कल",
+        "unaspirated_meaning_en": "yesterday/tomorrow",
+        "unaspirated_meaning_ru": "вчера/завтра",
+        "aspirated": "खल",
+        "aspirated_meaning_en": "villain, wicked person",
+        "aspirated_meaning_ru": "злодей, негодяй"
+      },
+      "kan_khan": {
+        "unaspirated": "कान",
+        "unaspirated_meaning_en": "ear",
+        "unaspirated_meaning_ru": "ухо",
+        "aspirated": "खान",
+        "aspirated_meaning_en": "mine (mining) / Khan (title)",
+        "aspirated_meaning_ru": "шахта / Хан (титул)"
+      },
+      "gal_ghal": {
+        "unaspirated": "गल",
+        "unaspirated_meaning_en": "to melt",
+        "aspirated": "घल",
+        "aspirated_meaning_en": "to dissolve (causative)"
+      }
+    },
+    "cha_row": {
+      "chal_chhal": {
+        "unaspirated": "चल",
+        "unaspirated_meaning_en": "go! / moving",
+        "unaspirated_meaning_ru": "иди! / движущийся",
+        "aspirated": "छल",
+        "aspirated_meaning_en": "deception, fraud",
+        "aspirated_meaning_ru": "обман, мошенничество"
+      },
+      "chah_chhah": {
+        "unaspirated": "चाह",
+        "unaspirated_meaning_en": "wish, desire",
+        "aspirated": "छाह",
+        "aspirated_meaning_en": "shade, shadow"
+      }
+    },
+    "ta_row_retroflex": {
+      "tal_thal": {
+        "unaspirated": "टल",
+        "unaspirated_meaning_en": "to be averted",
+        "aspirated": "ठल",
+        "aspirated_meaning_en": "place (dialectal)"
+      }
+    },
+    "ta_row_dental": {
+      "tal_thal_dental": {
+        "unaspirated": "तल",
+        "unaspirated_meaning_en": "bottom, base",
+        "unaspirated_meaning_ru": "дно, основание",
+        "aspirated": "थल",
+        "aspirated_meaning_en": "land, ground",
+        "aspirated_meaning_ru": "земля, суша"
+      },
+      "das_dhas": {
+        "unaspirated": "दस",
+        "unaspirated_meaning_en": "ten",
+        "unaspirated_meaning_ru": "десять",
+        "aspirated": "धस",
+        "aspirated_meaning_en": "to sink (dialectal)"
+      },
+      "dal_dhal": {
+        "unaspirated": "दल",
+        "unaspirated_meaning_en": "group, party, petal",
+        "unaspirated_meaning_ru": "группа, партия, лепесток",
+        "aspirated": "ढल",
+        "aspirated_meaning_en": "to pour, to cast (metal)",
+        "aspirated_meaning_ru": "литься, отливать"
+      }
+    },
+    "pa_row": {
+      "pal_phal": {
+        "unaspirated": "पल",
+        "unaspirated_meaning_en": "moment",
+        "unaspirated_meaning_ru": "момент, мгновение",
+        "aspirated": "फल",
+        "aspirated_meaning_en": "fruit / result",
+        "aspirated_meaning_ru": "фрукт / результат"
+      },
+      "par_phar": {
+        "unaspirated": "पर",
+        "unaspirated_meaning_en": "on, but, wing",
+        "unaspirated_meaning_ru": "на, но, крыло",
+        "aspirated": "फर",
+        "aspirated_meaning_en": "fur",
+        "aspirated_meaning_ru": "мех"
+      },
+      "bal_bhal": {
+        "unaspirated": "बल",
+        "unaspirated_meaning_en": "strength, force",
+        "unaspirated_meaning_ru": "сила",
+        "aspirated": "भल",
+        "aspirated_meaning_en": "good (archaic/dialectal)"
+      },
+      "ban_bhan": {
+        "unaspirated": "बन",
+        "unaspirated_meaning_en": "forest / to become",
+        "aspirated": "भन",
+        "aspirated_meaning_en": "hemp (dialectal)"
+      }
+    }
+  },
+  "retroflex_vs_dental": {
+    "description": "Retroflex (tongue curled back) vs Dental (tongue at teeth) - BOTH important",
+    "severity": "critical",
+    "note": "English speakers often can't distinguish these",
+    "pairs": {
+      "ta_ta": {
+        "retroflex": "ट",
+        "retroflex_articulation": "tongue curled back to palate",
+        "dental": "त",
+        "dental_articulation": "tongue at teeth",
+        "example_retroflex": "टमाटर (tomato)",
+        "example_dental": "ताला (lock)"
+      },
+      "da_da": {
+        "retroflex": "ड",
+        "dental": "द",
+        "example_retroflex": "डाल (branch)",
+        "example_dental": "दाल (lentils)"
+      },
+      "na_na": {
+        "retroflex": "ण",
+        "dental": "न",
+        "example_retroflex": "बाण (arrow)",
+        "example_dental": "बान (habit)"
+      }
+    },
+    "transliteration_trap": "Both ट and त often written as 't' in Roman - ambiguous!"
+  },
+  "common_mistakes_foreigners": {
+    "description": "Mistakes commonly made by non-native speakers",
+    "mistake_1": {
+      "error": "Not aspirating महाप्राण consonants",
+      "example": "Saying 'pal' instead of 'phal' (फल)",
+      "result": "Says 'moment' instead of 'fruit'"
+    },
+    "mistake_2": {
+      "error": "Over-aspirating अल्पप्राण consonants",
+      "example": "Saying 'khal' instead of 'kal' (कल)",
+      "result": "Says 'villain' instead of 'tomorrow'"
+    },
+    "mistake_3": {
+      "error": "Not distinguishing retroflex from dental",
+      "example": "Saying डाल as दाल",
+      "result": "Confuses 'branch' with 'lentils'"
+    }
+  },
+  "consonant_chart": {
+    "description": "Complete Hindi consonant chart with aspiration",
+    "vargas": {
+      "ka_varga": {
+        "name": "क वर्ग (velar)",
+        "unaspirated_voiceless": "क",
+        "aspirated_voiceless": "ख",
+        "unaspirated_voiced": "ग",
+        "aspirated_voiced": "घ",
+        "nasal": "ङ"
+      },
+      "cha_varga": {
+        "name": "च वर्ग (palatal)",
+        "unaspirated_voiceless": "च",
+        "aspirated_voiceless": "छ",
+        "unaspirated_voiced": "ज",
+        "aspirated_voiced": "झ",
+        "nasal": "ञ"
+      },
+      "ta_varga_retroflex": {
+        "name": "ट वर्ग (retroflex)",
+        "unaspirated_voiceless": "ट",
+        "aspirated_voiceless": "ठ",
+        "unaspirated_voiced": "ड",
+        "aspirated_voiced": "ढ",
+        "nasal": "ण"
+      },
+      "ta_varga_dental": {
+        "name": "त वर्ग (dental)",
+        "unaspirated_voiceless": "त",
+        "aspirated_voiceless": "थ",
+        "unaspirated_voiced": "द",
+        "aspirated_voiced": "ध",
+        "nasal": "न"
+      },
+      "pa_varga": {
+        "name": "प वर्ग (labial)",
+        "unaspirated_voiceless": "प",
+        "aspirated_voiceless": "फ",
+        "unaspirated_voiced": "ब",
+        "aspirated_voiced": "भ",
+        "nasal": "म"
+      }
+    }
+  },
+  "translation_implications": {
+    "rule_1": "Always verify aspiration when transliterating",
+    "rule_2": "Use IPA or diacritics for precise transliteration",
+    "rule_3": "Context usually helps disambiguate",
+    "rule_4": "Audio verification recommended for critical content"
+  }
+}

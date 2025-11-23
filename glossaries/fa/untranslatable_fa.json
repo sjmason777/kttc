@@ -1,0 +1,292 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "Untranslatable Persian Words and Concepts",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Persian words that have no direct equivalent in other languages. Requires special translation strategies.",
+    "sources": [
+      "Iranian Cultural Studies",
+      "Persian Linguistic Research",
+      "Cross-cultural communication studies"
+    ],
+    "total_entries": 30
+  },
+  "untranslatable_words": {
+    "emotional_concepts": {
+      "description": "Words expressing emotions unique to Persian culture",
+      "entries": {
+        "دلتنگی": {
+          "word_fa": "دلتنگی",
+          "transliteration": "deltangī",
+          "literal_parts": "دل (heart) + تنگ (tight) + ی (noun suffix)",
+          "approximate_translations": [
+            "longing",
+            "homesickness",
+            "missing someone",
+            "nostalgic sadness"
+          ],
+          "why_untranslatable": "Combines homesickness, longing, sadness, and a physical sensation of heart tightness. No single English word captures all nuances.",
+          "usage_context": "Used when deeply missing a person, place, or time",
+          "example": "دلم برایت تنگ شده (I miss you deeply - literally: my heart has become tight for you)",
+          "translation_strategies": [
+            "Use 'longing' for emotional contexts",
+            "Use 'homesickness' for place-related contexts",
+            "Add descriptive phrase: 'aching longing'"
+          ],
+          "severity": "major"
+        },
+        "غم": {
+          "word_fa": "غم",
+          "transliteration": "gham",
+          "approximate_translations": [
+            "sorrow",
+            "grief",
+            "sadness",
+            "melancholy"
+          ],
+          "why_untranslatable": "A profound, philosophical sadness often seen as beautiful and poetic in Persian culture, unlike Western sadness which is purely negative.",
+          "usage_context": "Common in poetry, often valued as a sign of depth",
+          "example": "غم عالم را می‌خورم (I consume the world's sorrow)",
+          "translation_strategies": [
+            "Context-dependent: 'sorrow' for general, 'melancholy' for poetic",
+            "Consider cultural note about Persian valuation of غم"
+          ],
+          "severity": "major"
+        },
+        "طرب": {
+          "word_fa": "طرب",
+          "transliteration": "tarab",
+          "approximate_translations": [
+            "joy",
+            "musical ecstasy",
+            "spiritual elation"
+          ],
+          "why_untranslatable": "Specifically the emotional state induced by music and poetry - a spiritual/aesthetic ecstasy unique to Persian/Arabic culture.",
+          "usage_context": "Classical music, poetry gatherings, Sufi contexts",
+          "example": "طرب موسیقی (the ecstasy of music)",
+          "severity": "major"
+        }
+      }
+    },
+    "social_concepts": {
+      "description": "Words describing social dynamics unique to Persian culture",
+      "entries": {
+        "تعارف": {
+          "word_fa": "تعارف",
+          "transliteration": "ta'ārof",
+          "approximate_translations": [
+            "ritual politeness",
+            "ceremonial courtesy",
+            "elaborate politeness"
+          ],
+          "why_untranslatable": "A complex system of ritualized politeness involving insincere offers, refusals, and deference. No equivalent in Western cultures.",
+          "usage_context": "Pervasive in all social interactions",
+          "example": "تعارف نکن (Don't do ta'arof - i.e., be honest)",
+          "translation_strategies": [
+            "Keep as 'ta'arof' with explanation",
+            "Use 'ritual politeness' with cultural note",
+            "Explain the specific behavior being described"
+          ],
+          "severity": "critical",
+          "see_also": "taarof_politeness_fa.json for detailed coverage"
+        },
+        "آبرو": {
+          "word_fa": "آبرو",
+          "transliteration": "āberū",
+          "literal_parts": "آب (water) + رو (face)",
+          "approximate_translations": [
+            "honor",
+            "face",
+            "reputation",
+            "dignity"
+          ],
+          "why_untranslatable": "Combines personal honor, family reputation, social standing, and dignity. Loss of آبرو is catastrophic in Iranian society.",
+          "usage_context": "Social situations involving reputation",
+          "example": "آبرویم رفت (My honor/face is lost)",
+          "translation_strategies": [
+            "'Honor' for personal contexts",
+            "'Face' in social contexts (like Chinese 面子)",
+            "'Reputation' for professional contexts"
+          ],
+          "severity": "major"
+        },
+        "مروت": {
+          "word_fa": "مروت",
+          "transliteration": "morovvat",
+          "approximate_translations": [
+            "chivalry",
+            "generosity",
+            "magnanimity",
+            "nobility of character"
+          ],
+          "why_untranslatable": "A complex virtue combining generosity, helping the weak, keeping promises, and noble behavior. Rooted in pre-Islamic Persian values.",
+          "usage_context": "Praising someone's character",
+          "example": "مروت ندارد (He lacks nobility/chivalry)",
+          "severity": "major"
+        },
+        "رودربایستی": {
+          "word_fa": "رودربایستی",
+          "transliteration": "rūdarbāyestī",
+          "approximate_translations": [
+            "social inhibition",
+            "shyness due to formality",
+            "awkward politeness"
+          ],
+          "why_untranslatable": "The feeling of being unable to say no or express true feelings due to social propriety. Related to but distinct from ta'arof.",
+          "usage_context": "When someone can't refuse due to social pressure",
+          "example": "رودربایستی نکن (Don't be inhibited - be honest)",
+          "severity": "major"
+        },
+        "غیرت": {
+          "word_fa": "غیرت",
+          "transliteration": "gheyrat",
+          "approximate_translations": [
+            "zealous protectiveness",
+            "honor-based jealousy",
+            "protective pride"
+          ],
+          "why_untranslatable": "A complex concept of protective honor, especially regarding family/women. Can be positive (protectiveness) or negative (controlling).",
+          "usage_context": "Family honor, relationship dynamics",
+          "example": "غیرت دارد (He has protective honor/pride)",
+          "translation_strategies": [
+            "Context-dependent: 'protectiveness' or 'jealous honor'",
+            "May need cultural explanation"
+          ],
+          "severity": "critical"
+        }
+      }
+    },
+    "spiritual_concepts": {
+      "description": "Words from Persian mysticism and spirituality",
+      "entries": {
+        "عشق": {
+          "word_fa": "عشق",
+          "transliteration": "'eshq",
+          "approximate_translations": [
+            "love",
+            "passionate love",
+            "divine love"
+          ],
+          "why_untranslatable": "In Persian, عشق is far more intense than English 'love'. It implies consuming passion, often with spiritual/mystical dimensions. Distinct from محبت (affection).",
+          "usage_context": "Romantic poetry, Sufi mysticism",
+          "example": "عشق آمد و شد خون دلم (Love came and became the blood of my heart)",
+          "severity": "major"
+        },
+        "حال": {
+          "word_fa": "حال",
+          "transliteration": "hāl",
+          "approximate_translations": [
+            "state",
+            "condition",
+            "mood",
+            "spiritual state"
+          ],
+          "why_untranslatable": "In Sufi context, refers to a transient spiritual state. In everyday use, means mood/condition. The word covers vast semantic range.",
+          "usage_context": "Sufi mysticism, everyday conversation",
+          "example": "حالم خوب است (I'm fine) vs حال عرفانی (mystical state)",
+          "severity": "minor"
+        },
+        "فنا": {
+          "word_fa": "فنا",
+          "transliteration": "fanā",
+          "approximate_translations": [
+            "annihilation",
+            "ego death",
+            "dissolution in the divine"
+          ],
+          "why_untranslatable": "Sufi concept of the annihilation of the ego in divine presence. Technical religious term with no Western equivalent.",
+          "usage_context": "Sufi mysticism, Persian poetry",
+          "severity": "critical"
+        }
+      }
+    },
+    "daily_life_concepts": {
+      "description": "Everyday concepts unique to Persian/Iranian life",
+      "entries": {
+        "کیف": {
+          "word_fa": "کیف",
+          "transliteration": "keyf",
+          "approximate_translations": [
+            "pleasure",
+            "enjoyment",
+            "buzz",
+            "good feeling"
+          ],
+          "why_untranslatable": "A specific pleasant feeling, especially from relaxation, good company, or mild indulgence. Borrowed by many languages (kaif, kef).",
+          "usage_context": "Leisure, relaxation, enjoying life",
+          "example": "کیف می‌کنم (I'm enjoying/having a good time)",
+          "severity": "minor"
+        },
+        "مزه": {
+          "word_fa": "مزه",
+          "transliteration": "maze",
+          "approximate_translations": [
+            "taste",
+            "flavor",
+            "fun",
+            "appeal"
+          ],
+          "why_untranslatable": "Means both literal taste AND enjoyment/fun. A person can be 'با مزه' (tasty/fun/amusing).",
+          "usage_context": "Food, people's personality, jokes",
+          "example": "این آدم بامزه‌ای است (This person is funny/amusing)",
+          "severity": "minor"
+        },
+        "صفا": {
+          "word_fa": "صفا",
+          "transliteration": "safā",
+          "approximate_translations": [
+            "purity",
+            "sincerity",
+            "pleasantness",
+            "good time"
+          ],
+          "why_untranslatable": "Combines purity, sincerity, and the pleasure of good company. Used in phrases like 'صفا کردیم' (we had a good sincere time).",
+          "usage_context": "Hospitality, gatherings, gratitude",
+          "example": "صفا کردیم (We had a wonderful time)",
+          "severity": "minor"
+        },
+        "دم": {
+          "word_fa": "دم",
+          "transliteration": "dam",
+          "approximate_translations": [
+            "breath",
+            "moment",
+            "company",
+            "vibe"
+          ],
+          "why_untranslatable": "Means breath, but also someone's presence/company/energy. 'دمت گرم' (may your breath be warm) = thank you/you're awesome.",
+          "usage_context": "Gratitude, complimenting someone",
+          "example": "دمت گرم! (You're awesome! / Thank you!)",
+          "severity": "major"
+        }
+      }
+    }
+  },
+  "translation_strategies": {
+    "general_approaches": [
+      {
+        "strategy": "Transliteration with explanation",
+        "when_to_use": "When the concept is central to the text",
+        "example": "ta'arof (the Persian system of ritual politeness)"
+      },
+      {
+        "strategy": "Closest equivalent with footnote",
+        "when_to_use": "When flow matters but meaning is important",
+        "example": "honor* (*آبرو encompasses reputation, dignity, and social standing)"
+      },
+      {
+        "strategy": "Descriptive phrase",
+        "when_to_use": "When single word fails",
+        "example": "the aching longing of missing someone deeply"
+      },
+      {
+        "strategy": "Cultural adaptation",
+        "when_to_use": "When equivalent exists in target culture",
+        "example": "face (like Chinese 面子) for آبرو"
+      }
+    ],
+    "warning": "Never force a single-word translation when the concept is complex"
+  }
+}

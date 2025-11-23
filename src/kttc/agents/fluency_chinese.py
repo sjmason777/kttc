@@ -72,6 +72,11 @@ class ChineseFluencyAgent(FluencyAgent):
         "aspect_particle": "Aspect particle usage (了/过/着)",
         "grammar": "Chinese-specific grammar patterns",
         "character": "Character consistency (simplified/traditional)",
+        "word_order_trap": "Word order semantic swaps (字序陷阱)",
+        "ba_bei_construction": "把字句/被字句 construction validation",
+        "separable_verb": "Separable verbs (离合词) usage",
+        "resultative_complement": "Resultative complement (结果补语) validation",
+        "de_particle": "的/地/得 particle usage (critical)",
     }
 
     def __init__(
@@ -395,6 +400,11 @@ Your task: Identify ONLY clear Chinese-specific linguistic errors in the transla
 - Obvious aspect particle errors (了/过/着 used incorrectly)
 - Unnatural constructions that no native Chinese speaker would use
 - Character inconsistency (mixing simplified and traditional inappropriately)
+- Word order traps (字序陷阱) - semantic swaps like 蜜蜂/蜂蜜
+- Incorrect 把字句/被字句 constructions
+- Separable verb errors (离合词) - wrong object placement
+- Missing or incorrect resultative complements (结果补语)
+- 的/地/得 particle confusion
 
 **What is NOT an error:**
 - Stylistic preferences (multiple correct phrasings exist)
@@ -423,11 +433,40 @@ Your task: Identify ONLY clear Chinese-specific linguistic errors in the transla
 4. **Character Consistency** - ONLY if clearly inconsistent
    - Mixing simplified (简体) and traditional (繁体) inappropriately
 
+5. **Word Order Traps (字序陷阱)** - Check semantic swaps
+   - 蜜蜂 (bee) vs 蜂蜜 (honey)
+   - 故事 (story) vs 事故 (accident)
+   - 牛奶 (milk) vs 奶牛 (cow)
+   - 人工 (artificial) vs 工人 (worker)
+   - Flag if meaning doesn't match source context
+
+6. **把字句/被字句 Constructions**
+   - 把字句 requires resultative complement: 我把书放在桌子上了 (correct)
+   - 把字句 cannot use stative verbs: *我把他认为是朋友 (wrong)
+   - 被字句 typically for negative events: 他被撞倒了 (correct)
+   - Flag misuse of 把/被 constructions
+
+7. **Separable Verbs (离合词)**
+   - Object cannot follow separable verb: *见面他 → 跟他见面
+   - Aspect markers go between V and O: 见了面 (correct), *见面了 (wrong in separation)
+   - Common verbs: 见面, 睡觉, 洗澡, 帮忙, 结婚, 聊天
+
+8. **Resultative Complements (结果补语)**
+   - 得/的 confusion: 跑得很快 (correct), *跑的很快 (wrong)
+   - Missing complements where needed: 看完 (finish watching), 听懂 (understand)
+   - Wrong complement choice: *打好玻璃 → 打破玻璃
+
+9. **的/地/得 Particle Usage**
+   - 的: before nouns (美丽的花朵)
+   - 地: before verbs (认真地学习)
+   - 得: after verbs for degree/result (跑得很快)
+   - This is a CRITICAL error - very common mistake
+
 Output JSON format:
 {{
   "errors": [
     {{
-      "subcategory": "measure_word|aspect_particle|grammar|character",
+      "subcategory": "measure_word|aspect_particle|grammar|character|word_order_trap|ba_bei_construction|separable_verb|resultative_complement|de_particle",
       "severity": "critical|major|minor",
       "location": [start_char, end_char],
       "description": "Specific Chinese linguistic issue with the exact word/phrase you found",
@@ -442,6 +481,7 @@ Rules:
 - CONTEXT: Consider the source text when evaluating aspect and meaning
 - If the translation is natural and grammatically correct, return empty errors array
 - Provide accurate character positions (0-indexed, use Python string slicing logic)
+- 的/地/得 errors should be marked as CRITICAL severity
 
 Output only valid JSON, no explanation."""
 

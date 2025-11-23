@@ -391,5 +391,252 @@
         "-ость (радость, молодость)"
       ]
     }
+  },
+  "motion_verbs": {
+    "_description": "Глаголы движения - одна из самых сложных тем русского языка для иностранцев",
+    "_translation_challenge": "English has one verb 'go', Russian has 14 pairs (28 verbs!) with different semantics",
+    "unidirectional_vs_multidirectional": {
+      "term_ru": "Однонаправленные vs разнонаправленные глаголы",
+      "term_en": "Unidirectional vs Multidirectional verbs",
+      "definition": "Однонаправленные глаголы описывают движение в одном направлении за один раз, разнонаправленные - повторяющееся или в разных направлениях",
+      "key_difference": "идти = moving NOW in ONE direction; ходить = moving REGULARLY or in MULTIPLE directions"
+    },
+    "primary_pairs": {
+      "go_on_foot": {
+        "unidirectional": "идти",
+        "multidirectional": "ходить",
+        "english": "to go (on foot), to walk",
+        "examples": {
+          "unidirectional": "Я иду в школу (сейчас, в одном направлении)",
+          "multidirectional": "Я хожу в школу (регулярно, каждый день)"
+        },
+        "prefixed_forms": {
+          "выйти": "to go out, exit (СВ)",
+          "войти": "to enter (СВ)",
+          "уйти": "to leave (СВ)",
+          "прийти": "to arrive (СВ)",
+          "пройти": "to pass, go through (СВ)",
+          "зайти": "to drop by (СВ)",
+          "найти": "to find (СВ) - irregular, lost motion meaning"
+        },
+        "common_errors": [
+          "Using 'идти' for regular actions: 'Я иду в школу каждый день' ❌ → 'Я хожу в школу каждый день' ✓",
+          "Using 'ходить' for current direction: 'Куда ты ходишь?' ❌ (if NOW) → 'Куда ты идёшь?' ✓"
+        ]
+      },
+      "go_by_transport": {
+        "unidirectional": "ехать",
+        "multidirectional": "ездить",
+        "english": "to go (by vehicle), to drive, to ride",
+        "examples": {
+          "unidirectional": "Я еду на работу (сейчас, в машине)",
+          "multidirectional": "Я езжу на работу каждый день"
+        },
+        "prefixed_forms": {
+          "выехать": "to drive out",
+          "въехать": "to drive in",
+          "уехать": "to leave (by vehicle)",
+          "приехать": "to arrive (by vehicle)",
+          "проехать": "to drive past/through",
+          "заехать": "to drop by (by vehicle)"
+        }
+      },
+      "run": {
+        "unidirectional": "бежать",
+        "multidirectional": "бегать",
+        "english": "to run",
+        "examples": {
+          "unidirectional": "Собака бежит за мячом",
+          "multidirectional": "Я бегаю по утрам (regularly)"
+        }
+      },
+      "fly": {
+        "unidirectional": "лететь",
+        "multidirectional": "летать",
+        "english": "to fly",
+        "examples": {
+          "unidirectional": "Самолёт летит в Москву",
+          "multidirectional": "Птицы летают над озером"
+        }
+      },
+      "swim_sail": {
+        "unidirectional": "плыть",
+        "multidirectional": "плавать",
+        "english": "to swim, to sail",
+        "examples": {
+          "unidirectional": "Корабль плывёт к берегу",
+          "multidirectional": "Дети плавают в бассейне"
+        }
+      },
+      "carry_on_foot": {
+        "unidirectional": "нести",
+        "multidirectional": "носить",
+        "english": "to carry (on foot)",
+        "examples": {
+          "unidirectional": "Он несёт сумку домой",
+          "multidirectional": "Почтальон носит письма"
+        }
+      },
+      "carry_by_vehicle": {
+        "unidirectional": "везти",
+        "multidirectional": "возить",
+        "english": "to carry (by vehicle), to transport",
+        "examples": {
+          "unidirectional": "Грузовик везёт товары",
+          "multidirectional": "Эта фирма возит грузы"
+        }
+      },
+      "lead_guide": {
+        "unidirectional": "вести",
+        "multidirectional": "водить",
+        "english": "to lead, to drive (a car)",
+        "examples": {
+          "unidirectional": "Мама ведёт ребёнка в сад",
+          "multidirectional": "Он хорошо водит машину"
+        }
+      },
+      "crawl": {
+        "unidirectional": "ползти",
+        "multidirectional": "ползать",
+        "english": "to crawl",
+        "examples": {
+          "unidirectional": "Змея ползёт по земле",
+          "multidirectional": "Ребёнок ползает по полу"
+        }
+      },
+      "climb": {
+        "unidirectional": "лезть",
+        "multidirectional": "лазить",
+        "english": "to climb",
+        "examples": {
+          "unidirectional": "Кот лезет на дерево",
+          "multidirectional": "Дети лазят по деревьям"
+        }
+      },
+      "roll": {
+        "unidirectional": "катить",
+        "multidirectional": "катать",
+        "english": "to roll",
+        "examples": {
+          "unidirectional": "Мальчик катит мяч",
+          "multidirectional": "Дети катают мяч"
+        }
+      },
+      "drag": {
+        "unidirectional": "тащить",
+        "multidirectional": "таскать",
+        "english": "to drag, to pull",
+        "examples": {
+          "unidirectional": "Он тащит тяжёлый чемодан",
+          "multidirectional": "Муравьи таскают еду в муравейник"
+        }
+      },
+      "chase": {
+        "unidirectional": "гнать",
+        "multidirectional": "гонять",
+        "english": "to chase, to drive (animals)",
+        "examples": {
+          "unidirectional": "Пастух гонит стадо домой",
+          "multidirectional": "Собака гоняет кур"
+        }
+      },
+      "wander": {
+        "unidirectional": "брести",
+        "multidirectional": "бродить",
+        "english": "to wander, to stroll",
+        "examples": {
+          "unidirectional": "Старик бредёт по дороге",
+          "multidirectional": "Туристы бродят по городу"
+        }
+      }
+    },
+    "prefix_meanings": {
+      "_note": "Prefixes change aspectual pairs and add spatial meaning",
+      "в-/во-": {
+        "meaning": "movement INTO",
+        "examples": ["войти", "въехать", "внести", "влететь"]
+      },
+      "вы-": {
+        "meaning": "movement OUT OF",
+        "examples": ["выйти", "выехать", "вынести", "вылететь"]
+      },
+      "у-": {
+        "meaning": "movement AWAY",
+        "examples": ["уйти", "уехать", "унести", "улететь"]
+      },
+      "при-": {
+        "meaning": "ARRIVAL",
+        "examples": ["прийти", "приехать", "принести", "прилететь"]
+      },
+      "под-": {
+        "meaning": "APPROACH, movement TO",
+        "examples": ["подойти", "подъехать", "поднести", "подлететь"]
+      },
+      "от-": {
+        "meaning": "movement AWAY FROM",
+        "examples": ["отойти", "отъехать", "отнести", "отлететь"]
+      },
+      "за-": {
+        "meaning": "DROP BY, go behind",
+        "examples": ["зайти", "заехать", "занести", "залететь"]
+      },
+      "про-": {
+        "meaning": "THROUGH, past",
+        "examples": ["пройти", "проехать", "пронести", "пролететь"]
+      },
+      "пере-": {
+        "meaning": "ACROSS, over",
+        "examples": ["перейти", "переехать", "перенести", "перелететь"]
+      },
+      "с-/со-": {
+        "meaning": "DOWN FROM, together",
+        "examples": ["сойти", "съехать", "снести", "слететь"]
+      },
+      "об-/обо-": {
+        "meaning": "AROUND",
+        "examples": ["обойти", "объехать", "обнести", "облететь"]
+      },
+      "до-": {
+        "meaning": "UP TO, as far as",
+        "examples": ["дойти", "доехать", "донести", "долететь"]
+      }
+    },
+    "translation_traps": {
+      "english_go": {
+        "problem": "English 'go' can be 28+ Russian verbs",
+        "rule": "Check: on foot/by vehicle? one direction/regular? alone/with something?"
+      },
+      "come_vs_go": {
+        "problem": "English 'come' and 'go' distinction differs from Russian",
+        "note": "Russian focuses on direction and means, not speaker position"
+      },
+      "aspectual_shift_with_prefix": {
+        "problem": "Adding prefix changes aspect",
+        "example": "ходить (НСВ) + вы- = выходить (НСВ!) vs выйти (СВ)",
+        "rule": "Prefixed multidirectional stays imperfective, prefixed unidirectional becomes perfective"
+      }
+    },
+    "common_foreigner_errors": [
+      {
+        "error": "Я иду в школу каждый день",
+        "correct": "Я хожу в школу каждый день",
+        "explanation": "Regular action requires multidirectional verb"
+      },
+      {
+        "error": "Я еду домой завтра",
+        "correct": "Я поеду домой завтра",
+        "explanation": "Future requires prefixed form (usually по-)"
+      },
+      {
+        "error": "Он ходит в комнату",
+        "correct": "Он входит/заходит в комнату",
+        "explanation": "Movement INTO requires prefix в-"
+      },
+      {
+        "error": "Я лечу в Москву каждый месяц",
+        "correct": "Я летаю в Москву каждый месяц",
+        "explanation": "Regular trips require multidirectional"
+      }
+    ]
   }
 }

@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "Ta'arof and Politeness System",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Persian ta'arof (تعارف) - ritual politeness system. Critical for cultural translation accuracy.",
+    "sources": [
+      "Wikipedia - Taarof",
+      "TAP Persia - The Art of Persian Politeness",
+      "CultureReady - Persian Ta'arof",
+      "Academic research on Persian politeness"
+    ],
+    "total_entries": 35
+  },
+  "taarof_overview": {
+    "term_fa": "تعارف",
+    "term_en": "Ta'arof / Taarof",
+    "definition": "Iranian form of civility emphasizing deference and social rank. Ritual politeness that levels the playing field.",
+    "key_concept": "Fighting for the lower hand - abase oneself while exalting the other person",
+    "cultural_note": "Ta'arof is NOT deception or hypocrisy. It conveys admiration and gratitude.",
+    "warning_for_translators": "Literal translation of ta'arof phrases will cause severe misunderstanding"
+  },
+  "three_refusals_rule": {
+    "description": "The custom of refusing offers multiple times before accepting",
+    "rule": "Refuse 2-3 times, then accept on the third/fourth offer",
+    "examples": {
+      "tea_water_offer": {
+        "scenario": "Host offers tea to guest",
+        "round_1": {
+          "host": "چای میل دارید؟ (Would you like tea?)",
+          "guest_response": "نه ممنون، زحمت نکشید (No thank you, don't trouble yourself)",
+          "actual_meaning": "Polite first refusal - doesn't mean no"
+        },
+        "round_2": {
+          "host": "تعارف نکنید (Don't do ta'arof)",
+          "guest_response": "واقعاً نمی‌خواهم (I really don't want any)",
+          "actual_meaning": "Second polite refusal"
+        },
+        "round_3": {
+          "host": "خواهش می‌کنم، بفرمایید (Please, go ahead)",
+          "guest_response": "باشه، ممنون (Okay, thank you)",
+          "actual_meaning": "Acceptance is now appropriate"
+        }
+      },
+      "warning": "If American host offers once and accepts 'no', Iranian guest may want tea but not get it"
+    }
+  },
+  "common_taarof_phrases": {
+    "offering_phrases": {
+      "قابلی_نداره": {
+        "phrase_fa": "قابلی نداره / قابل شما رو نداره",
+        "literal": "It has no worth / It's not worthy of you",
+        "actual_meaning": "You're welcome (when offering something)",
+        "context": "Said when giving a gift or offering service",
+        "severity": "critical",
+        "translation_warning": "Does NOT mean the item is worthless!"
+      },
+      "بفرمایید": {
+        "phrase_fa": "بفرمایید",
+        "literal": "Command/Order (imperative)",
+        "actual_meaning": "Please (go ahead) / Here you go / After you",
+        "contexts": [
+          "Offering food/drink",
+          "Inviting to enter",
+          "Giving way to someone",
+          "Handing something over"
+        ],
+        "severity": "major"
+      },
+      "نوش_جان": {
+        "phrase_fa": "نوش جان",
+        "literal": "May it be sweet to your soul",
+        "actual_meaning": "Bon appetit / Enjoy your meal",
+        "context": "Said when serving food",
+        "severity": "minor"
+      },
+      "خواهش_می‌کنم": {
+        "phrase_fa": "خواهش می‌کنم",
+        "literal": "I request",
+        "actual_meaning": "You're welcome / Please",
+        "context": "Response to thanks or when offering",
+        "severity": "minor"
+      },
+      "زحمت_کشیدید": {
+        "phrase_fa": "زحمت کشیدید",
+        "literal": "You have taken trouble",
+        "actual_meaning": "Thank you for your effort",
+        "context": "Thanking someone for their work",
+        "severity": "minor"
+      }
+    },
+    "refusing_payment": {
+      "قابل_نداره_payment": {
+        "phrase_fa": "قابلی نداره",
+        "context": "When someone refuses payment",
+        "warning": "DOES NOT mean free! This is ta'arof - you must insist on paying",
+        "severity": "critical",
+        "typical_scenario": "Taxi driver, shopkeeper, or host refuses payment"
+      },
+      "مهمان_ما_باشید": {
+        "phrase_fa": "مهمان ما باشید",
+        "literal": "Be our guest",
+        "actual_meaning": "Polite offer to pay (may or may not be genuine)",
+        "context": "At restaurant, offering to pay for someone",
+        "severity": "major",
+        "note": "Must insist 2-3 times before accepting or paying yourself"
+      },
+      "این_دفعه_مهمان_من": {
+        "phrase_fa": "این دفعه مهمان من",
+        "literal": "This time be my guest",
+        "actual_meaning": "I'll pay this time",
+        "context": "Insisting on paying the bill",
+        "severity": "minor"
+      }
+    },
+    "self_deprecation": {
+      "چاکرم": {
+        "phrase_fa": "چاکرم / چاکر شما",
+        "literal": "I am your servant",
+        "actual_meaning": "At your service / You're welcome",
+        "context": "Humble response to thanks or greeting",
+        "formality": "formal/traditional",
+        "severity": "major"
+      },
+      "نوکرتم": {
+        "phrase_fa": "نوکرتم",
+        "literal": "I am your slave",
+        "actual_meaning": "At your service (very humble)",
+        "context": "Extremely polite/humble response",
+        "formality": "very formal/old-fashioned",
+        "severity": "major"
+      },
+      "قربان_شما": {
+        "phrase_fa": "قربان شما",
+        "literal": "May I be sacrificed for you",
+        "actual_meaning": "Term of endearment / At your service",
+        "context": "Affectionate/respectful greeting",
+        "severity": "critical",
+        "translation_warning": "NOT literal sacrifice!"
+      },
+      "فدای_سرت": {
+        "phrase_fa": "فدای سرت",
+        "literal": "May I be sacrificed for your head",
+        "actual_meaning": "I care about you deeply / You're dear to me",
+        "context": "Expression of affection",
+        "severity": "critical"
+      }
+    },
+    "exalting_other": {
+      "سرتان_درد_نکنه": {
+        "phrase_fa": "سرتان درد نکنه",
+        "literal": "May your head not hurt",
+        "actual_meaning": "Thank you for your effort/help",
+        "context": "Thanking someone for listening or helping",
+        "severity": "minor"
+      },
+      "دستتان_درد_نکنه": {
+        "phrase_fa": "دستتان درد نکنه",
+        "literal": "May your hand not hurt",
+        "actual_meaning": "Thank you for your work (especially handmade)",
+        "context": "Thanking for food preparation, crafts, etc.",
+        "severity": "minor"
+      },
+      "خسته_نباشید": {
+        "phrase_fa": "خسته نباشید",
+        "literal": "May you not be tired",
+        "actual_meaning": "Well done / Thank you for your hard work",
+        "context": "Greeting workers, thanking for effort",
+        "severity": "minor",
+        "note": "Very common daily greeting"
+      },
+      "ممنون_از_لطفتون": {
+        "phrase_fa": "ممنون از لطفتون",
+        "literal": "Thank you for your kindness",
+        "actual_meaning": "Thank you very much",
+        "context": "Formal thanks",
+        "severity": "minor"
+      }
+    }
+  },
+  "taarof_scenarios": {
+    "taxi_payment": {
+      "scenario": "Paying taxi driver in Iran",
+      "driver_says": "پول نمی‌خواد / قابلی نداره",
+      "driver_literal": "No money needed / It's not worthy",
+      "actual_meaning": "This is ta'arof - YOU MUST PAY",
+      "correct_response": "Insist on paying, put money in their hand",
+      "severity": "critical",
+      "warning": "Foreigners who don't pay will be considered rude"
+    },
+    "restaurant_bill": {
+      "scenario": "Friends arguing over restaurant bill",
+      "behavior": "Iranians may physically 'fight' to grab the bill",
+      "meaning": "Showing generosity and hospitality",
+      "correct_handling": "Insist firmly but accept gracefully if they truly insist",
+      "note": "This is normal and expected behavior"
+    },
+    "entering_door": {
+      "scenario": "Two people at a door",
+      "exchange": {
+        "person_a": "بفرمایید (Please, go ahead)",
+        "person_b": "نه، شما بفرمایید (No, you go ahead)",
+        "resolution": "May go back and forth 2-3 times"
+      },
+      "meaning": "Showing respect by deferring to other person"
+    },
+    "food_second_helping": {
+      "scenario": "Guest wants more food",
+      "rule": "Cannot immediately ask for more",
+      "correct_behavior": [
+        "Claim to be full",
+        "Compliment the food",
+        "Wait for host to insist",
+        "Refuse once or twice",
+        "Then accept"
+      ],
+      "warning": "Taking more without being offered is considered impolite"
+    }
+  },
+  "formality_levels": {
+    "pronouns": {
+      "informal": {
+        "pronoun": "تو (to)",
+        "usage": "Friends, family, younger people",
+        "verb_ending": "-ی (-i)"
+      },
+      "formal": {
+        "pronoun": "شما (shomā)",
+        "usage": "Strangers, elders, professional settings",
+        "verb_ending": "-ید (-id)"
+      },
+      "very_formal": {
+        "pronoun": "ایشان (īshān)",
+        "usage": "Very respected people, religious figures",
+        "note": "Third person used for second person (like royal 'we')"
+      }
+    },
+    "switching_formality": {
+      "rule": "Higher status person must offer to switch to informal",
+      "phrase": "راحت باش (Be comfortable / Let's be informal)",
+      "warning": "Using informal without permission is disrespectful"
+    }
+  },
+  "translation_guidelines": {
+    "general_rules": [
+      "Never translate ta'arof phrases literally",
+      "Add cultural context notes when needed",
+      "Consider target audience's familiarity with Persian culture",
+      "Preserve the intent, not the words"
+    ],
+    "severity_levels": {
+      "critical": "Will cause serious misunderstanding if translated literally",
+      "major": "May cause confusion, needs cultural adaptation",
+      "minor": "Safe to translate somewhat literally with minor adjustments"
+    }
+  }
+}

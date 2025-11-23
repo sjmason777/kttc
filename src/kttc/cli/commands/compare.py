@@ -83,6 +83,50 @@ async def evaluate_translation(
     }
 
 
+def _load_translation_files(translations: list[str]) -> list[dict[str, Any]]:
+    """Load translation files and return data."""
+    translation_data = []
+    for trans_file in translations:
+        trans_path = Path(trans_file)
+        if not trans_path.exists():
+            print_error(f"Translation file not found: {trans_file}")
+            continue
+        trans_text = trans_path.read_text(encoding="utf-8").strip()
+        translation_data.append({"name": trans_path.stem, "path": trans_file, "text": trans_text})
+    return translation_data
+
+
+def _setup_compare_provider(provider: str | None, settings: Any, verbose: bool) -> BaseLLMProvider:
+    """Setup LLM provider for comparison."""
+    provider_name = provider or settings.default_llm_provider
+    api_key = settings.get_llm_provider_key(provider_name)
+
+    if provider_name == "openai":
+        llm_provider: BaseLLMProvider = OpenAIProvider(
+            api_key=api_key, model=settings.default_model
+        )
+    elif provider_name == "anthropic":
+        llm_provider = AnthropicProvider(api_key=api_key, model=settings.default_model)
+    else:
+        print_error(f"Unknown provider: {provider_name}")
+        raise typer.Exit(code=1)
+
+    if verbose:
+        print_info(f"Using {provider_name} for evaluation")
+        console.print()
+    return llm_provider
+
+
+def _print_compare_result(result: dict[str, Any], name: str, progress_console: Any) -> None:
+    """Print single comparison result."""
+    status_icon = "✓" if result["status"] == "pass" else "✗"
+    status_color = "green" if result["status"] == "pass" else "red"
+    errors = f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
+    progress_console.print(
+        f"  [{status_color}]{status_icon}[/{status_color}] {name}: MQM {result['mqm_score']:.2f}, Errors: {errors}"
+    )
+
+
 async def run_compare(
     source: str,
     translations: list[str],
@@ -92,80 +136,32 @@ async def run_compare(
     provider: str | None,
     verbose: bool,
 ) -> None:
-    """Compare multiple translations side by side.
-
-    Args:
-        source: Source text file path
-        translations: List of translation file paths
-        source_lang: Source language code
-        target_lang: Target language code
-        threshold: Quality threshold
-        provider: LLM provider name
-        verbose: Verbose output
-    """
+    """Compare multiple translations side by side."""
     settings = get_settings()
 
-    # Load source text
     source_path = Path(source)
     if not source_path.exists():
         print_error(f"Source file not found: {source}")
         raise typer.Exit(code=1)
-
     source_text = source_path.read_text(encoding="utf-8").strip()
 
-    # Load all translations
-    translation_data = []
-    for i, trans_file in enumerate(translations):
-        trans_path = Path(trans_file)
-        if not trans_path.exists():
-            print_error(f"Translation file not found: {trans_file}")
-            continue
-
-        trans_text = trans_path.read_text(encoding="utf-8").strip()
-        translation_data.append(
-            {
-                "name": trans_path.stem,
-                "path": trans_file,
-                "text": trans_text,
-            }
-        )
-
+    translation_data = _load_translation_files(translations)
     if not translation_data:
         print_error("No valid translation files found")
         raise typer.Exit(code=1)
 
-    # Setup LLM provider
     try:
-        provider_name = provider or settings.default_llm_provider
-        api_key = settings.get_llm_provider_key(provider_name)
-
-        if provider_name == "openai":
-            llm_provider: BaseLLMProvider = OpenAIProvider(
-                api_key=api_key, model=settings.default_model
-            )
-        elif provider_name == "anthropic":
-            llm_provider = AnthropicProvider(api_key=api_key, model=settings.default_model)
-        else:
-            print_error(f"Unknown provider: {provider_name}")
-            raise typer.Exit(code=1)
-
-        if verbose:
-            print_info(f"Using {provider_name} for evaluation")
-            console.print()
-
+        llm_provider = _setup_compare_provider(provider, settings, verbose)
     except Exception as e:
         print_error(f"Failed to setup LLM provider: {e}")
         raise typer.Exit(code=1)
 
-    # Evaluate all translations
     results = []
     if verbose:
         with create_progress() as progress:
             task_id = progress.add_task("Evaluating translations...", total=len(translation_data))
-
             for trans_data in translation_data:
                 progress.update(task_id, description=f"Evaluating {trans_data['name']}...")
-
                 result = await evaluate_translation(
                     source_text=source_text,
                     translation=trans_data["text"],
@@ -175,25 +171,11 @@ async def run_compare(
                     provider=llm_provider,
                     threshold=threshold,
                 )
-
                 results.append(result)
-
-                # Show result
-                status_icon = "✓" if result["status"] == "pass" else "✗"
-                status_color = "green" if result["status"] == "pass" else "red"
-                errors = (
-                    f"{result['critical_errors']}/{result['major_errors']}/{result['minor_errors']}"
-                )
-                progress.console.print(
-                    f"  [{status_color}]{status_icon}[/{status_color}] "
-                    f"{trans_data['name']}: MQM {result['mqm_score']:.2f}, Errors: {errors}"
-                )
-
+                _print_compare_result(result, trans_data["name"], progress.console)
                 progress.advance(task_id)
-
         console.print()
     else:
-        # Compact mode: simple evaluation
         for trans_data in translation_data:
             result = await evaluate_translation(
                 source_text=source_text,
@@ -206,7 +188,6 @@ async def run_compare(
             )
             results.append(result)
 
-    # Display comparison results using compact formatter
     ConsoleFormatter.print_compare_result(
         source_lang=source_lang,
         target_lang=target_lang,

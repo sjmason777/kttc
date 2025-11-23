@@ -1,0 +1,446 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Phrasal Verbs - Translation Nightmares",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "English phrasal verbs - combinations of verbs with particles that create idiomatic meanings. #1 difficulty for non-native speakers.",
+    "sources": [
+      "Grammarly: 80 Most Common Phrasal Verbs",
+      "Cambridge Phrasal Verbs Dictionary",
+      "Oxford Phrasal Verbs Dictionary",
+      "GOV.UK: When simple words aren't so simple"
+    ],
+    "total_terms": 150,
+    "usage": "Translation QA, MT error detection, fluency assessment, idiom handling"
+  },
+  "overview": {
+    "definition": "Phrasal verbs are combinations of a verb + particle(s) (preposition/adverb) that create a meaning different from individual words",
+    "importance": "Critical for translation - CANNOT be translated literally. Non-native speakers rank them as the hardest aspect of English.",
+    "difficulty_reasons": [
+      "Meaning is non-compositional (can't guess from parts)",
+      "One verb can have 20+ different phrasal combinations",
+      "Same phrasal verb can have multiple meanings",
+      "Different regions use different phrasal verbs"
+    ],
+    "translation_rule": "NEVER translate word-by-word. Find equivalent expression in target language.",
+    "severity": "critical if mistranslated"
+  },
+  "verb_take": {
+    "base_meaning": "to get hold of",
+    "phrasal_verbs": {
+      "take_off": {
+        "meanings": [
+          {"meaning": "to remove (clothing)", "example": "Take off your coat.", "translation_hint": "снять (одежду)"},
+          {"meaning": "to leave the ground (plane)", "example": "The plane took off at 6am.", "translation_hint": "взлететь"},
+          {"meaning": "to become successful suddenly", "example": "Her career took off.", "translation_hint": "взлететь, стать успешным"},
+          {"meaning": "to leave suddenly", "example": "He took off without saying goodbye.", "translation_hint": "уйти, убежать"}
+        ],
+        "separable": true,
+        "literal_translation_error": "взять прочь - WRONG"
+      },
+      "take_up": {
+        "meanings": [
+          {"meaning": "to start a hobby/activity", "example": "I took up yoga.", "translation_hint": "начать заниматься"},
+          {"meaning": "to occupy space/time", "example": "This takes up too much room.", "translation_hint": "занимать (место/время)"},
+          {"meaning": "to shorten (clothing)", "example": "Take up the hem.", "translation_hint": "укоротить"}
+        ],
+        "separable": true
+      },
+      "take_in": {
+        "meanings": [
+          {"meaning": "to understand", "example": "It's hard to take in.", "translation_hint": "понять, усвоить"},
+          {"meaning": "to deceive", "example": "Don't be taken in by his lies.", "translation_hint": "обмануть"},
+          {"meaning": "to make clothing smaller", "example": "Take in the waist.", "translation_hint": "ушить"},
+          {"meaning": "to provide shelter", "example": "They took in refugees.", "translation_hint": "приютить"}
+        ],
+        "separable": true
+      },
+      "take_over": {
+        "meanings": [
+          {"meaning": "to assume control", "example": "She took over the company.", "translation_hint": "взять под контроль"},
+          {"meaning": "to replace someone", "example": "Can you take over for me?", "translation_hint": "заменить, подменить"}
+        ],
+        "separable": true
+      },
+      "take_on": {
+        "meanings": [
+          {"meaning": "to accept work/responsibility", "example": "Don't take on too much.", "translation_hint": "брать на себя"},
+          {"meaning": "to hire employees", "example": "We're taking on new staff.", "translation_hint": "нанимать"},
+          {"meaning": "to compete against", "example": "They took on the champions.", "translation_hint": "сразиться с"}
+        ],
+        "separable": true
+      },
+      "take_out": {
+        "meanings": [
+          {"meaning": "to remove", "example": "Take out the trash.", "translation_hint": "вынести, убрать"},
+          {"meaning": "to go on a date", "example": "He took her out to dinner.", "translation_hint": "пригласить куда-то"},
+          {"meaning": "to get (loan, insurance)", "example": "Take out a mortgage.", "translation_hint": "взять (кредит)"},
+          {"meaning": "to order food for elsewhere", "example": "Let's get takeout.", "translation_hint": "еда навынос"}
+        ],
+        "separable": true
+      },
+      "take_back": {
+        "meanings": [
+          {"meaning": "to return something", "example": "Take it back to the store.", "translation_hint": "вернуть"},
+          {"meaning": "to retract a statement", "example": "I take back what I said.", "translation_hint": "взять слова обратно"}
+        ],
+        "separable": true
+      }
+    }
+  },
+  "verb_get": {
+    "base_meaning": "to obtain, receive",
+    "phrasal_verbs": {
+      "get_up": {
+        "meanings": [
+          {"meaning": "to rise from bed", "example": "I get up at 7am.", "translation_hint": "вставать"},
+          {"meaning": "to stand up", "example": "Get up from the floor.", "translation_hint": "встать"}
+        ],
+        "separable": false
+      },
+      "get_over": {
+        "meanings": [
+          {"meaning": "to recover from", "example": "I can't get over this cold.", "translation_hint": "оправиться, выздороветь"},
+          {"meaning": "to stop being affected by", "example": "Get over it!", "translation_hint": "забыть, перестать переживать"}
+        ],
+        "separable": false
+      },
+      "get_away": {
+        "meanings": [
+          {"meaning": "to escape", "example": "The thief got away.", "translation_hint": "сбежать"},
+          {"meaning": "to go on vacation", "example": "We need to get away.", "translation_hint": "уехать отдохнуть"}
+        ],
+        "separable": false
+      },
+      "get_along": {
+        "meanings": [
+          {"meaning": "to have a good relationship", "example": "We get along well.", "translation_hint": "ладить"},
+          {"meaning": "to manage/cope", "example": "How are you getting along?", "translation_hint": "справляться"}
+        ],
+        "separable": false
+      },
+      "get_through": {
+        "meanings": [
+          {"meaning": "to finish", "example": "I need to get through this work.", "translation_hint": "закончить, справиться"},
+          {"meaning": "to reach by phone", "example": "I couldn't get through.", "translation_hint": "дозвониться"},
+          {"meaning": "to survive a difficult time", "example": "We'll get through this.", "translation_hint": "пережить"}
+        ],
+        "separable": false
+      },
+      "get_by": {
+        "meanings": [
+          {"meaning": "to manage with limited resources", "example": "We get by on little.", "translation_hint": "сводить концы с концами"}
+        ],
+        "separable": false
+      },
+      "get_out": {
+        "meanings": [
+          {"meaning": "to leave", "example": "Get out of here!", "translation_hint": "выйти, убраться"},
+          {"meaning": "to become known (secret)", "example": "The news got out.", "translation_hint": "просочиться (информация)"}
+        ],
+        "separable": true
+      }
+    }
+  },
+  "verb_put": {
+    "base_meaning": "to place",
+    "phrasal_verbs": {
+      "put_off": {
+        "meanings": [
+          {"meaning": "to postpone", "example": "Don't put it off.", "translation_hint": "откладывать"},
+          {"meaning": "to discourage", "example": "Don't be put off by the price.", "translation_hint": "отпугнуть"}
+        ],
+        "separable": true
+      },
+      "put_up_with": {
+        "meanings": [
+          {"meaning": "to tolerate", "example": "I can't put up with this noise.", "translation_hint": "терпеть, мириться с"}
+        ],
+        "separable": false,
+        "note": "Three-word phrasal verb"
+      },
+      "put_on": {
+        "meanings": [
+          {"meaning": "to wear", "example": "Put on your jacket.", "translation_hint": "надеть"},
+          {"meaning": "to gain (weight)", "example": "I put on 5 pounds.", "translation_hint": "набрать (вес)"},
+          {"meaning": "to deceive/joke", "example": "Are you putting me on?", "translation_hint": "разыгрывать"}
+        ],
+        "separable": true
+      },
+      "put_out": {
+        "meanings": [
+          {"meaning": "to extinguish", "example": "Put out the fire.", "translation_hint": "потушить"},
+          {"meaning": "to inconvenience", "example": "I hope I'm not putting you out.", "translation_hint": "причинять неудобство"}
+        ],
+        "separable": true
+      },
+      "put_together": {
+        "meanings": [
+          {"meaning": "to assemble", "example": "Put together the furniture.", "translation_hint": "собрать"},
+          {"meaning": "to organize", "example": "Put together a team.", "translation_hint": "сформировать"}
+        ],
+        "separable": true
+      }
+    }
+  },
+  "verb_look": {
+    "base_meaning": "to see, to direct eyes",
+    "phrasal_verbs": {
+      "look_up": {
+        "meanings": [
+          {"meaning": "to search for information", "example": "Look it up in the dictionary.", "translation_hint": "посмотреть, найти"},
+          {"meaning": "to improve", "example": "Things are looking up.", "translation_hint": "улучшаться"}
+        ],
+        "separable": true
+      },
+      "look_after": {
+        "meanings": [
+          {"meaning": "to take care of", "example": "Look after your sister.", "translation_hint": "присматривать, заботиться"}
+        ],
+        "separable": false
+      },
+      "look_forward_to": {
+        "meanings": [
+          {"meaning": "to anticipate with pleasure", "example": "I look forward to meeting you.", "translation_hint": "с нетерпением ждать"}
+        ],
+        "separable": false,
+        "note": "Followed by noun or -ing form"
+      },
+      "look_into": {
+        "meanings": [
+          {"meaning": "to investigate", "example": "We'll look into the matter.", "translation_hint": "изучить, расследовать"}
+        ],
+        "separable": false
+      },
+      "look_out": {
+        "meanings": [
+          {"meaning": "to be careful", "example": "Look out! A car!", "translation_hint": "осторожно!, берегись!"}
+        ],
+        "separable": false
+      },
+      "look_down_on": {
+        "meanings": [
+          {"meaning": "to consider inferior", "example": "Don't look down on others.", "translation_hint": "смотреть свысока"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_break": {
+    "base_meaning": "to separate into pieces",
+    "phrasal_verbs": {
+      "break_down": {
+        "meanings": [
+          {"meaning": "to stop working (machine)", "example": "The car broke down.", "translation_hint": "сломаться"},
+          {"meaning": "to lose emotional control", "example": "She broke down crying.", "translation_hint": "расплакаться, сорваться"},
+          {"meaning": "to analyze into parts", "example": "Break down the costs.", "translation_hint": "разбить на части"}
+        ],
+        "separable": true
+      },
+      "break_up": {
+        "meanings": [
+          {"meaning": "to end a relationship", "example": "They broke up.", "translation_hint": "расстаться"},
+          {"meaning": "to disperse", "example": "Break up the fight.", "translation_hint": "разнять, прекратить"}
+        ],
+        "separable": true
+      },
+      "break_in": {
+        "meanings": [
+          {"meaning": "to enter illegally", "example": "Someone broke in.", "translation_hint": "вломиться"},
+          {"meaning": "to wear new shoes", "example": "Break in new shoes.", "translation_hint": "разносить (обувь)"}
+        ],
+        "separable": true
+      },
+      "break_out": {
+        "meanings": [
+          {"meaning": "to start suddenly (war, disease)", "example": "War broke out.", "translation_hint": "разразиться, вспыхнуть"},
+          {"meaning": "to escape", "example": "They broke out of prison.", "translation_hint": "сбежать"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_turn": {
+    "base_meaning": "to rotate, change direction",
+    "phrasal_verbs": {
+      "turn_on": {
+        "meanings": [
+          {"meaning": "to start a device", "example": "Turn on the light.", "translation_hint": "включить"},
+          {"meaning": "to excite/interest", "example": "What turns you on?", "translation_hint": "привлекать, возбуждать"}
+        ],
+        "separable": true
+      },
+      "turn_off": {
+        "meanings": [
+          {"meaning": "to stop a device", "example": "Turn off the TV.", "translation_hint": "выключить"},
+          {"meaning": "to disgust/repel", "example": "That turns me off.", "translation_hint": "отталкивать"}
+        ],
+        "separable": true
+      },
+      "turn_up": {
+        "meanings": [
+          {"meaning": "to increase volume", "example": "Turn up the music.", "translation_hint": "сделать громче"},
+          {"meaning": "to appear unexpectedly", "example": "He turned up late.", "translation_hint": "появиться, объявиться"}
+        ],
+        "separable": true
+      },
+      "turn_down": {
+        "meanings": [
+          {"meaning": "to decrease volume", "example": "Turn down the radio.", "translation_hint": "сделать тише"},
+          {"meaning": "to reject", "example": "She turned down the offer.", "translation_hint": "отклонить, отказать"}
+        ],
+        "separable": true
+      },
+      "turn_out": {
+        "meanings": [
+          {"meaning": "to result", "example": "It turned out well.", "translation_hint": "оказаться, получиться"},
+          {"meaning": "to attend", "example": "Many people turned out.", "translation_hint": "прийти (на мероприятие)"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_come": {
+    "base_meaning": "to move toward",
+    "phrasal_verbs": {
+      "come_up": {
+        "meanings": [
+          {"meaning": "to arise/occur", "example": "Something came up.", "translation_hint": "возникнуть"},
+          {"meaning": "to approach", "example": "He came up to me.", "translation_hint": "подойти"}
+        ],
+        "separable": false
+      },
+      "come_across": {
+        "meanings": [
+          {"meaning": "to find by chance", "example": "I came across an old photo.", "translation_hint": "наткнуться на"},
+          {"meaning": "to appear/seem", "example": "She comes across as friendly.", "translation_hint": "производить впечатление"}
+        ],
+        "separable": false
+      },
+      "come_up_with": {
+        "meanings": [
+          {"meaning": "to think of/create", "example": "Come up with an idea.", "translation_hint": "придумать"}
+        ],
+        "separable": false
+      },
+      "come_back": {
+        "meanings": [
+          {"meaning": "to return", "example": "Come back soon!", "translation_hint": "вернуться"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_go": {
+    "base_meaning": "to move away",
+    "phrasal_verbs": {
+      "go_on": {
+        "meanings": [
+          {"meaning": "to continue", "example": "Go on, I'm listening.", "translation_hint": "продолжать"},
+          {"meaning": "to happen", "example": "What's going on?", "translation_hint": "происходить"}
+        ],
+        "separable": false
+      },
+      "go_through": {
+        "meanings": [
+          {"meaning": "to experience (difficulty)", "example": "She's going through a divorce.", "translation_hint": "переживать"},
+          {"meaning": "to examine carefully", "example": "Go through the documents.", "translation_hint": "просмотреть, проверить"}
+        ],
+        "separable": false
+      },
+      "go_over": {
+        "meanings": [
+          {"meaning": "to review", "example": "Let's go over the plan.", "translation_hint": "просмотреть, обсудить"}
+        ],
+        "separable": false
+      },
+      "go_off": {
+        "meanings": [
+          {"meaning": "to explode/sound alarm", "example": "The alarm went off.", "translation_hint": "сработать (сигнализация), взорваться"},
+          {"meaning": "to spoil (food)", "example": "The milk went off.", "translation_hint": "испортиться"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_work": {
+    "base_meaning": "to perform labor",
+    "phrasal_verbs": {
+      "work_out": {
+        "meanings": [
+          {"meaning": "to exercise", "example": "I work out daily.", "translation_hint": "тренироваться"},
+          {"meaning": "to solve/calculate", "example": "Work out the answer.", "translation_hint": "вычислить, решить"},
+          {"meaning": "to succeed", "example": "Things will work out.", "translation_hint": "наладиться, получиться"}
+        ],
+        "separable": true
+      },
+      "work_on": {
+        "meanings": [
+          {"meaning": "to improve/develop", "example": "Work on your skills.", "translation_hint": "работать над"}
+        ],
+        "separable": false
+      }
+    }
+  },
+  "verb_give": {
+    "base_meaning": "to transfer",
+    "phrasal_verbs": {
+      "give_up": {
+        "meanings": [
+          {"meaning": "to stop trying", "example": "Don't give up!", "translation_hint": "сдаваться"},
+          {"meaning": "to quit a habit", "example": "Give up smoking.", "translation_hint": "бросить (привычку)"}
+        ],
+        "separable": true
+      },
+      "give_in": {
+        "meanings": [
+          {"meaning": "to surrender/yield", "example": "She finally gave in.", "translation_hint": "уступить, сдаться"}
+        ],
+        "separable": false
+      },
+      "give_away": {
+        "meanings": [
+          {"meaning": "to donate", "example": "Give away old clothes.", "translation_hint": "отдать, раздать"},
+          {"meaning": "to reveal secret", "example": "Don't give away the ending!", "translation_hint": "выдать (секрет)"}
+        ],
+        "separable": true
+      }
+    }
+  },
+  "separability_rules": {
+    "description": "Rules for object placement with separable phrasal verbs",
+    "rules": [
+      {
+        "rule": "With noun objects, particle can go before or after",
+        "examples": ["Turn off the light.", "Turn the light off."]
+      },
+      {
+        "rule": "With pronoun objects, particle MUST go after",
+        "correct": "Turn it off.",
+        "incorrect": "Turn off it.",
+        "severity": "critical"
+      },
+      {
+        "rule": "Inseparable phrasal verbs never separate",
+        "correct": "Look after the children.",
+        "incorrect": "Look the children after."
+      }
+    ]
+  },
+  "translation_guidelines": {
+    "rules": [
+      "NEVER translate phrasal verbs word-by-word",
+      "Find equivalent idiom/expression in target language",
+      "Consider all possible meanings based on context",
+      "Check if target language has similar phrasal construction",
+      "When unsure, use explanatory translation"
+    ],
+    "common_mt_errors": [
+      "'take off' → 'взять прочь' instead of 'снять/взлететь'",
+      "'give up' → 'дать вверх' instead of 'сдаться'",
+      "'look after' → 'смотреть после' instead of 'заботиться'"
+    ]
+  }
+}

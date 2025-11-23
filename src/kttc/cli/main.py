@@ -48,6 +48,7 @@ from kttc.cli.ui import (
     print_translation_preview,
 )
 from kttc.core import BatchFileParser, BatchGrouper, QAReport, TranslationTask
+from kttc.helpers.detection import detect_language
 from kttc.i18n import get_supported_languages, set_language
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 from kttc.utils.config import get_settings
@@ -250,6 +251,350 @@ async def _run_compare_mode(
     )
 
 
+def _detect_languages_from_files(
+    source_path: Path,
+    translation_path: Path,
+    source_lang: str | None,
+    target_lang: str | None,
+    verbose: bool,
+) -> tuple[str | None, str | None]:
+    """Auto-detect languages from source and translation files.
+
+    Args:
+        source_path: Path to source file
+        translation_path: Path to translation file
+        source_lang: User-specified source language (or None for auto-detect)
+        target_lang: User-specified target language (or None for auto-detect)
+        verbose: Verbose output for error messages
+
+    Returns:
+        Tuple of (source_lang, target_lang) - may contain None if detection failed
+    """
+    try:
+        if source_path.exists() and not source_lang:
+            source_text_sample = source_path.read_text(encoding="utf-8")[:1000]
+            source_lang = detect_language(source_text_sample)
+            console.print(f"[dim]🔍 Auto-detected source language: {source_lang}[/dim]")
+
+        if translation_path.exists() and not target_lang:
+            translation_text_sample = translation_path.read_text(encoding="utf-8")[:1000]
+            target_lang = detect_language(translation_text_sample)
+            console.print(f"[dim]🔍 Auto-detected target language: {target_lang}[/dim]")
+    except Exception as e:
+        if verbose:
+            console.print(f"[dim]⚠ Language auto-detection failed: {e}[/dim]")
+
+    return source_lang, target_lang
+
+
+def _detect_languages_from_directory(
+    source_dir: Path,
+    translation_dir: Path,
+    source_lang: str | None,
+    target_lang: str | None,
+    verbose: bool,
+) -> tuple[str | None, str | None]:
+    """Auto-detect languages from first files in directories.
+
+    Args:
+        source_dir: Path to source directory
+        translation_dir: Path to translation directory
+        source_lang: User-specified source language (or None for auto-detect)
+        target_lang: User-specified target language (or None for auto-detect)
+        verbose: Verbose output for error messages
+
+    Returns:
+        Tuple of (source_lang, target_lang) - may contain None if detection failed
+    """
+    try:
+        if source_dir.exists() and not source_lang:
+            for f in source_dir.iterdir():
+                if f.is_file() and f.suffix in (".txt", ".md", ".json"):
+                    sample = f.read_text(encoding="utf-8")[:1000]
+                    source_lang = detect_language(sample)
+                    console.print(f"[dim]🔍 Auto-detected source language: {source_lang}[/dim]")
+                    break
+
+        if translation_dir.exists() and not target_lang:
+            for f in translation_dir.iterdir():
+                if f.is_file() and f.suffix in (".txt", ".md", ".json"):
+                    sample = f.read_text(encoding="utf-8")[:1000]
+                    target_lang = detect_language(sample)
+                    console.print(f"[dim]🔍 Auto-detected target language: {target_lang}[/dim]")
+                    break
+    except Exception as e:
+        if verbose:
+            console.print(f"[dim]⚠ Language auto-detection failed: {e}[/dim]")
+
+    return source_lang, target_lang
+
+
+def _print_self_check_header(lang: str | None) -> None:
+    """Print self-check mode Easter egg header."""
+    console.print()
+    console.print("[yellow]🥚 Self-Check Mode Activated![/yellow]")
+    console.print('[dim]"Heal thyself before healing others" (Luke 4:23)[/dim]')
+    console.print("[dim]Pro tip: Always proofread your articles about proofreading tools![/dim]")
+    console.print()
+
+
+def _print_verbose_autodetect_info(
+    mode: str,
+    detected_glossary: str | None,
+    smart_routing: bool,
+    detected_format: str,
+) -> None:
+    """Print verbose auto-detection info."""
+    console.print(f"[dim]🎯 Mode: {mode}[/dim]")
+    if detected_glossary:
+        console.print(f"[dim]📚 Glossary: {detected_glossary}[/dim]")
+    if smart_routing:
+        console.print("[dim]🧠 Smart routing: enabled[/dim]")
+    console.print(f"[dim]📄 Output format: {detected_format}[/dim]\n")
+
+
+def _validate_required_languages(
+    source_lang: str | None,
+    target_lang: str | None,
+    context: str = "",
+) -> None:
+    """Validate that required languages are specified."""
+    if not source_lang or not target_lang:
+        msg = f"[red]Error: --source-lang and --target-lang are required {context}[/red]"
+        console.print(msg)
+        raise typer.Exit(code=1)
+
+
+def _run_single_mode(
+    mode_params: dict[str, Any],
+    source_lang: str | None,
+    target_lang: str | None,
+    verbose: bool,
+    threshold: float,
+    output: str | None,
+    detected_format: str,
+    provider: str | None,
+    auto_select_model: bool,
+    auto_correct: bool,
+    correction_level: str,
+    smart_routing: bool,
+    show_routing_info: bool,
+    simple_threshold: float,
+    complex_threshold: float,
+    detected_glossary: str | None,
+    reference: str | None,
+    demo: bool,
+) -> None:
+    """Run single file check mode."""
+    if not source_lang or not target_lang:
+        source_path = Path(str(mode_params["source"]))
+        translation_path = Path(str(mode_params["translation"]))
+        source_lang, target_lang = _detect_languages_from_files(
+            source_path, translation_path, source_lang, target_lang, verbose
+        )
+    _validate_required_languages(source_lang, target_lang, "(auto-detection failed)")
+    assert source_lang is not None and target_lang is not None  # validated above
+
+    asyncio.run(
+        _check_async(
+            str(mode_params["source"]),
+            str(mode_params["translation"]),
+            source_lang,
+            target_lang,
+            threshold,
+            output,
+            detected_format,
+            provider,
+            auto_select_model,
+            auto_correct,
+            correction_level,
+            smart_routing,
+            show_routing_info,
+            simple_threshold,
+            complex_threshold,
+            detected_glossary,
+            reference,
+            verbose,
+            demo,
+        )
+    )
+
+
+def _run_batch_dir_mode(
+    mode_params: dict[str, Any],
+    source_lang: str | None,
+    target_lang: str | None,
+    verbose: bool,
+    threshold: float,
+    output: str | None,
+    provider: str | None,
+    demo: bool,
+) -> None:
+    """Run batch directory mode."""
+    if not source_lang or not target_lang:
+        source_dir = Path(str(mode_params["source_dir"]))
+        translation_dir = Path(str(mode_params["translation_dir"]))
+        source_lang, target_lang = _detect_languages_from_directory(
+            source_dir, translation_dir, source_lang, target_lang, verbose
+        )
+    _validate_required_languages(
+        source_lang, target_lang, "for directory mode (auto-detection failed)"
+    )
+    assert source_lang is not None and target_lang is not None  # validated above
+
+    asyncio.run(
+        _batch_async(
+            str(mode_params["source_dir"]),
+            str(mode_params["translation_dir"]),
+            source_lang,
+            target_lang,
+            threshold,
+            output or "report.json",
+            4,
+            provider,
+            verbose,
+            demo,
+        )
+    )
+
+
+def _handle_self_check_mode(
+    source: str,
+    source_lang: str | None,
+    target_lang: str | None,
+    lang: str | None,
+    threshold: float,
+    output: str | None,
+    format: str | None,
+    provider: str | None,
+    verbose: bool,
+    demo: bool,
+) -> bool:
+    """Handle self-check mode if applicable.
+
+    Returns:
+        True if self-check mode was handled, False otherwise.
+    """
+    is_self_check = source_lang and target_lang and source_lang == target_lang
+    if not is_self_check:
+        return False
+
+    # Handle --lang shortcut
+    if lang:
+        source_lang = lang
+        target_lang = lang
+
+    if not source_lang:
+        console.print("[red]Error: --lang or --source-lang required for self-check mode[/red]")
+        raise typer.Exit(code=1)
+
+    # Easter egg message
+    _print_self_check_header(source_lang)
+
+    asyncio.run(
+        _self_check_async(
+            source=source,
+            language=source_lang,
+            threshold=threshold,
+            output=output,
+            format=_auto_detect_format(output, format),
+            provider=provider,
+            verbose=verbose,
+            demo=demo,
+        )
+    )
+    return True
+
+
+def _route_check_mode(
+    mode: str,
+    mode_params: dict[str, Any],
+    source_lang: str | None,
+    target_lang: str | None,
+    verbose: bool,
+    threshold: float,
+    output: str | None,
+    detected_format: str,
+    provider: str | None,
+    auto_select_model: bool,
+    auto_correct: bool,
+    correction_level: str,
+    smart_routing: bool,
+    show_routing_info: bool,
+    simple_threshold: float,
+    complex_threshold: float,
+    detected_glossary: str | None,
+    reference: str | None,
+    demo: bool,
+) -> None:
+    """Route to appropriate handler based on detected mode."""
+    if mode == "single":
+        _run_single_mode(
+            mode_params,
+            source_lang,
+            target_lang,
+            verbose,
+            threshold,
+            output,
+            detected_format,
+            provider,
+            auto_select_model,
+            auto_correct,
+            correction_level,
+            smart_routing,
+            show_routing_info,
+            simple_threshold,
+            complex_threshold,
+            detected_glossary,
+            reference,
+            demo,
+        )
+    elif mode == "compare":
+        translations_list = mode_params["translations"]
+        assert isinstance(translations_list, list), "translations must be a list"
+        asyncio.run(
+            _run_compare_mode(
+                str(mode_params["source"]),
+                translations_list,
+                source_lang,
+                target_lang,
+                threshold,
+                provider,
+                detected_glossary,
+                verbose,
+                demo,
+            )
+        )
+    elif mode == "batch_file":
+        asyncio.run(
+            _batch_from_file_async(
+                str(mode_params["file_path"]),
+                threshold,
+                output or "report.json",
+                4,
+                None,
+                provider,
+                smart_routing,
+                False,
+                True,
+                detected_glossary,
+                verbose,
+                demo,
+            )
+        )
+    elif mode == "batch_dir":
+        _run_batch_dir_mode(
+            mode_params,
+            source_lang,
+            target_lang,
+            verbose,
+            threshold,
+            output,
+            provider,
+            demo,
+        )
+
+
 @app.command()
 def check(
     source: str = typer.Argument(..., help="Source text file path, directory, or CSV/JSON file"),
@@ -380,150 +725,51 @@ def check(
 
     try:
         # 🥚 Self-check mode (Easter egg!)
-        if self_check or (source_lang and target_lang and source_lang == target_lang):
-            # Handle --lang shortcut
-            if lang:
-                source_lang = lang
-                target_lang = lang
-
-            if not source_lang:
-                console.print(
-                    "[red]Error: --lang or --source-lang required for self-check mode[/red]"
-                )
-                raise typer.Exit(code=1)
-
-            # Easter egg message
-            console.print()
-            console.print("[yellow]🥚 Self-Check Mode Activated![/yellow]")
-            console.print('[dim]"Heal thyself before healing others" (Luke 4:23)[/dim]')
-            console.print(
-                "[dim]Pro tip: Always proofread your articles about proofreading tools![/dim]"
-            )
-            console.print()
-
-            asyncio.run(
-                _self_check_async(
-                    source=source,
-                    language=source_lang,
-                    threshold=threshold,
-                    output=output,
-                    format=_auto_detect_format(output, format),
-                    provider=provider,
-                    verbose=verbose,
-                    demo=demo,
-                )
-            )
+        if self_check or _handle_self_check_mode(
+            source,
+            source_lang,
+            target_lang,
+            lang,
+            threshold,
+            output,
+            format,
+            provider,
+            verbose,
+            demo,
+        ):
             return
 
         # 🎯 Auto-detect mode
         mode, mode_params = _detect_check_mode(source, translations)
-
-        # Auto-detect glossary
         detected_glossary = _auto_detect_glossary(glossary)
-
-        # 📄 Auto-detect output format
         detected_format = _auto_detect_format(output, format)
 
         # Show auto-detection info if verbose
         if verbose:
-            console.print(f"[dim]🎯 Mode: {mode}[/dim]")
-            if detected_glossary:
-                console.print(f"[dim]📚 Glossary: {detected_glossary}[/dim]")
-            if smart_routing:
-                console.print("[dim]🧠 Smart routing: enabled[/dim]")
-            console.print(f"[dim]📄 Output format: {detected_format}[/dim]\n")
+            _print_verbose_autodetect_info(mode, detected_glossary, smart_routing, detected_format)
 
         # Route to appropriate handler
-        if mode == "single":
-            # Single file check
-            # Check required languages
-            if not source_lang or not target_lang:
-                console.print("[red]Error: --source-lang and --target-lang are required[/red]")
-                raise typer.Exit(code=1)
-
-            asyncio.run(
-                _check_async(
-                    str(mode_params["source"]),
-                    str(mode_params["translation"]),
-                    source_lang,
-                    target_lang,
-                    threshold,
-                    output,
-                    detected_format,
-                    provider,
-                    auto_select_model,
-                    auto_correct,
-                    correction_level,
-                    smart_routing,
-                    show_routing_info,
-                    simple_threshold,
-                    complex_threshold,
-                    detected_glossary,
-                    reference,
-                    verbose,
-                    demo,
-                )
-            )
-        elif mode == "compare":
-            # Compare mode - delegate to compare command logic
-            translations_list = mode_params["translations"]
-            assert isinstance(
-                translations_list, list
-            ), "translations must be a list in compare mode"
-
-            asyncio.run(
-                _run_compare_mode(
-                    str(mode_params["source"]),
-                    translations_list,
-                    source_lang,
-                    target_lang,
-                    threshold,
-                    provider,
-                    detected_glossary,
-                    verbose,
-                    demo,
-                )
-            )
-        elif mode == "batch_file":
-            # Batch file mode
-            asyncio.run(
-                _batch_from_file_async(
-                    str(mode_params["file_path"]),
-                    threshold,
-                    output or "report.json",
-                    4,  # parallel workers
-                    None,  # batch_size
-                    provider,
-                    smart_routing,
-                    False,  # show_cost_savings
-                    True,  # show_progress
-                    detected_glossary,
-                    verbose,
-                    demo,
-                )
-            )
-        elif mode == "batch_dir":
-            # Batch directory mode
-            if not source_lang or not target_lang:
-                console.print(
-                    "[red]Error: --source-lang and --target-lang required for directory mode[/red]"
-                )
-                raise typer.Exit(code=1)
-
-            asyncio.run(
-                _batch_async(
-                    str(mode_params["source_dir"]),
-                    str(mode_params["translation_dir"]),
-                    source_lang,
-                    target_lang,
-                    threshold,
-                    output or "report.json",
-                    4,  # parallel workers
-                    provider,
-                    verbose,
-                    demo,
-                )
-            )
+        _route_check_mode(
+            mode,
+            mode_params,
+            source_lang,
+            target_lang,
+            verbose,
+            threshold,
+            output,
+            detected_format,
+            provider,
+            auto_select_model,
+            auto_correct,
+            correction_level,
+            smart_routing,
+            show_routing_info,
+            simple_threshold,
+            complex_threshold,
+            detected_glossary,
+            reference,
+            demo,
+        )
 
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
@@ -536,6 +782,230 @@ def check(
         if verbose:
             console.print_exception()
         raise typer.Exit(code=1)
+
+
+def _setup_self_check_llm(
+    provider: str | None, settings: Any, verbose: bool, demo: bool
+) -> BaseLLMProvider | None:
+    """Setup LLM provider for self-check mode.
+
+    Returns:
+        LLM provider instance or None if not available
+    """
+    from kttc.cli.demo import DemoLLMProvider
+
+    if demo:
+        return DemoLLMProvider(model="demo-model")
+
+    try:
+        return _setup_llm_provider(provider, settings, verbose, demo=demo)
+    except Exception as e:
+        if verbose:
+            console.print(
+                f"[yellow]⚠ LLM not available, using rule-based checks only: {e}[/yellow]\n"
+            )
+        return None
+
+
+async def _run_spelling_check(language: str, text: str) -> list[Any]:
+    """Run spelling check with progress indicator."""
+    from kttc.agents.proofreading import SpellingAgent
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+    ) as progress:
+        progress.add_task("[cyan]Checking spelling...[/cyan]", total=None)
+        spelling_agent = SpellingAgent(
+            llm_provider=None,
+            language=language,
+            use_patterns=True,
+            use_school_rules=True,
+        )
+        return await spelling_agent.check(text)
+
+
+async def _run_grammar_check(
+    language: str, text: str, llm_provider: BaseLLMProvider | None, existing_errors: list[Any]
+) -> tuple[list[Any], list[Any]]:
+    """Run grammar check with progress indicator and deduplication.
+
+    Returns:
+        Tuple of (grammar_errors, all_errors with deduplicated grammar errors added)
+    """
+    from kttc.agents.proofreading import GrammarAgent
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        console=console,
+    ) as progress:
+        progress.add_task("[cyan]Checking grammar...[/cyan]", total=None)
+        grammar_agent = GrammarAgent(
+            llm_provider=llm_provider,
+            language=language,
+            use_languagetool=True,
+            use_school_rules=True,
+        )
+        grammar_errors = await grammar_agent.check(text)
+
+    # Deduplicate
+    all_errors = list(existing_errors)
+    seen_positions: set[tuple[int, int]] = {e.location for e in all_errors}
+    for err in grammar_errors:
+        if err.location not in seen_positions:
+            all_errors.append(err)
+            seen_positions.add(err.location)
+
+    return grammar_errors, all_errors
+
+
+def _calculate_self_check_score(
+    all_errors: list[Any], text: str
+) -> tuple[float, int, int, int, int]:
+    """Calculate MQM-style score for self-check.
+
+    Returns:
+        Tuple of (score, word_count, critical_count, major_count, minor_count)
+    """
+    critical_count = sum(1 for e in all_errors if e.severity.value == "critical")
+    major_count = sum(1 for e in all_errors if e.severity.value == "major")
+    minor_count = sum(1 for e in all_errors if e.severity.value == "minor")
+
+    penalty = critical_count * 10 + major_count * 5 + minor_count * 1
+    word_count = len(text.split())
+    normalized_penalty = (penalty / max(word_count, 1)) * 100
+    score = max(0, 100 - normalized_penalty)
+
+    return score, word_count, critical_count, major_count, minor_count
+
+
+def _display_self_check_summary(
+    score: float,
+    threshold: float,
+    all_errors: list[Any],
+    critical_count: int,
+    major_count: int,
+    minor_count: int,
+) -> str:
+    """Display self-check score summary.
+
+    Returns:
+        Status string ('PASS' or 'NEEDS REVISION')
+    """
+    console.print()
+    score_color = "green" if score >= threshold else "yellow" if score >= 80 else "red"
+    status = "PASS" if score >= threshold else "NEEDS REVISION"
+    status_color = "green" if score >= threshold else "red"
+
+    console.print(
+        f"[bold {status_color}]{'✓' if score >= threshold else '✗'} {status}[/bold {status_color}]"
+    )
+    console.print(f"\n[bold]Quality Score:[/bold] [{score_color}]{score:.1f}[/{score_color}] / 100")
+    console.print(f"[bold]Threshold:[/bold] {threshold}")
+    console.print(f"\n[bold]Issues Found:[/bold] {len(all_errors)}")
+    console.print(f"  Critical: {critical_count} | Major: {major_count} | Minor: {minor_count}")
+
+    return status
+
+
+def _display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
+    """Display verbose error table."""
+    console.print("\n[bold]Error Details:[/bold]")
+    table = Table(show_header=True, header_style="bold cyan")
+    table.add_column("Type", style="cyan", width=12)
+    table.add_column("Severity", width=10)
+    table.add_column("Text", width=20)
+    table.add_column("Suggestion", width=20)
+    table.add_column("Description", width=40)
+
+    for error in all_errors[:20]:
+        severity_color = (
+            "red"
+            if error.severity.value == "critical"
+            else "yellow" if error.severity.value == "major" else "dim"
+        )
+        start, end = error.location
+        error_text = text[start:end] if start < len(text) and end <= len(text) else ""
+        table.add_row(
+            error.subcategory,
+            f"[{severity_color}]{error.severity.value}[/{severity_color}]",
+            error_text[:20],
+            (error.suggestion or "")[:20],
+            error.description[:40] + "..." if len(error.description) > 40 else error.description,
+        )
+
+    console.print(table)
+    if len(all_errors) > 20:
+        console.print(f"[dim]... and {len(all_errors) - 20} more errors[/dim]")
+
+
+def _display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
+    """Display compact error view."""
+    console.print("\n[bold]Top Issues:[/bold]")
+    for error in all_errors[:5]:
+        severity_icon = (
+            "🔴"
+            if error.severity.value == "critical"
+            else "🟡" if error.severity.value == "major" else "⚪"
+        )
+        suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
+        start, end = error.location
+        error_text = text[start:end] if start < len(text) and end <= len(text) else ""
+        console.print(f"  {severity_icon} '{error_text}'{suggestion_text}")
+        console.print(f"     [dim]{error.description}[/dim]")
+
+    if len(all_errors) > 5:
+        console.print(f"\n[dim]Use --verbose to see all {len(all_errors)} issues[/dim]")
+
+
+def _save_self_check_report(
+    output: str,
+    format: str,
+    language: str,
+    source_path: Path,
+    score: float,
+    threshold: float,
+    status: str,
+    word_count: int,
+    all_errors: list[Any],
+    text: str,
+    critical_count: int,
+    major_count: int,
+    minor_count: int,
+) -> None:
+    """Save self-check report to file."""
+    report_data = {
+        "mode": "self-check",
+        "language": language,
+        "file": str(source_path),
+        "score": score,
+        "threshold": threshold,
+        "status": status.lower().replace(" ", "_"),
+        "word_count": word_count,
+        "errors": [
+            {
+                "type": e.subcategory,
+                "severity": e.severity.value,
+                "location": list(e.location),
+                "text": text[e.location[0] : e.location[1]] if e.location[0] < len(text) else "",
+                "suggestion": e.suggestion,
+                "description": e.description,
+            }
+            for e in all_errors
+        ],
+        "summary": {
+            "total": len(all_errors),
+            "critical": critical_count,
+            "major": major_count,
+            "minor": minor_count,
+        },
+    }
+
+    output_path = Path(output)
+    output_path.write_text(json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8")
+    console.print(f"\n[dim]Report saved to: {output}[/dim]")
 
 
 async def _self_check_async(
@@ -560,10 +1030,6 @@ async def _self_check_async(
         verbose: Verbose output flag
         demo: Demo mode flag
     """
-    from kttc.agents.proofreading import GrammarAgent, SpellingAgent
-    from kttc.cli.demo import DemoLLMProvider
-
-    # Load settings
     settings = get_settings()
 
     # Load the file
@@ -581,186 +1047,48 @@ async def _self_check_async(
         console.print(f"[dim]Loaded {len(text)} characters from {source_path.name}[/dim]\n")
 
     # Setup LLM provider (optional for self-check)
-    llm_provider = None
-    if not demo:
-        try:
-            llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
-        except Exception as e:
-            if verbose:
-                console.print(
-                    f"[yellow]⚠ LLM not available, using rule-based checks only: {e}[/yellow]\n"
-                )
-    else:
-        llm_provider = DemoLLMProvider(model="demo-model")
+    llm_provider = _setup_self_check_llm(provider, settings, verbose, demo)
 
     # Run proofreading agents
-    all_errors: list[Any] = []
-
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        console=console,
-    ) as progress:
-        # Step 1: Spelling check
-        progress.add_task("[cyan]Checking spelling...[/cyan]", total=None)
-        spelling_agent = SpellingAgent(
-            llm_provider=None,  # Fast rule-based only
-            language=language,
-            use_patterns=True,
-            use_school_rules=True,
-        )
-        spelling_errors = await spelling_agent.check(text)
-        all_errors.extend(spelling_errors)
-
+    spelling_errors = await _run_spelling_check(language, text)
     console.print(f"[green]✓[/green] Spelling check: found {len(spelling_errors)} issues")
 
-    with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        console=console,
-    ) as progress:
-        # Step 2: Grammar check
-        progress.add_task("[cyan]Checking grammar...[/cyan]", total=None)
-        grammar_agent = GrammarAgent(
-            llm_provider=llm_provider,
-            language=language,
-            use_languagetool=True,
-            use_school_rules=True,
-        )
-        grammar_errors = await grammar_agent.check(text)
-
-        # Deduplicate
-        seen_positions: set[tuple[int, int]] = {e.location for e in all_errors}
-        for err in grammar_errors:
-            if err.location not in seen_positions:
-                all_errors.append(err)
-                seen_positions.add(err.location)
-
+    grammar_errors, all_errors = await _run_grammar_check(
+        language, text, llm_provider, spelling_errors
+    )
     console.print(f"[green]✓[/green] Grammar check: found {len(grammar_errors)} issues")
 
-    # Calculate score
-    # MQM-style: start from 100, subtract penalties
-    critical_count = sum(1 for e in all_errors if e.severity.value == "critical")
-    major_count = sum(1 for e in all_errors if e.severity.value == "major")
-    minor_count = sum(1 for e in all_errors if e.severity.value == "minor")
-
-    # Penalties: critical=10, major=5, minor=1
-    penalty = critical_count * 10 + major_count * 5 + minor_count * 1
-    word_count = len(text.split())
-    normalized_penalty = (penalty / max(word_count, 1)) * 100
-    score = max(0, 100 - normalized_penalty)
-
-    # Display results
-    console.print()
-    score_color = "green" if score >= threshold else "yellow" if score >= 80 else "red"
-    status = "PASS" if score >= threshold else "NEEDS REVISION"
-    status_color = "green" if score >= threshold else "red"
-
-    console.print(
-        f"[bold {status_color}]{'✓' if score >= threshold else '✗'} {status}[/bold {status_color}]"
+    # Calculate and display results
+    score, word_count, critical_count, major_count, minor_count = _calculate_self_check_score(
+        all_errors, text
     )
-    console.print(f"\n[bold]Quality Score:[/bold] [{score_color}]{score:.1f}[/{score_color}] / 100")
-    console.print(f"[bold]Threshold:[/bold] {threshold}")
-    console.print(f"\n[bold]Issues Found:[/bold] {len(all_errors)}")
-    console.print(f"  Critical: {critical_count} | Major: {major_count} | Minor: {minor_count}")
+    status = _display_self_check_summary(
+        score, threshold, all_errors, critical_count, major_count, minor_count
+    )
 
     # Display errors
     if all_errors and verbose:
-        console.print("\n[bold]Error Details:[/bold]")
-        table = Table(show_header=True, header_style="bold cyan")
-        table.add_column("Type", style="cyan", width=12)
-        table.add_column("Severity", width=10)
-        table.add_column("Text", width=20)
-        table.add_column("Suggestion", width=20)
-        table.add_column("Description", width=40)
-
-        for error in all_errors[:20]:  # Limit to 20 errors
-            severity_color = (
-                "red"
-                if error.severity.value == "critical"
-                else "yellow" if error.severity.value == "major" else "dim"
-            )
-            # Extract error text from the original text using location
-            start, end = error.location
-            error_text = text[start:end] if start < len(text) and end <= len(text) else ""
-            table.add_row(
-                error.subcategory,
-                f"[{severity_color}]{error.severity.value}[/{severity_color}]",
-                error_text[:20],
-                (error.suggestion or "")[:20],
-                (
-                    error.description[:40] + "..."
-                    if len(error.description) > 40
-                    else error.description
-                ),
-            )
-
-        console.print(table)
-
-        if len(all_errors) > 20:
-            console.print(f"[dim]... and {len(all_errors) - 20} more errors[/dim]")
-
+        _display_self_check_errors_verbose(all_errors, text)
     elif all_errors:
-        # Compact view
-        console.print("\n[bold]Top Issues:[/bold]")
-        for error in all_errors[:5]:
-            severity_icon = (
-                "🔴"
-                if error.severity.value == "critical"
-                else "🟡" if error.severity.value == "major" else "⚪"
-            )
-            suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
-            start, end = error.location
-            error_text = text[start:end] if start < len(text) and end <= len(text) else ""
-            console.print(f"  {severity_icon} '{error_text}'{suggestion_text}")
-            console.print(f"     [dim]{error.description}[/dim]")
-
-        if len(all_errors) > 5:
-            console.print(f"\n[dim]Use --verbose to see all {len(all_errors)} issues[/dim]")
+        _display_self_check_errors_compact(all_errors, text)
 
     # Save output if requested
     if output:
-        report_data = {
-            "mode": "self-check",
-            "language": language,
-            "file": str(source_path),
-            "score": score,
-            "threshold": threshold,
-            "status": status.lower().replace(" ", "_"),
-            "word_count": word_count,
-            "errors": [
-                {
-                    "type": e.subcategory,
-                    "severity": e.severity.value,
-                    "location": list(e.location),
-                    "text": (
-                        text[e.location[0] : e.location[1]] if e.location[0] < len(text) else ""
-                    ),
-                    "suggestion": e.suggestion,
-                    "description": e.description,
-                }
-                for e in all_errors
-            ],
-            "summary": {
-                "total": len(all_errors),
-                "critical": critical_count,
-                "major": major_count,
-                "minor": minor_count,
-            },
-        }
-
-        output_path = Path(output)
-        if format == "json" or output.endswith(".json"):
-            output_path.write_text(
-                json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8"
-            )
-        else:
-            # Default to JSON for self-check
-            output_path.write_text(
-                json.dumps(report_data, indent=2, ensure_ascii=False), encoding="utf-8"
-            )
-
-        console.print(f"\n[dim]Report saved to: {output}[/dim]")
+        _save_self_check_report(
+            output,
+            format,
+            language,
+            source_path,
+            score,
+            threshold,
+            status,
+            word_count,
+            all_errors,
+            text,
+            critical_count,
+            major_count,
+            minor_count,
+        )
 
     # Exit code based on score
     if score < threshold:
@@ -829,6 +1157,291 @@ def _create_translation_task(
     return task
 
 
+def _load_glossaries_for_task(
+    glossary: str | None,
+    task: TranslationTask,
+    source_text: str,
+    source_lang: str,
+    target_lang: str,
+    verbose: bool,
+) -> None:
+    """Load glossaries and add terms to task context."""
+    if not glossary:
+        return
+
+    from kttc.core import GlossaryManager
+
+    try:
+        manager = GlossaryManager()
+        glossary_names = [g.strip() for g in glossary.split(",")]
+        manager.load_multiple(glossary_names)
+
+        terms = manager.find_in_text(source_text, source_lang, target_lang)
+        task.context = task.context or {}
+        task.context["glossary_terms"] = [
+            {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
+            for t in terms
+        ]
+
+        if verbose:
+            console.print(
+                f"[dim]Loaded {len(glossary_names)} glossaries, "
+                f"found {len(terms)} relevant terms[/dim]"
+            )
+    except Exception as e:
+        console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]")
+
+
+def _perform_smart_routing(
+    source_text: str,
+    source_lang: str,
+    target_lang: str,
+    task: TranslationTask,
+    settings: Any,
+    show_routing_info: bool,
+) -> tuple[str | None, Any]:
+    """Perform smart routing to select optimal model."""
+    from kttc.llm import ComplexityRouter
+
+    try:
+        router = ComplexityRouter()
+        available_providers = _get_available_providers(settings)
+
+        selected_model, complexity_score = router.route(
+            source_text,
+            source_lang,
+            target_lang,
+            domain=task.context.get("domain") if task.context else None,
+            available_providers=available_providers,
+        )
+
+        if show_routing_info:
+            console.print("[dim]─ Complexity Analysis ─[/dim]")
+            console.print(f"[dim]Overall: {complexity_score.overall:.2f}[/dim]")
+            console.print(f"[dim]  Sentence length: {complexity_score.sentence_length:.2f}[/dim]")
+            console.print(f"[dim]  Rare words: {complexity_score.rare_words:.2f}[/dim]")
+            console.print(f"[dim]  Syntactic: {complexity_score.syntactic:.2f}[/dim]")
+            console.print(f"[dim]  Domain-specific: {complexity_score.domain_specific:.2f}[/dim]")
+            console.print(f"[dim]Selected model: {selected_model}[/dim]\n")
+
+        return selected_model, complexity_score
+    except Exception as e:
+        console.print(f"[yellow]⚠ Warning: Smart routing failed, using default: {e}[/yellow]")
+        return None, None
+
+
+def _map_model_to_provider(selected_model: str | None, provider: str | None) -> str | None:
+    """Map selected model to provider name."""
+    if selected_model is None or provider is not None:
+        return provider
+
+    model_lower = selected_model.lower()
+    if "gpt" in model_lower and "yandex" not in model_lower:
+        return "openai"
+    elif "claude" in model_lower:
+        return "anthropic"
+    elif "yandex" in model_lower:
+        return "yandex"
+    return provider
+
+
+def _run_nlp_analysis(
+    task: TranslationTask, verbose: bool, api_errors: list[str]
+) -> dict[str, Any] | None:
+    """Run NLP analysis on the translation."""
+    from kttc.helpers import get_helper_for_language
+
+    helper = get_helper_for_language(task.target_lang)
+    if not helper or not helper.is_available():
+        if verbose:
+            console.print(
+                "[dim]⊘ Step 1/3: Linguistic analysis (not available for this language)[/dim]"
+            )
+        return None
+
+    if verbose:
+        with create_step_progress() as progress:
+            progress.add_task("[cyan]Step 1/3: Analyzing linguistic features...[/cyan]", total=None)
+            try:
+                nlp_insights = get_nlp_insights(task, helper)
+            except Exception as e:
+                api_errors.append(f"NLP analysis failed: {str(e)}")
+                nlp_insights = None
+        console.print("[green]✓[/green] Step 1/3: Linguistic analysis complete")
+    else:
+        try:
+            nlp_insights = get_nlp_insights(task, helper)
+        except Exception:
+            nlp_insights = None
+
+    return nlp_insights
+
+
+def _run_style_analysis(source_text: str, source_lang: str, verbose: bool) -> Any:
+    """Run style analysis on source text."""
+    try:
+        from kttc.style import StyleFingerprint
+
+        style_analyzer = StyleFingerprint()
+        style_profile = style_analyzer.analyze(source_text, lang=source_lang)
+        if verbose and style_profile.is_literary:
+            console.print(
+                f"[magenta]📚 Literary text detected: "
+                f"{style_profile.detected_pattern.value.replace('_', ' ').title()}[/magenta]"
+            )
+        return style_profile
+    except Exception:
+        return None
+
+
+async def _run_quality_evaluation(
+    llm_provider: BaseLLMProvider,
+    task: TranslationTask,
+    threshold: float,
+    settings: Any,
+    verbose: bool,
+    api_errors: list[str],
+) -> tuple[QAReport, AgentOrchestrator]:
+    """Run multi-agent quality evaluation."""
+    orchestrator = AgentOrchestrator(
+        llm_provider,
+        quality_threshold=threshold,
+        agent_temperature=settings.default_temperature,
+        agent_max_tokens=settings.default_max_tokens,
+    )
+
+    if verbose:
+        with create_step_progress() as progress:
+            progress.add_task(
+                "[cyan]Step 2/3: Running multi-agent quality assessment...[/cyan]", total=None
+            )
+            try:
+                report = await orchestrator.evaluate(task)
+            except Exception as e:
+                console.print("[red]✗[/red] Step 2/3: Quality assessment failed")
+                api_errors.append(f"Quality assessment failed: {str(e)}")
+                raise RuntimeError(f"Evaluation failed: {e}") from e
+        console.print("[green]✓[/green] Step 2/3: Quality assessment complete")
+        console.print("[green]✓[/green] Step 3/3: Report ready")
+        console.print()
+    else:
+        with create_step_progress() as progress:
+            progress.add_task("[cyan]Evaluating translation quality...[/cyan]", total=None)
+            try:
+                report = await orchestrator.evaluate(task)
+            except Exception as e:
+                api_errors.append(f"Quality assessment failed: {str(e)}")
+                raise RuntimeError(f"Evaluation failed: {e}") from e
+
+    return report, orchestrator
+
+
+def _calculate_lightweight_metrics(
+    source_text: str,
+    translation_text: str,
+    reference: str | None,
+    verbose: bool,
+) -> tuple[Any, list[Any] | None, float | None]:
+    """Calculate lightweight metrics and detect rule-based errors."""
+    from kttc.evaluation import ErrorDetector, LightweightMetrics
+
+    metrics_calculator = LightweightMetrics()
+    error_detector = ErrorDetector()
+
+    reference_text = None
+    if reference:
+        try:
+            reference_path = Path(reference)
+            if reference_path.exists():
+                reference_text = reference_path.read_text(encoding="utf-8").strip()
+                if verbose:
+                    console.print(f"[dim]Loaded {len(reference_text)} chars from reference[/dim]")
+            else:
+                console.print(f"[yellow]⚠ Reference file not found: {reference}[/yellow]")
+        except Exception as e:
+            console.print(f"[yellow]⚠ Failed to load reference: {e}[/yellow]")
+
+    try:
+        reference_for_metrics = reference_text if reference_text else translation_text
+        lightweight_scores = metrics_calculator.evaluate(
+            translation=translation_text,
+            reference=reference_for_metrics,
+            source=source_text,
+        )
+
+        rule_based_errors = error_detector.detect_all_errors(
+            source=source_text, translation=translation_text
+        )
+        rule_based_score = error_detector.calculate_rule_based_score(rule_based_errors)
+
+        if not reference_text and verbose:
+            console.print(
+                "[dim]ℹ️  No reference translation provided. "
+                "Metrics show baseline (self-comparison). "
+                "Use --reference for meaningful scores.[/dim]\n"
+            )
+
+        return lightweight_scores, rule_based_errors, rule_based_score
+    except Exception as e:
+        if verbose:
+            console.print(f"[dim]⚠ Lightweight metrics calculation failed: {e}[/dim]")
+        return None, None, None
+
+
+async def _handle_auto_correction(
+    auto_correct: bool,
+    report: QAReport,
+    task: TranslationTask,
+    orchestrator: AgentOrchestrator,
+    llm_provider: BaseLLMProvider,
+    translation: str,
+    source_text: str,
+    source_lang: str,
+    target_lang: str,
+    correction_level: str,
+    settings: Any,
+    verbose: bool,
+) -> None:
+    """Handle auto-correction if requested."""
+    if not auto_correct or len(report.errors) == 0:
+        return
+
+    from kttc.core.correction import AutoCorrector
+
+    console.print(f"\n[yellow]🔧 Applying auto-correction ({correction_level})...[/yellow]")
+    try:
+        corrector = AutoCorrector(llm_provider)
+        corrected_text = await corrector.auto_correct(
+            task=task,
+            errors=report.errors,
+            correction_level=correction_level,
+            temperature=settings.default_temperature,
+        )
+
+        corrected_path = Path(translation).parent / f"{Path(translation).stem}_corrected.txt"
+        corrected_path.write_text(corrected_text, encoding="utf-8")
+        console.print(f"[green]✓ Corrected translation saved to: {corrected_path}[/green]")
+
+        if verbose:
+            console.print("\n[dim]Re-evaluating corrected translation...[/dim]")
+        corrected_task = _create_translation_task(
+            source_text, corrected_text, source_lang, target_lang, verbose=False
+        )
+        corrected_report = await orchestrator.evaluate(corrected_task)
+
+        console.print("\n[bold]Corrected Translation Quality:[/bold]")
+        console.print(f"MQM Score: [cyan]{corrected_report.mqm_score:.2f}[/cyan]")
+        console.print(f"Errors: {len(report.errors)} → [cyan]{len(corrected_report.errors)}[/cyan]")
+        status_color = "green" if corrected_report.status == "pass" else "red"
+        console.print(
+            f"Status: {report.status} → [{status_color}]{corrected_report.status}[/{status_color}]"
+        )
+    except Exception as e:
+        console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
+        if verbose:
+            console.print_exception()
+
+
 async def _check_async(
     source: str,
     translation: str,
@@ -843,287 +1456,75 @@ async def _check_async(
     correction_level: str,
     smart_routing: bool,
     show_routing_info: bool,
-    simple_threshold: float,
-    complex_threshold: float,
+    simple_threshold: float,  # noqa: ARG001 - Reserved for future use
+    complex_threshold: float,  # noqa: ARG001 - Reserved for future use
     glossary: str | None,
     reference: str | None,
     verbose: bool,
     demo: bool = False,
 ) -> None:
     """Async implementation of check command."""
-    from kttc.core import GlossaryManager
-    from kttc.core.correction import AutoCorrector
-    from kttc.llm import ComplexityRouter
+    # Configure logging
+    log_level = logging.INFO if verbose else logging.WARNING
+    logging.basicConfig(level=log_level, format="%(message)s", force=True)
 
-    # Configure logging based on verbose flag
-    if verbose:
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(message)s",  # Simple format for CLI output
-            force=True,  # Override any existing configuration
-        )
-    else:
-        logging.basicConfig(level=logging.WARNING, force=True)
-
-    # Load settings
     settings = get_settings()
 
     # Display header (verbose mode only)
     if verbose:
-        print_header(
-            "✓ Translation Quality Check",
-            "Evaluating translation quality with multi-agent AI system",
+        _display_check_header(
+            source,
+            translation,
+            source_lang,
+            target_lang,
+            threshold,
+            auto_select_model,
+            auto_correct,
+            correction_level,
         )
 
-        # Prepare configuration info
-        config_info = {
-            "Source File": source,
-            "Translation File": translation,
-            "Languages": f"{source_lang} → {target_lang}",
-            "Quality Threshold": f"{threshold}",
-        }
-        if auto_select_model:
-            config_info["Model Selection"] = "Automatic (intelligent)"
-        if auto_correct:
-            config_info["Auto-Correct"] = f"Enabled ({correction_level})"
+    # Load files and create task
+    source_text, translation_text = _load_translation_files(source, translation, verbose)
+    task = _create_translation_task(
+        source_text, translation_text, source_lang, target_lang, verbose
+    )
 
-        print_startup_info(config_info)
+    # Load glossaries
+    _load_glossaries_for_task(glossary, task, source_text, source_lang, target_lang, verbose)
 
-    # Load files
-    try:
-        source_text, translation_text = _load_translation_files(source, translation, verbose)
-    except Exception as e:
-        raise RuntimeError(f"Failed to load files: {e}") from e
-
-    # Create translation task
-    try:
-        task = _create_translation_task(
-            source_text, translation_text, source_lang, target_lang, verbose
-        )
-    except Exception as e:
-        raise RuntimeError(f"Failed to create translation task: {e}") from e
-
-    # Load glossaries if specified
-    if glossary:
-        try:
-            manager = GlossaryManager()
-            glossary_names = [g.strip() for g in glossary.split(",")]
-            manager.load_multiple(glossary_names)
-
-            # Find relevant terms in source text
-            terms = manager.find_in_text(source_text, source_lang, target_lang)
-
-            # Add glossary terms to task context
-            task.context = task.context or {}
-            task.context["glossary_terms"] = [
-                {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
-                for t in terms
-            ]
-
-            if verbose:
-                console.print(
-                    f"[dim]Loaded {len(glossary_names)} glossaries, found {len(terms)} relevant terms[/dim]"
-                )
-        except Exception as e:
-            console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]")
-
-    # Smart routing: select model based on complexity
+    # Smart routing
     selected_model = None
-    complexity_score = None
-
     if smart_routing:
-        try:
-            router = ComplexityRouter()
-            # Get available providers to ensure smart routing only selects from configured providers
-            available_providers = _get_available_providers(settings)
-
-            # Note: ComplexityRouter doesn't have configurable thresholds yet,
-            # but the parameters are accepted for future use
-            selected_model, complexity_score = router.route(
-                source_text,
-                source_lang,
-                target_lang,
-                domain=task.context.get("domain") if task.context else None,
-                available_providers=available_providers,
-            )
-
-            if show_routing_info:
-                console.print("[dim]─ Complexity Analysis ─[/dim]")
-                console.print(f"[dim]Overall: {complexity_score.overall:.2f}[/dim]")
-                console.print(
-                    f"[dim]  Sentence length: {complexity_score.sentence_length:.2f}[/dim]"
-                )
-                console.print(f"[dim]  Rare words: {complexity_score.rare_words:.2f}[/dim]")
-                console.print(f"[dim]  Syntactic: {complexity_score.syntactic:.2f}[/dim]")
-                console.print(
-                    f"[dim]  Domain-specific: {complexity_score.domain_specific:.2f}[/dim]"
-                )
-                console.print(f"[dim]Selected model: {selected_model}[/dim]\n")
-        except Exception as e:
-            console.print(f"[yellow]⚠ Warning: Smart routing failed, using default: {e}[/yellow]")
-
-    # Setup LLM provider with intelligent model selection
-    try:
-        # If smart routing selected a model AND user didn't explicitly specify provider
-        # then map model to provider. Otherwise respect user's choice.
-        if smart_routing and selected_model and provider is None:
-            # Map model to provider
-            if "gpt" in selected_model.lower() and "yandex" not in selected_model.lower():
-                provider = "openai"
-            elif "claude" in selected_model.lower():
-                provider = "anthropic"
-            elif "yandex" in selected_model.lower():
-                provider = "yandex"
-
-        llm_provider = _setup_llm_provider(
-            provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
+        selected_model, _ = _perform_smart_routing(
+            source_text, source_lang, target_lang, task, settings, show_routing_info
         )
-    except Exception as e:
-        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
+        provider = _map_model_to_provider(selected_model, provider)
 
-    # Show translation preview (verbose mode only)
+    # Setup LLM provider
+    llm_provider = _setup_llm_provider(
+        provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
+    )
+
+    # Show translation preview
     if verbose:
         print_translation_preview(source_text, translation_text)
 
-    # Run evaluation
-    nlp_insights = None
-    api_errors = []
+    # Run analysis steps
+    api_errors: list[str] = []
+    nlp_insights = _run_nlp_analysis(task, verbose, api_errors)
+    style_profile = _run_style_analysis(source_text, source_lang, verbose)
 
-    # Step 1: NLP Analysis (if available)
-    from kttc.helpers import get_helper_for_language
+    # Quality evaluation
+    report, orchestrator = await _run_quality_evaluation(
+        llm_provider, task, threshold, settings, verbose, api_errors
+    )
 
-    helper = get_helper_for_language(task.target_lang)
-    if helper and helper.is_available():
-        if verbose:
-            with create_step_progress() as progress:
-                progress.add_task(
-                    "[cyan]Step 1/3: Analyzing linguistic features...[/cyan]", total=None
-                )
-                try:
-                    nlp_insights = get_nlp_insights(task, helper)
-                except Exception as e:
-                    if verbose:
-                        api_errors.append(f"NLP analysis failed: {str(e)}")
-            console.print("[green]✓[/green] Step 1/3: Linguistic analysis complete")
-        else:
-            # Compact mode: no progress output
-            try:
-                nlp_insights = get_nlp_insights(task, helper)
-            except Exception:
-                pass
-    elif verbose:
-        console.print(
-            "[dim]⊘ Step 1/3: Linguistic analysis (not available for this language)[/dim]"
-        )
+    # Calculate metrics
+    lightweight_scores, rule_based_errors, rule_based_score = _calculate_lightweight_metrics(
+        source_text, translation_text, reference, verbose
+    )
 
-    # Style analysis (optional, runs for source text to detect literary patterns)
-    style_profile = None
-    try:
-        from kttc.style import StyleFingerprint
-
-        style_analyzer = StyleFingerprint()
-        style_profile = style_analyzer.analyze(source_text, lang=source_lang)
-        if verbose and style_profile.is_literary:
-            console.print(
-                f"[magenta]📚 Literary text detected: "
-                f"{style_profile.detected_pattern.value.replace('_', ' ').title()}[/magenta]"
-            )
-    except Exception:
-        # Style analysis is optional, don't fail the check
-        pass
-
-    # Step 2: Quality Evaluation
-    if verbose:
-        with create_step_progress() as progress:
-            progress.add_task(
-                "[cyan]Step 2/3: Running multi-agent quality assessment...[/cyan]", total=None
-            )
-            try:
-                orchestrator = AgentOrchestrator(
-                    llm_provider,
-                    quality_threshold=threshold,
-                    agent_temperature=settings.default_temperature,
-                    agent_max_tokens=settings.default_max_tokens,
-                )
-                report = await orchestrator.evaluate(task)
-            except Exception as e:
-                console.print("[red]✗[/red] Step 2/3: Quality assessment failed")
-                api_errors.append(f"Quality assessment failed: {str(e)}")
-                raise RuntimeError(f"Evaluation failed: {e}") from e
-        console.print("[green]✓[/green] Step 2/3: Quality assessment complete")
-        console.print("[green]✓[/green] Step 3/3: Report ready")
-        console.print()
-    else:
-        # Compact mode: show spinner during evaluation
-        with create_step_progress() as progress:
-            progress.add_task(
-                "[cyan]Evaluating translation quality...[/cyan]",
-                total=None,
-            )
-            try:
-                orchestrator = AgentOrchestrator(
-                    llm_provider,
-                    quality_threshold=threshold,
-                    agent_temperature=settings.default_temperature,
-                    agent_max_tokens=settings.default_max_tokens,
-                )
-                report = await orchestrator.evaluate(task)
-            except Exception as e:
-                api_errors.append(f"Quality assessment failed: {str(e)}")
-                raise RuntimeError(f"Evaluation failed: {e}") from e
-
-    # Calculate lightweight metrics and rule-based errors
-    from kttc.evaluation import ErrorDetector, LightweightMetrics
-
-    metrics_calculator = LightweightMetrics()
-    error_detector = ErrorDetector()
-
-    # Load reference translation if provided
-    reference_text = None
-    if reference:
-        try:
-            reference_path = Path(reference)
-            if not reference_path.exists():
-                console.print(f"[yellow]⚠ Reference file not found: {reference}[/yellow]")
-            else:
-                reference_text = reference_path.read_text(encoding="utf-8").strip()
-                if verbose:
-                    console.print(f"[dim]Loaded {len(reference_text)} chars from reference[/dim]")
-        except Exception as e:
-            console.print(f"[yellow]⚠ Failed to load reference: {e}[/yellow]")
-
-    try:
-        # Calculate lightweight metrics
-        # If reference is provided, use it; otherwise use translation itself (baseline)
-        reference_for_metrics = reference_text if reference_text else translation_text
-
-        lightweight_scores = metrics_calculator.evaluate(
-            translation=translation_text,
-            reference=reference_for_metrics,
-            source=source_text,
-        )
-
-        # Detect rule-based errors (source vs translation)
-        rule_based_errors = error_detector.detect_all_errors(
-            source=source_text, translation=translation_text
-        )
-        rule_based_score = error_detector.calculate_rule_based_score(rule_based_errors)
-
-        # Show warning if no reference provided (verbose mode only)
-        if not reference_text and verbose:
-            console.print(
-                "[dim]ℹ️  No reference translation provided. "
-                "Metrics show baseline (self-comparison). "
-                "Use --reference for meaningful scores.[/dim]\n"
-            )
-    except Exception as e:
-        if verbose:
-            console.print(f"[dim]⚠ Lightweight metrics calculation failed: {e}[/dim]")
-        lightweight_scores = None
-        rule_based_errors = None
-        rule_based_score = None
-
-    # Display results using compact formatter
+    # Display results
     ConsoleFormatter.print_check_result(
         report=report,
         source_lang=source_lang,
@@ -1136,49 +1537,23 @@ async def _check_async(
         verbose=verbose,
     )
 
-    # Auto-correct if requested and errors found
-    if auto_correct and len(report.errors) > 0:
-        console.print(f"\n[yellow]🔧 Applying auto-correction ({correction_level})...[/yellow]")
-        try:
-            corrector = AutoCorrector(llm_provider)
-            corrected_text = await corrector.auto_correct(
-                task=task,
-                errors=report.errors,
-                correction_level=correction_level,
-                temperature=settings.default_temperature,
-            )
+    # Auto-correction
+    await _handle_auto_correction(
+        auto_correct,
+        report,
+        task,
+        orchestrator,
+        llm_provider,
+        translation,
+        source_text,
+        source_lang,
+        target_lang,
+        correction_level,
+        settings,
+        verbose,
+    )
 
-            # Save corrected version
-            corrected_path = Path(translation).parent / f"{Path(translation).stem}_corrected.txt"
-            corrected_path.write_text(corrected_text, encoding="utf-8")
-
-            console.print(f"[green]✓ Corrected translation saved to: {corrected_path}[/green]")
-
-            # Re-evaluate corrected translation
-            if verbose:
-                console.print("\n[dim]Re-evaluating corrected translation...[/dim]")
-            corrected_task = _create_translation_task(
-                source_text, corrected_text, source_lang, target_lang, verbose=False
-            )
-            corrected_report = await orchestrator.evaluate(corrected_task)
-
-            console.print("\n[bold]Corrected Translation Quality:[/bold]")
-            console.print(f"MQM Score: [cyan]{corrected_report.mqm_score:.2f}[/cyan]")
-            console.print(
-                f"Errors: {len(report.errors)} → [cyan]{len(corrected_report.errors)}[/cyan]"
-            )
-            console.print(
-                f"Status: {report.status} → "
-                f"[{'green' if corrected_report.status == 'pass' else 'red'}]"
-                f"{corrected_report.status}[/{'green' if corrected_report.status == 'pass' else 'red'}]"
-            )
-
-        except Exception as e:
-            console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
-            if verbose:
-                console.print_exception()
-
-    # Save output if requested
+    # Save output
     if output:
         _save_report(report, output, format)
         console.print(f"\n[dim]Report saved to: {output}[/dim]")
@@ -1188,6 +1563,34 @@ async def _check_async(
         console.print()
         print_info(f"Translation quality below threshold ({threshold}). Exiting with error code.")
         raise typer.Exit(code=1)
+
+
+def _display_check_header(
+    source: str,
+    translation: str,
+    source_lang: str,
+    target_lang: str,
+    threshold: float,
+    auto_select_model: bool,
+    auto_correct: bool,
+    correction_level: str,
+) -> None:
+    """Display check command header."""
+    print_header(
+        "✓ Translation Quality Check",
+        "Evaluating translation quality with multi-agent AI system",
+    )
+    config_info = {
+        "Source File": source,
+        "Translation File": translation,
+        "Languages": f"{source_lang} → {target_lang}",
+        "Quality Threshold": f"{threshold}",
+    }
+    if auto_select_model:
+        config_info["Model Selection"] = "Automatic (intelligent)"
+    if auto_correct:
+        config_info["Auto-Correct"] = f"Enabled ({correction_level})"
+    print_startup_info(config_info)
 
 
 def _scan_batch_directories(
@@ -1445,6 +1848,60 @@ async def _process_batch_files(
     return results
 
 
+def _load_and_apply_glossaries(glossary: str | None, translations: list[Any]) -> None:
+    """Load glossaries and apply terms to translations."""
+    if not glossary:
+        return
+
+    from kttc.core import GlossaryManager
+
+    try:
+        glossary_manager = GlossaryManager()
+        glossary_names = [g.strip() for g in glossary.split(",")]
+        glossary_manager.load_multiple(glossary_names)
+        console.print(f"[green]✓[/green] Loaded {len(glossary_names)} glossaries\n")
+
+        for trans in translations:
+            terms = glossary_manager.find_in_text(
+                trans.source_text, trans.source_lang, trans.target_lang
+            )
+            if terms:
+                trans.context = trans.context or {}
+                trans.context["glossary_terms"] = [
+                    {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
+                    for t in terms
+                ]
+    except Exception as e:
+        console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]\n")
+
+
+def _build_batch_config_info(
+    file_path: str,
+    translations: list[Any],
+    groups: dict[tuple[str, str], list[Any]],
+    threshold: float,
+    parallel: int,
+    batch_size: int | None,
+    smart_routing: bool,
+    glossary: str | None,
+) -> dict[str, str]:
+    """Build configuration info dictionary for display."""
+    config_info = {
+        "Input File": file_path,
+        "Total Translations": f"{len(translations)}",
+        "Language Pairs": f"{len(groups)}",
+        "Quality Threshold": f"{threshold}",
+        "Parallel Workers": f"{parallel}",
+    }
+    if batch_size:
+        config_info["Batch Size"] = f"{batch_size}"
+    if smart_routing:
+        config_info["Smart Routing"] = "Enabled"
+    if glossary:
+        config_info["Glossaries"] = glossary
+    return config_info
+
+
 async def _batch_from_file_async(
     file_path: str,
     threshold: float,
@@ -1475,29 +1932,21 @@ async def _batch_from_file_async(
         verbose: Verbose output flag
         demo: Demo mode flag
     """
-    from kttc.core import GlossaryManager
-
-    # Load settings
     settings = get_settings()
 
-    # Display header
     print_header(
         "Batch Translation Quality Check (File Mode)",
         "Process translations from CSV/JSON/JSONL file",
     )
 
     # Parse batch file
-    try:
-        file_path_obj = Path(file_path)
-        if not file_path_obj.exists():
-            raise FileNotFoundError(f"Batch file not found: {file_path}")
+    file_path_obj = Path(file_path)
+    if not file_path_obj.exists():
+        raise FileNotFoundError(f"Batch file not found: {file_path}")
 
-        console.print(f"[cyan]Parsing batch file:[/cyan] {file_path}")
-        translations = BatchFileParser.parse(file_path_obj)
-        console.print(f"[green]✓[/green] Loaded [cyan]{len(translations)}[/cyan] translations\n")
-
-    except Exception as e:
-        raise RuntimeError(f"Failed to parse batch file: {e}") from e
+    console.print(f"[cyan]Parsing batch file:[/cyan] {file_path}")
+    translations = BatchFileParser.parse(file_path_obj)
+    console.print(f"[green]✓[/green] Loaded [cyan]{len(translations)}[/cyan] translations\n")
 
     # Group by language pair (for display)
     groups = BatchGrouper.group_by_language_pair(translations)
@@ -1506,59 +1955,17 @@ async def _batch_from_file_async(
         console.print(f"  • {src} → {tgt}: [cyan]{len(group_translations)}[/cyan] translations")
     console.print()
 
-    # Load glossaries if specified
-    glossary_manager = None
-    if glossary:
-        try:
-            glossary_manager = GlossaryManager()
-            glossary_names = [g.strip() for g in glossary.split(",")]
-            glossary_manager.load_multiple(glossary_names)
-            console.print(f"[green]✓[/green] Loaded {len(glossary_names)} glossaries\n")
-        except Exception as e:
-            console.print(f"[yellow]⚠ Warning: Failed to load glossaries: {e}[/yellow]\n")
-            glossary_manager = None
+    _load_and_apply_glossaries(glossary, translations)
 
-    # Apply glossary terms to translations
-    if glossary_manager:
-        for trans in translations:
-            terms = glossary_manager.find_in_text(
-                trans.source_text, trans.source_lang, trans.target_lang
-            )
-            if terms:
-                trans.context = trans.context or {}
-                trans.context["glossary_terms"] = [
-                    {"source": t.source, "target": t.target, "do_not_translate": t.do_not_translate}
-                    for t in terms
-                ]
-
-    # Initialize smart routing if enabled (for future use)
-    # Note: Smart routing stats tracking not yet implemented
     if smart_routing:
         console.print("[cyan]Smart routing enabled[/cyan] - complexity-based model selection\n")
 
-    # Display configuration
-    config_info = {
-        "Input File": file_path,
-        "Total Translations": f"{len(translations)}",
-        "Language Pairs": f"{len(groups)}",
-        "Quality Threshold": f"{threshold}",
-        "Parallel Workers": f"{parallel}",
-    }
-    if batch_size:
-        config_info["Batch Size"] = f"{batch_size}"
-    if smart_routing:
-        config_info["Smart Routing"] = "Enabled"
-    if glossary:
-        config_info["Glossaries"] = glossary
+    config_info = _build_batch_config_info(
+        file_path, translations, groups, threshold, parallel, batch_size, smart_routing, glossary
+    )
     print_startup_info(config_info)
 
-    # Setup LLM provider
-    try:
-        llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
-    except Exception as e:
-        raise RuntimeError(f"Failed to setup LLM provider: {e}") from e
-
-    # Create orchestrator
+    llm_provider = _setup_llm_provider(provider, settings, verbose, demo=demo)
     orchestrator = AgentOrchestrator(
         llm_provider,
         quality_threshold=threshold,
@@ -1566,24 +1973,52 @@ async def _batch_from_file_async(
         agent_max_tokens=settings.default_max_tokens,
     )
 
-    # Process translations in parallel
     console.print("[yellow]⏳ Processing translations...[/yellow]\n")
     results = await _process_batch_translations(
         translations, orchestrator, parallel, verbose, show_progress=show_progress
     )
 
-    # Generate aggregated report
     console.print()
     _display_batch_summary(results, threshold)
-
-    # Save detailed report
     _save_batch_report(results, output, threshold)
     console.print(f"\n[dim]Detailed report saved to: {output}[/dim]")
 
-    # Exit with appropriate code
     failed_count = sum(1 for _, report in results if report.status == "fail")
     if failed_count > 0:
         raise typer.Exit(code=1)
+
+
+def _create_batch_progress(total: int) -> Any:
+    """Create progress bar for batch processing."""
+    from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+
+    return Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        TextColumn("•"),
+        TextColumn("{task.completed}/{task.total} translations"),
+        TimeElapsedColumn(),
+        console=console,
+    )
+
+
+def _get_batch_identifier(idx: int, batch_translation: Any) -> str:
+    """Get identifier string for batch translation."""
+    identifier = f"#{idx+1}"
+    if batch_translation.metadata and "file" in batch_translation.metadata:
+        identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx+1}"
+    return identifier
+
+
+def _print_batch_result(identifier: str, report: QAReport, output_console: Any) -> None:
+    """Print single batch result to console."""
+    status_icon = "✓" if report.status == "pass" else "✗"
+    status_color = "green" if report.status == "pass" else "red"
+    output_console.print(
+        f"  [{status_color}]{status_icon}[/{status_color}] {identifier}: {report.mqm_score:.2f}"
+    )
 
 
 async def _process_batch_translations(
@@ -1593,101 +2028,46 @@ async def _process_batch_translations(
     verbose: bool = False,
     show_progress: bool = False,
 ) -> list[tuple[str, QAReport]]:
-    """Process batch translations in parallel.
-
-    Args:
-        translations: List of BatchTranslation objects
-        orchestrator: Agent orchestrator for evaluation
-        parallel: Number of parallel workers
-        verbose: Verbose output flag
-        show_progress: Show progress bar
-
-    Returns:
-        List of (identifier, report) tuples
-    """
-    from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
-
+    """Process batch translations in parallel."""
     results: list[tuple[str, QAReport]] = []
     semaphore = asyncio.Semaphore(parallel)
 
-    # Create progress bar if requested
-    progress = None
-    task_id = None
-    if show_progress:
-        progress = Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-            TextColumn("•"),
-            TextColumn("{task.completed}/{task.total} translations"),
-            TimeElapsedColumn(),
-            console=console,
-        )
-        task_id = progress.add_task("[cyan]Processing translations...", total=len(translations))
+    progress = _create_batch_progress(len(translations)) if show_progress else None
+    task_id = (
+        progress.add_task("[cyan]Processing translations...", total=len(translations))
+        if progress
+        else None
+    )
 
-    async def process_translation(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
-        """Process a single translation."""
+    async def process_one(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
         async with semaphore:
-            # Convert to TranslationTask
             task = batch_translation.to_task()
-
-            # Evaluate
             report = await orchestrator.evaluate(task)
-
-            # Update progress
             if progress and task_id is not None:
                 progress.update(task_id, advance=1)
+            return _get_batch_identifier(idx, batch_translation), report
 
-            # Create identifier
-            identifier = f"#{idx+1}"
-            if batch_translation.metadata:
-                if "file" in batch_translation.metadata:
-                    identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx+1}"
+    tasks = [process_one(idx, t) for idx, t in enumerate(translations)]
+    output_console = progress.console if progress else console
 
-            return identifier, report
-
-    # Process all translations with progress tracking
-    if show_progress and progress:
+    if progress:
         with progress:
-            tasks = [process_translation(idx, t) for idx, t in enumerate(translations)]
             for coro in asyncio.as_completed(tasks):
                 try:
                     identifier, report = await coro
                     results.append((identifier, report))
-                    status_icon = "✓" if report.status == "pass" else "✗"
-                    status_color = "green" if report.status == "pass" else "red"
                     if not verbose:
-                        # Show concise status with progress bar
-                        progress.console.print(
-                            f"  [{status_color}]{status_icon}[/{status_color}] "
-                            f"{identifier}: {report.mqm_score:.2f}"
-                        )
+                        _print_batch_result(identifier, report, output_console)
                 except Exception as e:
-                    progress.console.print(f"  [red]✗ Error processing translation: {e}[/red]")
-                    if verbose:
-                        import traceback
-
-                        traceback.print_exc()
+                    output_console.print(f"  [red]✗ Error processing translation: {e}[/red]")
     else:
-        # No progress bar - simple processing
-        tasks = [process_translation(idx, t) for idx, t in enumerate(translations)]
         for coro in asyncio.as_completed(tasks):
             try:
                 identifier, report = await coro
                 results.append((identifier, report))
-                status_icon = "✓" if report.status == "pass" else "✗"
-                status_color = "green" if report.status == "pass" else "red"
-                console.print(
-                    f"  [{status_color}]{status_icon}[/{status_color}] "
-                    f"{identifier}: {report.mqm_score:.2f}"
-                )
+                _print_batch_result(identifier, report, output_console)
             except Exception as e:
-                console.print(f"  [red]✗ Error processing translation: {e}[/red]")
-                if verbose:
-                    import traceback
-
-                    traceback.print_exc()
+                output_console.print(f"  [red]✗ Error processing translation: {e}[/red]")
 
     return results
 

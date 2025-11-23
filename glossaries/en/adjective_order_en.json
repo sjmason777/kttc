@@ -1,0 +1,299 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "English Adjective Order - The Hidden Rule",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "The 'royal order of adjectives' - a rule native speakers know intuitively but can't explain. Critical for natural English.",
+    "sources": [
+      "Mark Forsyth: The Elements of Eloquence",
+      "Cambridge Grammar of the English Language",
+      "Grammarly: Adjective Order Rules",
+      "Duolingo: The Hidden Word Order Rules"
+    ],
+    "total_rules": 15,
+    "usage": "Fluency assessment, naturalness checking, translation QA, MT output verification"
+  },
+  "overview": {
+    "definition": "English adjectives must follow a specific order when multiple adjectives describe the same noun",
+    "famous_quote": "Adjectives in English absolutely have to be in this order: opinion-size-age-shape-colour-origin-material-purpose Noun. So you can have a lovely little old rectangular green French silver whittling knife. But if you mess with that order in the slightest you'll sound like a maniac. - Mark Forsyth",
+    "importance": "Native speakers know this rule unconsciously - violations sound immediately wrong but they can't explain why",
+    "severity": "major - incorrect order sounds unnatural/non-native"
+  },
+  "canonical_order": {
+    "description": "The standard sequence for cumulative adjectives",
+    "order": [
+      {
+        "position": 1,
+        "category": "determiner",
+        "description": "Articles, possessives, demonstratives",
+        "examples": ["the", "a", "my", "this", "those", "several"]
+      },
+      {
+        "position": 2,
+        "category": "observation/opinion",
+        "description": "Subjective quality or value judgment",
+        "examples": ["beautiful", "lovely", "ugly", "expensive", "delicious", "horrible", "nice", "wonderful"]
+      },
+      {
+        "position": 3,
+        "category": "size",
+        "description": "Physical size or extent",
+        "examples": ["big", "small", "large", "tiny", "huge", "enormous", "little"]
+      },
+      {
+        "position": 4,
+        "category": "age",
+        "description": "How old something is",
+        "examples": ["old", "young", "new", "ancient", "modern", "antique"]
+      },
+      {
+        "position": 5,
+        "category": "shape",
+        "description": "Physical form",
+        "examples": ["round", "square", "rectangular", "flat", "circular", "triangular"]
+      },
+      {
+        "position": 6,
+        "category": "color",
+        "description": "Color or pattern",
+        "examples": ["red", "blue", "green", "black", "white", "striped", "spotted"]
+      },
+      {
+        "position": 7,
+        "category": "origin",
+        "description": "Where something is from",
+        "examples": ["French", "Japanese", "American", "British", "Italian", "Chinese"]
+      },
+      {
+        "position": 8,
+        "category": "material",
+        "description": "What something is made of",
+        "examples": ["wooden", "metal", "cotton", "leather", "plastic", "silk", "silver"]
+      },
+      {
+        "position": 9,
+        "category": "purpose/qualifier",
+        "description": "What something is for; forms compound with noun",
+        "examples": ["sleeping (bag)", "wedding (dress)", "racing (car)", "carving (knife)"]
+      },
+      {
+        "position": 10,
+        "category": "noun",
+        "description": "The main noun",
+        "examples": ["knife", "car", "house", "dog", "woman"]
+      }
+    ],
+    "mnemonic": "OSASCOMP: Opinion, Size, Age, Shape, Colour, Origin, Material, Purpose"
+  },
+  "correct_examples": {
+    "description": "Examples following correct adjective order",
+    "examples": [
+      {
+        "phrase": "a lovely little old rectangular green French silver whittling knife",
+        "breakdown": {
+          "determiner": "a",
+          "opinion": "lovely",
+          "size": "little",
+          "age": "old",
+          "shape": "rectangular",
+          "color": "green",
+          "origin": "French",
+          "material": "silver",
+          "purpose": "whittling",
+          "noun": "knife"
+        }
+      },
+      {
+        "phrase": "the big red ball",
+        "breakdown": {
+          "determiner": "the",
+          "size": "big",
+          "color": "red",
+          "noun": "ball"
+        },
+        "incorrect": "the red big ball"
+      },
+      {
+        "phrase": "a beautiful young Italian woman",
+        "breakdown": {
+          "determiner": "a",
+          "opinion": "beautiful",
+          "age": "young",
+          "origin": "Italian",
+          "noun": "woman"
+        }
+      },
+      {
+        "phrase": "an ugly old brown wooden table",
+        "breakdown": {
+          "determiner": "an",
+          "opinion": "ugly",
+          "age": "old",
+          "color": "brown",
+          "material": "wooden",
+          "noun": "table"
+        }
+      },
+      {
+        "phrase": "a small round black Japanese plastic container",
+        "breakdown": {
+          "determiner": "a",
+          "size": "small",
+          "shape": "round",
+          "color": "black",
+          "origin": "Japanese",
+          "material": "plastic",
+          "noun": "container"
+        }
+      },
+      {
+        "phrase": "her expensive new silk wedding dress",
+        "breakdown": {
+          "determiner": "her",
+          "opinion": "expensive",
+          "age": "new",
+          "material": "silk",
+          "purpose": "wedding",
+          "noun": "dress"
+        }
+      }
+    ]
+  },
+  "incorrect_examples": {
+    "description": "Common violations that sound unnatural",
+    "severity": "major",
+    "examples": [
+      {
+        "incorrect": "a red big ball",
+        "correct": "a big red ball",
+        "rule_violated": "size before color"
+      },
+      {
+        "incorrect": "a wooden old table",
+        "correct": "an old wooden table",
+        "rule_violated": "age before material"
+      },
+      {
+        "incorrect": "a French young woman",
+        "correct": "a young French woman",
+        "rule_violated": "age before origin"
+      },
+      {
+        "incorrect": "a cotton white shirt",
+        "correct": "a white cotton shirt",
+        "rule_violated": "color before material"
+      },
+      {
+        "incorrect": "an Italian beautiful car",
+        "correct": "a beautiful Italian car",
+        "rule_violated": "opinion before origin"
+      },
+      {
+        "incorrect": "a sleeping warm bag",
+        "correct": "a warm sleeping bag",
+        "rule_violated": "purpose comes last before noun"
+      },
+      {
+        "incorrect": "a silver small spoon",
+        "correct": "a small silver spoon",
+        "rule_violated": "size before material"
+      },
+      {
+        "incorrect": "the new nice car",
+        "correct": "the nice new car",
+        "rule_violated": "opinion before age"
+      }
+    ]
+  },
+  "exceptions_and_nuances": {
+    "coordinate_adjectives": {
+      "description": "Adjectives of equal importance can be reordered and use commas",
+      "rule": "If you can put 'and' between them or swap them, they're coordinate",
+      "examples": [
+        {
+          "phrase": "a cold, dark night",
+          "can_swap": "a dark, cold night",
+          "reason": "Both are opinion/observation adjectives"
+        },
+        {
+          "phrase": "a tall, handsome man",
+          "can_swap": "a handsome, tall man"
+        }
+      ],
+      "vs_cumulative": "'big red ball' cannot be 'red big ball' - these are cumulative, not coordinate"
+    },
+    "emphasis_exception": {
+      "description": "Intentional violation for poetic or emphatic effect",
+      "examples": [
+        {
+          "standard": "a big bad wolf",
+          "emphatic": "that horrible, big, bad wolf",
+          "reason": "Extra adjectives and commas add emphasis"
+        }
+      ]
+    },
+    "purpose_as_compound": {
+      "description": "Purpose adjectives often form compounds with nouns",
+      "examples": [
+        "'sleeping bag' is essentially one unit",
+        "'running shoes' - 'running' is tightly bound to 'shoes'",
+        "These don't follow normal adjective order rules"
+      ]
+    },
+    "number_position": {
+      "description": "Numbers typically come after determiners but before opinion",
+      "examples": [
+        "the three little pigs",
+        "my two beautiful daughters",
+        "those five old books"
+      ]
+    }
+  },
+  "practical_test": {
+    "description": "How to test if adjective order is correct",
+    "steps": [
+      "Identify each adjective's category (opinion, size, age, etc.)",
+      "Check if they follow OSASCOMP order",
+      "If order feels wrong to native ear, it probably is",
+      "Try inserting 'and' - if it sounds natural, adjectives may be coordinate"
+    ],
+    "native_speaker_test": "Native speakers will instantly recognize violations even if they can't explain the rule"
+  },
+  "common_category_words": {
+    "opinion": {
+      "positive": ["beautiful", "lovely", "nice", "wonderful", "excellent", "delicious", "perfect", "amazing"],
+      "negative": ["ugly", "horrible", "terrible", "awful", "disgusting", "nasty"],
+      "neutral": ["strange", "unusual", "interesting", "important"]
+    },
+    "size": {
+      "big": ["big", "large", "huge", "enormous", "massive", "giant", "vast"],
+      "small": ["small", "tiny", "little", "minute", "minuscule"]
+    },
+    "age": {
+      "old": ["old", "ancient", "antique", "vintage", "elderly"],
+      "new": ["new", "young", "modern", "contemporary", "recent"]
+    },
+    "shape": ["round", "square", "rectangular", "triangular", "circular", "flat", "curved", "straight", "wide", "narrow"],
+    "color": ["red", "blue", "green", "yellow", "black", "white", "purple", "orange", "pink", "brown", "grey"],
+    "origin": ["American", "British", "Chinese", "French", "German", "Italian", "Japanese", "Russian", "Indian", "Spanish"],
+    "material": ["wooden", "metal", "plastic", "glass", "cotton", "silk", "leather", "paper", "stone", "brick", "gold", "silver"]
+  },
+  "detection_algorithm": {
+    "description": "Algorithm for detecting adjective order violations",
+    "steps": [
+      "1. Parse noun phrase to extract adjectives",
+      "2. Classify each adjective into category",
+      "3. Check if categories follow OSASCOMP sequence",
+      "4. Flag any out-of-order pairs",
+      "5. Suggest correct reordering"
+    ],
+    "output_format": {
+      "violation_found": true,
+      "original": "a red big ball",
+      "corrected": "a big red ball",
+      "rule_violated": "size (big) should come before color (red)"
+    }
+  }
+}

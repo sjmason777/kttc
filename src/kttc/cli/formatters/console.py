@@ -154,6 +154,39 @@ class ConsoleFormatter:
         return full_fragment
 
     @classmethod
+    def _build_status_line(cls, report: QAReport) -> str:
+        """Build main status line for check result."""
+        status_color = cls._get_status_color(report.status)
+        score_color = cls._get_score_color(report.mqm_score)
+        status_icon = "✓" if report.status == "pass" else "✗"
+        status_text = _("check_pass") if report.status == "pass" else _("check_fail")
+        line = (
+            f"[{status_color}]{status_icon} {status_text}[/{status_color}]  |  "
+            f"MQM: [{score_color}]{report.mqm_score:.1f}[/{score_color}]/100  |  "
+            f"{_('check_errors', count=len(report.errors))}"
+        )
+        if report.errors:
+            line += f" ({cls._format_errors(report.critical_error_count, report.major_error_count, report.minor_error_count)})"
+        return line
+
+    @classmethod
+    def _build_style_parts(cls, style_profile: Any) -> list[str]:
+        """Build style analysis parts for display."""
+        parts = []
+        if style_profile.is_literary:
+            parts.append("[magenta]Literary text[/magenta]")
+        if style_profile.detected_pattern and style_profile.detected_pattern.value != "standard":
+            parts.append(
+                f"Pattern: {style_profile.detected_pattern.value.replace('_', ' ').title()}"
+            )
+        if style_profile.deviation_score > 0.3:
+            parts.append(f"Deviation: {style_profile.deviation_score:.0%}")
+        if style_profile.detected_deviations:
+            dev_types = [d.type.value for d in style_profile.detected_deviations[:3]]
+            parts.append(f"Features: {', '.join(dev_types)}")
+        return parts
+
+    @classmethod
     def print_check_result(
         cls,
         report: QAReport,
@@ -179,54 +212,19 @@ class ConsoleFormatter:
             style_profile: Optional StyleProfile from style analysis
             verbose: Verbose mode flag
         """
-        # Header
+        # Header and status
         cls.print_header_compact(_("check_header"), f"{source_lang} → {target_lang}")
         console.print()
+        console.print(f"● {cls._build_status_line(report)}")
 
-        # Main status line
-        status_color = cls._get_status_color(report.status)
-        score_color = cls._get_score_color(report.mqm_score)
-        status_icon = "✓" if report.status == "pass" else "✗"
-
-        status_text = _("check_pass") if report.status == "pass" else _("check_fail")
-        status_line = (
-            f"[{status_color}]{status_icon} {status_text}[/{status_color}]  |  "
-            f"MQM: [{score_color}]{report.mqm_score:.1f}[/{score_color}]/100  |  "
-            f"{_('check_errors', count=len(report.errors))}"
-        )
-
-        if len(report.errors) > 0:
-            status_line += f" ({cls._format_errors(report.critical_error_count, report.major_error_count, report.minor_error_count)})"
-
-        console.print(f"● {status_line}")
-
-        # Metrics line (if available)
+        # Metrics line
         if lightweight_scores and rule_based_score is not None:
-            metrics_parts = [
-                f"chrF: {lightweight_scores.chrf:.1f}",
-                f"BLEU: {lightweight_scores.bleu:.1f}",
-                f"TER: {lightweight_scores.ter:.1f}",
-                f"Rule-based: {rule_based_score:.0f}/100",
-            ]
-            console.print(f"● {_('check_metrics')}: {' | '.join(metrics_parts)}")
+            metrics = f"chrF: {lightweight_scores.chrf:.1f} | BLEU: {lightweight_scores.bleu:.1f} | TER: {lightweight_scores.ter:.1f} | Rule-based: {rule_based_score:.0f}/100"
+            console.print(f"● {_('check_metrics')}: {metrics}")
 
-        # Style analysis line (if available)
+        # Style analysis line
         if style_profile:
-            style_parts = []
-            if style_profile.is_literary:
-                style_parts.append("[magenta]Literary text[/magenta]")
-            if (
-                style_profile.detected_pattern
-                and style_profile.detected_pattern.value != "standard"
-            ):
-                pattern_name = style_profile.detected_pattern.value.replace("_", " ").title()
-                style_parts.append(f"Pattern: {pattern_name}")
-            if style_profile.deviation_score > 0.3:
-                style_parts.append(f"Deviation: {style_profile.deviation_score:.0%}")
-            if style_profile.detected_deviations:
-                dev_types = [d.type.value for d in style_profile.detected_deviations[:3]]
-                style_parts.append(f"Features: {', '.join(dev_types)}")
-
+            style_parts = cls._build_style_parts(style_profile)
             if style_parts:
                 console.print(f"● Style: {' | '.join(style_parts)}")
 
@@ -528,7 +526,7 @@ class ConsoleFormatter:
             for idx, issue in enumerate(all_issues, 1):
                 # Format location
                 location = issue.get("location", [0, 0])
-                if isinstance(location, (list, tuple)) and len(location) >= 2:
+                if isinstance(location, list | tuple) and len(location) >= 2:
                     loc_str = f"[{location[0]}:{location[1]}]"
                 else:
                     loc_str = "N/A"
@@ -646,26 +644,8 @@ class ConsoleFormatter:
         console.print()
 
     @classmethod
-    def _print_verbose_details(
-        cls,
-        report: QAReport,
-        lightweight_scores: Any | None,
-        rule_based_errors: list[Any] | None,
-        nlp_insights: dict[str, Any] | None,
-        style_profile: Any | None = None,
-    ) -> None:
-        """Print verbose details (confidence, agent scores, etc.).
-
-        Args:
-            report: QA report
-            lightweight_scores: Optional lightweight metrics scores
-            rule_based_errors: Optional rule-based errors
-            nlp_insights: Optional NLP insights
-            style_profile: Optional StyleProfile from style analysis
-        """
-        console.print(f"\n[bold]{_('detailed_metrics')}[/bold]")
-
-        # Confidence and agent agreement
+    def _print_confidence_and_agreement(cls, report: QAReport) -> None:
+        """Print confidence and agent agreement details."""
         if report.confidence is not None:
             level_key = (
                 "detailed_confidence_high"
@@ -679,11 +659,12 @@ class ConsoleFormatter:
             console.print(
                 f"  {_('detailed_confidence', score=f'{report.confidence:.2f}', level=_(level_key))}"
             )
-
         if report.agent_agreement is not None:
             console.print(f"  {_('detailed_agreement', percent=int(report.agent_agreement * 100))}")
 
-        # Domain detection
+    @classmethod
+    def _print_domain_detection(cls, report: QAReport) -> None:
+        """Print domain detection details."""
         if report.agent_details and "detected_domain" in report.agent_details:
             domain = report.agent_details["detected_domain"]
             domain_confidence = report.agent_details.get("domain_confidence", 0.0)
@@ -691,7 +672,50 @@ class ConsoleFormatter:
                 f"  {_('detailed_domain', domain=domain.replace('_', ' ').title(), confidence=int(domain_confidence * 100))}"
             )
 
-        # Per-agent scores
+    @classmethod
+    def _print_style_analysis(cls, style_profile: Any) -> None:
+        """Print style analysis details."""
+        console.print("\n  [bold magenta]Style Analysis[/bold magenta]")
+        console.print(f"    Literary text: {'Yes' if style_profile.is_literary else 'No'}")
+        console.print(
+            f"    Pattern: {style_profile.detected_pattern.value.replace('_', ' ').title()}"
+        )
+        console.print(f"    Deviation score: {style_profile.deviation_score:.0%}")
+        console.print(f"    Lexical diversity: {style_profile.lexical_diversity:.2f}")
+        console.print(f"    Avg sentence length: {style_profile.avg_sentence_length:.1f} words")
+
+        if style_profile.detected_deviations:
+            console.print(f"    Detected features ({len(style_profile.detected_deviations)}):")
+            for dev in style_profile.detected_deviations[:5]:
+                dev_type = dev.type.value.replace("_", " ").title()
+                examples = ", ".join(dev.examples[:2]) if dev.examples else ""
+                console.print(f"      [dim]• {dev_type}{': ' + examples if examples else ''}[/dim]")
+
+        adjustments = style_profile.get_agent_weight_adjustments()
+        if adjustments.get("fluency", 1.0) != 1.0:
+            console.print(
+                f"    [yellow]Fluency tolerance adjusted to {adjustments['fluency']:.0%}[/yellow]"
+            )
+        if adjustments.get("style_preservation", 1.0) > 1.0:
+            console.print(
+                f"    [green]Style preservation weight increased to {adjustments['style_preservation']:.0%}[/green]"
+            )
+
+    @classmethod
+    def _print_verbose_details(
+        cls,
+        report: QAReport,
+        lightweight_scores: Any | None,
+        rule_based_errors: list[Any] | None,
+        nlp_insights: dict[str, Any] | None,
+        style_profile: Any | None = None,
+    ) -> None:
+        """Print verbose details (confidence, agent scores, etc.)."""
+        console.print(f"\n[bold]{_('detailed_metrics')}[/bold]")
+
+        cls._print_confidence_and_agreement(report)
+        cls._print_domain_detection(report)
+
         if report.agent_scores:
             console.print(f"\n  {_('detailed_agent_scores')}")
             for agent_name, score in sorted(report.agent_scores.items()):
@@ -700,48 +724,17 @@ class ConsoleFormatter:
                     f"    {agent_name.replace('_', ' ').title()}: [{score_color}]{score:.2f}[/{score_color}]"
                 )
 
-        # NLP good indicators
         if nlp_insights and nlp_insights.get("good_indicators"):
             console.print(f"\n  {_('detailed_linguistic_passed')}")
             for indicator in nlp_insights["good_indicators"]:
                 console.print(f"    [dim]✓ {indicator}[/dim]")
 
-        # Rule-based errors (if any and not shown in main table)
         if rule_based_errors:
             console.print(f"\n  {_('detailed_rule_errors', count=len(rule_based_errors))}")
-            for error in rule_based_errors[:3]:  # Show first 3
+            for error in rule_based_errors[:3]:
                 console.print(f"    [dim]• {error.check_type}: {error.description[:50]}[/dim]")
 
-        # Style analysis details (verbose)
         if style_profile:
-            console.print("\n  [bold magenta]Style Analysis[/bold magenta]")
-            console.print(f"    Literary text: {'Yes' if style_profile.is_literary else 'No'}")
-            console.print(
-                f"    Pattern: {style_profile.detected_pattern.value.replace('_', ' ').title()}"
-            )
-            console.print(f"    Deviation score: {style_profile.deviation_score:.0%}")
-            console.print(f"    Lexical diversity: {style_profile.lexical_diversity:.2f}")
-            console.print(f"    Avg sentence length: {style_profile.avg_sentence_length:.1f} words")
-
-            if style_profile.detected_deviations:
-                console.print(f"    Detected features ({len(style_profile.detected_deviations)}):")
-                for dev in style_profile.detected_deviations[:5]:
-                    dev_type = dev.type.value.replace("_", " ").title()
-                    examples = ", ".join(dev.examples[:2]) if dev.examples else ""
-                    if examples:
-                        console.print(f"      [dim]• {dev_type}: {examples}[/dim]")
-                    else:
-                        console.print(f"      [dim]• {dev_type}[/dim]")
-
-            # Agent weight recommendations
-            adjustments = style_profile.get_agent_weight_adjustments()
-            if adjustments.get("fluency", 1.0) != 1.0:
-                console.print(
-                    f"    [yellow]Fluency tolerance adjusted to {adjustments['fluency']:.0%}[/yellow]"
-                )
-            if adjustments.get("style_preservation", 1.0) > 1.0:
-                console.print(
-                    f"    [green]Style preservation weight increased to {adjustments['style_preservation']:.0%}[/green]"
-                )
+            cls._print_style_analysis(style_profile)
 
         console.print()

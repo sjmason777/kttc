@@ -19,10 +19,18 @@ Specialized fluency checking for Hindi language with support for:
 - POS tagging via Stanza
 - Named Entity Recognition via Stanza (NEW 2025!)
 - Tokenization via Indic NLP Library
+- Hindi Traps Validation (NEW 2025!):
+  - Gender traps (exceptions to -आ/-ई patterns)
+  - Idioms and proverbs (cannot be translated literally)
+  - Chandrabindu vs Anusvara spelling errors
+  - Homophones and paronyms (context-dependent meaning)
+  - Aspiration traps (meaning changes with aspiration)
+  - Ergativity rules (ने construction and verb agreement)
 
 Uses hybrid approach:
 - Spello for spell checking
 - Stanza for morphological and NER analysis
+- HindiTrapsValidator for linguistic traps detection
 - LLM for semantic and complex linguistic analysis
 - Parallel execution for optimal performance
 
@@ -40,7 +48,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.hindi import HindiLanguageHelper
 from kttc.llm import BaseLLMProvider
-from kttc.terminology import HindiPostpositionValidator
+from kttc.terminology import HindiPostpositionValidator, HindiTrapsValidator
 
 from .fluency import FluencyAgent
 
@@ -72,6 +80,12 @@ class HindiFluencyAgent(FluencyAgent):
         "grammar": "Grammar validation (LLM-based)",
         "pos": "Part-of-speech analysis (Stanza)",
         "ner": "Named entity recognition (Stanza)",
+        "gender_traps": "Gender exception detection (HindiTrapsValidator)",
+        "idioms": "Idiom detection - cannot translate literally (HindiTrapsValidator)",
+        "chandrabindu": "Chandrabindu vs Anusvara spelling (HindiTrapsValidator)",
+        "homophones": "Homophone/paronym detection (HindiTrapsValidator)",
+        "aspiration": "Aspiration trap detection (HindiTrapsValidator)",
+        "ergativity": "Ergative construction validation (HindiTrapsValidator)",
     }
 
     def __init__(
@@ -100,6 +114,13 @@ class HindiFluencyAgent(FluencyAgent):
         # Initialize glossary-based validator for postposition and case checking
         self.case_validator = HindiPostpositionValidator()
         logger.info("HindiFluencyAgent initialized with glossary-based postposition/case validator")
+
+        # Initialize Hindi traps validator (gender, idioms, chandrabindu, homophones, etc.)
+        self.traps_validator = HindiTrapsValidator()
+        if self.traps_validator.is_available():
+            logger.info("HindiFluencyAgent: Hindi traps validator enabled (auto)")
+        else:
+            logger.warning("HindiFluencyAgent: Hindi traps glossaries not found")
 
         if self.helper.is_available():
             logger.info("HindiFluencyAgent using Hindi language helper for enhanced checks")
@@ -140,17 +161,18 @@ class HindiFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with Hindi-specific)
         base_errors = await super().evaluate(task)
 
-        # Run Spello/Stanza, LLM, and glossary checks in parallel
+        # Run Spello/Stanza, LLM, glossary, and traps checks in parallel
         try:
             results = await asyncio.gather(
                 self._spello_check(task),  # Fast, spell checking
                 self._llm_check(task),  # Slow, semantic + grammar
                 self._glossary_check(task),  # Glossary-based case/postposition validation
+                self._traps_check(task),  # Hindi traps validation (gender, idioms, etc.)
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            spello_result, llm_result, glossary_result = results
+            spello_result, llm_result, glossary_result, traps_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(spello_result, Exception):
@@ -171,6 +193,12 @@ class HindiFluencyAgent(FluencyAgent):
             else:
                 glossary_errors = cast(list[ErrorAnnotation], glossary_result)
 
+            if isinstance(traps_result, Exception):
+                logger.warning(f"Traps check failed: {traps_result}")
+                traps_errors: list[ErrorAnnotation] = []
+            else:
+                traps_errors = cast(list[ErrorAnnotation], traps_result)
+
             # Verify LLM results with Stanza (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
@@ -180,15 +208,21 @@ class HindiFluencyAgent(FluencyAgent):
             # Remove duplicates from glossary errors
             unique_glossary = self._remove_duplicates(glossary_errors, verified_llm + unique_spello)
 
+            # Remove duplicates from traps errors
+            unique_traps = self._remove_duplicates(
+                traps_errors, verified_llm + unique_spello + unique_glossary
+            )
+
             # Merge all unique errors
-            all_errors = base_errors + unique_spello + verified_llm + unique_glossary
+            all_errors = base_errors + unique_spello + verified_llm + unique_glossary + unique_traps
 
             logger.info(
                 f"HindiFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"spello={len(unique_spello)}, "
                 f"llm={len(verified_llm)}, "
-                f"glossary={len(unique_glossary)} "
+                f"glossary={len(unique_glossary)}, "
+                f"traps={len(unique_traps)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -272,6 +306,102 @@ class HindiFluencyAgent(FluencyAgent):
 
         except Exception as e:
             logger.error(f"Glossary check failed: {e}")
+
+        return errors
+
+    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform Hindi traps validation using HindiTrapsValidator.
+
+        Checks for:
+        - Gender exceptions (words that don't follow -आ/-ई patterns)
+        - Idioms that cannot be translated literally
+        - Chandrabindu vs Anusvara spelling errors
+        - Homophones and paronyms (context-dependent meaning)
+        - Aspiration-sensitive words
+        - Ergative construction (ने) usage
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by traps validation
+        """
+        errors: list[ErrorAnnotation] = []
+
+        if not self.traps_validator.is_available():
+            logger.debug("Hindi traps validator not available, skipping traps checks")
+            return errors
+
+        try:
+            text = task.translation
+            analysis = self.traps_validator.analyze_text(text)
+
+            # Check for chandrabindu/anusvara errors (most critical)
+            for err in analysis.get("chandrabindu_errors", []):
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="hindi_chandrabindu",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(0, len(text)),  # General location
+                        description=(
+                            f"Chandrabindu/Anusvara error: '{err.get('found')}' "
+                            f"should be '{err.get('correct')}' ({err.get('meaning', '')})"
+                        ),
+                        suggestion=err.get("correct"),
+                    )
+                )
+
+            # Check for idioms (warn about literal translation)
+            for idiom in analysis.get("idioms", []):
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="hindi_idiom",
+                        severity=ErrorSeverity.MAJOR,
+                        location=(0, len(text)),
+                        description=(
+                            f"Idiom detected: '{idiom.get('idiom')}' - "
+                            f"literal: '{idiom.get('literal_en', 'N/A')}', "
+                            f"actual meaning: '{idiom.get('actual_meaning_en', 'N/A')}'. "
+                            f"Cannot be translated literally!"
+                        ),
+                        suggestion=idiom.get("english_equivalent"),
+                    )
+                )
+
+            # Check for gender exceptions (informational)
+            for gender_trap in analysis.get("gender_exceptions", []):
+                word = gender_trap.get("word", "")
+                gender = gender_trap.get("gender", "")
+                expected = gender_trap.get("expected_gender", "")
+                if expected:
+                    errors.append(
+                        ErrorAnnotation(
+                            category="fluency",
+                            subcategory="hindi_gender",
+                            severity=ErrorSeverity.MINOR,
+                            location=(0, len(text)),
+                            description=(
+                                f"Gender exception: '{word}' is {gender} "
+                                f"(expected {expected} from ending pattern). "
+                                f"Verify agreement."
+                            ),
+                            suggestion=None,
+                        )
+                    )
+
+            # Log summary
+            logger.debug(
+                f"Hindi traps check: "
+                f"chandrabindu={len(analysis.get('chandrabindu_errors', []))}, "
+                f"idioms={len(analysis.get('idioms', []))}, "
+                f"gender={len(analysis.get('gender_exceptions', []))}, "
+                f"homophones={len(analysis.get('homophones', []))}"
+            )
+
+        except Exception as e:
+            logger.error(f"Traps check failed: {e}")
 
         return errors
 

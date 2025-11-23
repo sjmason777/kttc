@@ -1,0 +1,224 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Hindi Ergativity and Verb Agreement (कर्तृकारकीपन)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Split ergativity rules - the most unique and confusing feature of Hindi grammar",
+    "sources": [
+      "Stanford LFG - Case in Hindi",
+      "Wikipedia - Hindustani grammar",
+      "Modern Hindi Grammar - Omkar N. Koul",
+      "Hindi Dependency Treebank documentation"
+    ],
+    "total_terms": 50
+  },
+  "overview": {
+    "what_is_ergativity": {
+      "definition_en": "In ergative languages, the subject of transitive verbs is marked differently from intransitive subjects",
+      "definition_hi": "कर्तृकारकी भाषाओं में सकर्मक क्रियाओं का कर्ता अलग तरह से चिह्नित होता है",
+      "hindi_marker": "ने (ne) postposition marks ergative case"
+    },
+    "split_ergativity": {
+      "definition": "Hindi is SPLIT ergative - ergative only in PERFECTIVE aspect",
+      "perfective": "Ergative pattern (ने + verb agrees with object)",
+      "imperfective": "Nominative-Accusative pattern (verb agrees with subject)",
+      "trap": "Same verb behaves differently based on tense/aspect!"
+    }
+  },
+  "ne_postposition_rules": {
+    "when_to_use_ne": {
+      "conditions": [
+        "Transitive verb (सकर्मक क्रिया)",
+        "Perfective aspect (पूर्ण पक्ष)",
+        "Subject is agent/doer"
+      ],
+      "tenses_with_ne": [
+        "Simple Past (साधारण भूत) - राम ने खाया",
+        "Present Perfect (पूर्ण वर्तमान) - राम ने खाया है",
+        "Past Perfect (पूर्ण भूत) - राम ने खाया था"
+      ]
+    },
+    "when_NOT_to_use_ne": {
+      "conditions": [
+        "Intransitive verb (अकर्मक क्रिया)",
+        "Imperfective aspect",
+        "Present tense (वर्तमान काल)",
+        "Future tense (भविष्य काल)",
+        "Habitual aspect"
+      ],
+      "examples": {
+        "intransitive": "राम गया (NOT राम ने गया) - 'go' is intransitive",
+        "present": "राम खाता है (NOT राम ने खाता है)",
+        "future": "राम खाएगा (NOT राम ने खाएगा)"
+      }
+    }
+  },
+  "verb_agreement_rules": {
+    "with_ne": {
+      "rule": "Verb agrees with OBJECT (in gender and number), NOT with subject",
+      "severity": "critical",
+      "examples": {
+        "example_1": {
+          "sentence": "लड़की ने किताब पढ़ी",
+          "analysis": {
+            "subject": "लड़की (feminine)",
+            "object": "किताब (feminine)",
+            "verb": "पढ़ी (feminine)",
+            "agreement": "Verb agrees with किताब (object), not लड़की (subject)"
+          },
+          "wrong": "लड़की ने किताब पढ़ा",
+          "why_wrong": "पढ़ा is masculine, but किताब is feminine"
+        },
+        "example_2": {
+          "sentence": "लड़के ने रोटी खाई",
+          "analysis": {
+            "subject": "लड़के (masculine)",
+            "object": "रोटी (feminine)",
+            "verb": "खाई (feminine)",
+            "agreement": "Verb खाई agrees with रोटी (feminine)"
+          },
+          "wrong": "लड़के ने रोटी खाया"
+        },
+        "example_3": {
+          "sentence": "राम ने सेब खाया",
+          "analysis": {
+            "subject": "राम (masculine)",
+            "object": "सेब (masculine)",
+            "verb": "खाया (masculine)"
+          }
+        },
+        "example_4": {
+          "sentence": "लड़कियों ने किताबें पढ़ीं",
+          "analysis": {
+            "subject": "लड़कियों (feminine plural)",
+            "object": "किताबें (feminine plural)",
+            "verb": "पढ़ीं (feminine plural)",
+            "note": "Verb agrees with plural feminine object"
+          }
+        }
+      }
+    },
+    "without_ne": {
+      "rule": "Verb agrees with SUBJECT (in gender and number)",
+      "examples": {
+        "example_1": {
+          "sentence": "लड़का जाता है",
+          "analysis": {
+            "subject": "लड़का (masculine singular)",
+            "verb": "जाता (masculine singular)"
+          }
+        },
+        "example_2": {
+          "sentence": "लड़की जाती है",
+          "analysis": {
+            "subject": "लड़की (feminine singular)",
+            "verb": "जाती (feminine singular)"
+          }
+        },
+        "example_3": {
+          "sentence": "लड़के जाते हैं",
+          "analysis": {
+            "subject": "लड़के (masculine plural)",
+            "verb": "जाते (masculine plural)"
+          }
+        }
+      }
+    }
+  },
+  "object_marking_ko": {
+    "differential_object_marking": {
+      "definition": "Object marked with को depends on animacy and definiteness",
+      "hierarchy": [
+        "Pronouns (always को): मुझको, उसको",
+        "Human nouns (usually को): राम को देखा",
+        "Animate nouns (often को): कुत्ते को मारा",
+        "Definite inanimate (sometimes को): वह किताब को पढ़ा",
+        "Indefinite inanimate (rarely को): किताब पढ़ी"
+      ]
+    },
+    "effect_on_agreement": {
+      "with_ko": "When object has को, verb defaults to masculine singular",
+      "example_1": {
+        "sentence": "राम ने सीता को देखा",
+        "verb": "देखा (masculine singular - default)",
+        "note": "सीता is feminine but verb is masculine because of को"
+      },
+      "without_ko": {
+        "sentence": "राम ने किताब पढ़ी",
+        "verb": "पढ़ी (feminine - agrees with किताब)"
+      }
+    }
+  },
+  "common_errors": {
+    "error_1": {
+      "description": "Using ने with intransitive verbs",
+      "wrong": "राम ने गया",
+      "correct": "राम गया",
+      "explanation": "जाना (to go) is intransitive - no ने"
+    },
+    "error_2": {
+      "description": "Using ने in present/future tense",
+      "wrong": "राम ने खाता है",
+      "correct": "राम खाता है",
+      "explanation": "Present habitual - no ने"
+    },
+    "error_3": {
+      "description": "Wrong verb agreement with ने",
+      "wrong": "लड़की ने खाना खाई",
+      "correct": "लड़की ने खाना खाया",
+      "explanation": "खाना is masculine, so verb must be खाया"
+    },
+    "error_4": {
+      "description": "Wrong verb agreement without ने",
+      "wrong": "लड़का गई",
+      "correct": "लड़का गया",
+      "explanation": "लड़का is masculine, verb must agree"
+    },
+    "error_5": {
+      "description": "Forgetting oblique form before ने",
+      "wrong": "लड़का ने",
+      "correct": "लड़के ने",
+      "explanation": "Noun must be in oblique form before postposition"
+    }
+  },
+  "special_cases": {
+    "experiencer_subjects": {
+      "description": "Some verbs take को on the subject (experiencer)",
+      "verbs": ["मिलना", "लगना", "चाहिए", "पसंद होना", "मालूम होना"],
+      "example": {
+        "sentence": "मुझको भूख लगी है",
+        "literal": "To me hunger has struck",
+        "meaning": "I am hungry",
+        "note": "Subject मुझको takes को, verb agrees with भूख (feminine)"
+      }
+    },
+    "compound_verbs": {
+      "description": "In compound verbs, agreement is with the main verb's object",
+      "example": {
+        "sentence": "उसने किताब पढ़ ली",
+        "main_verb": "पढ़",
+        "auxiliary": "ली (feminine, agrees with किताब)"
+      }
+    },
+    "some_verbs_no_ne": {
+      "description": "Some transitive verbs don't take ने (exceptions)",
+      "verbs": ["बोलना (to speak)", "लाना (to bring)", "भूलना (to forget)"],
+      "note": "These are treated as intransitive in ergative construction"
+    }
+  },
+  "comparison_with_english": {
+    "english_pattern": "Subject-Verb-Object, verb doesn't change for object gender",
+    "hindi_imperfective": "Similar to English (verb agrees with subject)",
+    "hindi_perfective": "DIFFERENT - verb agrees with object when ने is used",
+    "trap_for_english_speakers": "Must 'unlearn' subject-verb agreement in perfective"
+  },
+  "detection_algorithm": {
+    "step_1": "Is the verb transitive?",
+    "step_2": "Is the aspect perfective (past tense, completed action)?",
+    "step_3": "If YES to both → expect ने on subject",
+    "step_4": "Check verb agreement with object (not subject)",
+    "step_5": "Check if object has को → verb defaults to masculine singular"
+  }
+}

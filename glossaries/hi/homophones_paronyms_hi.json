@@ -1,0 +1,335 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "हिन्दी (Hindi)",
+    "glossary_type": "Hindi Homophones and Paronyms (शब्द युग्म / समोच्चारित भिन्नार्थक शब्द)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Words with same/similar pronunciation but different meanings - translation traps",
+    "sources": [
+      "हिन्दी शब्द युग्म कोश",
+      "RFHindi - समोच्चारित शब्द",
+      "NCERT Hindi Grammar",
+      "Study Knight - Yugmak Shabd"
+    ],
+    "total_terms": 100
+  },
+  "homophones_overview": {
+    "definition_hi": "समोच्चारित भिन्नार्थक शब्द: जिनका उच्चारण समान है किंतु अर्थ भिन्न है",
+    "definition_en": "Words that sound the same but have different meanings",
+    "translation_trap": "Context is CRITICAL - wrong choice = wrong translation"
+  },
+  "exact_homophones": {
+    "description": "Words with IDENTICAL pronunciation, different meanings",
+    "severity": "critical",
+    "entries": {
+      "kaal_kal": {
+        "word_1": {
+          "word": "काल",
+          "meaning_en": "time / death / era",
+          "meaning_ru": "время / смерть / эпоха",
+          "example": "काल चक्र (wheel of time)"
+        },
+        "word_2": {
+          "word": "कल",
+          "meaning_en": "yesterday / tomorrow / machine",
+          "meaning_ru": "вчера / завтра / механизм",
+          "example": "कल मैं जाऊँगा (I will go tomorrow)"
+        },
+        "trap": "काल = abstract time; कल = specific yesterday/tomorrow"
+      },
+      "din_deen": {
+        "word_1": {
+          "word": "दिन",
+          "meaning_en": "day",
+          "meaning_ru": "день"
+        },
+        "word_2": {
+          "word": "दीन",
+          "meaning_en": "poor, humble / religion",
+          "meaning_ru": "бедный / религия"
+        },
+        "trap": "Different vowel length changes meaning"
+      },
+      "bal_baal": {
+        "word_1": {
+          "word": "बल",
+          "meaning_en": "strength, force",
+          "meaning_ru": "сила"
+        },
+        "word_2": {
+          "word": "बाल",
+          "meaning_en": "hair / child",
+          "meaning_ru": "волосы / ребёнок"
+        }
+      },
+      "kan_kaan": {
+        "word_1": {
+          "word": "कन",
+          "meaning_en": "grain, particle",
+          "meaning_ru": "зерно, частица"
+        },
+        "word_2": {
+          "word": "कान",
+          "meaning_en": "ear",
+          "meaning_ru": "ухо"
+        }
+      },
+      "sur_shur": {
+        "word_1": {
+          "word": "सूर",
+          "meaning_en": "sun / blind person",
+          "meaning_ru": "солнце / слепой"
+        },
+        "word_2": {
+          "word": "शूर",
+          "meaning_en": "brave, warrior",
+          "meaning_ru": "храбрый, воин"
+        },
+        "trap": "स vs श distinction crucial"
+      },
+      "sam_sham": {
+        "word_1": {
+          "word": "सम",
+          "meaning_en": "equal, even",
+          "meaning_ru": "равный, чётный"
+        },
+        "word_2": {
+          "word": "शम",
+          "meaning_en": "peace, tranquility",
+          "meaning_ru": "мир, спокойствие"
+        }
+      }
+    }
+  },
+  "near_homophones": {
+    "description": "Words with similar but slightly different pronunciation",
+    "severity": "major",
+    "entries": {
+      "aviram_abhiram": {
+        "word_1": {
+          "word": "अविराम",
+          "meaning_en": "continuous, non-stop",
+          "meaning_ru": "непрерывный"
+        },
+        "word_2": {
+          "word": "अभिराम",
+          "meaning_en": "pleasing, beautiful",
+          "meaning_ru": "приятный, красивый"
+        },
+        "difference": "व vs भ"
+      },
+      "ansh_anch": {
+        "word_1": {
+          "word": "अंश",
+          "meaning_en": "part, portion",
+          "meaning_ru": "часть, доля"
+        },
+        "word_2": {
+          "word": "अंच",
+          "meaning_en": "edge, corner",
+          "meaning_ru": "край, угол"
+        }
+      },
+      "asan_aasann": {
+        "word_1": {
+          "word": "आसन",
+          "meaning_en": "seat, yoga posture",
+          "meaning_ru": "сиденье, поза йоги"
+        },
+        "word_2": {
+          "word": "आसन्न",
+          "meaning_en": "near, imminent",
+          "meaning_ru": "близкий, неминуемый"
+        }
+      },
+      "antar_andar": {
+        "word_1": {
+          "word": "अंतर",
+          "meaning_en": "difference, interval",
+          "meaning_ru": "разница, интервал"
+        },
+        "word_2": {
+          "word": "अंदर",
+          "meaning_en": "inside",
+          "meaning_ru": "внутри"
+        }
+      },
+      "praman_pranam": {
+        "word_1": {
+          "word": "प्रमाण",
+          "meaning_en": "proof, evidence",
+          "meaning_ru": "доказательство"
+        },
+        "word_2": {
+          "word": "प्रणाम",
+          "meaning_en": "salutation, greeting",
+          "meaning_ru": "приветствие, поклон"
+        }
+      }
+    }
+  },
+  "paronyms": {
+    "description": "Words that look/sound similar and are often confused",
+    "severity": "major",
+    "entries": {
+      "kram_karm": {
+        "word_1": {
+          "word": "क्रम",
+          "meaning_en": "order, sequence",
+          "meaning_ru": "порядок, последовательность"
+        },
+        "word_2": {
+          "word": "कर्म",
+          "meaning_en": "action, deed, karma",
+          "meaning_ru": "действие, дело, карма"
+        },
+        "trap": "Often confused in religious/philosophical texts"
+      },
+      "dharm_dharam": {
+        "word_1": {
+          "word": "धर्म",
+          "meaning_en": "religion, duty, righteousness",
+          "meaning_ru": "религия, долг, праведность"
+        },
+        "word_2": {
+          "word": "धरम",
+          "meaning_en": "colloquial form of धर्म",
+          "meaning_ru": "разговорная форма слова धर्म"
+        },
+        "note": "धर्म is correct Sanskrit-derived form"
+      },
+      "gyan_gan": {
+        "word_1": {
+          "word": "ज्ञान",
+          "meaning_en": "knowledge, wisdom",
+          "meaning_ru": "знание, мудрость"
+        },
+        "word_2": {
+          "word": "गान",
+          "meaning_en": "song, singing",
+          "meaning_ru": "песня, пение"
+        }
+      },
+      "path_paath": {
+        "word_1": {
+          "word": "पथ",
+          "meaning_en": "path, way",
+          "meaning_ru": "путь, дорога"
+        },
+        "word_2": {
+          "word": "पाठ",
+          "meaning_en": "lesson, reading",
+          "meaning_ru": "урок, чтение"
+        }
+      },
+      "niti_neeti": {
+        "word_1": {
+          "word": "नीति",
+          "meaning_en": "policy, ethics",
+          "meaning_ru": "политика, этика"
+        },
+        "word_2": {
+          "word": "नीती",
+          "meaning_en": "incorrect spelling",
+          "note": "नीति is correct"
+        }
+      }
+    }
+  },
+  "context_dependent_meanings": {
+    "description": "Single words with multiple meanings - context decides",
+    "severity": "major",
+    "entries": {
+      "kul": {
+        "word": "कुल",
+        "meanings": [
+          {"meaning": "total", "example": "कुल मिलाकर (in total)"},
+          {"meaning": "family, lineage", "example": "राज कुल (royal family)"},
+          {"meaning": "bank (of river)", "example": "नदी का कुल"}
+        ]
+      },
+      "phal": {
+        "word": "फल",
+        "meanings": [
+          {"meaning": "fruit", "example": "मीठा फल"},
+          {"meaning": "result, consequence", "example": "कर्म का फल"}
+        ]
+      },
+      "arth": {
+        "word": "अर्थ",
+        "meanings": [
+          {"meaning": "meaning", "example": "शब्द का अर्थ"},
+          {"meaning": "wealth", "example": "अर्थशास्त्र (economics)"},
+          {"meaning": "purpose", "example": "जीवन का अर्थ"}
+        ]
+      },
+      "har": {
+        "word": "हर",
+        "meanings": [
+          {"meaning": "every, each", "example": "हर कोई (everyone)"},
+          {"meaning": "necklace, garland", "example": "फूलों का हार"},
+          {"meaning": "defeat", "example": "हार मानना (to accept defeat)"}
+        ]
+      },
+      "pat": {
+        "word": "पत्र",
+        "meanings": [
+          {"meaning": "letter (correspondence)", "example": "पत्र लिखना"},
+          {"meaning": "leaf", "example": "पेड़ का पत्र"},
+          {"meaning": "newspaper", "example": "समाचार पत्र"}
+        ]
+      },
+      "naak": {
+        "word": "नाक",
+        "meanings": [
+          {"meaning": "nose", "example": "नाक का रोग"},
+          {"meaning": "honor, prestige", "example": "नाक कटना (to lose face)"}
+        ]
+      }
+    }
+  },
+  "tatsam_tadbhav_pairs": {
+    "description": "Sanskrit-origin vs Hindi-evolved word pairs",
+    "note": "Both may be valid but have different register/formality",
+    "entries": {
+      "agni_aag": {
+        "tatsam": "अग्नि",
+        "tatsam_meaning": "fire (formal/literary)",
+        "tadbhav": "आग",
+        "tadbhav_meaning": "fire (common usage)"
+      },
+      "dugdh_doodh": {
+        "tatsam": "दुग्ध",
+        "tatsam_meaning": "milk (formal)",
+        "tadbhav": "दूध",
+        "tadbhav_meaning": "milk (common)"
+      },
+      "hasta_haath": {
+        "tatsam": "हस्त",
+        "tatsam_meaning": "hand (literary)",
+        "tadbhav": "हाथ",
+        "tadbhav_meaning": "hand (common)"
+      },
+      "ratri_raat": {
+        "tatsam": "रात्रि",
+        "tatsam_meaning": "night (formal)",
+        "tadbhav": "रात",
+        "tadbhav_meaning": "night (common)"
+      },
+      "vayu_hawa": {
+        "tatsam": "वायु",
+        "tatsam_meaning": "air/wind (formal)",
+        "tadbhav": "हवा",
+        "tadbhav_meaning": "air/wind (common)"
+      }
+    }
+  },
+  "translation_guidance": {
+    "step_1": "Identify potential homophones in source/target",
+    "step_2": "Analyze context thoroughly",
+    "step_3": "Select correct meaning based on context",
+    "step_4": "Verify with native speaker if uncertain",
+    "warning": "Machine translation often fails with homophones"
+  }
+}

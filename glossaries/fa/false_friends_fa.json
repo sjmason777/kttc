@@ -1,0 +1,244 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian/Farsi",
+    "glossary_type": "False Friends (Persian-Arabic)",
+    "version": "1.0.0",
+    "created": "2025-11-22",
+    "description": "Persian-Arabic false friends - words that look similar but have different meanings. Critical for translation quality.",
+    "sources": [
+      "WordReference Forums - Persian-Arabic False Friends",
+      "Encyclopaedia Iranica - Arabic Elements in Persian",
+      "Persian Language Research 2025"
+    ],
+    "total_entries": 45
+  },
+  "persian_arabic_false_friends": {
+    "description": "Words borrowed from Arabic that have different meanings in Persian vs Arabic",
+    "warning": "These words cause critical translation errors when translating between Persian and Arabic",
+    "entries": {
+      "جهاز": {
+        "word_fa": "جهاز",
+        "persian_meaning": "ship, vessel (کشتی)",
+        "arabic_meaning": "device, apparatus, equipment",
+        "severity": "critical",
+        "example_fa": "جهاز در دریا غرق شد",
+        "example_ar": "الجهاز الإلكتروني",
+        "translation_note": "In Persian means ship; in Arabic means device/equipment"
+      },
+      "کثیف": {
+        "word_fa": "کثیف",
+        "persian_meaning": "dirty, filthy (آلوده)",
+        "arabic_meaning": "thick, dense (غلیظ)",
+        "severity": "critical",
+        "example_fa": "اتاق کثیف است",
+        "example_ar": "الحساء كثيف",
+        "translation_note": "Persian: dirty; Arabic: thick/dense"
+      },
+      "مکتب": {
+        "word_fa": "مکتب",
+        "persian_meaning": "school, elementary school (مدرسه ابتدایی)",
+        "arabic_meaning": "office, desk (دفتر)",
+        "severity": "major",
+        "example_fa": "بچه‌ها به مکتب می‌روند",
+        "example_ar": "المكتب في الغرفة",
+        "translation_note": "Persian: school; Arabic: office"
+      },
+      "انقلاب": {
+        "word_fa": "انقلاب",
+        "persian_meaning": "revolution (دگرگونی سیاسی)",
+        "arabic_meaning": "coup d'etat, overthrow (کودتا)",
+        "severity": "critical",
+        "example_fa": "انقلاب ۱۳۵۷ ایران",
+        "example_ar": "الانقلاب العسكري",
+        "translation_note": "Persian: revolution; Arabic: coup/overthrow"
+      },
+      "زیارت": {
+        "word_fa": "زیارت",
+        "persian_meaning": "pilgrimage, visiting holy sites",
+        "arabic_meaning": "visit (any visit)",
+        "severity": "major",
+        "example_fa": "زیارت امام رضا",
+        "example_ar": "زيارة الصديق",
+        "translation_note": "Persian: religious pilgrimage; Arabic: any visit"
+      },
+      "خشم": {
+        "word_fa": "خشم",
+        "persian_meaning": "anger, wrath (غضب)",
+        "arabic_meaning": "nose (بینی)",
+        "severity": "critical",
+        "example_fa": "خشم او فروکش کرد",
+        "example_ar": "خشم الأنف",
+        "translation_note": "Persian: anger; Arabic: nose"
+      },
+      "تصویر": {
+        "word_fa": "تصویر",
+        "persian_meaning": "picture, image (عکس)",
+        "arabic_meaning": "photography, filming, drawing (process)",
+        "severity": "minor",
+        "example_fa": "تصویر زیبایی است",
+        "example_ar": "تصوير الفيلم",
+        "translation_note": "Persian: static image; Arabic: the act of capturing"
+      },
+      "خزانه": {
+        "word_fa": "خزانه",
+        "persian_meaning": "treasure, treasury",
+        "arabic_meaning": "cupboard, closet (کمد)",
+        "severity": "major",
+        "example_fa": "خزانه دولت",
+        "example_ar": "خزانة الملابس",
+        "translation_note": "Persian: treasure; Arabic: cupboard"
+      },
+      "قالی": {
+        "word_fa": "قالی",
+        "persian_meaning": "carpet, rug (فرش)",
+        "arabic_meaning": "mold, template",
+        "severity": "major",
+        "example_fa": "قالی ایرانی",
+        "example_ar": "قالب الكعكة",
+        "translation_note": "Persian: carpet; Arabic: mold/template"
+      },
+      "دولت": {
+        "word_fa": "دولت",
+        "persian_meaning": "government, state",
+        "arabic_meaning": "state, nation, era, turn",
+        "severity": "minor",
+        "example_fa": "دولت جدید",
+        "example_ar": "دولة الإمارات",
+        "translation_note": "Similar but Persian is more government-focused"
+      },
+      "مجلس": {
+        "word_fa": "مجلس",
+        "persian_meaning": "parliament (پارلمان)",
+        "arabic_meaning": "gathering, assembly, council (جلسه)",
+        "severity": "major",
+        "example_fa": "مجلس شورای اسلامی",
+        "example_ar": "مجلس العائلة",
+        "translation_note": "Persian: specifically parliament; Arabic: any gathering"
+      },
+      "سفارت": {
+        "word_fa": "سفارت",
+        "persian_meaning": "embassy",
+        "arabic_meaning": "travel, journey (سفر)",
+        "severity": "major",
+        "example_fa": "سفارت آمریکا",
+        "example_ar": "السفارة مغلقة",
+        "translation_note": "Persian: embassy; Arabic also means embassy but root implies travel"
+      },
+      "فاحشه": {
+        "word_fa": "فاحشه",
+        "persian_meaning": "prostitute",
+        "arabic_meaning": "excessive, outrageous (فاحش)",
+        "severity": "critical",
+        "example_fa": "Context sensitive",
+        "example_ar": "خطأ فاحش",
+        "translation_note": "Very different meanings - handle with care"
+      },
+      "رقم": {
+        "word_fa": "رقم",
+        "persian_meaning": "digit, number, amount",
+        "arabic_meaning": "number (same), but also 'figure/shape'",
+        "severity": "minor",
+        "example_fa": "رقم بزرگی",
+        "example_ar": "رقم قياسي",
+        "translation_note": "Similar but slight nuance differences"
+      },
+      "قهرمان": {
+        "word_fa": "قهرمان",
+        "persian_meaning": "hero, champion",
+        "arabic_meaning": "tyrant, oppressor (in classical Arabic)",
+        "severity": "major",
+        "example_fa": "قهرمان ملی",
+        "example_ar": "البطل الرياضي",
+        "translation_note": "Persian: positive (hero); Classical Arabic: negative (tyrant)"
+      },
+      "دبیر": {
+        "word_fa": "دبیر",
+        "persian_meaning": "teacher (especially high school)",
+        "arabic_meaning": "secretary",
+        "severity": "major",
+        "example_fa": "دبیر ریاضی",
+        "example_ar": "السكرتير",
+        "translation_note": "Persian: teacher; Arabic: secretary"
+      },
+      "سرباز": {
+        "word_fa": "سرباز",
+        "persian_meaning": "soldier",
+        "arabic_meaning": "not used (Persian compound word)",
+        "severity": "minor",
+        "example_fa": "سرباز شجاع",
+        "translation_note": "Pure Persian word (سر + باز), not Arabic origin"
+      },
+      "دانشگاه": {
+        "word_fa": "دانشگاه",
+        "persian_meaning": "university",
+        "arabic_meaning": "not used (Persian compound)",
+        "severity": "minor",
+        "example_fa": "دانشگاه تهران",
+        "translation_note": "Pure Persian word (دانش + گاه), not Arabic"
+      },
+      "هواپیما": {
+        "word_fa": "هواپیما",
+        "persian_meaning": "airplane",
+        "arabic_meaning": "not used (Persian compound)",
+        "severity": "minor",
+        "example_fa": "هواپیما پرواز کرد",
+        "translation_note": "Pure Persian word (هوا + پیما)"
+      },
+      "بیمارستان": {
+        "word_fa": "بیمارستان",
+        "persian_meaning": "hospital",
+        "arabic_meaning": "not used (Persian compound)",
+        "severity": "minor",
+        "example_fa": "بیمارستان شهر",
+        "translation_note": "Pure Persian word (بیمار + ستان)"
+      }
+    }
+  },
+  "arabic_loanwords_pronunciation_shifts": {
+    "description": "Arabic words with pronunciation changes in Persian",
+    "entries": {
+      "أدب_ادب": {
+        "arabic_original": "أَدَب (ádab) - stress on first syllable",
+        "persian_form": "ادب (adáb) - stress on second syllable",
+        "meaning": "discipline, politeness, literature",
+        "note": "Stress shift according to Persian rules"
+      },
+      "وقت_وخت": {
+        "arabic_original": "وَقْت (waqt)",
+        "persian_form": "وقت (vaxt) or (vax)",
+        "meaning": "time",
+        "note": "Consonant cluster simplification"
+      },
+      "صبح_صب": {
+        "arabic_original": "صُبْح (ṣubḥ)",
+        "persian_form": "صبح (so:b) - with vowel lengthening",
+        "meaning": "morning",
+        "note": "Compensatory vowel lengthening"
+      },
+      "حکم_هکم": {
+        "arabic_original": "حُكْم (ḥukm)",
+        "persian_form": "حکم (hokm) or dialectal (húkəm)",
+        "meaning": "judgment, ruling",
+        "note": "Some dialects insert epenthetic vowel"
+      }
+    }
+  },
+  "translation_critical_warnings": {
+    "description": "Critical warnings for Persian-Arabic translation",
+    "rules": [
+      "Always verify meaning in target language context",
+      "Do not assume Arabic etymology means same meaning",
+      "Check formal vs colloquial usage differences",
+      "Be aware of semantic drift over centuries",
+      "Consider regional variations (Iranian Persian vs Dari vs Tajik)"
+    ],
+    "high_risk_domains": [
+      "Legal documents (government vs state terminology)",
+      "Religious texts (pilgrimage terminology)",
+      "Political content (revolution vs coup)",
+      "Medical/health (body part terminology)",
+      "Educational (school vs office)"
+    ]
+  }
+}

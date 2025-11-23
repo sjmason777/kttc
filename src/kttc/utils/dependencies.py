@@ -158,7 +158,7 @@ def show_missing_dependencies_prompt(
     console.print()
 
     # Ask user
-    return Confirm.ask("Install missing dependencies now?", default=True)
+    return bool(Confirm.ask("Install missing dependencies now?", default=True))
 
 
 def install_dependency_group(group: DependencyGroup) -> bool:

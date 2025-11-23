@@ -151,7 +151,7 @@ class Translator:
         if self.is_rtl:
             text = process_rtl_text(text, self._language)
 
-        return text
+        return str(text)
 
     def get_ai_language_instruction(self) -> str:
         """Get instruction for AI to respond in current language.

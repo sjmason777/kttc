@@ -125,7 +125,7 @@ class ModelSelector:
         source_lang: str,
         target_lang: str,
         domain: str | None = None,
-        task_type: str = "qa",  # "qa" or "translation" # noqa: ARG002 - Reserved for future use
+        task_type: str = "qa",  # noqa: ARG002 - Reserved for future use
         optimize_for: str = "quality",  # "quality" or "cost"
     ) -> str:
         """Select optimal model for given task.

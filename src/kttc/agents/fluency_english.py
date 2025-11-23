@@ -40,6 +40,7 @@ from typing import Any, cast
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.helpers.english import EnglishLanguageHelper
 from kttc.llm import BaseLLMProvider
+from kttc.terminology.english_traps import EnglishTrapsValidator
 
 from .fluency import FluencyAgent
 
@@ -71,6 +72,12 @@ class EnglishFluencyAgent(FluencyAgent):
         "spelling": "Spelling and punctuation",
         "tense": "Tense consistency",
         "register": "Formality register consistency",
+        "homophones": "Homophone confusion detection (their/there/they're, etc.)",
+        "phrasal_verbs": "Phrasal verb identification (cannot translate literally)",
+        "heteronyms": "Heteronym context validation (lead, read, etc.)",
+        "adjective_order": "Adjective order validation (opinion-size-age-color...)",
+        "prepositions": "Preposition collocation checking (depend on, interested in)",
+        "idioms": "Idiom detection (piece of cake, break a leg, etc.)",
     }
 
     def __init__(
@@ -79,6 +86,7 @@ class EnglishFluencyAgent(FluencyAgent):
         temperature: float = 0.1,
         max_tokens: int = 2000,
         helper: EnglishLanguageHelper | None = None,
+        traps_validator: EnglishTrapsValidator | None = None,
     ):
         """Initialize English fluency agent.
 
@@ -87,6 +95,7 @@ class EnglishFluencyAgent(FluencyAgent):
             temperature: Sampling temperature
             max_tokens: Maximum tokens in response
             helper: Optional English language helper for LanguageTool checks (auto-creates if None)
+            traps_validator: Optional English traps validator (auto-creates if None)
         """
         super().__init__(llm_provider, temperature, max_tokens)
         self._english_prompt_base = (
@@ -96,10 +105,21 @@ class EnglishFluencyAgent(FluencyAgent):
         # Initialize LanguageTool helper (or use provided one)
         self.helper = helper if helper is not None else EnglishLanguageHelper()
 
+        # Initialize English traps validator (homophones, phrasal verbs, idioms, etc.)
+        if traps_validator is not None:
+            self.traps_validator = traps_validator
+        else:
+            self.traps_validator = EnglishTrapsValidator()
+
         if self.helper.is_available():
             logger.info("EnglishFluencyAgent using LanguageTool helper for enhanced checks")
         else:
             logger.info("EnglishFluencyAgent running without LanguageTool (LLM-only mode)")
+
+        if self.traps_validator.is_available():
+            logger.info("EnglishFluencyAgent using EnglishTrapsValidator for trap detection")
+        else:
+            logger.info("EnglishFluencyAgent running without trap glossaries")
 
     def get_base_prompt(self) -> str:
         """Get the combined base prompt for English fluency evaluation.
@@ -111,13 +131,14 @@ class EnglishFluencyAgent(FluencyAgent):
         return f"{base_fluency}\n\n---\n\nENGLISH-SPECIFIC CHECKS:\n{self._english_prompt_base}"
 
     async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Evaluate English fluency with hybrid LanguageTool + LLM approach.
+        """Evaluate English fluency with hybrid LanguageTool + LLM + Traps approach.
 
         Uses parallel execution:
         1. LanguageTool performs deterministic grammar/spelling checks
         2. LLM performs semantic and complex linguistic analysis
-        3. LanguageTool verifies LLM results (anti-hallucination)
-        4. Merge unique errors from both sources
+        3. EnglishTrapsValidator detects homophones, phrasal verbs, idioms, etc.
+        4. LanguageTool verifies LLM results (anti-hallucination)
+        5. Merge unique errors from all sources
 
         Args:
             task: Translation task (target_lang must be 'en')
@@ -135,16 +156,17 @@ class EnglishFluencyAgent(FluencyAgent):
         # Run base fluency checks (parallel with English-specific)
         base_errors = await super().evaluate(task)
 
-        # Run LanguageTool and LLM checks in parallel
+        # Run LanguageTool, LLM, and Traps checks in parallel
         try:
             results = await asyncio.gather(
                 self._languagetool_check(task),  # Fast, deterministic
                 self._llm_check(task),  # Slow, semantic
+                self._traps_check(task),  # Fast, glossary-based
                 return_exceptions=True,
             )
 
             # Handle exceptions and ensure proper typing
-            lt_result, llm_result = results
+            lt_result, llm_result, traps_result = results
 
             # Convert results to list[ErrorAnnotation], handling exceptions
             if isinstance(lt_result, Exception):
@@ -159,6 +181,12 @@ class EnglishFluencyAgent(FluencyAgent):
             else:
                 llm_errors = cast(list[ErrorAnnotation], llm_result)
 
+            if isinstance(traps_result, Exception):
+                logger.warning(f"Traps check failed: {traps_result}")
+                traps_errors: list[ErrorAnnotation] = []
+            else:
+                traps_errors = cast(list[ErrorAnnotation], traps_result)
+
             # Verify LLM results with LanguageTool (anti-hallucination)
             verified_llm = self._verify_llm_errors(llm_errors, task.translation)
 
@@ -166,13 +194,14 @@ class EnglishFluencyAgent(FluencyAgent):
             unique_lt = self._remove_duplicates(lt_errors, verified_llm)
 
             # Merge all unique errors
-            all_errors = base_errors + unique_lt + verified_llm
+            all_errors = base_errors + unique_lt + verified_llm + traps_errors
 
             logger.info(
                 f"EnglishFluencyAgent: "
                 f"base={len(base_errors)}, "
                 f"languagetool={len(unique_lt)}, "
-                f"llm={len(verified_llm)} "
+                f"llm={len(verified_llm)}, "
+                f"traps={len(traps_errors)} "
                 f"(total={len(all_errors)})"
             )
 
@@ -219,6 +248,119 @@ class EnglishFluencyAgent(FluencyAgent):
             return errors
         except Exception as e:
             logger.error(f"LLM check failed: {e}")
+            return []
+
+    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform English traps checks (homophones, phrasal verbs, idioms, etc.).
+
+        Uses glossary-based detection for:
+        - Homophone errors (their/there/they're, your/you're, etc.)
+        - Phrasal verbs (cannot be translated literally)
+        - Heteronyms (same spelling, different pronunciation)
+        - Adjective order violations
+        - Preposition errors
+        - Idioms (cannot be translated literally)
+
+        Args:
+            task: Translation task
+
+        Returns:
+            List of errors found by EnglishTrapsValidator
+        """
+        if not self.traps_validator or not self.traps_validator.is_available():
+            logger.debug("EnglishTrapsValidator not available, skipping traps checks")
+            return []
+
+        try:
+            errors: list[ErrorAnnotation] = []
+            text = task.translation
+
+            # Check homophones (high priority - common errors)
+            homophone_errors = self.traps_validator.find_homophones_in_text(text)
+            for h in homophone_errors:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="english_homophone_error",
+                        severity=ErrorSeverity.MAJOR,
+                        location=h.get("position", (0, 10)),
+                        description=h.get("suggestion", "Possible homophone error"),
+                        suggestion=(
+                            f"Use '{h.get('correct_word', '')}' "
+                            f"instead of '{h.get('wrong_word', '')}'"
+                        ),
+                    )
+                )
+
+            # Check phrasal verbs (critical for translation)
+            phrasal_verbs = self.traps_validator.find_phrasal_verbs_in_text(text)
+            for pv in phrasal_verbs:
+                meanings = pv.get("meanings", [])
+                meaning_str = "; ".join([m.get("meaning", "") for m in meanings[:2]])
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="english_phrasal_verb",
+                        severity=ErrorSeverity.MINOR,  # Info level - not an error per se
+                        location=(0, min(50, len(text))),
+                        description=(
+                            f"Phrasal verb '{pv.get('phrasal_verb', '')}' "
+                            "- DO NOT translate literally"
+                        ),
+                        suggestion=f"Meanings: {meaning_str}",
+                    )
+                )
+
+            # Check adjective order
+            adj_errors = self.traps_validator.check_adjective_order(text)
+            for adj in adj_errors:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="english_adjective_order",
+                        severity=ErrorSeverity.MAJOR,
+                        location=adj.get("position", (0, 10)),
+                        description=f"Adjective order violation: {adj.get('violation', '')}",
+                        suggestion=f"Correct order: {adj.get('correct_order', '')}",
+                    )
+                )
+
+            # Check preposition errors
+            prep_errors = self.traps_validator.find_preposition_errors(text)
+            for prep in prep_errors:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="english_preposition_error",
+                        severity=ErrorSeverity.MAJOR,
+                        location=prep.get("position", (0, 10)),
+                        description=f"Preposition error: '{prep.get('found_text', '')}'",
+                        suggestion=f"Use: {prep.get('correction', '')}",
+                    )
+                )
+
+            # Check idioms (informational - for translation context)
+            idioms = self.traps_validator.find_idioms_in_text(text)
+            for idiom in idioms:
+                errors.append(
+                    ErrorAnnotation(
+                        category="fluency",
+                        subcategory="english_idiom",
+                        severity=ErrorSeverity.MINOR,  # Info level
+                        location=(0, min(50, len(text))),
+                        description=(
+                            f"Idiom detected: '{idiom.get('idiom', '')}' "
+                            "- DO NOT translate literally"
+                        ),
+                        suggestion=f"Meaning: {idiom.get('meaning', '')}",
+                    )
+                )
+
+            logger.debug(f"EnglishTrapsValidator found {len(errors)} issues")
+            return errors
+
+        except Exception as e:
+            logger.error(f"Traps check failed: {e}")
             return []
 
     def _verify_llm_errors(
