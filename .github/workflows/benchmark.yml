@@ -60,13 +60,15 @@ jobs:
         run: |
           python3.11 -c "
           import asyncio
+          import os
           from tests.benchmarks.wmt_benchmark import WMTBenchmark
           from kttc.agents.orchestrator import AgentOrchestrator
           from kttc.llm import OpenAIProvider
 
           async def main():
               # Initialize
-              llm = OpenAIProvider(model='gpt-4')
+              api_key = os.environ.get('KTTC_OPENAI_API_KEY', '')
+              llm = OpenAIProvider(api_key=api_key, model='gpt-4')
               orchestrator = AgentOrchestrator(llm)
 
               # Run benchmark

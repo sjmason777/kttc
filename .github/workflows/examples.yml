@@ -196,7 +196,8 @@ jobs:
         run: |
           kttc compare \
             --source examples/cli/source_en.txt \
-            --translations examples/cli/translation_ru_good.txt examples/cli/translation_ru_bad.txt \
+            --translation examples/cli/translation_ru_good.txt \
+            --translation examples/cli/translation_ru_bad.txt \
             --source-lang en --target-lang ru --demo
           echo "✅ kttc compare works in demo mode"
 

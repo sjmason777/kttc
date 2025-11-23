@@ -61,13 +61,15 @@ jobs:
           python3.11 -c "
           import asyncio
           import json
+          import os
           from tests.validation.error_detection_accuracy import ErrorDetectionAccuracyTest
           from kttc.agents.orchestrator import AgentOrchestrator
-          from kttc.llm.providers.openai import OpenAIProvider
+          from kttc.llm import OpenAIProvider
 
           async def main():
               # Initialize
-              llm = OpenAIProvider(model='gpt-4')
+              api_key = os.environ.get('KTTC_OPENAI_API_KEY', '')
+              llm = OpenAIProvider(api_key=api_key, model='gpt-4')
               orchestrator = AgentOrchestrator(llm)
 
               # Run validation
