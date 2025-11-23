@@ -275,9 +275,9 @@ class RussianLanguageHelper(LanguageHelper):
                     errors.append(
                         ErrorAnnotation(
                             category="fluency",
-                            subcategory=f"russian_{match.ruleId}",
+                            subcategory=f"russian_{match.rule_id}",
                             severity=self._map_severity(match),
-                            location=(match.offset, match.offset + match.errorLength),
+                            location=(match.offset, match.offset + match.error_length),
                             description=match.message,
                             suggestion=match.replacements[0] if match.replacements else None,
                         )
@@ -430,7 +430,7 @@ class RussianLanguageHelper(LanguageHelper):
         Returns:
             ErrorSeverity enum value
         """
-        rule_id = match.ruleId.lower()
+        rule_id = match.rule_id.lower()
 
         # Critical errors (spelling, clear grammar mistakes)
         if any(pattern in rule_id for pattern in ["spelling", "typo", "misspell", "орфография"]):
@@ -462,7 +462,7 @@ class RussianLanguageHelper(LanguageHelper):
         Returns:
             True if error is relevant for translation, False otherwise
         """
-        rule_id = match.ruleId.lower()
+        rule_id = match.rule_id.lower()
 
         # Exclude pure style suggestions
         exclude_patterns = ["style", "redundancy", "collocation", "cliche", "wordiness"]

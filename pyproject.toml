@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.0", "wheel"]
+requires = ["setuptools>=80.9.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
@@ -12,7 +12,7 @@ kttc = ["py.typed"]
 
 [project]
 name = "kttc"
-version = "0.3.2"
+version = "0.4.0"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -39,21 +39,18 @@ dependencies = [
     "pydantic>=2.12.4",
     "pydantic-settings>=2.11.0",
     "aiohttp>=3.13.2",
-    "openai>=2.7.1",
-    "anthropic>=0.72.0",
+    "openai>=2.8.1",
+    "anthropic>=0.74.0",
     "aiosqlite>=0.21.0",
     "orjson>=3.11.4",
-    "fastapi>=0.121.1",
+    "fastapi>=0.121.3",
     "uvicorn>=0.38.0",
     "websockets>=15.0.1",
     "sacrebleu>=2.5.1",
     "mtdata>=0.4.3",
     # Russian NLP
     "mawo-core[all]>=0.1.3",  # Russian morphology, tokenization, NER
-    "language-tool-python>=2.9.5",  # Grammar checking for Russian and English
-    # Multi-language NLP
-    "spacy>=3.8.0,<3.9.0",  # English, Chinese, and other languages
-    "jieba>=0.42",  # Chinese word segmentation (lightweight)
+    "language-tool-python>=3.1.0",  # Grammar checking for Russian and English
 ]
 
 [project.optional-dependencies]
@@ -62,9 +59,17 @@ metrics = [
     "sentence-transformers>=5.1.2",
 ]
 
-# Chinese language helpers - advanced NLP with HanLP
+# spaCy for English/Chinese NLP (optional due to pydantic 1.x conflict)
+# Note: spaCy's weasel dependency requires pydantic 1.x, which conflicts with kttc's pydantic 2.x
+# Install only on Python <3.13 and when needed for advanced NLP features
+nlp = [
+    "spacy>=3.8.11",  # English, Chinese, and other languages
+]
+
+# Chinese language helpers - jieba + HanLP
 chinese = [
-    "hanlp>=2.1.3",
+    "jieba>=0.42.1",  # Chinese word segmentation (lightweight)
+    "hanlp>=2.1.3",  # Advanced Chinese grammar checking
 ]
 
 # Hindi language helpers - Indic NLP + Stanza + Spello
@@ -76,28 +81,30 @@ hindi = [
 
 # Persian/Farsi language helpers - DadmaTools (all-in-one solution)
 persian = [
-    "dadmatools[full]>=2.0.9",  # Complete Persian NLP toolkit (spaCy-based)
+    "dadmatools[full]>=2.3.6",  # Complete Persian NLP toolkit (spaCy-based)
 ]
 
 # All language-specific helpers
 all-languages = [
-    "hanlp>=2.1.3",  # Chinese
+    "spacy>=3.8.11",  # English, Chinese NLP (Python <3.13 only)
+    "jieba>=0.42.1",  # Chinese word segmentation
+    "hanlp>=2.1.3",  # Chinese advanced NLP
     "indic-nlp-library>=0.92",  # Hindi tokenization
     "stanza>=1.11.0",  # Hindi POS/NER/lemma
     "spello>=1.3.0",  # Hindi spell checking
-    "dadmatools[full]>=2.0.9",  # Persian (all-in-one)
+    "dadmatools[full]>=2.3.6",  # Persian (all-in-one)
 ]
 
 # Development tools
 dev = [
-    "pytest>=9.0.0",
+    "pytest>=9.0.1",
     "pytest-cov>=7.0.0",
     "pytest-xdist>=3.8.0",
-    "pytest-asyncio>=0.23.0",
+    "pytest-asyncio>=1.3.0",
     "black>=25.11.0",
-    "ruff>=0.14.4",
+    "ruff>=0.14.6",
     "mypy>=1.18.2",
-    "pre-commit>=4.4.0",
+    "pre-commit>=4.5.0",
     "types-requests>=2.32.4",
     "types-tqdm>=4.67.0",
     "mkdocs>=1.6.1",

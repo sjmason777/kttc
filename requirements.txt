@@ -1,0 +1,33 @@
+# Requirements for Streamlit Cloud deployment
+# This file is used by Streamlit Cloud instead of pyproject.toml
+# to avoid Poetry-related Python version issues
+
+# Streamlit framework
+streamlit>=1.45.0
+
+# Core kttc dependencies (without heavy NLP libraries)
+typer>=0.20.0
+rich>=14.2.0
+defusedxml>=0.7.1
+pydantic>=2.12.4
+pydantic-settings>=2.11.0
+aiohttp>=3.13.2
+openai>=2.8.1
+anthropic>=0.74.0
+aiosqlite>=0.21.0
+orjson>=3.11.4
+fastapi>=0.121.1
+uvicorn>=0.38.0
+websockets>=15.0.1
+sacrebleu>=2.5.1
+mtdata>=0.4.3
+
+# Russian NLP (lightweight)
+mawo-core[all]>=0.1.3
+
+# NOTE: The following heavy dependencies are excluded for Streamlit Cloud:
+# - spacy (pydantic 1.x conflict, Python 3.13 issues)
+# - language-tool-python (requires Java)
+# - jieba, hanlp (Chinese NLP - optional)
+#
+# The demo mode works without these dependencies.
