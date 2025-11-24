@@ -12,7 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""CLI subcommands."""
+"""CLI subcommands for KTTC.
 
-# No public API - subcommands are registered directly with the main app
-__all__: list[str] = []
+This module exports all command modules for registration with the main app.
+"""
+
+from kttc.cli.commands.benchmark import run_benchmark
+from kttc.cli.commands.compare import run_compare
+from kttc.cli.commands.glossary import glossary_app
+from kttc.cli.commands.terminology import terminology_app
+
+# Lazy imports to avoid circular dependencies
+# These are imported when needed by main.py directly
+
+__all__ = [
+    # Command functions (imported lazily in main.py)
+    "run_benchmark",
+    "run_compare",
+    # Typer apps for sub-commands
+    "glossary_app",
+    "terminology_app",
+]

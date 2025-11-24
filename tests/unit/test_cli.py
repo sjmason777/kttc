@@ -113,8 +113,8 @@ class TestCheckCommand:
         # Arrange
         source, translation = temp_text_files
 
-        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.main.get_settings") as mock_settings:
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
                 # Setup mocks
                 mock_orch = MagicMock()
                 mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
@@ -125,7 +125,7 @@ class TestCheckCommand:
                 settings.get_llm_provider_key.return_value = "test-key"
                 mock_settings.return_value = settings
 
-                with patch("kttc.cli.main.OpenAIProvider"):
+                with patch("kttc.cli.utils.OpenAIProvider"):
                     # Act
                     result = runner.invoke(
                         app,
@@ -157,8 +157,8 @@ class TestOutputFormats:
         source, translation = temp_text_files
         output = tmp_path / "report.json"
 
-        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.main.get_settings") as mock_settings:
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
                 mock_orch = MagicMock()
                 mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
                 mock_orch_class.return_value = mock_orch
@@ -168,7 +168,7 @@ class TestOutputFormats:
                 settings.get_llm_provider_key.return_value = "test-key"
                 mock_settings.return_value = settings
 
-                with patch("kttc.cli.main.OpenAIProvider"):
+                with patch("kttc.cli.utils.OpenAIProvider"):
                     # Act
                     result = runner.invoke(
                         app,
@@ -204,8 +204,8 @@ class TestOutputFormats:
         source, translation = temp_text_files
         output = tmp_path / "report.md"
 
-        with patch("kttc.cli.main.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.main.get_settings") as mock_settings:
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
+            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
                 mock_orch = MagicMock()
                 mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
                 mock_orch_class.return_value = mock_orch
@@ -215,7 +215,7 @@ class TestOutputFormats:
                 settings.get_llm_provider_key.return_value = "test-key"
                 mock_settings.return_value = settings
 
-                with patch("kttc.cli.main.OpenAIProvider"):
+                with patch("kttc.cli.utils.OpenAIProvider"):
                     # Act
                     result = runner.invoke(
                         app,
