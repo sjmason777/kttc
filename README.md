@@ -24,17 +24,38 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 
 ## Key Features
 
-- **Multi-Agent QA System** - 5 specialized agents analyze accuracy, fluency, terminology, hallucinations, and context
+### Core Analysis
+- **Multi-Agent QA System** - Specialized agents analyze accuracy, fluency, terminology, style, and context
 - **MQM Scoring** - Industry-standard quality metrics used in WMT benchmarks
-- **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
-- **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
 - **Language-Specific Agents** - Native-level checks for English, Chinese, Russian, Hindi, and Persian
+- **Domain Profiles** - Adaptive quality thresholds for technical, medical, legal, marketing, literary texts
+
+### Smart Agent Orchestration
+- **Weighted Consensus** - Agents with different trust weights, confidence scoring, agreement metrics
+- **Dynamic Agent Selection** - Auto-selects 2-5 agents based on text complexity (30-50% cost savings)
+- **Self-Assessment Retry** - Agents evaluate their confidence and retry on low certainty
+- **Quick Mode** - Fast evaluation with 3 core agents for simple texts
+
+### Literary Style Analysis
+- **StyleFingerprint** - Automatic detection of literary style patterns (Burrows Delta method)
+- **Style Preservation Agent** - Evaluates authorial voice preservation in literary translations
+- **Country-Specific Patterns** - Leskov skaz, Platanov pleonasms, Joyce stream, Hafez ghazals, Chhayavad poetry
+- **Fluency Tolerance** - Adjustable fluency weights for intentional stylistic deviations
+
+### Language Intelligence
+- **Language Traps Detection** - 30+ glossaries detect homophones, false friends, idioms, phrasal verbs, paronyms
 - **Self-Check / Proofreading** - Grammar, spelling, punctuation checking using school curriculum rules
+- **School Curricula** - FGOS (Russia), UK GPS (Britain), NCERT (India), PEP (China), Iranian grammar
+- **Fast Lint Mode** - Rule-based checking without LLM, ideal for CI/CD and pre-commit hooks
+- **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
+
+### Infrastructure
+- **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
 - **Translation Memory** - Semantic search with quality tracking and reuse
-- **Glossary Management** - Custom terminology + school curriculum glossaries (FGOS, UK GPS, NCERT, PEP)
-- **Batch Processing** - Process thousands of translations in parallel
+- **Glossary Management** - Custom terminology + 30+ built-in multilingual glossaries
+- **Batch Processing** - Process thousands of translations in parallel with CSV/JSON filtering
 - **CI/CD Ready** - GitHub Actions integration, exit codes, multiple output formats
-- **Multi-LLM Support** - OpenAI, Anthropic, GigaChat, YandexGPT
+- **Multi-LLM Support** - OpenAI, Anthropic, GigaChat, YandexGPT with LanguageTool integration
 
 **Performance:** 90% cost reduction vs manual review • 100-1000x faster • 95+ MQM quality target
 
