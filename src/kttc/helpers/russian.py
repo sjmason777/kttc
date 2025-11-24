@@ -275,9 +275,9 @@ class RussianLanguageHelper(LanguageHelper):
                     errors.append(
                         ErrorAnnotation(
                             category="fluency",
-                            subcategory=f"russian_{match.rule_id}",
+                            subcategory=f"russian_{match.ruleId}",
                             severity=self._map_severity(match),
-                            location=(match.offset, match.offset + match.error_length),
+                            location=(match.offset, match.offset + match.errorLength),
                             description=match.message,
                             suggestion=match.replacements[0] if match.replacements else None,
                         )
@@ -405,6 +405,15 @@ class RussianLanguageHelper(LanguageHelper):
                 if adj_text in ["этот", "эта", "это", "тот", "та", "то", "весь", "вся", "всё"]:
                     continue
 
+                # Skip genitive case - masculine and neuter have identical endings
+                # e.g., "машинного обучения" - both are neuter but adj may be parsed as masc
+                adj_case = getattr(token, "case", None)
+                noun_case = getattr(next_noun, "case", None)
+                if adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]:
+                    # In genitive, masc/neut ambiguity is common - skip this check
+                    if {adj_gender, noun_gender} == {"masc", "neut"}:
+                        continue
+
                 errors.append(
                     ErrorAnnotation(
                         category="fluency",
@@ -430,7 +439,7 @@ class RussianLanguageHelper(LanguageHelper):
         Returns:
             ErrorSeverity enum value
         """
-        rule_id = match.rule_id.lower()
+        rule_id = match.ruleId.lower()
 
         # Critical errors (spelling, clear grammar mistakes)
         if any(pattern in rule_id for pattern in ["spelling", "typo", "misspell", "орфография"]):
@@ -462,10 +471,17 @@ class RussianLanguageHelper(LanguageHelper):
         Returns:
             True if error is relevant for translation, False otherwise
         """
-        rule_id = match.rule_id.lower()
+        rule_id = match.ruleId.lower()
 
-        # Exclude pure style suggestions
-        exclude_patterns = ["style", "redundancy", "collocation", "cliche", "wordiness"]
+        # Exclude pure style suggestions and known false positives
+        exclude_patterns = [
+            "style",
+            "redundancy",
+            "collocation",
+            "cliche",
+            "wordiness",
+            "comma_before_kak",  # Often false positive in conversational phrases
+        ]
 
         if any(pattern in rule_id for pattern in exclude_patterns):
             return False
