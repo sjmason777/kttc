@@ -1,0 +1,57 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian",
+    "glossary_type": "IT Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "IT and software development terminology in Persian",
+    "sources": [
+      "همیار آی‌تی (Hamyar IT)",
+      "نیک آموز (Nikamooz)",
+      "سکان آکادمی (Sokan Academy)",
+      "7learn.com",
+      "Persian Wikipedia"
+    ],
+    "total_terms": 100
+  },
+  "document_types": {
+    "technical_documentation": {
+      "markers": [
+        "```bash", "```python", "```json", "```",
+        "CLI", "API", "SDK", "README",
+        "--option", "-flag", "kttc", "npm", "pip",
+        "## ", "### ", "####"
+      ],
+      "description": "Markers indicating technical/CLI documentation"
+    }
+  },
+  "valid_terms": {
+    "cli_and_shell": [
+      "خط فرمان", "ترمینال", "کنسول", "شل",
+      "اسکریپت", "دستور", "پارامتر", "گزینه"
+    ],
+    "development_process": [
+      "اسپرینت", "اجایل", "کانبان", "بک‌لاگ",
+      "دیپلوی", "ریلیز", "دیباگ", "ریفکتورینگ"
+    ],
+    "architecture": [
+      "میکروسرویس", "کانتینر", "کلاستر", "نود",
+      "اینستنس", "رپلیکا", "لود بالانسر"
+    ],
+    "data_and_storage": [
+      "پایگاه داده", "کش", "بک‌آپ", "مایگریشن"
+    ],
+    "testing": [
+      "تست واحد", "تست یکپارچگی", "ماک", "استاب"
+    ],
+    "ml_and_ai": [
+      "شبکه عصبی", "یادگیری ماشین", "پرامپت",
+      "توکنایزیشن", "امبدینگ", "فاین‌تیونینگ"
+    ],
+    "common_abbreviations": [
+      "API", "CLI", "SDK", "IDE", "UI", "UX",
+      "CI", "CD", "DevOps", "HTTP", "JSON", "SQL"
+    ]
+  }
+}

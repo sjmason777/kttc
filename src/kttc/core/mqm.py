@@ -48,11 +48,11 @@ class MQMScorer:
     - Locale: 0.7 (moderate - regional conventions)
     - Context: 0.7 (moderate - situational appropriateness)
 
-    Severity penalties (MQM standard):
-    - Neutral: 0 points (no error)
-    - Minor: 1 point (noticeable but doesn't affect understanding)
-    - Major: 5 points (affects understanding or quality)
-    - Critical: 10 points (severe meaning change or unusable)
+    Severity penalties (industry standard based on Lokalise/Phrase):
+    - Neutral: 0x multiplier (no error, informational)
+    - Minor: 1x multiplier (noticeable but doesn't affect understanding)
+    - Major: 5x multiplier (affects understanding or quality)
+    - Critical: 25x multiplier (severe meaning change or unusable)
 
     Score interpretation:
     - 95-100: Excellent quality (production-ready)

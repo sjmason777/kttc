@@ -1,0 +1,56 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "Hindi",
+    "glossary_type": "IT Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "IT and software development terminology in Hindi",
+    "sources": [
+      "CSTT (Commission for Scientific and Technical Terminology)",
+      "Hindi Wikipedia",
+      "eHindiStudy.com",
+      "Hindi Tutorials Point"
+    ],
+    "total_terms": 100
+  },
+  "document_types": {
+    "technical_documentation": {
+      "markers": [
+        "```bash", "```python", "```json", "```",
+        "CLI", "API", "SDK", "README",
+        "--option", "-flag", "kttc", "npm", "pip",
+        "## ", "### ", "####"
+      ],
+      "description": "Markers indicating technical/CLI documentation"
+    }
+  },
+  "valid_terms": {
+    "cli_and_shell": [
+      "कमांड लाइन", "टर्मिनल", "कंसोल", "शेल",
+      "स्क्रिप्ट", "कमांड", "पैरामीटर", "विकल्प"
+    ],
+    "development_process": [
+      "स्प्रिंट", "एजाइल", "कानबन", "बैकलॉग",
+      "डिप्लॉय", "रिलीज़", "डीबग", "रीफैक्टरिंग"
+    ],
+    "architecture": [
+      "माइक्रोसर्विस", "कंटेनर", "क्लस्टर", "नोड",
+      "इंस्टेंस", "रेप्लिका", "लोड बैलेंसर"
+    ],
+    "data_and_storage": [
+      "डेटाबेस", "कैश", "बैकअप", "माइग्रेशन"
+    ],
+    "testing": [
+      "यूनिट टेस्ट", "इंटीग्रेशन टेस्ट", "मॉक", "स्टब"
+    ],
+    "ml_and_ai": [
+      "न्यूरल नेटवर्क", "मशीन लर्निंग", "प्रॉम्प्ट",
+      "टोकनाइजेशन", "एम्बेडिंग", "फाइन-ट्यूनिंग"
+    ],
+    "common_abbreviations": [
+      "API", "CLI", "SDK", "IDE", "UI", "UX",
+      "CI", "CD", "DevOps", "HTTP", "JSON", "SQL"
+    ]
+  }
+}

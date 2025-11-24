@@ -27,29 +27,54 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
+# Default severity penalty multipliers (industry standard based on Lokalise/Phrase)
+# Can be overridden via configuration or profiles
+SEVERITY_PENALTIES: dict[str, float] = {
+    "neutral": 0.0,  # 0x - no error, informational
+    "minor": 1.0,  # 1x - noticeable but doesn't affect understanding
+    "major": 5.0,  # 5x - affects understanding or quality
+    "critical": 25.0,  # 25x - severe meaning change or unusable
+}
+
+SEVERITY_MULTIPLIER_LABELS: dict[str, str] = {
+    "neutral": "0x",
+    "minor": "1x",
+    "major": "5x",
+    "critical": "25x",
+}
+
 
 class ErrorSeverity(str, Enum):
     """MQM error severity levels.
 
     Based on Multidimensional Quality Metrics (MQM) framework.
     Each level has a different penalty weight in quality scoring.
+
+    Penalty multipliers (industry standard based on Lokalise/Phrase):
+    - Neutral: 0x (no error, informational)
+    - Minor: 1x (noticeable but doesn't affect understanding)
+    - Major: 5x (affects understanding or quality)
+    - Critical: 25x (severe meaning change or unusable)
     """
 
-    NEUTRAL = "neutral"  # No penalty (0 points)
-    MINOR = "minor"  # Minor penalty (1 point)
-    MAJOR = "major"  # Major penalty (5 points)
-    CRITICAL = "critical"  # Critical penalty (10 points)
+    NEUTRAL = "neutral"  # No penalty (0x multiplier)
+    MINOR = "minor"  # Minor penalty (1x multiplier)
+    MAJOR = "major"  # Major penalty (5x multiplier)
+    CRITICAL = "critical"  # Critical penalty (25x multiplier)
 
     @property
     def penalty_value(self) -> float:
-        """Get numeric penalty value for scoring."""
-        penalty_map = {
-            self.NEUTRAL: 0.0,
-            self.MINOR: 1.0,
-            self.MAJOR: 5.0,
-            self.CRITICAL: 10.0,
-        }
-        return penalty_map[self]
+        """Get numeric penalty value for scoring.
+
+        Uses default multipliers from SEVERITY_PENALTIES.
+        For custom multipliers, override SEVERITY_PENALTIES or use profiles.
+        """
+        return SEVERITY_PENALTIES.get(self.value, 1.0)
+
+    @property
+    def multiplier_label(self) -> str:
+        """Get human-readable multiplier label (e.g., '25x' for critical)."""
+        return SEVERITY_MULTIPLIER_LABELS.get(self.value, "1x")
 
 
 class ErrorAnnotation(BaseModel):

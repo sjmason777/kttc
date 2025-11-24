@@ -37,7 +37,13 @@ and adjusts agent weights accordingly. No --literary flag needed.
 """
 
 from .accuracy import AccuracyAgent
-from .base import AgentError, AgentEvaluationError, AgentParsingError, BaseAgent
+from .base import (
+    AgentError,
+    AgentEvaluationError,
+    AgentParsingError,
+    BaseAgent,
+    SelfAssessmentResult,
+)
 from .consensus import WeightedConsensus
 from .context import ContextAgent
 from .domain_profiles import (
@@ -60,6 +66,7 @@ from .terminology import TerminologyAgent
 
 __all__ = [
     "BaseAgent",
+    "SelfAssessmentResult",
     "AccuracyAgent",
     "FluencyAgent",
     "EnglishFluencyAgent",

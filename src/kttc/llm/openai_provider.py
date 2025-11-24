@@ -59,9 +59,11 @@ class OpenAIProvider(BaseLLMProvider):
             model: Model name (e.g., "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo")
             timeout: Request timeout in seconds
         """
+        super().__init__()
         self.client = openai.AsyncOpenAI(api_key=api_key, timeout=timeout)
         self.model = model
         self.timeout = timeout
+        self._usage.model_name = model
 
     async def complete(
         self,
@@ -95,6 +97,13 @@ class OpenAIProvider(BaseLLMProvider):
                 max_tokens=max_tokens,
                 **kwargs,
             )
+
+            # Track token usage
+            if response.usage:
+                self._usage.add_usage(
+                    input_tokens=response.usage.prompt_tokens,
+                    output_tokens=response.usage.completion_tokens,
+                )
 
             content = response.choices[0].message.content
             if content is None:

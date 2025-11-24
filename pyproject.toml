@@ -12,7 +12,7 @@ kttc = ["py.typed"]
 
 [project]
 name = "kttc"
-version = "0.4.0"
+version = "0.4.1"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"

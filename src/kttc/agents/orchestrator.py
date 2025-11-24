@@ -99,6 +99,7 @@ class AgentOrchestrator:
         agent_weights: dict[str, float] | None = None,
         enable_domain_adaptation: bool = True,
         enable_dynamic_selection: bool = True,
+        quick_mode: bool = False,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -111,15 +112,17 @@ class AgentOrchestrator:
             agent_weights: Custom agent trust weights (overrides defaults if provided)
             enable_domain_adaptation: Enable domain-adaptive agent selection (default: True)
             enable_dynamic_selection: Enable dynamic agent selection for cost optimization (default: True)
+            quick_mode: Enable quick mode with only 3 core agents (default: False)
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
         self.agent_max_tokens = agent_max_tokens
         self.use_weighted_consensus = use_weighted_consensus
-        self.enable_domain_adaptation = enable_domain_adaptation
-        self.enable_dynamic_selection = enable_dynamic_selection
+        self.enable_domain_adaptation = enable_domain_adaptation and not quick_mode
+        self.enable_dynamic_selection = enable_dynamic_selection and not quick_mode
+        self.quick_mode = quick_mode
 
-        # Core agents (used when dynamic selection is disabled)
+        # Core agents (Accuracy, Fluency, Terminology - always used)
         self.agents: list[BaseAgent] = [
             AccuracyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
             FluencyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
@@ -133,13 +136,13 @@ class AgentOrchestrator:
         # Initialize weighted consensus system
         self.consensus = WeightedConsensus(agent_weights=agent_weights, mqm_scorer=self.scorer)
 
-        # Initialize domain detector for adaptive agent selection
-        self.domain_detector = DomainDetector() if enable_domain_adaptation else None
+        # Initialize domain detector for adaptive agent selection (disabled in quick mode)
+        self.domain_detector = DomainDetector() if self.enable_domain_adaptation else None
 
         # Initialize style fingerprint analyzer for literary text detection
-        self.style_analyzer = self._init_style_analyzer()
+        self.style_analyzer = self._init_style_analyzer() if not quick_mode else None
 
-        # Initialize dynamic agent selector for cost optimization (Phase 4)
+        # Initialize dynamic agent selector for cost optimization (disabled in quick mode)
         from .dynamic_selector import DynamicAgentSelector
 
         self.dynamic_selector = (
@@ -148,7 +151,7 @@ class AgentOrchestrator:
                 agent_temperature=agent_temperature,
                 agent_max_tokens=agent_max_tokens,
             )
-            if enable_dynamic_selection
+            if self.enable_dynamic_selection
             else None
         )
 

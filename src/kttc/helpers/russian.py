@@ -78,6 +78,141 @@ class RussianLanguageHelper(LanguageHelper):
         ...     print(errors[0].description if errors else "No errors")
     """
 
+    # IT terminology whitelist - words that should not be flagged as spelling errors
+    IT_TERMS_WHITELIST: set[str] = {
+        # CLI and shell terms
+        "демо",
+        "демо-режим",
+        "воркер",
+        "воркеров",
+        "воркеры",
+        "бенчмарк",
+        "бенчмаркинг",
+        "хотфикс",
+        "фикс",
+        "коммит",
+        "коммитить",
+        "закоммитить",
+        "пуш",
+        "пушить",
+        "пулл",
+        "пуллить",
+        "мёрдж",
+        "мёрджить",
+        "ребейз",
+        "чекаут",
+        "стеш",
+        "стешить",
+        "клон",
+        "клонировать",
+        # Development process
+        "спринт",
+        "скрам",
+        "аджайл",
+        "канбан",
+        "бэклог",
+        "стендап",
+        "ретро",
+        "ретроспектива",
+        "дейлик",
+        "деплой",
+        "деплоить",
+        "релиз",
+        "релизить",
+        "прод",
+        "продакшн",
+        "стейджинг",
+        "девелопмент",
+        "дебаг",
+        "дебажить",
+        "дебаггер",
+        "логгирование",
+        "рефакторинг",
+        "рефакторить",
+        "код-ревью",
+        # Architecture
+        "микросервис",
+        "микросервисы",
+        "монолит",
+        "контейнер",
+        "контейнеризация",
+        "докер",
+        "докеризация",
+        "оркестрация",
+        "кубернетес",
+        "инстанс",
+        "инстансы",
+        "нода",
+        "ноды",
+        "кластер",
+        "кластеры",
+        "реплика",
+        "шардинг",
+        "партиционирование",
+        "балансировщик",
+        # Data and storage
+        "постгрес",
+        "монго",
+        "редис",
+        "мемкеш",
+        "кэш",
+        "кэширование",
+        "бэкап",
+        "бэкапить",
+        "дамп",
+        "дампить",
+        "миграция",
+        "сид",
+        # API and integration
+        "эндпоинт",
+        "эндпоинты",
+        "рест",
+        "веб-хук",
+        "вебхук",
+        "колбэк",
+        "токен",
+        "токены",
+        "пейлоад",
+        "хедер",
+        "хедеры",
+        # Testing
+        "тест",
+        "тесты",
+        "юнит-тест",
+        "юнит-тесты",
+        "мок",
+        "моки",
+        "мокать",
+        "стаб",
+        "стабы",
+        "фикстура",
+        "фикстуры",
+        "ассерт",
+        "ассерты",
+        # ML/AI
+        "нейросеть",
+        "нейросети",
+        "промпт",
+        "промпты",
+        "токенизация",
+        "токенизатор",
+        "эмбеддинг",
+        "эмбеддинги",
+        "файнтюнинг",
+        "инференс",
+        "батч",
+        "батчи",
+        "батчинг",
+        # Code quality
+        "линтер",
+        "линтинг",
+        "форматтер",
+        "типизация",
+        "аннотация",
+        "код-стайл",
+        "конвенция",
+    }
+
     def __init__(self) -> None:
         """Initialize Russian language helper."""
         self._nlp: Any = None
@@ -269,6 +404,17 @@ class RussianLanguageHelper(LanguageHelper):
                 for match in matches:
                     # Filter out style-only suggestions not relevant for translation
                     if not self._is_translation_relevant(match):
+                        continue
+
+                    # Skip CSV/code context false positives (comma spacing in CSV)
+                    if self._is_csv_or_code_context(text, match):
+                        logger.debug(f"Skipping CSV/code context: {match.ruleId}")
+                        continue
+
+                    # Skip errors for IT terminology (false positives)
+                    error_word = text[match.offset : match.offset + match.errorLength].lower()
+                    if self._is_it_term(error_word):
+                        logger.debug(f"Skipping IT term: {error_word}")
                         continue
 
                     # Map to our error format
@@ -487,6 +633,109 @@ class RussianLanguageHelper(LanguageHelper):
             return False
 
         return True
+
+    def _is_csv_or_code_context(self, text: str, match: Any) -> bool:
+        """Check if match is in CSV or code context (to avoid false positives).
+
+        CSV format (RFC 4180) does not use spaces after commas.
+        Code blocks also have different punctuation rules.
+
+        Rules filtered:
+        - COMMA_PARENTHESIS_WHITESPACE: "Put a space after comma"
+
+        Args:
+            text: Full text being checked
+            match: LanguageTool Match object
+
+        Returns:
+            True if match should be skipped (is in CSV/code context)
+        """
+        import re
+
+        rule_id = match.ruleId.upper()
+
+        # Only filter specific punctuation rules
+        punctuation_rules = [
+            "COMMA_PARENTHESIS_WHITESPACE",
+            "WHITESPACE_RULE",
+        ]
+
+        if rule_id not in punctuation_rules:
+            return False
+
+        # Get context around the match (100 chars before and after)
+        start = max(0, match.offset - 100)
+        end = min(len(text), match.offset + match.errorLength + 100)
+        context = text[start:end]
+
+        # CSV patterns (comma-separated values without spaces)
+        csv_patterns = [
+            r"\w+,\w+,\w+",  # word,word,word (3+ comma-separated)
+            r"\.csv|\.tsv",  # file extensions
+            r"source,|target,|lang,|translation,",  # common CSV headers
+            r"\w+_\w+,\w+_\w+",  # snake_case,snake_case
+        ]
+
+        # Code block patterns
+        code_patterns = [
+            r"```",  # Markdown code fence
+            r"^\s{4,}\S",  # Indented code (4+ spaces)
+            r"--\w+",  # CLI options
+            r"\$\w+|%\w+",  # Variables
+            r"import\s|from\s|def\s|class\s",  # Python keywords
+        ]
+
+        # Check CSV patterns
+        for pattern in csv_patterns:
+            if re.search(pattern, context, re.IGNORECASE):
+                return True
+
+        # Check code patterns
+        for pattern in code_patterns:
+            if re.search(pattern, context, re.MULTILINE):
+                return True
+
+        return False
+
+    def _is_it_term(self, word: str) -> bool:
+        """Check if a word is a known IT term that should not be flagged.
+
+        Args:
+            word: Word to check (lowercase)
+
+        Returns:
+            True if word is in IT terminology whitelist
+        """
+        # Clean word from punctuation
+        clean_word = word.strip(".,;:!?()[]{}\"'«»—-").lower()
+
+        # Direct match
+        if clean_word in self.IT_TERMS_WHITELIST:
+            return True
+
+        # Check if word starts with known IT prefix
+        it_prefixes = [
+            "демо-",
+            "код-",
+            "веб-",
+            "юнит-",
+            "бэк-",
+            "фронт-",
+            "микро-",
+            "мульти-",
+            "авто-",
+        ]
+        for prefix in it_prefixes:
+            if clean_word.startswith(prefix):
+                return True
+
+        # Check if word is likely an English loanword (ends with common suffixes)
+        if any(clean_word.endswith(suffix) for suffix in ["инг", "ить", "ер", "мент"]):
+            # Could be IT term, but also check if it looks like technical jargon
+            if any(root in clean_word for root in ["дебаг", "рефактор", "деплой", "релиз"]):
+                return True
+
+        return False
 
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
         """Get comprehensive morphological data using MAWO core.

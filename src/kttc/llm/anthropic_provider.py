@@ -59,9 +59,25 @@ class AnthropicProvider(BaseLLMProvider):
             model: Model name (e.g., "claude-3-5-sonnet-20241022", "claude-3-opus-20240229")
             timeout: Request timeout in seconds
         """
+        super().__init__()
         self.client = anthropic.AsyncAnthropic(api_key=api_key, timeout=timeout)
         self.model = model
         self.timeout = timeout
+        # Normalize model name for pricing lookup
+        self._usage.model_name = self._normalize_model_name(model)
+
+    @staticmethod
+    def _normalize_model_name(model: str) -> str:
+        """Normalize model name for pricing lookup."""
+        if "sonnet" in model.lower():
+            if "3-5" in model or "3.5" in model:
+                return "claude-3-5-sonnet"
+            return "claude-sonnet-4"
+        elif "haiku" in model.lower():
+            return "claude-3-5-haiku"
+        elif "opus" in model.lower():
+            return "claude-3-opus"
+        return model
 
     async def complete(
         self,
@@ -95,6 +111,13 @@ class AnthropicProvider(BaseLLMProvider):
                 messages=[{"role": "user", "content": prompt}],
                 **kwargs,
             )
+
+            # Track token usage
+            if response.usage:
+                self._usage.add_usage(
+                    input_tokens=response.usage.input_tokens,
+                    output_tokens=response.usage.output_tokens,
+                )
 
             # Claude returns content as a list of content blocks
             if not response.content:

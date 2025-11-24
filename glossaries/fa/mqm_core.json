@@ -25,7 +25,9 @@
         "عدم انطباق با منابع اصطلاحی",
         "ناسازگاری در استفاده از اصطلاحات",
         "اصطلاح نادرست",
-        "همایندی اصطلاحی"
+        "همایندی اصطلاحی",
+        "inconsistent_term", "wrong_term", "inappropriate_term",
+        "terminology", "term_error", "glossary_violation"
       ]
     },
     {
@@ -43,7 +45,10 @@
         "توهم ماشین ترجمه",
         "دوستان دروغین",
         "ترجمه‌نشده",
-        "نباید ترجمه می‌شد"
+        "نباید ترجمه می‌شد",
+        "mistranslation", "omission", "addition", "untranslated",
+        "over_translation", "under_translation", "hallucination",
+        "false_friend", "do_not_translate", "accuracy"
       ]
     },
     {
@@ -54,7 +59,8 @@
       "severity_weight": 1.3,
       "subtypes": [
         "فهرست ناکامل",
-        "دستورالعمل ناکامل"
+        "دستورالعمل ناکامل",
+        "incomplete_lists", "incomplete_procedures", "completeness", "missing_content"
       ]
     },
     {
@@ -71,7 +77,10 @@
         "واژگانی",
         "ترتیب کلمات",
         "کلمات عملکردی",
-        "رمزگذاری نویسه"
+        "رمزگذاری نویسه",
+        "grammar", "spelling", "punctuation", "capitalization",
+        "morphology", "word_order", "function_words", "character_encoding",
+        "fluency", "inconsistency", "formatting", "register"
       ]
     },
     {
@@ -86,7 +95,9 @@
         "ناسازگاری سبک",
         "حوزه کاربرد",
         "سبک سازمانی",
-        "سبک شخص ثالث"
+        "سبک شخص ثالث",
+        "awkward", "unidiomatic", "inconsistent_style", "register_mismatch",
+        "style", "misuse", "tone", "formality"
       ]
     }
   ],

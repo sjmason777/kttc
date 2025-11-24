@@ -30,6 +30,35 @@ The MQM (Multidimensional Quality Metrics) glossary provides standardized error 
 - Style: register, formality, consistency
 - Terminology: domain-specific term errors
 
+**NEW in v1.2: English Aliases**
+
+MQM glossaries now accept both English and native language error types. This prevents validation failures when LLM returns English types like `inconsistency`, `formatting`, or `untranslated` for non-English language pairs.
+
+### IT Terminology Glossaries (NEW in v1.2)
+
+**Available in:** English, Russian, Chinese, Hindi, Persian
+
+Comprehensive IT and software development terminology for technical documentation:
+
+| Language | File | Terms |
+|----------|------|-------|
+| English | `glossaries/en/it_terminology_en.json` | 200 |
+| Russian | `glossaries/ru/it_terminology_ru.json` | 150 |
+| Chinese | `glossaries/zh/it_terminology_zh.json` | 120 |
+| Hindi | `glossaries/hi/it_terminology_hi.json` | 100 |
+| Persian | `glossaries/fa/it_terminology_fa.json` | 100 |
+
+**Categories covered:**
+- CLI and shell (bash, zsh, stdin, stdout, pipe)
+- Version control (git, commit, branch, merge, PR)
+- Development process (Agile, sprint, deploy, CI/CD)
+- Architecture (microservice, container, Kubernetes)
+- Cloud infrastructure (AWS, Azure, GCP, IaaS)
+- Data and storage (SQL, NoSQL, Redis, ORM)
+- API and integration (REST, GraphQL, OAuth, JWT)
+- Testing (unit test, mock, TDD, coverage)
+- ML/AI (LLM, embedding, fine-tuning, RAG)
+
 ### Russian Language Glossary
 
 **File:** `glossaries/ru/grammar_reference.json`
@@ -41,6 +70,19 @@ The MQM (Multidimensional Quality Metrics) glossary provides standardized error 
 - **Register markers** (ты/вы distinction)
 
 **Used by:** `RussianFluencyAgent`
+
+**NEW in v1.2: IT Terminology Whitelist (123 terms)**
+
+LanguageTool integration now includes IT terminology whitelist that prevents false positives for common developer terms:
+
+| LanguageTool Suggestion | Actual Term | Category |
+|------------------------|-------------|----------|
+| "Бисмарк" | бенчмарк | Testing |
+| "волкеров" | воркеров | Parallelism |
+| "заколотить" | закоммитить | Git |
+| "Демокритам" | демо-режим | UI |
+
+Terms whitelisted: бенчмарк, воркер, деплой, докер, кубернетес, коммит, фикс, хотфикс, рефактор, дебаг, логгер, прод, стейджинг, мерж, ребейз, чекаут, пуш, пулл, фетч, and 100+ more.
 
 ### Chinese Language Glossary
 
@@ -326,19 +368,24 @@ Same glossary framework works across:
 ```
 glossaries/
 ├── en/
-│   └── mqm_core.json          # English MQM definitions
+│   ├── mqm_core.json           # English MQM definitions
+│   └── it_terminology_en.json  # IT terminology (200 terms) [NEW v1.2]
 ├── ru/
-│   ├── mqm_core.json          # Russian MQM definitions
-│   └── grammar_reference.json # Russian grammar rules
+│   ├── mqm_core_ru.json        # Russian MQM definitions (with English aliases)
+│   ├── grammar_reference.json  # Russian grammar rules
+│   └── it_terminology_ru.json  # IT terminology (150 terms) [NEW v1.2]
 ├── zh/
-│   ├── mqm_core.json          # Chinese MQM definitions
-│   └── classifiers.json       # Chinese measure words
+│   ├── mqm_core_zh.json        # Chinese MQM definitions (with English aliases)
+│   ├── classifiers.json        # Chinese measure words
+│   └── it_terminology_zh.json  # IT terminology (120 terms) [NEW v1.2]
 ├── hi/
-│   ├── mqm_core.json          # Hindi MQM definitions
-│   └── grammar_reference.json # Hindi grammar rules
+│   ├── mqm_core_hi.json        # Hindi MQM definitions (with English aliases)
+│   ├── grammar_reference.json  # Hindi grammar rules
+│   └── it_terminology_hi.json  # IT terminology (100 terms) [NEW v1.2]
 └── fa/
-    ├── mqm_core.json          # Persian MQM definitions
-    └── grammar_reference.json # Persian grammar rules
+    ├── mqm_core_fa.json        # Persian MQM definitions (with English aliases)
+    ├── grammar_reference.json  # Persian grammar rules
+    └── it_terminology_fa.json  # IT terminology (100 terms) [NEW v1.2]
 ```
 
 ## Related Documentation

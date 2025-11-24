@@ -30,6 +30,35 @@ MQM（多维质量指标）术语表提供所有代理使用的标准化错误�
 - 风格：语域、正式度、一致性
 - 术语：领域特定术语错误
 
+**v1.2 新功能：英语别名**
+
+MQM 术语表现在同时接受英语和本地语言错误类型。这可以防止 LLM 返回英语类型（如 `inconsistency`、`formatting` 或 `untranslated`）时出现验证失败。
+
+### IT 术语表（v1.2 新功能）
+
+**可用语言：** 英语、俄语、中文、印地语、波斯语
+
+技术文档的全面 IT 和软件开发术语：
+
+| 语言 | 文件 | 术语数 |
+|------|------|--------|
+| 英语 | `glossaries/en/it_terminology_en.json` | 200 |
+| 俄语 | `glossaries/ru/it_terminology_ru.json` | 150 |
+| 中文 | `glossaries/zh/it_terminology_zh.json` | 120 |
+| 印地语 | `glossaries/hi/it_terminology_hi.json` | 100 |
+| 波斯语 | `glossaries/fa/it_terminology_fa.json` | 100 |
+
+**涵盖的类别：**
+- CLI 和 shell（bash、zsh、stdin、stdout、pipe）
+- 版本控制（git、commit、branch、merge、PR）
+- 开发流程（Agile、sprint、deploy、CI/CD）
+- 架构（microservice、container、Kubernetes）
+- 云基础设施（AWS、Azure、GCP、IaaS）
+- 数据和存储（SQL、NoSQL、Redis、ORM）
+- API 和集成（REST、GraphQL、OAuth、JWT）
+- 测试（unit test、mock、TDD、coverage）
+- ML/AI（LLM、embedding、fine-tuning、RAG）
+
 ### 俄语术语表
 
 **文件：** `glossaries/ru/grammar_reference.json`

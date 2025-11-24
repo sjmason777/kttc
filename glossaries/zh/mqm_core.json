@@ -24,7 +24,9 @@
         "术语资源不一致",
         "术语使用不一致",
         "错误术语",
-        "术语搭配"
+        "术语搭配",
+        "inconsistent_term", "wrong_term", "inappropriate_term",
+        "terminology", "term_error", "glossary_violation"
       ]
     },
     {
@@ -42,7 +44,10 @@
         "机器翻译幻觉",
         "假朋友",
         "未翻译",
-        "不应翻译"
+        "不应翻译",
+        "mistranslation", "omission", "addition", "untranslated",
+        "over_translation", "under_translation", "hallucination",
+        "false_friend", "do_not_translate", "accuracy"
       ]
     },
     {
@@ -53,7 +58,8 @@
       "severity_weight": 1.3,
       "subtypes": [
         "列表不完整",
-        "程序不完整"
+        "程序不完整",
+        "incomplete_lists", "incomplete_procedures", "completeness", "missing_content"
       ]
     },
     {
@@ -70,7 +76,10 @@
         "词法",
         "词序",
         "虚词",
-        "字符编码"
+        "字符编码",
+        "grammar", "spelling", "punctuation", "capitalization",
+        "morphology", "word_order", "function_words", "character_encoding",
+        "fluency", "inconsistency", "formatting", "register"
       ]
     },
     {
@@ -85,7 +94,9 @@
         "风格不一致",
         "语域",
         "组织风格",
-        "第三方风格"
+        "第三方风格",
+        "awkward", "unidiomatic", "inconsistent_style", "register_mismatch",
+        "style", "misuse", "tone", "formality"
       ]
     }
   ],

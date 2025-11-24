@@ -1,0 +1,162 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "IT Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "Comprehensive IT and software development terminology in English for technical documentation",
+    "sources": [
+      "Clutch.co Software Development Glossary (2025)",
+      "SPDLoad Software Development Glossary (2024)",
+      "Google Machine Learning Glossary",
+      "Kubernetes Official Glossary",
+      "Command Line Interface Guidelines (clig.dev)",
+      "Moveworks AI Terms Glossary (2024)",
+      "Pryon AI Glossary (2025)"
+    ],
+    "total_terms": 200
+  },
+  "document_types": {
+    "technical_documentation": {
+      "markers": [
+        "```bash", "```python", "```json", "```javascript", "```typescript",
+        "CLI", "API", "SDK", "README", "CHANGELOG",
+        "--option", "-flag", "--help", "--version",
+        "## ", "### ", "#### ",
+        "| Column |", "|----|",
+        "npm", "pip", "yarn", "cargo", "go get"
+      ],
+      "description": "Markers indicating technical/CLI documentation"
+    }
+  },
+  "valid_terms": {
+    "cli_and_shell": [
+      "CLI", "command-line", "terminal", "console", "shell",
+      "bash", "zsh", "fish", "PowerShell", "cmd",
+      "script", "scripting", "shebang", "hashbang",
+      "stdin", "stdout", "stderr", "pipe", "pipeline",
+      "flag", "option", "argument", "parameter", "subcommand",
+      "environment variable", "env var", "dotenv", ".env",
+      "exit code", "return code", "POSIX"
+    ],
+    "version_control": [
+      "git", "GitHub", "GitLab", "Bitbucket",
+      "commit", "push", "pull", "fetch", "merge", "rebase",
+      "branch", "checkout", "stash", "cherry-pick",
+      "pull request", "PR", "merge request", "MR",
+      "diff", "patch", "blame", "log", "reflog",
+      "HEAD", "origin", "upstream", "remote",
+      "tag", "release", "semver", "semantic versioning"
+    ],
+    "development_process": [
+      "Agile", "Scrum", "Kanban", "sprint", "backlog",
+      "standup", "retrospective", "daily", "iteration",
+      "deploy", "deployment", "release", "rollout", "rollback",
+      "production", "prod", "staging", "development", "dev",
+      "debug", "debugging", "debugger", "logging", "log",
+      "refactor", "refactoring", "code review", "PR review",
+      "CI/CD", "continuous integration", "continuous deployment",
+      "DevOps", "SRE", "site reliability engineering",
+      "hotfix", "bugfix", "patch", "feature flag"
+    ],
+    "architecture": [
+      "microservice", "microservices", "monolith", "monolithic",
+      "container", "containerization", "Docker", "Dockerfile",
+      "orchestration", "Kubernetes", "K8s", "Helm",
+      "pod", "node", "cluster", "replica", "replicaset",
+      "service mesh", "Istio", "Envoy", "sidecar",
+      "load balancer", "ingress", "egress", "gateway",
+      "API gateway", "reverse proxy", "nginx", "Traefik",
+      "serverless", "FaaS", "Lambda", "cloud function",
+      "event-driven", "message queue", "pub/sub", "Kafka", "RabbitMQ"
+    ],
+    "cloud_and_infrastructure": [
+      "AWS", "Azure", "GCP", "cloud provider", "CSP",
+      "IaaS", "PaaS", "SaaS", "infrastructure as code", "IaC",
+      "Terraform", "CloudFormation", "Pulumi", "Ansible",
+      "VPC", "subnet", "security group", "IAM",
+      "EC2", "S3", "EKS", "AKS", "GKE",
+      "CDN", "CloudFront", "edge", "region", "availability zone"
+    ],
+    "data_and_storage": [
+      "database", "DB", "DBMS", "SQL", "NoSQL",
+      "PostgreSQL", "MySQL", "MongoDB", "Redis", "Elasticsearch",
+      "cache", "caching", "memcached", "in-memory",
+      "backup", "restore", "dump", "migration",
+      "schema", "migration", "seed", "seeding",
+      "ORM", "ODM", "query", "index", "indexing",
+      "sharding", "partitioning", "replication"
+    ],
+    "api_and_integration": [
+      "API", "REST", "RESTful", "GraphQL", "gRPC",
+      "endpoint", "route", "handler", "middleware",
+      "webhook", "callback", "event hook",
+      "token", "JWT", "OAuth", "OAuth2", "OIDC",
+      "authentication", "authorization", "auth",
+      "payload", "header", "body", "query string",
+      "HTTP", "HTTPS", "SSL", "TLS", "certificate",
+      "request", "response", "status code"
+    ],
+    "testing": [
+      "test", "testing", "unit test", "integration test",
+      "e2e", "end-to-end", "acceptance test",
+      "mock", "mocking", "stub", "spy", "fake",
+      "fixture", "setup", "teardown", "beforeEach", "afterEach",
+      "assertion", "expect", "matcher",
+      "TDD", "test-driven development", "BDD",
+      "coverage", "code coverage", "test coverage",
+      "pytest", "Jest", "Mocha", "JUnit", "RSpec"
+    ],
+    "code_quality": [
+      "linter", "linting", "ESLint", "Pylint", "RuboCop",
+      "formatter", "formatting", "Prettier", "Black", "gofmt",
+      "type checking", "TypeScript", "mypy", "typing",
+      "static analysis", "code smell", "tech debt",
+      "code style", "style guide", "convention"
+    ],
+    "ml_and_ai": [
+      "AI", "ML", "machine learning", "deep learning",
+      "LLM", "large language model", "GPT", "Claude", "Gemini",
+      "prompt", "prompting", "prompt engineering",
+      "token", "tokenization", "tokenizer", "context window",
+      "embedding", "vector", "vector database",
+      "fine-tuning", "fine-tune", "RLHF", "RAG",
+      "inference", "training", "model", "weights",
+      "batch", "batching", "epoch", "gradient",
+      "transformer", "attention", "self-attention",
+      "hallucination", "confabulation", "grounding",
+      "chain-of-thought", "CoT", "few-shot", "zero-shot"
+    ],
+    "metrics_and_monitoring": [
+      "metrics", "metric", "KPI", "SLA", "SLO", "SLI",
+      "logging", "log", "logger", "log level",
+      "alert", "alerting", "notification", "incident",
+      "dashboard", "Grafana", "Prometheus", "Datadog",
+      "tracing", "distributed tracing", "span", "trace",
+      "APM", "application performance monitoring",
+      "uptime", "downtime", "availability", "latency", "throughput"
+    ],
+    "file_formats": [
+      "JSON", "YAML", "TOML", "XML", "CSV", "JSONL",
+      "Markdown", "MD", "RST", "AsciiDoc",
+      "HTML", "CSS", "JavaScript", "TypeScript",
+      "Python", "Go", "Rust", "Java", "C++", "Ruby"
+    ],
+    "common_abbreviations": [
+      "API", "CLI", "SDK", "IDE", "UI", "UX", "GUI",
+      "CI", "CD", "PR", "MR", "WIP", "RFC", "POC",
+      "MVP", "MVC", "MVVM", "OOP", "FP",
+      "HTTP", "HTTPS", "TCP", "UDP", "DNS", "IP",
+      "URL", "URI", "UUID", "GUID",
+      "CRUD", "ACID", "BASE", "CAP",
+      "TDD", "BDD", "DDD", "SOLID", "DRY", "KISS"
+    ]
+  },
+  "technical_writing_patterns": {
+    "code_blocks": ["```", "~~~", "<code>", "<pre>"],
+    "cli_patterns": ["--", "-", "$", "#", ">"],
+    "markdown_headers": ["#", "##", "###", "####"],
+    "tables": ["|", "|-", "| -"]
+  }
+}

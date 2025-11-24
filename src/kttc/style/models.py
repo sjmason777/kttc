@@ -67,6 +67,7 @@ class StylePattern(str, Enum):
     """
 
     STANDARD = "standard"  # Standard literary language
+    TECHNICAL = "technical"  # Technical documentation (CLI, API docs, README)
     SKAZ_NARRATIVE = "skaz_narrative"  # Leskov-style oral storytelling
     MODERNIST = "modernist"  # Platanov-style intentional awkwardness
     STREAM = "stream_of_consciousness"  # Joyce/Erofeev stream
@@ -139,6 +140,7 @@ class StyleProfile:
 
     # Derived properties
     is_literary: bool = False
+    is_technical: bool = False  # Technical documentation (CLI, API docs, Markdown)
     recommended_fluency_tolerance: float = 0.0
 
     # Raw data
@@ -167,6 +169,12 @@ class StyleProfile:
             "terminology": 1.0,
             "style_preservation": 1.0,
         }
+
+        # Technical documentation: skip literary style analysis
+        if self.is_technical or self.detected_pattern == StylePattern.TECHNICAL:
+            adjustments["style_preservation"] = 0.5  # Reduce style weight for technical docs
+            adjustments["terminology"] = 1.5  # Increase terminology importance
+            return adjustments
 
         if not self.has_significant_deviations:
             return adjustments
@@ -204,6 +212,7 @@ class StyleProfile:
             "sentence_length_variance": self.sentence_length_variance,
             "punctuation_density": self.punctuation_density,
             "is_literary": self.is_literary,
+            "is_technical": self.is_technical,
             "recommended_fluency_tolerance": self.recommended_fluency_tolerance,
             "has_significant_deviations": self.has_significant_deviations,
             "agent_weight_adjustments": self.get_agent_weight_adjustments(),

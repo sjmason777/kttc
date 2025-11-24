@@ -22,7 +22,7 @@ class RussianCaseAspectValidator:
         """
         self.glossary_manager = glossary_manager or GlossaryManager()
         self.morphology = self.glossary_manager.load_glossary("ru", "morphology_ru")
-        self.mqm = self.glossary_manager.load_glossary("ru", "mqm_core_ru")
+        self.mqm = self.glossary_manager.load_glossary("ru", "mqm_core")
 
     def get_case_info(self, case_name: str) -> dict[str, Any] | None:
         """
@@ -140,7 +140,7 @@ class ChineseMeasureWordValidator:
         """
         self.glossary_manager = glossary_manager or GlossaryManager()
         self.classifiers = self.glossary_manager.load_glossary("zh", "classifiers_zh")
-        self.mqm = self.glossary_manager.load_glossary("zh", "mqm_core_zh")
+        self.mqm = self.glossary_manager.load_glossary("zh", "mqm_core")
 
     def get_classifier_for_noun(self, noun: str) -> dict[str, Any] | None:
         """
@@ -251,7 +251,7 @@ class HindiPostpositionValidator:
         """
         self.glossary_manager = glossary_manager or GlossaryManager()
         self.cases = self.glossary_manager.load_glossary("hi", "cases_hi")
-        self.mqm = self.glossary_manager.load_glossary("hi", "mqm_core_hi")
+        self.mqm = self.glossary_manager.load_glossary("hi", "mqm_core")
 
     def get_case_info(self, case_number: int) -> dict[str, Any] | None:
         """
@@ -350,7 +350,7 @@ class PersianEzafeValidator:
         """
         self.glossary_manager = glossary_manager or GlossaryManager()
         self.grammar = self.glossary_manager.load_glossary("fa", "grammar_fa")
-        self.mqm = self.glossary_manager.load_glossary("fa", "mqm_core_fa")
+        self.mqm = self.glossary_manager.load_glossary("fa", "mqm_core")
 
     def get_ezafe_rules(self) -> dict[str, Any]:
         """

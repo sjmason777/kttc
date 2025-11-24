@@ -117,6 +117,8 @@ async def _check_async(
     reference: str | None,
     verbose: bool,
     demo: bool = False,
+    quick: bool = False,
+    show_cost: bool = False,
 ) -> None:
     """Async implementation of check command."""
     # Configure logging
@@ -169,7 +171,7 @@ async def _check_async(
 
     # Quality evaluation
     report, orchestrator = await run_quality_evaluation(
-        llm_provider, task, threshold, settings, verbose, api_errors
+        llm_provider, task, threshold, settings, verbose, api_errors, quick
     )
 
     # Calculate metrics
@@ -189,6 +191,15 @@ async def _check_async(
         style_profile=style_profile,
         verbose=verbose,
     )
+
+    # Show cost if requested
+    if show_cost and hasattr(llm_provider, "usage"):
+        usage = llm_provider.usage
+        console.print(f"\n[dim]💰 {usage.format_summary()}[/dim]")
+
+    # Show quick mode indicator
+    if quick:
+        console.print("[dim]⚡ Quick mode: 3 core agents, single pass[/dim]")
 
     # Auto-correction
     await handle_auto_correction(
@@ -237,6 +248,8 @@ def _run_single_mode(
     detected_glossary: str | None,
     reference: str | None,
     demo: bool,
+    quick: bool = False,
+    show_cost: bool = False,
 ) -> None:
     """Run single file check mode."""
     if not source_lang or not target_lang:
@@ -269,6 +282,8 @@ def _run_single_mode(
             reference,
             verbose,
             demo,
+            quick,
+            show_cost,
         )
     )
 
@@ -334,6 +349,8 @@ def _route_check_mode(
     detected_glossary: str | None,
     reference: str | None,
     demo: bool,
+    quick: bool = False,
+    show_cost: bool = False,
 ) -> None:
     """Route to appropriate handler based on detected mode."""
     if mode == "single":
@@ -356,6 +373,8 @@ def _route_check_mode(
             detected_glossary,
             reference,
             demo,
+            quick,
+            show_cost,
         )
     elif mode == "compare":
         translations_list = mode_params["translations"]
@@ -486,6 +505,17 @@ def check(
         "-l",
         help="Language for self-check mode (e.g., 'ru', 'en'). Sets both source and target.",
     ),
+    quick: bool = typer.Option(
+        False,
+        "--quick",
+        "-q",
+        help="Quick mode: single pass with 3 core agents (accuracy, fluency, terminology). Faster and cheaper.",
+    ),
+    show_cost: bool = typer.Option(
+        False,
+        "--show-cost",
+        help="Show token usage and estimated API cost after check.",
+    ),
 ) -> None:
     """
     Smart translation quality checker with auto-detection.
@@ -581,6 +611,8 @@ def check(
             detected_glossary,
             reference,
             demo,
+            quick,
+            show_cost,
         )
 
     except KeyboardInterrupt:

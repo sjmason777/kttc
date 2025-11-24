@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "Chinese",
+    "glossary_type": "IT Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "IT and software development terminology in Chinese",
+    "sources": [
+      "CSDN Blog",
+      "知乎 (Zhihu)",
+      "博客园 (cnblogs)",
+      "腾讯云 (Tencent Cloud)",
+      "MDN Web Docs Chinese"
+    ],
+    "total_terms": 120
+  },
+  "document_types": {
+    "technical_documentation": {
+      "markers": [
+        "```bash", "```python", "```json", "```",
+        "CLI", "API", "SDK", "README",
+        "--option", "-flag", "kttc", "npm", "pip",
+        "## ", "### ", "####",
+        "| 列 |", "|----|"
+      ],
+      "description": "Markers indicating technical/CLI documentation"
+    }
+  },
+  "valid_terms": {
+    "cli_and_shell": [
+      "命令行", "终端", "控制台", "shell", "bash",
+      "脚本", "命令", "参数", "选项", "标志",
+      "管道", "重定向", "环境变量"
+    ],
+    "development_process": [
+      "敏捷", "迭代", "冲刺", "看板", "待办事项",
+      "站会", "回顾", "部署", "发布", "上线",
+      "生产环境", "测试环境", "开发环境",
+      "调试", "重构", "代码审查"
+    ],
+    "architecture": [
+      "微服务", "单体", "容器", "容器化",
+      "编排", "集群", "节点", "实例",
+      "副本", "分片", "负载均衡"
+    ],
+    "data_and_storage": [
+      "数据库", "关系型", "非关系型",
+      "缓存", "备份", "迁移", "种子数据"
+    ],
+    "api_and_integration": [
+      "接口", "端点", "请求", "响应",
+      "令牌", "认证", "授权", "负载"
+    ],
+    "testing": [
+      "单元测试", "集成测试", "端到端测试",
+      "模拟", "桩", "夹具", "断言"
+    ],
+    "ml_and_ai": [
+      "神经网络", "大语言模型", "提示词",
+      "分词", "嵌入", "微调", "推理", "批次"
+    ],
+    "common_abbreviations": [
+      "API", "CLI", "SDK", "IDE", "UI", "UX",
+      "CI", "CD", "DevOps", "HTTP", "HTTPS",
+      "JSON", "XML", "YAML", "CSV", "SQL"
+    ]
+  }
+}

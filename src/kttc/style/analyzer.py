@@ -677,6 +677,28 @@ class StyleFingerprint:
         # Basic text preprocessing
         text_clean = text.strip()
 
+        # Check for technical documentation first (skip literary analysis)
+        is_technical = self._is_technical_documentation(text_clean)
+        if is_technical:
+            return StyleProfile(
+                deviation_score=0.0,
+                detected_pattern=StylePattern.TECHNICAL,
+                detected_deviations=[],
+                lexical_diversity=0.0,
+                avg_sentence_length=0.0,
+                sentence_length_variance=0.0,
+                punctuation_density=0.0,
+                is_literary=False,
+                is_technical=True,
+                recommended_fluency_tolerance=0.0,
+                metadata={
+                    "language": lang,
+                    "text_length": len(text_clean),
+                    "word_count": len(text_clean.split()),
+                    "document_type": "technical_documentation",
+                },
+            )
+
         # Compute stylometric features
         lexical_diversity = self._compute_lexical_diversity(text_clean)
         avg_sent_len, sent_variance = self._compute_sentence_stats(text_clean)
@@ -769,6 +791,62 @@ class StyleFingerprint:
 
         punct_count = len(re.findall(r"[.,;:!?—\-\"'()[\]{}]", text))
         return (punct_count / len(words)) * 100
+
+    def _is_technical_documentation(self, text: str) -> bool:
+        """Detect if text is technical documentation (CLI, API docs, Markdown).
+
+        Technical documentation markers:
+        - Code blocks (```bash, ```python, etc.)
+        - CLI options (--option, -flag)
+        - Markdown headers (##, ###)
+        - Tables (| Column |)
+        - Environment variables (KTTC_*, API_KEY)
+        - File extensions (.py, .json, .md)
+        - Command examples (kttc check, npm install)
+
+        Returns:
+            True if text appears to be technical documentation
+        """
+        # Technical documentation markers
+        technical_markers = [
+            r"```\w*",  # Code blocks
+            r"--\w+[-\w]*",  # CLI long options
+            r"\s-[a-zA-Z]\s",  # CLI short options
+            r"^#{1,4}\s",  # Markdown headers
+            r"\|\s*[-:]+\s*\|",  # Markdown tables
+            r"\bAPI\b|\bCLI\b|\bSDK\b|\bHTTP\b",  # Technical acronyms
+            r"\b\w+_\w+_\w+\b",  # SNAKE_CASE variables
+            r"\.\w{2,4}\b",  # File extensions
+            r"kttc\s+\w+|npm\s+\w+|pip\s+\w+",  # CLI commands
+            r"--source-lang|--target-lang|--provider",  # KTTC specific
+            r"bash\n|python\n|json\n",  # Code block languages
+            r"\bdef\s+\w+\(|\bclass\s+\w+:",  # Python code
+            r"import\s+\w+|from\s+\w+\s+import",  # Python imports
+        ]
+
+        marker_count = 0
+        for pattern in technical_markers:
+            matches = re.findall(pattern, text, re.MULTILINE | re.IGNORECASE)
+            marker_count += len(matches)
+
+        # Calculate marker density (markers per 1000 characters)
+        text_len = len(text)
+        if text_len == 0:
+            return False
+
+        marker_density = (marker_count / text_len) * 1000
+
+        # Threshold: if more than 5 markers per 1000 chars, it's technical
+        # Or if absolute count > 10 for shorter texts
+        is_technical = marker_density > 5 or (marker_count > 10 and text_len < 5000)
+
+        if is_technical:
+            logger.info(
+                f"Technical documentation detected: {marker_count} markers, "
+                f"density={marker_density:.2f}/1000 chars"
+            )
+
+        return is_technical
 
     def _detect_deviations(self, text: str, lang: str) -> list[StyleDeviation]:
         """Detect stylistic deviations in text."""

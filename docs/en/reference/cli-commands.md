@@ -54,6 +54,37 @@ kttc check SOURCE [TRANSLATIONS...] [OPTIONS]
 - `--verbose` - Show detailed output
 - `--demo` - Demo mode (no API calls, simulated responses)
 
+#### Performance & Cost (NEW in v1.1)
+
+- `--quick`, `-q` - Quick mode: single pass with 3 core agents (accuracy, fluency, terminology). Faster and cheaper for simple texts.
+- `--show-cost` - Display token usage and estimated API cost after check.
+
+#### Technical Documentation Mode (NEW in v1.2)
+
+KTTC automatically detects technical documentation (CLI docs, API references, README files) and skips literary style analysis. This prevents false positives like "stream of consciousness" or "pleonastic patterns" for code-heavy content.
+
+**Detection markers:**
+- Code blocks (` ```bash `, ` ```python `)
+- CLI options (`--option`, `-flag`)
+- Markdown headers and tables
+- Technical acronyms (API, CLI, SDK, HTTP)
+- Environment variables (KTTC_*, API_KEY)
+
+### MQM Severity Scoring (Updated in v1.1)
+
+KTTC uses industry-standard severity multipliers for MQM scoring:
+
+| Severity | Multiplier | Impact |
+|----------|------------|--------|
+| Neutral | 0x | No penalty (informational) |
+| Minor | 1x | Noticeable but doesn't affect understanding |
+| Major | 5x | Affects understanding or quality |
+| Critical | 25x | Severe meaning change or unusable |
+
+**Formula:** `Quality Score = 100 - (ETPT / word_count × normalization_factor)`
+
+Where `ETPT = Σ(error_count × severity_multiplier)`
+
 ### Examples
 
 **Single file check:**
@@ -122,6 +153,30 @@ kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang es \
   --demo
+```
+
+**Quick mode (faster, cheaper):**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --quick
+```
+
+**Show token usage and cost:**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --show-cost
+```
+
+Output:
+```
+✓ Translation passed quality check (MQM Score: 96.5)
+💰 Tokens: 1,245 (in: 890, out: 355) | Calls: 5 | Cost: $0.0234
 ```
 
 ---

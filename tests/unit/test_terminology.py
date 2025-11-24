@@ -188,7 +188,7 @@ class TestGlossaryIntegration:
 
         # Load glossaries
         en_mqm = manager.load_glossary("en", "mqm_core")
-        ru_mqm = manager.load_glossary("ru", "mqm_core_ru")
+        ru_mqm = manager.load_glossary("ru", "mqm_core")
 
         # Check both loaded successfully
         assert en_mqm["metadata"]["language"] == "en"
@@ -220,7 +220,7 @@ class TestGlossaryIntegration:
         assert en_mqm["metadata"]["language"] == "en"
 
         # Load Russian
-        ru_mqm = manager.load_glossary("ru", "mqm_core_ru")
+        ru_mqm = manager.load_glossary("ru", "mqm_core")
         assert ru_mqm["metadata"]["language"] == "ru"
 
         # Verify English has error dimensions

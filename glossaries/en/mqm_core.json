@@ -62,7 +62,8 @@
         "morphology",
         "word_order",
         "function_words",
-        "character_encoding"
+        "character_encoding",
+        "fluency", "inconsistency", "formatting", "register"
       ]
     },
     {

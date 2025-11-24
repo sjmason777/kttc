@@ -54,6 +54,37 @@ kttc check SOURCE [TRANSLATIONS...] [OPTIONS]
 - `--verbose` - 显示详细输出
 - `--demo` - 演示模式（不进行 API 调用，模拟响应）
 
+#### 性能和成本（v1.1 新功能）
+
+- `--quick`, `-q` - 快速模式：使用 3 个核心代理（accuracy、fluency、terminology）进行单次检查。适合简单文本，更快更便宜。
+- `--show-cost` - 检查后显示令牌使用量和预估 API 成本。
+
+#### 技术文档模式（v1.2 新功能）
+
+KTTC 自动检测技术文档（CLI 文档、API 参考、README 文件）并跳过文学风格分析。这可以防止代码密集内容出现"意识流"或"冗余模式"等误报。
+
+**检测标记：**
+- 代码块（` ```bash `、` ```python `）
+- CLI 选项（`--option`、`-flag`）
+- Markdown 标题和表格
+- 技术缩写（API、CLI、SDK、HTTP）
+- 环境变量（KTTC_*、API_KEY）
+
+### MQM 严重性评分（v1.1 更新）
+
+KTTC 使用行业标准严重性乘数进行 MQM 评分：
+
+| 严重性 | 乘数 | 影响 |
+|--------|------|------|
+| Neutral | 0x | 无惩罚（信息性） |
+| Minor | 1x | 可见但不影响理解 |
+| Major | 5x | 影响理解或质量 |
+| Critical | 25x | 严重含义变化或不可用 |
+
+**公式：** `质量分数 = 100 - (ETPT / 词数 × 归一化因子)`
+
+其中 `ETPT = Σ(错误数量 × 严重性乘数)`
+
 ### 示例
 
 **单文件检查：**
@@ -122,6 +153,30 @@ kttc check source.txt translation.txt \
   --source-lang en \
   --target-lang es \
   --demo
+```
+
+**快速模式（更快、更便宜）：**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --quick
+```
+
+**显示令牌使用量和成本：**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --show-cost
+```
+
+输出：
+```
+✓ 翻译通过质量检查（MQM 分数：96.5）
+💰 令牌：1,245（输入：890，输出：355）| 调用：5 | 成本：$0.0234
 ```
 
 ---

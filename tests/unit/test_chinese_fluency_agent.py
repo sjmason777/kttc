@@ -384,7 +384,7 @@ class TestGlossaryIntegration:
         expected_glossaries = [
             "classifiers_zh.json",
             "idioms_expressions_zh.json",
-            "mqm_core_zh.json",
+            "mqm_core.json",
             "word_order_traps_zh.json",
             "homophones_cultural_zh.json",
             "internet_slang_2024_zh.json",
