@@ -234,7 +234,7 @@ class TermValidator:
             severity_levels = self.glossary_manager.get_severity_levels(language)
             level_data = severity_levels.get(severity_level, {})
             return float(level_data.get("penalty_multiplier", 1.0))
-        except Exception:
+        except (KeyError, TypeError, AttributeError):
             logging.warning("Failed to get severity multiplier, using default value", exc_info=True)
             return 1.0
 
