@@ -176,8 +176,8 @@ class TermValidator:
                             }
                         )
 
-        except Exception:
-            # If glossary not available, skip
+        except (FileNotFoundError, KeyError):
+            # If glossary not available or key missing, skip
             logging.warning(
                 "Failed to load MQM glossary for false friends detection", exc_info=True
             )
