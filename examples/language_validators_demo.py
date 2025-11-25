@@ -303,7 +303,7 @@ def factory_pattern_example():
     print("\n3. Error Handling for Unsupported Languages:")
     print("-" * 50)
     try:
-        _validator = LanguageValidatorFactory.create_validator("xx")  # noqa: F841
+        LanguageValidatorFactory.create_validator("xx")
         print("  Unexpected: validator created for unsupported language")
     except ValueError as e:
         print(f"  ✓ Correctly raised ValueError: {e}")

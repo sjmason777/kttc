@@ -23,7 +23,7 @@ This module handles:
 
 from __future__ import annotations
 
-import subprocess
+import subprocess  # nosec B404 - required for pip install functionality
 import sys
 from typing import Literal
 
@@ -198,8 +198,8 @@ def install_dependency_group(group: DependencyGroup) -> bool:
                 total=None,  # Indeterminate progress
             )
 
-            # Run pip install
-            result = subprocess.run(
+            # Run pip install (cmd uses sys.executable + enum-controlled group)
+            result = subprocess.run(  # nosec B603
                 cmd,
                 capture_output=True,
                 text=True,
