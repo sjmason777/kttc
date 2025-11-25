@@ -282,7 +282,7 @@ class TermValidator:
                         }
                     )
 
-        except Exception:
+        except (KeyError, ValueError, TypeError):
             logging.warning("Failed to validate language-specific errors", exc_info=True)
 
         return errors
