@@ -1,4 +1,4 @@
-# Vulture whitelist - False positives for vulture dead code detection
+# Vulture allowlist - False positives for vulture dead code detection
 #
 # These are not dead code - they are:
 # 1. Typer callback parameters (used by framework)
