@@ -177,7 +177,6 @@ class WMTBenchmark:
 
         # Use built-in sample data to avoid downloading large datasets in CI/CD
         # This is fast, lightweight, and doesn't require external dependencies
-        src_lang, tgt_lang = self._parse_language_pair(language_pair)
         return DatasetLoader._get_sample_data(language_pair, sample_size)
 
     def _parse_language_pair(self, language_pair: str) -> tuple[str, str]:

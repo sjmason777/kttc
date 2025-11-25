@@ -186,6 +186,7 @@ async def run_quality_evaluation(
     api_errors: list[str],
     quick: bool = False,
     profile: Any = None,
+    selected_agents: list[str] | None = None,
 ) -> tuple[QAReport, AgentOrchestrator]:
     """Run multi-agent quality evaluation.
 
@@ -198,6 +199,7 @@ async def run_quality_evaluation(
         api_errors: List to collect API errors
         quick: Enable quick mode (3 core agents, no iterations)
         profile: MQM profile with custom agent weights (optional)
+        selected_agents: List of agent names to use (optional)
     """
     # Extract agent weights from profile if provided
     agent_weights = None
@@ -212,6 +214,7 @@ async def run_quality_evaluation(
         enable_dynamic_selection=not quick,  # Disable dynamic selection in quick mode
         quick_mode=quick,
         agent_weights=agent_weights,
+        selected_agents=selected_agents,
     )
 
     if verbose:

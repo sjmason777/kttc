@@ -173,6 +173,7 @@ async def _check_async(
     quick: bool = False,
     show_cost: bool = False,
     profile: Any = None,
+    selected_agents: list[str] | None = None,
 ) -> None:
     """Async implementation of check command."""
     # Configure logging
@@ -225,7 +226,15 @@ async def _check_async(
 
     # Quality evaluation
     report, orchestrator = await run_quality_evaluation(
-        llm_provider, task, threshold, settings, verbose, api_errors, quick, profile
+        llm_provider,
+        task,
+        threshold,
+        settings,
+        verbose,
+        api_errors,
+        quick,
+        profile,
+        selected_agents,
     )
 
     # Calculate metrics
@@ -315,6 +324,7 @@ def _run_single_mode(
     quick: bool = False,
     show_cost: bool = False,
     profile: Any = None,
+    selected_agents: list[str] | None = None,
 ) -> None:
     """Run single file check mode."""
     if not source_lang or not target_lang:
@@ -350,6 +360,7 @@ def _run_single_mode(
             quick,
             show_cost,
             profile,
+            selected_agents,
         )
     )
 
@@ -418,6 +429,7 @@ def _route_check_mode(
     quick: bool = False,
     show_cost: bool = False,
     profile: Any = None,
+    selected_agents: list[str] | None = None,
 ) -> None:
     """Route to appropriate handler based on detected mode."""
     if mode == "single":
@@ -443,6 +455,7 @@ def _route_check_mode(
             quick,
             show_cost,
             profile,
+            selected_agents,
         )
     elif mode == "compare":
         translations_list = mode_params["translations"]
@@ -740,6 +753,7 @@ def check(
             quick,
             show_cost,
             loaded_profile,
+            selected_agents,
         )
 
     except KeyboardInterrupt:

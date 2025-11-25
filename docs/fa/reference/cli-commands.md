@@ -659,6 +659,116 @@ kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary non
 
 **ترتیب جستجو**: KTTC ابتدا در دایرکتوری پروژه، سپس در دایرکتوری کاربر به دنبال واژه‌نامه‌ها می‌گردد.
 
+## kttc terminology
+
+دسترسی به واژه‌نامه‌های مرجع زبان‌شناختی و اعتبارسنج‌ها برای ارزیابی کیفیت ترجمه.
+
+### دستورات فرعی
+
+#### list
+
+لیست تمام واژه‌نامه‌های مرجع زبان‌شناختی موجود.
+
+```bash
+kttc terminology list
+```
+
+**گزینه‌ها:**
+- `--lang CODE`، `-l CODE` - فیلتر بر اساس کد زبان
+
+**نمونه‌ها:**
+
+```bash
+kttc terminology list
+kttc terminology list --lang ru
+kttc terminology list --lang zh
+```
+
+#### show
+
+نمایش محتویات یک واژه‌نامه مرجع زبان‌شناختی.
+
+```bash
+kttc terminology show LANGUAGE CATEGORY [OPTIONS]
+```
+
+**آرگومان‌ها:**
+- `LANGUAGE` - کد زبان (مثل en، ru، zh)
+- `CATEGORY` - دسته واژه‌نامه (مثل mqm_core، russian_cases)
+
+**گزینه‌ها:**
+- `--limit N`، `-n N` - حداکثر تعداد ورودی‌های نمایش داده شده (پیش‌فرض: 50)
+- `--format FORMAT`، `-f FORMAT` - فرمت خروجی: table یا json (پیش‌فرض: table)
+
+**نمونه‌ها:**
+
+```bash
+kttc terminology show en mqm_core
+kttc terminology show ru russian_cases
+kttc terminology show zh chinese_classifiers --limit 20
+kttc terminology show en mqm_core --format json
+```
+
+#### search
+
+جستجو در تمام واژه‌نامه‌های اصطلاحات.
+
+```bash
+kttc terminology search QUERY [OPTIONS]
+```
+
+**آرگومان‌ها:**
+- `QUERY` - عبارت جستجو
+
+**گزینه‌ها:**
+- `--lang CODE`، `-l CODE` - فیلتر بر اساس کد زبان
+- `--case-sensitive`، `-c` - جستجوی حساس به بزرگی و کوچکی حروف
+
+**نمونه‌ها:**
+
+```bash
+kttc terminology search "mistranslation"
+kttc terminology search "genitive" --lang ru
+kttc terminology search "classifier" --lang zh
+```
+
+#### validate-error
+
+اعتبارسنجی یک نوع خطای MQM بر اساس واژه‌نامه اصطلاحات.
+
+```bash
+kttc terminology validate-error ERROR_TYPE [OPTIONS]
+```
+
+**آرگومان‌ها:**
+- `ERROR_TYPE` - نوع خطای MQM برای اعتبارسنجی
+
+**گزینه‌ها:**
+- `--lang CODE`، `-l CODE` - کد زبان (پیش‌فرض: en)
+
+**نمونه‌ها:**
+
+```bash
+kttc terminology validate-error mistranslation
+kttc terminology validate-error grammar --lang ru
+kttc terminology validate-error untranslated --lang en
+```
+
+#### validators
+
+لیست اعتبارسنج‌های موجود مخصوص زبان‌های خاص.
+
+```bash
+kttc terminology validators
+```
+
+**نمونه‌ها:**
+
+```bash
+kttc terminology validators
+```
+
+---
 ---
 
 ## گزینه‌های عمومی

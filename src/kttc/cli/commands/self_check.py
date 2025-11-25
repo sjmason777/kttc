@@ -364,7 +364,6 @@ def handle_self_check_mode(
     # Handle --lang shortcut
     if lang:
         source_lang = lang
-        target_lang = lang
 
     if not source_lang:
         console.print("[red]Error: --lang or --source-lang required for self-check mode[/red]")

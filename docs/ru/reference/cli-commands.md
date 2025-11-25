@@ -659,6 +659,115 @@ kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary non
 
 **Порядок поиска**: KTTC сначала ищет глоссарии в проектном каталоге, затем в пользовательском.
 
+## kttc terminology
+
+Доступ к лингвистическим справочным глоссариям и валидаторам для оценки качества перевода.
+
+### Подкоманды
+
+#### list
+
+Список всех доступных лингвистических справочных глоссариев.
+
+```bash
+kttc terminology list
+```
+
+**Параметры:**
+- `--lang CODE`, `-l CODE` - Фильтр по коду языка
+
+**Примеры:**
+
+```bash
+kttc terminology list
+kttc terminology list --lang ru
+kttc terminology list --lang zh
+```
+
+#### show
+
+Показать содержимое лингвистического справочного глоссария.
+
+```bash
+kttc terminology show LANGUAGE CATEGORY [OPTIONS]
+```
+
+**Аргументы:**
+- `LANGUAGE` - Код языка (например, en, ru, zh)
+- `CATEGORY` - Категория глоссария (например, mqm_core, russian_cases)
+
+**Параметры:**
+- `--limit N`, `-n N` - Максимальное количество записей для отображения (по умолчанию: 50)
+- `--format FORMAT`, `-f FORMAT` - Формат вывода: table или json (по умолчанию: table)
+
+**Примеры:**
+
+```bash
+kttc terminology show en mqm_core
+kttc terminology show ru russian_cases
+kttc terminology show zh chinese_classifiers --limit 20
+kttc terminology show en mqm_core --format json
+```
+
+#### search
+
+Поиск по всем терминологическим глоссариям.
+
+```bash
+kttc terminology search QUERY [OPTIONS]
+```
+
+**Аргументы:**
+- `QUERY` - Поисковый запрос
+
+**Параметры:**
+- `--lang CODE`, `-l CODE` - Фильтр по коду языка
+- `--case-sensitive`, `-c` - Поиск с учетом регистра
+
+**Примеры:**
+
+```bash
+kttc terminology search "mistranslation"
+kttc terminology search "genitive" --lang ru
+kttc terminology search "classifier" --lang zh
+```
+
+#### validate-error
+
+Проверить тип ошибки MQM по терминологическому глоссарию.
+
+```bash
+kttc terminology validate-error ERROR_TYPE [OPTIONS]
+```
+
+**Аргументы:**
+- `ERROR_TYPE` - Тип ошибки MQM для проверки
+
+**Параметры:**
+- `--lang CODE`, `-l CODE` - Код языка (по умолчанию: en)
+
+**Примеры:**
+
+```bash
+kttc terminology validate-error mistranslation
+kttc terminology validate-error grammar --lang ru
+kttc terminology validate-error untranslated --lang en
+```
+
+#### validators
+
+Список доступных валидаторов для конкретных языков.
+
+```bash
+kttc terminology validators
+```
+
+**Примеры:**
+
+```bash
+kttc terminology validators
+```
+
 ---
 
 ## Глобальные параметры

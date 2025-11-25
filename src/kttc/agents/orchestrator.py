@@ -53,6 +53,7 @@ from kttc.llm import BaseLLMProvider
 from .accuracy import AccuracyAgent
 from .base import AgentEvaluationError, BaseAgent
 from .consensus import WeightedConsensus
+from .context import ContextAgent
 from .domain_profiles import (
     DomainDetector,
     get_domain_profile,
@@ -63,6 +64,7 @@ from .fluency_chinese import ChineseFluencyAgent
 from .fluency_hindi import HindiFluencyAgent
 from .fluency_persian import PersianFluencyAgent
 from .fluency_russian import RussianFluencyAgent
+from .hallucination import HallucinationAgent
 from .style_preservation import StylePreservationAgent
 from .terminology import TerminologyAgent
 
@@ -89,6 +91,20 @@ class AgentOrchestrator:
         ...     print("Translation quality acceptable")
     """
 
+    # Mapping from agent names to agent classes
+    # Note: Using Any type because agent subclasses have different __init__ signatures
+    AGENT_CLASSES: dict[str, Any] = {
+        "accuracy": AccuracyAgent,
+        "fluency": FluencyAgent,
+        "terminology": TerminologyAgent,
+        "hallucination": HallucinationAgent,
+        "context": ContextAgent,
+        "style": StylePreservationAgent,
+    }
+
+    # Default core agents (used when no specific agents selected)
+    DEFAULT_AGENTS = ["accuracy", "fluency", "terminology"]
+
     def __init__(
         self,
         llm_provider: BaseLLMProvider,
@@ -100,6 +116,7 @@ class AgentOrchestrator:
         enable_domain_adaptation: bool = True,
         enable_dynamic_selection: bool = True,
         quick_mode: bool = False,
+        selected_agents: list[str] | None = None,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -113,6 +130,8 @@ class AgentOrchestrator:
             enable_domain_adaptation: Enable domain-adaptive agent selection (default: True)
             enable_dynamic_selection: Enable dynamic agent selection for cost optimization (default: True)
             quick_mode: Enable quick mode with only 3 core agents (default: False)
+            selected_agents: List of agent names to use (default: None = use core agents)
+                             Valid names: accuracy, fluency, terminology, hallucination, context, style
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
@@ -121,15 +140,24 @@ class AgentOrchestrator:
         self.enable_domain_adaptation = enable_domain_adaptation and not quick_mode
         self.enable_dynamic_selection = enable_dynamic_selection and not quick_mode
         self.quick_mode = quick_mode
+        self.selected_agents = selected_agents
 
-        # Core agents (Accuracy, Fluency, Terminology - always used)
-        self.agents: list[BaseAgent] = [
-            AccuracyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
-            FluencyAgent(llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens),
-            TerminologyAgent(
-                llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens
-            ),
-        ]
+        # Build agents list based on selection or use defaults
+        agents_to_use = selected_agents if selected_agents else self.DEFAULT_AGENTS
+        self.agents: list[BaseAgent] = []
+        for agent_name in agents_to_use:
+            agent_name_lower = agent_name.lower()
+            if agent_name_lower in self.AGENT_CLASSES:
+                agent_class = self.AGENT_CLASSES[agent_name_lower]
+                self.agents.append(
+                    agent_class(
+                        llm_provider, temperature=agent_temperature, max_tokens=agent_max_tokens
+                    )
+                )
+            else:
+                logger.warning(
+                    f"Unknown agent '{agent_name}', skipping. Valid: {list(self.AGENT_CLASSES.keys())}"
+                )
         self.scorer = MQMScorer()
         self.quality_threshold = quality_threshold
 

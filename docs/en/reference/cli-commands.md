@@ -488,6 +488,99 @@ kttc benchmark \
 
 ---
 
+## kttc proofread
+
+Proofread a text file for grammar, spelling, and punctuation errors.
+
+This is an alias for `kttc check --self` with a simpler interface.
+Uses school curriculum rules and optional LLM for context-aware checking.
+
+### Syntax
+
+```bash
+kttc proofread FILE --lang CODE [OPTIONS]
+```
+
+### Options
+
+- `--lang CODE`, `-l CODE` - Language code (e.g., 'ru', 'en', 'zh') (required)
+- `--threshold FLOAT` - Quality threshold (0-100, default: 95.0)
+- `--output PATH`, `-o PATH` - Output report file path
+- `--provider TEXT` - LLM provider for context-aware checking
+- `--verbose` - Verbose output
+
+### Supported Languages
+
+en, ru, zh, hi, fa
+
+### Examples
+
+**Proofread a Russian article:**
+
+```bash
+kttc proofread article.md --lang ru
+```
+
+**Proofread with strict threshold:**
+
+```bash
+kttc proofread article.md --lang ru --threshold 98
+```
+
+**Save report:**
+
+```bash
+kttc proofread article.md --lang ru --output report.json --verbose
+```
+
+---
+
+## kttc lint
+
+Quick lint check for common errors (no LLM, fast).
+
+Fast rule-based checking using school curriculum rules and patterns.
+Does not use LLM - ideal for CI/CD pipelines and pre-commit hooks.
+
+### Syntax
+
+```bash
+kttc lint FILE --lang CODE [OPTIONS]
+```
+
+### Options
+
+- `--lang CODE`, `-l CODE` - Language code (e.g., 'ru', 'en', 'zh') (required)
+- `--strict` - Strict mode: fail on any error
+- `--fix` - Show suggestions for fixing errors
+
+### Exit Codes
+
+- `0` - No errors found
+- `1` - Errors found
+
+### Examples
+
+**Quick lint check:**
+
+```bash
+kttc lint article.md --lang ru
+```
+
+**Strict mode (fail on any error):**
+
+```bash
+kttc lint article.md --lang ru --strict
+```
+
+**Show fix suggestions:**
+
+```bash
+kttc lint article.md --lang ru --fix
+```
+
+---
+
 ## kttc report
 
 Generate formatted reports from QA results.
@@ -500,8 +593,8 @@ kttc report INPUT_FILE [OPTIONS]
 
 ### Options
 
-- `--format markdown|html` - Output format (default: markdown)
-- `--output PATH` - Output file path (auto-generated if not specified)
+- `--format markdown|html`, `-f markdown|html` - Output format (default: markdown)
+- `--output PATH`, `-o PATH` - Output file path (auto-generated if not specified)
 
 ### Examples
 
@@ -733,6 +826,116 @@ kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary non
 
 **Search order**: KTTC searches for glossaries in project directory first, then user directory.
 
+## kttc terminology
+
+Access linguistic reference glossaries and validators for translation quality assessment.
+
+### Subcommands
+
+#### list
+
+List all available linguistic reference glossaries.
+
+```bash
+kttc terminology list
+```
+
+**Options:**
+- `--lang CODE`, `-l CODE` - Filter by language code
+
+**Examples:**
+
+```bash
+kttc terminology list
+kttc terminology list --lang ru
+kttc terminology list --lang zh
+```
+
+#### show
+
+Show contents of a linguistic reference glossary.
+
+```bash
+kttc terminology show LANGUAGE CATEGORY [OPTIONS]
+```
+
+**Arguments:**
+- `LANGUAGE` - Language code (e.g., en, ru, zh)
+- `CATEGORY` - Glossary category (e.g., mqm_core, russian_cases)
+
+**Options:**
+- `--limit N`, `-n N` - Maximum entries to display (default: 50)
+- `--format FORMAT`, `-f FORMAT` - Output format: table or json (default: table)
+
+**Examples:**
+
+```bash
+kttc terminology show en mqm_core
+kttc terminology show ru russian_cases
+kttc terminology show zh chinese_classifiers --limit 20
+kttc terminology show en mqm_core --format json
+```
+
+#### search
+
+Search across all terminology glossaries.
+
+```bash
+kttc terminology search QUERY [OPTIONS]
+```
+
+**Arguments:**
+- `QUERY` - Search query
+
+**Options:**
+- `--lang CODE`, `-l CODE` - Filter by language code
+- `--case-sensitive`, `-c` - Case-sensitive search
+
+**Examples:**
+
+```bash
+kttc terminology search "mistranslation"
+kttc terminology search "genitive" --lang ru
+kttc terminology search "classifier" --lang zh
+```
+
+#### validate-error
+
+Validate an MQM error type against the terminology glossary.
+
+```bash
+kttc terminology validate-error ERROR_TYPE [OPTIONS]
+```
+
+**Arguments:**
+- `ERROR_TYPE` - MQM error type to validate
+
+**Options:**
+- `--lang CODE`, `-l CODE` - Language code (default: en)
+
+**Examples:**
+
+```bash
+kttc terminology validate-error mistranslation
+kttc terminology validate-error grammar --lang ru
+kttc terminology validate-error untranslated --lang en
+```
+
+#### validators
+
+List available language-specific validators.
+
+```bash
+kttc terminology validators
+```
+
+**Examples:**
+
+```bash
+kttc terminology validators
+```
+
+---
 ---
 
 ## Global Options

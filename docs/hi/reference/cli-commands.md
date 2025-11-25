@@ -659,6 +659,115 @@ kttc check source.txt trans.txt --source-lang en --target-lang ru --glossary non
 
 **खोज क्रम**: KTTC पहले प्रोजेक्ट डायरेक्टरी में शब्दकोश खोजता है, फिर यूज़र डायरेक्टरी में।
 
+## kttc terminology
+
+अनुवाद गुणवत्ता मूल्यांकन के लिए भाषाविज्ञान संदर्भ शब्दकोशों और सत्यापनकर्ताओं तक पहुँच प्राप्त करें।
+
+### सबकमांड्स
+
+#### list
+
+उपलब्ध सभी भाषाविज्ञान संदर्भ शब्दकोशों की सूची बनाएं।
+
+```bash
+kttc terminology list
+```
+
+**विकल्प:**
+- `--lang CODE`, `-l CODE` - भाषा कोड द्वारा फ़िल्टर करें
+
+**उदाहरण:**
+
+```bash
+kttc terminology list
+kttc terminology list --lang ru
+kttc terminology list --lang zh
+```
+
+#### show
+
+भाषाविज्ञान संदर्भ शब्दकोश की सामग्री दिखाएं।
+
+```bash
+kttc terminology show LANGUAGE CATEGORY [OPTIONS]
+```
+
+**तर्क:**
+- `LANGUAGE` - भाषा कोड (जैसे, en, ru, zh)
+- `CATEGORY` - शब्दकोश श्रेणी (जैसे, mqm_core, russian_cases)
+
+**विकल्प:**
+- `--limit N`, `-n N` - प्रदर्शित करने के लिए अधिकतम प्रविष्टियाँ (डिफ़ॉल्ट: 50)
+- `--format FORMAT`, `-f FORMAT` - आउटपुट फ़ॉर्मेट: table या json (डिफ़ॉल्ट: table)
+
+**उदाहरण:**
+
+```bash
+kttc terminology show en mqm_core
+kttc terminology show ru russian_cases
+kttc terminology show zh chinese_classifiers --limit 20
+kttc terminology show en mqm_core --format json
+```
+
+#### search
+
+सभी शब्दावली शब्दकोशों में खोजें।
+
+```bash
+kttc terminology search QUERY [OPTIONS]
+```
+
+**तर्क:**
+- `QUERY` - खोज क्वेरी
+
+**विकल्प:**
+- `--lang CODE`, `-l CODE` - भाषा कोड द्वारा फ़िल्टर करें
+- `--case-sensitive`, `-c` - मामले के प्रति संवेदनशील खोज
+
+**उदाहरण:**
+
+```bash
+kttc terminology search "mistranslation"
+kttc terminology search "genitive" --lang ru
+kttc terminology search "classifier" --lang zh
+```
+
+#### validate-error
+
+शब्दावली शब्दकोश के खिलाफ MQM त्रुटि प्रकार को मान्य करें।
+
+```bash
+kttc terminology validate-error ERROR_TYPE [OPTIONS]
+```
+
+**तर्क:**
+- `ERROR_TYPE` - मान्य करने के लिए MQM त्रुटि प्रकार
+
+**विकल्प:**
+- `--lang CODE`, `-l CODE` - भाषा कोड (डिफ़ॉल्ट: en)
+
+**उदाहरण:**
+
+```bash
+kttc terminology validate-error mistranslation
+kttc terminology validate-error grammar --lang ru
+kttc terminology validate-error untranslated --lang en
+```
+
+#### validators
+
+उपलब्ध भाषा-विशिष्ट सत्यापनकर्ताओं की सूची बनाएं।
+
+```bash
+kttc terminology validators
+```
+
+**उदाहरण:**
+
+```bash
+kttc terminology validators
+```
+
 ---
 
 ## वैश्विक विकल्प

@@ -531,6 +531,8 @@ class XLSXFormatter:
                         if cell_length > max_length:
                             max_length = cell_length
                 except Exception:
-                    pass
+                    logging.warning(
+                        "Failed to calculate cell length for auto-adjust", exc_info=True
+                    )
             adjusted_width = min(max_length + 2, max_width)
             ws.column_dimensions[column].width = adjusted_width

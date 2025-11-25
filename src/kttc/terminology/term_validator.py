@@ -2,6 +2,7 @@
 Term Validator for checking terminology consistency and correctness.
 """
 
+import logging
 from typing import Any
 
 from kttc.terminology.glossary_manager import GlossaryManager
@@ -126,7 +127,7 @@ class TermValidator:
         except Exception:
             # If glossary loading fails, skip validation
             # This is acceptable as glossary validation is optional
-            pass
+            logging.warning("Failed to load glossary for terminology validation", exc_info=True)
 
         return errors
 
@@ -177,7 +178,9 @@ class TermValidator:
 
         except Exception:
             # If glossary not available, skip
-            pass
+            logging.warning(
+                "Failed to load MQM glossary for false friends detection", exc_info=True
+            )
 
         return errors
 
@@ -213,6 +216,7 @@ class TermValidator:
             return False, None
 
         except Exception:
+            logging.warning("Failed to validate MQM error type", exc_info=True)
             return False, None
 
     def get_severity_multiplier(self, severity_level: str, language: str = "en") -> float:
@@ -231,6 +235,7 @@ class TermValidator:
             level_data = severity_levels.get(severity_level, {})
             return float(level_data.get("penalty_multiplier", 1.0))
         except Exception:
+            logging.warning("Failed to get severity multiplier, using default value", exc_info=True)
             return 1.0
 
     def validate_language_specific_errors(
@@ -278,7 +283,7 @@ class TermValidator:
                     )
 
         except Exception:
-            pass
+            logging.warning("Failed to validate language-specific errors", exc_info=True)
 
         return errors
 

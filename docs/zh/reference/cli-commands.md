@@ -659,8 +659,116 @@ kttc check source.txt trans.txt --source-lang en --target-lang zh --glossary non
 
 **搜索顺序**：KTTC 首先在项目目录中搜索术语表，然后在用户目录中搜索。
 
----
+## kttc terminology
 
+访问语言学参考术语表和验证器以进行翻译质量评估。
+
+### 子命令
+
+#### list
+
+列出所有可用的语言学参考术语表。
+
+```bash
+kttc terminology list
+```
+
+**选项：**
+- `--lang CODE`，`-l CODE` - 按语言代码过滤
+
+**示例：**
+
+```bash
+kttc terminology list
+kttc terminology list --lang ru
+kttc terminology list --lang zh
+```
+
+#### show
+
+显示语言学参考术语表的内容。
+
+```bash
+kttc terminology show LANGUAGE CATEGORY [OPTIONS]
+```
+
+**参数：**
+- `LANGUAGE` - 语言代码（例如 en、ru、zh）
+- `CATEGORY` - 术语表类别（例如 mqm_core、russian_cases）
+
+**选项：**
+- `--limit N`，`-n N` - 最大显示条目数（默认：50）
+- `--format FORMAT`，`-f FORMAT` - 输出格式：table 或 json（默认：table）
+
+**示例：**
+
+```bash
+kttc terminology show en mqm_core
+kttc terminology show ru russian_cases
+kttc terminology show zh chinese_classifiers --limit 20
+kttc terminology show en mqm_core --format json
+```
+
+#### search
+
+在所有术语表中搜索。
+
+```bash
+kttc terminology search QUERY [OPTIONS]
+```
+
+**参数：**
+- `QUERY` - 搜索查询
+
+**选项：**
+- `--lang CODE`，`-l CODE` - 按语言代码过滤
+- `--case-sensitive`，`-c` - 区分大小写搜索
+
+**示例：**
+
+```bash
+kttc terminology search "mistranslation"
+kttc terminology search "genitive" --lang ru
+kttc terminology search "classifier" --lang zh
+```
+
+#### validate-error
+
+根据术语表验证 MQM 错误类型。
+
+```bash
+kttc terminology validate-error ERROR_TYPE [OPTIONS]
+```
+
+**参数：**
+- `ERROR_TYPE` - 要验证的 MQM 错误类型
+
+**选项：**
+- `--lang CODE`，`-l CODE` - 语言代码（默认：en）
+
+**示例：**
+
+```bash
+kttc terminology validate-error mistranslation
+kttc terminology validate-error grammar --lang ru
+kttc terminology validate-error untranslated --lang en
+```
+
+#### validators
+
+列出可用的语言特定验证器。
+
+```bash
+kttc terminology validators
+```
+
+**示例：**
+
+```bash
+kttc terminology validators
+```
+
+---
 ## 全局选项
 
 适用于所有命令：
