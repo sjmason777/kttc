@@ -1,0 +1,100 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Legal Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "Legal terminology for translation quality checking",
+    "sources": [
+      "Black's Law Dictionary",
+      "U.S. Courts Glossary",
+      "U.S. Department of Justice",
+      "Cornell Law Legal Information Institute"
+    ],
+    "total_terms": 185
+  },
+  "categories": {
+    "contract_law": [
+      "agreement", "breach", "consideration", "indemnity", "warranty",
+      "guarantee", "covenant", "clause", "provision", "amendment",
+      "addendum", "force majeure", "liquidated damages", "specific performance",
+      "rescission", "novation", "assignment", "delegation", "privity",
+      "counteroffer", "acceptance", "offer", "revocation", "waiver",
+      "estoppel", "mitigation", "severability", "merger clause", "hold harmless",
+      "joint and several liability", "unconscionability", "duress"
+    ],
+    "court_litigation": [
+      "plaintiff", "defendant", "verdict", "appeal", "judgment",
+      "motion", "affidavit", "deposition", "discovery", "subpoena",
+      "jurisdiction", "venue", "standing", "statute of limitations",
+      "precedent", "injunction", "damages", "remedy", "complaint",
+      "answer", "counterclaim", "cross-claim", "settlement", "arbitration",
+      "mediation", "litigation", "litigant", "trial", "bench trial",
+      "mistrial", "burden of proof", "testimony", "exhibit", "stipulation"
+    ],
+    "corporate_law": [
+      "incorporation", "corporation", "shareholder", "liability", "merger",
+      "acquisition", "board of directors", "officer", "bylaws",
+      "articles of incorporation", "fiduciary duty", "dividend", "quorum",
+      "proxy", "derivative suit", "piercing the corporate veil",
+      "tender offer", "hostile takeover", "poison pill", "golden parachute",
+      "leveraged buyout", "subsidiary", "parent company", "holding company",
+      "joint venture", "partnership", "sole proprietorship", "dissolution",
+      "capitalization", "prospectus"
+    ],
+    "criminal_law": [
+      "felony", "misdemeanor", "prosecution", "prosecutor", "indictment",
+      "arraignment", "plea bargain", "acquittal", "conviction", "sentence",
+      "probation", "parole", "bail", "grand jury", "public defender",
+      "beyond a reasonable doubt", "double jeopardy", "extradition",
+      "immunity", "statute", "offense", "accessory", "accomplice",
+      "alibi", "restitution"
+    ],
+    "property_law": [
+      "deed", "mortgage", "lien", "easement", "title", "encumbrance",
+      "foreclosure", "conveyance", "real property", "personal property",
+      "fee simple", "leasehold", "tenant", "landlord", "eminent domain",
+      "adverse possession", "title search", "clear title", "escrow",
+      "closing", "zoning"
+    ],
+    "regulatory_compliance": [
+      "due diligence", "compliance", "audit", "disclosure", "material",
+      "fiduciary", "good faith", "negligence", "gross negligence",
+      "willful misconduct", "sanction", "beneficial owner",
+      "anti-money laundering", "know your customer", "whistleblower",
+      "conflict of interest", "insider trading"
+    ],
+    "abbreviations": {
+      "LLC": "Limited Liability Company",
+      "Ltd.": "Limited",
+      "Inc.": "Incorporated",
+      "Corp.": "Corporation",
+      "Co.": "Company",
+      "v.": "Versus",
+      "et al.": "et alii (and others)",
+      "i.e.": "id est (that is)",
+      "e.g.": "exempli gratia (for example)",
+      "N/A": "Not Applicable",
+      "LLP": "Limited Liability Partnership",
+      "LP": "Limited Partnership",
+      "PLC": "Public Limited Company"
+    },
+    "latin_phrases": [
+      "pro bono", "habeas corpus", "prima facie", "stare decisis",
+      "res judicata", "amicus curiae", "mens rea", "actus reus",
+      "de jure", "de facto", "ex parte", "ipso facto", "in personam",
+      "in rem", "bona fide", "mala fide", "caveat emptor", "inter alia",
+      "ab initio", "ad hoc", "quid pro quo", "status quo", "ultra vires",
+      "intra vires", "per se", "sine qua non", "nolo contendere", "sui generis"
+    ]
+  },
+  "false_friends": [
+    {"term": "motion", "common": "movement", "legal": "formal request to court"},
+    {"term": "consideration", "common": "thoughtfulness", "legal": "value exchanged for contract"},
+    {"term": "material", "common": "physical substance", "legal": "significant to decision"},
+    {"term": "sanction", "common": "approval", "legal": "penalty (primary meaning)"},
+    {"term": "execute", "common": "carry out", "legal": "sign and formalize document"},
+    {"term": "party", "common": "social gathering", "legal": "person in legal matter"}
+  ]
+}

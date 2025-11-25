@@ -638,7 +638,7 @@ class StyleFingerprint:
 
     # Chinese classical poetry patterns
     CLASSICAL_CHINESE_PATTERNS = [
-        r"[，。！？、；：" "'']+",  # Chinese punctuation density
+        r"[，。！？、；：" + "'']+",  # Chinese punctuation density
         r"[\u4e00-\u9fff]{4,7}[，。]",  # 4-7 character lines (regulated verse)
     ]
 

@@ -3,4 +3,4 @@
 # Local development can use: pip install -e ".[dev]"
 
 streamlit>=1.51.0
-kttc>=0.4.1
+kttc>=0.4.2

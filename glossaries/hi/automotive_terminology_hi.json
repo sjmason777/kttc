@@ -1,0 +1,219 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "Hindi",
+    "glossary_type": "ऑटोमोटिव शब्दावली",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Hindi automotive terminology including Indian manufacturers and local practices",
+    "sources": [
+      "भारतीय ऑटोमोटिव निर्माता",
+      "मारुति सुजुकी",
+      "टाटा मोटर्स",
+      "महिंद्रा",
+      "Society of Indian Automobile Manufacturers (SIAM)"
+    ],
+    "total_terms": 280
+  },
+  "categories": {
+    "vehicle_types": [
+      {"hi": "कार", "en": "Car"},
+      {"hi": "सेडान", "en": "Sedan"},
+      {"hi": "हैचबैक", "en": "Hatchback"},
+      {"hi": "एसयूवी", "en": "SUV"},
+      {"hi": "एमयूवी", "en": "MUV"},
+      {"hi": "मोटरसाइकिल", "en": "Motorcycle"},
+      {"hi": "स्कूटर", "en": "Scooter"},
+      {"hi": "ऑटो रिक्शा", "en": "Auto rickshaw"},
+      {"hi": "ट्रक", "en": "Truck"},
+      {"hi": "बस", "en": "Bus"}
+    ],
+    "indian_manufacturers": [
+      {"hi": "मारुति सुजुकी", "en": "Maruti Suzuki"},
+      {"hi": "टाटा मोटर्स", "en": "Tata Motors"},
+      {"hi": "महिंद्रा", "en": "Mahindra"},
+      {"hi": "हीरो मोटोकॉर्प", "en": "Hero MotoCorp"},
+      {"hi": "बजाज ऑटो", "en": "Bajaj Auto"}
+    ],
+    "maruti_models": [
+      {"hi": "अल्टो", "en": "Alto"},
+      {"hi": "स्विफ्ट", "en": "Swift"},
+      {"hi": "बलेनो", "en": "Baleno"},
+      {"hi": "डिजायर", "en": "Dzire"},
+      {"hi": "ब्रेज़ा", "en": "Brezza"},
+      {"hi": "एर्टिगा", "en": "Ertiga"}
+    ],
+    "maruti_technology": [
+      {"hi": "AGS", "en": "Auto Gear Shift"},
+      {"hi": "स्मार्ट हाइब्रिड", "en": "Smart Hybrid"},
+      {"hi": "K-सीरीज इंजन", "en": "K-Series Engine"},
+      {"hi": "Z-सीरीज इंजन", "en": "Z-Series Engine"}
+    ],
+    "engine_transmission": [
+      {"hi": "इंजन", "en": "Engine"},
+      {"hi": "पेट्रोल इंजन", "en": "Petrol engine"},
+      {"hi": "डीजल इंजन", "en": "Diesel engine"},
+      {"hi": "सिलेंडर", "en": "Cylinder"},
+      {"hi": "पिस्टन", "en": "Piston"},
+      {"hi": "क्रैंकशाफ्ट", "en": "Crankshaft"},
+      {"hi": "कैमशाफ्ट", "en": "Camshaft"},
+      {"hi": "मैनुअल ट्रांसमिशन", "en": "Manual transmission"},
+      {"hi": "ऑटोमैटिक ट्रांसमिशन", "en": "Automatic transmission"},
+      {"hi": "AMT", "en": "Automated Manual Transmission"},
+      {"hi": "CVT", "en": "CVT"},
+      {"hi": "DCT", "en": "Dual-clutch transmission"},
+      {"hi": "IMT", "en": "Intelligent Manual Transmission"}
+    ],
+    "chassis_suspension": [
+      {"hi": "चेसिस", "en": "Chassis"},
+      {"hi": "सस्पेंशन", "en": "Suspension"},
+      {"hi": "शॉक एब्जॉर्बर", "en": "Shock absorber"},
+      {"hi": "स्प्रिंग", "en": "Spring"}
+    ],
+    "braking_system": [
+      {"hi": "ब्रेक", "en": "Brake"},
+      {"hi": "डिस्क ब्रेक", "en": "Disc brake"},
+      {"hi": "ड्रम ब्रेक", "en": "Drum brake"},
+      {"hi": "ABS", "en": "Anti-lock braking system"},
+      {"hi": "EBD", "en": "Electronic brake-force distribution"},
+      {"hi": "ब्रेक असिस्ट", "en": "Brake assist"}
+    ],
+    "electrical_system": [
+      {"hi": "बैटरी", "en": "Battery"},
+      {"hi": "स्टार्टर मोटर", "en": "Starter motor"},
+      {"hi": "अल्टरनेटर", "en": "Alternator"},
+      {"hi": "फ्यूज", "en": "Fuse"},
+      {"hi": "ECU", "en": "Electronic control unit"}
+    ],
+    "lighting": [
+      {"hi": "हेडलाइट", "en": "Headlight"},
+      {"hi": "टेल लाइट", "en": "Tail light"},
+      {"hi": "ब्रेक लाइट", "en": "Brake light"},
+      {"hi": "इंडिकेटर", "en": "Turn signal"},
+      {"hi": "फॉग लैंप", "en": "Fog lamp"},
+      {"hi": "हैलोजन", "en": "Halogen"},
+      {"hi": "LED", "en": "LED"}
+    ],
+    "safety_features": [
+      {"hi": "एयरबैग", "en": "Airbag"},
+      {"hi": "ड्राइवर एयरबैग", "en": "Driver airbag"},
+      {"hi": "पैसेंजर एयरबैग", "en": "Passenger airbag"},
+      {"hi": "साइड एयरबैग", "en": "Side airbag"},
+      {"hi": "सीट बेल्ट", "en": "Seatbelt"},
+      {"hi": "थ्री-पॉइंट सीटबेल्ट", "en": "Three-point seatbelt"},
+      {"hi": "सीटबेल्ट रिमाइंडर", "en": "Seatbelt reminder"},
+      {"hi": "चाइल्ड सेफ्टी सीट", "en": "Child safety seat"},
+      {"hi": "ISOFIX", "en": "ISOFIX"},
+      {"hi": "ABS", "en": "ABS"},
+      {"hi": "ESP", "en": "ESP"},
+      {"hi": "ट्रैक्शन कंट्रोल", "en": "Traction control"},
+      {"hi": "हिल होल्ड असिस्ट", "en": "Hill hold assist"},
+      {"hi": "रिवर्स कैमरा", "en": "Reverse camera"},
+      {"hi": "पार्किंग सेंसर", "en": "Parking sensor"}
+    ],
+    "crash_testing": [
+      {"hi": "भारत एनकैप", "en": "Bharat NCAP"},
+      {"hi": "ग्लोबल एनकैप", "en": "Global NCAP"},
+      {"hi": "5 स्टार सेफ्टी रेटिंग", "en": "5-star safety rating"},
+      {"hi": "वयस्क सुरक्षा", "en": "Adult occupant protection"},
+      {"hi": "चाइल्ड सुरक्षा", "en": "Child occupant protection"}
+    ],
+    "controls_pedals": [
+      {"hi": "क्लच पेडल", "en": "Clutch pedal"},
+      {"hi": "ब्रेक पेडल", "en": "Brake pedal"},
+      {"hi": "एक्सेलेरेटर पेडल", "en": "Accelerator pedal"},
+      {"hi": "गैस पेडल", "en": "Gas pedal"},
+      {"hi": "स्टीयरिंग व्हील", "en": "Steering wheel"},
+      {"hi": "पावर स्टीयरिंग", "en": "Power steering"},
+      {"hi": "गियर लीवर", "en": "Gear lever"},
+      {"hi": "हैंडब्रेक", "en": "Handbrake"}
+    ],
+    "body_exterior": [
+      {"hi": "बोनट", "en": "Bonnet"},
+      {"hi": "डिक्की", "en": "Boot"},
+      {"hi": "दरवाजा", "en": "Door"},
+      {"hi": "विंडशील्ड", "en": "Windshield"},
+      {"hi": "रूफ", "en": "Roof"},
+      {"hi": "बंपर", "en": "Bumper"},
+      {"hi": "साइड मिरर", "en": "Side mirror"},
+      {"hi": "ORVM", "en": "Outside rear view mirror"},
+      {"hi": "बैकव्यू मिरर", "en": "Rearview mirror"}
+    ],
+    "interior_comfort": [
+      {"hi": "डैशबोर्ड", "en": "Dashboard"},
+      {"hi": "स्पीडोमीटर", "en": "Speedometer"},
+      {"hi": "ओडोमीटर", "en": "Odometer"},
+      {"hi": "टैकोमीटर", "en": "Tachometer"},
+      {"hi": "फ्यूल गेज", "en": "Fuel gauge"},
+      {"hi": "एयर कंडीशनिंग", "en": "Air conditioning"},
+      {"hi": "AC", "en": "Air conditioning"},
+      {"hi": "हीटर", "en": "Heater"},
+      {"hi": "सीट", "en": "Seat"},
+      {"hi": "हेडरेस्ट", "en": "Headrest"}
+    ],
+    "cooling_exhaust": [
+      {"hi": "रेडिएटर", "en": "Radiator"},
+      {"hi": "कूलेंट", "en": "Coolant"},
+      {"hi": "कूलिंग फैन", "en": "Cooling fan"},
+      {"hi": "साइलेंसर", "en": "Silencer"},
+      {"hi": "मफलर", "en": "Muffler"},
+      {"hi": "कैटेलिटिक कन्वर्टर", "en": "Catalytic converter"}
+    ],
+    "tires_wheels": [
+      {"hi": "टायर", "en": "Tire"},
+      {"hi": "ट्यूबलेस टायर", "en": "Tubeless tire"},
+      {"hi": "रिम", "en": "Rim"},
+      {"hi": "एलॉय व्हील", "en": "Alloy wheel"},
+      {"hi": "टायर प्रेशर", "en": "Tire pressure"},
+      {"hi": "पंचर", "en": "Puncture"},
+      {"hi": "व्हील बैलेंसिंग", "en": "Wheel balancing"},
+      {"hi": "व्हील अलाइनमेंट", "en": "Wheel alignment"}
+    ],
+    "fuel_types": [
+      {"hi": "पेट्रोल", "en": "Petrol"},
+      {"hi": "डीजल", "en": "Diesel"},
+      {"hi": "CNG", "en": "CNG"},
+      {"hi": "इलेक्ट्रिक", "en": "Electric"},
+      {"hi": "हाइब्रिड", "en": "Hybrid"},
+      {"hi": "BS6", "en": "Bharat Stage 6"}
+    ],
+    "documentation": [
+      {"hi": "RC", "en": "Registration Certificate"},
+      {"hi": "आरसी पुस्तिका", "en": "RC book"},
+      {"hi": "ड्राइविंग लाइसेंस", "en": "Driving license"},
+      {"hi": "फिटनेस प्रमाणपत्र", "en": "Fitness certificate"},
+      {"hi": "PUC", "en": "Pollution Under Control certificate"},
+      {"hi": "प्रदूषण प्रमाणपत्र", "en": "Pollution certificate"},
+      {"hi": "बीमा प्रमाणपत्र", "en": "Insurance certificate"},
+      {"hi": "चालान", "en": "Challan"},
+      {"hi": "थर्ड पार्टी बीमा", "en": "Third party insurance"}
+    ],
+    "maintenance": [
+      {"hi": "सर्विसिंग", "en": "Servicing"},
+      {"hi": "ऑयल चेंज", "en": "Oil change"},
+      {"hi": "इंजन ऑयल", "en": "Engine oil"},
+      {"hi": "फिल्टर बदलना", "en": "Filter replacement"},
+      {"hi": "एयर फिल्टर", "en": "Air filter"},
+      {"hi": "ऑयल फिल्टर", "en": "Oil filter"}
+    ],
+    "abbreviations": {
+      "ABS": "एंटी-लॉक ब्रेकिंग सिस्टम",
+      "AC": "एयर कंडीशनिंग",
+      "AGS": "ऑटो गियर शिफ्ट",
+      "AMT": "ऑटोमेटेड मैनुअल ट्रांसमिशन",
+      "BS6": "भारत स्टेज 6",
+      "CNG": "संपीड़ित प्राकृतिक गैस",
+      "CVT": "सीवीटी",
+      "DCT": "डुअल क्लच ट्रांसमिशन",
+      "EBD": "इलेक्ट्रॉनिक ब्रेक-फोर्स डिस्ट्रीब्यूशन",
+      "ECU": "इलेक्ट्रॉनिक कंट्रोल यूनिट",
+      "ESP": "इलेक्ट्रॉनिक स्टेबिलिटी प्रोग्राम",
+      "ISOFIX": "आईसोफिक्स",
+      "LED": "एलईडी",
+      "ORVM": "आउटसाइड रियर व्यू मिरर",
+      "PUC": "प्रदूषण अंडर कंट्रोल",
+      "RC": "रजिस्ट्रेशन सर्टिफिकेट",
+      "SUV": "स्पोर्ट यूटिलिटी व्हीकल"
+    }
+  }
+}

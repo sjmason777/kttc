@@ -1,0 +1,265 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian",
+    "glossary_type": "فرهنگ لغت اصطلاحات خودرویی",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Persian automotive terminology including Iranian manufacturers and local practices",
+    "sources": [
+      "ایران خودرو",
+      "سایپا",
+      "پارس خودرو",
+      "سازمان ملی استاندارد ایران",
+      "انجمن خودروسازان ایران"
+    ],
+    "total_terms": 286
+  },
+  "categories": {
+    "vehicle_types": [
+      {"fa": "خودرو سواری", "en": "Passenger car"},
+      {"fa": "سدان", "en": "Sedan"},
+      {"fa": "هاچبک", "en": "Hatchback"},
+      {"fa": "شاسی‌بلند", "en": "SUV"},
+      {"fa": "کراس‌اوور", "en": "Crossover"},
+      {"fa": "وانت", "en": "Pickup truck"},
+      {"fa": "ون", "en": "Van"},
+      {"fa": "خودرو دوگانه سوز", "en": "Dual-fuel vehicle"},
+      {"fa": "خودرو گازسوز", "en": "CNG vehicle"}
+    ],
+    "iranian_manufacturers": [
+      {"fa": "ایران خودرو", "en": "Iran Khodro"},
+      {"fa": "سایپا", "en": "Saipa"},
+      {"fa": "پارس خودرو", "en": "Pars Khodro"},
+      {"fa": "زامیاد", "en": "Zamyad"},
+      {"fa": "گروه بهمن", "en": "Bahman Group"}
+    ],
+    "iranian_models": [
+      {"fa": "پژو", "en": "Peugeot"},
+      {"fa": "سمند", "en": "Samand"},
+      {"fa": "دنا", "en": "Dena"},
+      {"fa": "تارا", "en": "Tara"},
+      {"fa": "سورن", "en": "Soren"},
+      {"fa": "پراید", "en": "Pride"},
+      {"fa": "تیبا", "en": "Tiba"},
+      {"fa": "رانا", "en": "Rana"},
+      {"fa": "کوییک", "en": "Quick"},
+      {"fa": "سهند", "en": "Sahand"}
+    ],
+    "engine_components": [
+      {"fa": "موتور", "en": "Engine"},
+      {"fa": "پیشرانه", "en": "Powertrain"},
+      {"fa": "بلوک سیلندر", "en": "Engine block"},
+      {"fa": "سرسیلندر", "en": "Cylinder head"},
+      {"fa": "سیلندر", "en": "Cylinder"},
+      {"fa": "پیستون", "en": "Piston"},
+      {"fa": "شاتون", "en": "Connecting rod"},
+      {"fa": "میل لنگ", "en": "Crankshaft"},
+      {"fa": "میل سوپاپ", "en": "Camshaft"},
+      {"fa": "فلایویل", "en": "Flywheel"},
+      {"fa": "سوپاپ", "en": "Valve"},
+      {"fa": "کارتر روغن", "en": "Oil pan"}
+    ],
+    "iranian_engines": [
+      {"fa": "موتور TU5", "en": "TU5 engine"},
+      {"fa": "موتور EF7", "en": "EF7 engine"},
+      {"fa": "موتور XU7", "en": "XU7 engine"}
+    ],
+    "transmission": [
+      {"fa": "گیربکس", "en": "Gearbox"},
+      {"fa": "جعبه دنده", "en": "Transmission"},
+      {"fa": "دنده", "en": "Gear"},
+      {"fa": "دیفرانسیل", "en": "Differential"},
+      {"fa": "کلاچ", "en": "Clutch"}
+    ],
+    "suspension": [
+      {"fa": "سیستم تعلیق", "en": "Suspension system"},
+      {"fa": "فنربندی", "en": "Suspension"},
+      {"fa": "فنر", "en": "Spring"},
+      {"fa": "کمک فنر", "en": "Shock absorber"},
+      {"fa": "طبق", "en": "Control arm"},
+      {"fa": "میله تعادل", "en": "Stabilizer bar"},
+      {"fa": "بوش", "en": "Bushing"}
+    ],
+    "electrical_system": [
+      {"fa": "باتری", "en": "Battery"},
+      {"fa": "آکو", "en": "Battery"},
+      {"fa": "دینام", "en": "Alternator"},
+      {"fa": "آلترناتور", "en": "Alternator"},
+      {"fa": "استارت", "en": "Starter motor"},
+      {"fa": "دلکو", "en": "Distributor"},
+      {"fa": "شمع", "en": "Spark plug"},
+      {"fa": "کوئل", "en": "Ignition coil"},
+      {"fa": "فیوز", "en": "Fuse"},
+      {"fa": "سیم کشی", "en": "Wiring"},
+      {"fa": "ECU", "en": "ECU"},
+      {"fa": "سنسور", "en": "Sensor"}
+    ],
+    "lighting": [
+      {"fa": "چراغ جلو", "en": "Headlight"},
+      {"fa": "چراغ عقب", "en": "Tail light"},
+      {"fa": "چراغ راهنما", "en": "Turn signal"},
+      {"fa": "چراغ ترمز", "en": "Brake light"},
+      {"fa": "چراغ مه شکن", "en": "Fog light"}
+    ],
+    "safety_systems": [
+      {"fa": "ایربگ", "en": "Airbag"},
+      {"fa": "کیسه هوا", "en": "Airbag"},
+      {"fa": "کمربند ایمنی", "en": "Seatbelt"},
+      {"fa": "ABS", "en": "Anti-lock braking system"},
+      {"fa": "EBD", "en": "Electronic brake-force distribution"},
+      {"fa": "HSA", "en": "Hill start assist"},
+      {"fa": "ESC", "en": "Electronic stability control"},
+      {"fa": "TCS", "en": "Traction control system"},
+      {"fa": "TPMS", "en": "Tire pressure monitoring system"}
+    ],
+    "braking_system": [
+      {"fa": "سیستم ترمز", "en": "Brake system"},
+      {"fa": "ترمز", "en": "Brake"},
+      {"fa": "پدال ترمز", "en": "Brake pedal"},
+      {"fa": "لنت ترمز", "en": "Brake pad"},
+      {"fa": "دیسک ترمز", "en": "Brake disc"},
+      {"fa": "کاسه ترمز", "en": "Brake drum"},
+      {"fa": "روغن ترمز", "en": "Brake fluid"}
+    ],
+    "steering": [
+      {"fa": "سیستم فرمان", "en": "Steering system"},
+      {"fa": "فرمان", "en": "Steering wheel"},
+      {"fa": "فرمان هیدرولیک", "en": "Hydraulic power steering"},
+      {"fa": "فرمان برقی", "en": "Electric power steering"}
+    ],
+    "fuel_system": [
+      {"fa": "سیستم سوخت‌رسانی", "en": "Fuel system"},
+      {"fa": "انژکتور", "en": "Fuel injector"},
+      {"fa": "کاربراتور", "en": "Carburetor"},
+      {"fa": "پمپ بنزین", "en": "Fuel pump"},
+      {"fa": "فیلتر بنزین", "en": "Fuel filter"},
+      {"fa": "باک بنزین", "en": "Fuel tank"},
+      {"fa": "مخزن CNG", "en": "CNG tank"}
+    ],
+    "fuel_types": [
+      {"fa": "بنزین", "en": "Gasoline"},
+      {"fa": "گازوئیل", "en": "Diesel"},
+      {"fa": "گاز طبیعی فشرده", "en": "CNG"},
+      {"fa": "سوخت دوگانه", "en": "Dual fuel"}
+    ],
+    "cooling_system": [
+      {"fa": "رادیاتور", "en": "Radiator"},
+      {"fa": "آب رادیاتور", "en": "Coolant"},
+      {"fa": "ضد یخ", "en": "Antifreeze"},
+      {"fa": "ترموستات", "en": "Thermostat"},
+      {"fa": "پمپ آب", "en": "Water pump"},
+      {"fa": "فن", "en": "Fan"}
+    ],
+    "exhaust_system": [
+      {"fa": "سیستم اگزوز", "en": "Exhaust system"},
+      {"fa": "اگزوز", "en": "Exhaust"},
+      {"fa": "صداخفه کن", "en": "Muffler"},
+      {"fa": "کاتالیزور", "en": "Catalytic converter"}
+    ],
+    "documentation": [
+      {"fa": "کارت خودرو", "en": "Vehicle card"},
+      {"fa": "کارت ماشین", "en": "Vehicle card"},
+      {"fa": "سند مالکیت", "en": "Ownership document"},
+      {"fa": "برگ سبز", "en": "Green card"},
+      {"fa": "شماره شاسی", "en": "Chassis number"},
+      {"fa": "شماره موتور", "en": "Engine number"},
+      {"fa": "پلاک خودرو", "en": "License plate"}
+    ],
+    "license_plates": [
+      {"fa": "پلاک شخصی", "en": "Personal plate"},
+      {"fa": "پلاک تاکسی", "en": "Taxi plate"},
+      {"fa": "پلاک معلولین", "en": "Disabled plate"},
+      {"fa": "پلاک دیپلماتیک", "en": "Diplomatic plate"},
+      {"fa": "پلاک نظامی", "en": "Military plate"}
+    ],
+    "inspection_insurance": [
+      {"fa": "معاینه فنی", "en": "Technical inspection"},
+      {"fa": "مرکز معاینه فنی", "en": "Inspection center"},
+      {"fa": "گواهی معاینه فنی", "en": "Inspection certificate"},
+      {"fa": "بیمه شخص ثالث", "en": "Third-party insurance"},
+      {"fa": "بیمه بدنه", "en": "Body insurance"},
+      {"fa": "بیمه‌نامه", "en": "Insurance policy"}
+    ],
+    "traffic_regulations": [
+      {"fa": "گواهینامه رانندگی", "en": "Driving license"},
+      {"fa": "پلیس راهور", "en": "Traffic police"},
+      {"fa": "خلافی", "en": "Traffic violation"},
+      {"fa": "جریمه", "en": "Fine"},
+      {"fa": "توقیف خودرو", "en": "Vehicle impoundment"}
+    ],
+    "standards_quality": [
+      {"fa": "سازمان ملی استاندارد", "en": "National Standards Organization"},
+      {"fa": "انجمن خودروسازان", "en": "Automotive Manufacturers Association"},
+      {"fa": "استاندارد یورو 2", "en": "Euro 2 standard"},
+      {"fa": "استاندارد یورو 6", "en": "Euro 6 standard"},
+      {"fa": "خودرو استاندارد", "en": "Standard vehicle"}
+    ],
+    "maintenance": [
+      {"fa": "تعمیر و نگهداری", "en": "Maintenance"},
+      {"fa": "سرویس", "en": "Service"},
+      {"fa": "تعویض روغن", "en": "Oil change"},
+      {"fa": "روغن موتور", "en": "Engine oil"},
+      {"fa": "تعویض فیلتر", "en": "Filter replacement"},
+      {"fa": "فیلتر روغن", "en": "Oil filter"},
+      {"fa": "فیلتر هوا", "en": "Air filter"}
+    ],
+    "body_work": [
+      {"fa": "صافکاری", "en": "Body repair"},
+      {"fa": "نقاشی", "en": "Painting"},
+      {"fa": "رنگ", "en": "Paint"},
+      {"fa": "خم شدگی", "en": "Dent"}
+    ],
+    "wheels_tires": [
+      {"fa": "لاستیک", "en": "Tire"},
+      {"fa": "تایر", "en": "Tire"},
+      {"fa": "رینگ", "en": "Wheel rim"},
+      {"fa": "جنط", "en": "Rim"},
+      {"fa": "قالپاق", "en": "Hubcap"},
+      {"fa": "چرخ", "en": "Wheel"},
+      {"fa": "فشار باد", "en": "Tire pressure"},
+      {"fa": "پنچرگیری", "en": "Tire repair"}
+    ],
+    "body_exterior": [
+      {"fa": "بدنه", "en": "Body"},
+      {"fa": "کاپوت", "en": "Hood"},
+      {"fa": "صندوق عقب", "en": "Trunk"},
+      {"fa": "درب", "en": "Door"},
+      {"fa": "شیشه جلو", "en": "Windshield"},
+      {"fa": "سپر", "en": "Bumper"},
+      {"fa": "گلگیر", "en": "Fender"}
+    ],
+    "controls_pedals": [
+      {"fa": "پدال گاز", "en": "Accelerator pedal"},
+      {"fa": "پدال ترمز", "en": "Brake pedal"},
+      {"fa": "پدال کلاچ", "en": "Clutch pedal"},
+      {"fa": "فرمان", "en": "Steering wheel"},
+      {"fa": "دسته دنده", "en": "Gear stick"}
+    ],
+    "interior": [
+      {"fa": "داشبورد", "en": "Dashboard"},
+      {"fa": "کیلومتر شمار", "en": "Odometer"},
+      {"fa": "دور سنج", "en": "Tachometer"},
+      {"fa": "صندلی", "en": "Seat"},
+      {"fa": "کولر", "en": "Air conditioner"},
+      {"fa": "بخاری", "en": "Heater"}
+    ],
+    "cng_system": [
+      {"fa": "سیستم CNG", "en": "CNG system"},
+      {"fa": "کپسول CNG", "en": "CNG cylinder"},
+      {"fa": "رگلاتور", "en": "Regulator"},
+      {"fa": "دوگانه‌سوز", "en": "Dual-fuel"},
+      {"fa": "سوئیچ سوخت", "en": "Fuel switch"}
+    ],
+    "abbreviations": {
+      "ABS": "سیستم ضد قفل ترمز",
+      "CNG": "گاز طبیعی فشرده",
+      "EBD": "توزیع الکترونیکی نیروی ترمز",
+      "ECU": "واحد کنترل الکترونیکی",
+      "ESC": "کنترل پایداری الکترونیکی",
+      "HSA": "کمک به حرکت در سربالایی",
+      "TCS": "سیستم کنترل کشش",
+      "TPMS": "سیستم نظارت بر فشار تایر"
+    }
+  }
+}

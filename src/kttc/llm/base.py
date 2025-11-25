@@ -176,7 +176,7 @@ class BaseLLMProvider(ABC):
             ...     print(chunk, end="", flush=True)
             Hola
         """
-        ...
+        pass
 
 
 class LLMError(Exception):

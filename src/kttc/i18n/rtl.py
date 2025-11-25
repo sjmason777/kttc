@@ -62,6 +62,7 @@ def process_rtl_text(text: str, lang: str) -> str:
 
             text = arabic_reshaper.reshape(text)
         except ImportError:
+            # Silently ignore missing arabic-reshaper dependency
             pass
 
         # Apply Unicode Bidirectional Algorithm
@@ -70,6 +71,7 @@ def process_rtl_text(text: str, lang: str) -> str:
 
             text = get_display(text)
         except ImportError:
+            # Silently ignore missing python-bidi dependency
             pass
 
         return text

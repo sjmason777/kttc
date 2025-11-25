@@ -66,6 +66,7 @@ class YandexGPTProvider(BaseLLMProvider):
             model: Model URI (yandexgpt/latest or yandexgpt-lite/latest)
             timeout: Request timeout in seconds
         """
+        super().__init__()
         self.api_key = api_key
         self.folder_id = folder_id
         self.model_uri = f"gpt://{folder_id}/{model}"

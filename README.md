@@ -25,16 +25,23 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 ## Key Features
 
 ### Core Analysis
-- **Multi-Agent QA System** - Specialized agents analyze accuracy, fluency, terminology, style, and context
+- **Multi-Agent QA System** - Specialized agents analyze accuracy, fluency, terminology, style, hallucination, and context
 - **MQM Scoring** - Industry-standard quality metrics used in WMT benchmarks
-- **Language-Specific Agents** - Native-level checks for English, Chinese, Russian, Hindi, and Persian
-- **Domain Profiles** - Adaptive quality thresholds for technical, medical, legal, marketing, literary texts
+- **Language-Specific Agents** - 5 native-level fluency agents for English, Chinese, Russian, Hindi, and Persian
+- **60+ Domain Glossaries** - Automotive, customs, financial, legal, logistics, medical + language traps
 
 ### Smart Agent Orchestration
 - **Weighted Consensus** - Agents with different trust weights, confidence scoring, agreement metrics
+- **Multi-Agent Debate** - Cross-verification between agents reduces false positives by 30-50%
 - **Dynamic Agent Selection** - Auto-selects 2-5 agents based on text complexity (30-50% cost savings)
+- **Agent Presets** - `minimal` (2 agents), `default` (3), `full` (5) for quick configuration
 - **Self-Assessment Retry** - Agents evaluate their confidence and retry on low certainty
-- **Quick Mode** - Fast evaluation with 3 core agents for simple texts
+
+### MQM Profiles System
+- **Built-in Profiles** - default, strict, minimal, legal, medical, marketing, literary, technical
+- **YAML Custom Profiles** - Define agent selection, weights, severity multipliers, thresholds
+- **Domain Adaptation** - Medical: 98% threshold + hallucination agent; Legal: terminology focus
+- **Quality Gates** - Configurable pass/fail thresholds per domain (88-98%)
 
 ### Literary Style Analysis
 - **StyleFingerprint** - Automatic detection of literary style patterns (Burrows Delta method)
@@ -43,19 +50,21 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 - **Fluency Tolerance** - Adjustable fluency weights for intentional stylistic deviations
 
 ### Language Intelligence
-- **Language Traps Detection** - 30+ glossaries detect homophones, false friends, idioms, phrasal verbs, paronyms
+- **Language Traps Detection** - 60+ glossaries detect homophones, false friends, idioms, phrasal verbs, paronyms
 - **Self-Check / Proofreading** - Grammar, spelling, punctuation checking using school curriculum rules
 - **School Curricula** - FGOS (Russia), UK GPS (Britain), NCERT (India), PEP (China), Iranian grammar
 - **Fast Lint Mode** - Rule-based checking without LLM, ideal for CI/CD and pre-commit hooks
 - **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
 
-### Infrastructure
+### Enterprise Infrastructure
 - **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
+- **XLSX Export** - Excel reports with Summary, Errors, Breakdown sheets for enterprise reporting
 - **Translation Memory** - Semantic search with quality tracking and reuse
-- **Glossary Management** - Custom terminology + 30+ built-in multilingual glossaries
+- **Glossary Management** - Custom terminology + 60+ built-in multilingual glossaries
 - **Batch Processing** - Process thousands of translations in parallel with CSV/JSON filtering
-- **CI/CD Ready** - GitHub Actions integration, exit codes, multiple output formats
+- **CI/CD Ready** - GitHub Actions integration, exit codes, JSON/Markdown/HTML/XLSX output
 - **Multi-LLM Support** - OpenAI, Anthropic, GigaChat, YandexGPT with LanguageTool integration
+- **Usage Analytics** - Token counts, API costs, and call statistics in reports
 
 **Performance:** 90% cost reduction vs manual review • 100-1000x faster • 95+ MQM quality target
 

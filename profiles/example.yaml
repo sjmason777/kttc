@@ -1,0 +1,43 @@
+# Example custom MQM profile for KTTC
+# Copy this file and customize for your needs
+
+name: example
+description: Example custom profile - modify as needed
+
+# Agents to use (available: accuracy, fluency, terminology, hallucination, context, style_preservation)
+agents:
+  - accuracy
+  - fluency
+  - terminology
+
+# Agent trust weights (0.0 - 1.0)
+# Higher weight = more influence on final score
+agent_weights:
+  accuracy: 1.0
+  fluency: 0.9
+  terminology: 0.85
+
+# Severity multipliers for error penalty calculation
+# Formula: ETPT = sum(error_count * severity_multiplier)
+severity_multipliers:
+  critical: 25
+  major: 5
+  minor: 1
+  neutral: 0
+
+# Minimum MQM score to pass (0-100)
+quality_threshold: 95.0
+
+# Minimum confidence for auto-approval (0.0-1.0)
+confidence_threshold: 0.7
+
+# Glossaries to use (optional)
+# glossaries:
+#   - my_custom_glossary
+#   - domain_terms
+
+# Additional metadata (optional)
+metadata:
+  author: your_name
+  version: "1.0"
+  created: "2025-01-01"

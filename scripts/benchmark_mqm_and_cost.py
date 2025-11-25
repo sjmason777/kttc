@@ -114,6 +114,7 @@ class MockLLMProvider(BaseLLMProvider):
     """Mock LLM provider that tracks token usage."""
 
     def __init__(self) -> None:
+        super().__init__()
         self.total_calls = 0
         self.total_prompt_tokens = 0
         self.total_completion_tokens = 0

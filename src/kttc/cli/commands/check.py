@@ -67,6 +67,59 @@ from kttc.utils.config import get_settings
 # Create Typer app for check command
 check_app = typer.Typer()
 
+# Agent presets
+AGENT_PRESETS = {
+    "minimal": ["accuracy", "fluency"],
+    "default": ["accuracy", "fluency", "terminology"],
+    "full": ["accuracy", "fluency", "terminology", "hallucination", "context"],
+}
+
+VALID_AGENTS = {
+    "accuracy",
+    "fluency",
+    "terminology",
+    "hallucination",
+    "context",
+    "style_preservation",
+    "fluency_russian",
+    "fluency_chinese",
+    "fluency_hindi",
+    "fluency_persian",
+    "fluency_english",
+}
+
+
+def _parse_agents_selection(agents_str: str) -> list[str]:
+    """Parse agents selection string.
+
+    Args:
+        agents_str: Preset name or comma-separated list of agents
+
+    Returns:
+        List of agent IDs
+
+    Raises:
+        typer.Exit: If invalid agent specified
+    """
+    agents_str = agents_str.strip().lower()
+
+    # Check if it's a preset
+    if agents_str in AGENT_PRESETS:
+        return AGENT_PRESETS[agents_str]
+
+    # Parse comma-separated list
+    agents = [a.strip() for a in agents_str.split(",") if a.strip()]
+
+    # Validate agents
+    invalid = [a for a in agents if a not in VALID_AGENTS]
+    if invalid:
+        console.print(f"[red]Error: Unknown agents: {', '.join(invalid)}[/red]")
+        console.print(f"[dim]Valid agents: {', '.join(sorted(VALID_AGENTS))}[/dim]")
+        console.print(f"[dim]Presets: {', '.join(AGENT_PRESETS.keys())}[/dim]")
+        raise typer.Exit(code=1)
+
+    return agents
+
 
 async def _run_compare_mode(
     source: str,
@@ -119,6 +172,7 @@ async def _check_async(
     demo: bool = False,
     quick: bool = False,
     show_cost: bool = False,
+    profile: Any = None,
 ) -> None:
     """Async implementation of check command."""
     # Configure logging
@@ -171,7 +225,7 @@ async def _check_async(
 
     # Quality evaluation
     report, orchestrator = await run_quality_evaluation(
-        llm_provider, task, threshold, settings, verbose, api_errors, quick
+        llm_provider, task, threshold, settings, verbose, api_errors, quick, profile
     )
 
     # Calculate metrics
@@ -192,10 +246,20 @@ async def _check_async(
         verbose=verbose,
     )
 
-    # Show cost if requested
-    if show_cost and hasattr(llm_provider, "usage"):
+    # Add usage stats to report for JSON output
+    if hasattr(llm_provider, "usage"):
         usage = llm_provider.usage
-        console.print(f"\n[dim]💰 {usage.format_summary()}[/dim]")
+        report.usage_stats = {
+            "total_tokens": usage.total_tokens,
+            "input_tokens": usage.input_tokens,
+            "output_tokens": usage.output_tokens,
+            "total_cost_usd": usage.estimated_cost_usd,
+            "api_calls": usage.call_count,
+        }
+
+        # Show cost if requested
+        if show_cost:
+            console.print(f"\n[dim]💰 {usage.format_summary()}[/dim]")
 
     # Show quick mode indicator
     if quick:
@@ -250,6 +314,7 @@ def _run_single_mode(
     demo: bool,
     quick: bool = False,
     show_cost: bool = False,
+    profile: Any = None,
 ) -> None:
     """Run single file check mode."""
     if not source_lang or not target_lang:
@@ -284,6 +349,7 @@ def _run_single_mode(
             demo,
             quick,
             show_cost,
+            profile,
         )
     )
 
@@ -351,6 +417,7 @@ def _route_check_mode(
     demo: bool,
     quick: bool = False,
     show_cost: bool = False,
+    profile: Any = None,
 ) -> None:
     """Route to appropriate handler based on detected mode."""
     if mode == "single":
@@ -375,6 +442,7 @@ def _route_check_mode(
             demo,
             quick,
             show_cost,
+            profile,
         )
     elif mode == "compare":
         translations_list = mode_params["translations"]
@@ -448,7 +516,7 @@ def check(
         None,
         "--format",
         "-f",
-        help="Output format (overrides auto-detection): text, json, markdown, or html",
+        help="Output format (overrides auto-detection): text, json, markdown, html, or xlsx",
     ),
     provider: str | None = typer.Option(
         None, "--provider", help="LLM provider (openai or anthropic)"
@@ -511,10 +579,31 @@ def check(
         "-q",
         help="Quick mode: single pass with 3 core agents (accuracy, fluency, terminology). Faster and cheaper.",
     ),
+    thorough: bool = typer.Option(
+        False,
+        "--thorough",
+        help="Thorough mode: all agents including hallucination/context, extra validation. More expensive but comprehensive.",
+    ),
     show_cost: bool = typer.Option(
         False,
         "--show-cost",
         help="Show token usage and estimated API cost after check.",
+    ),
+    profile: str | None = typer.Option(
+        None,
+        "--profile",
+        "-p",
+        help="MQM profile to use (default, strict, minimal, legal, medical, marketing, literary, technical, or path to YAML)",
+    ),
+    agents: str | None = typer.Option(
+        None,
+        "--agents",
+        help="Agents to use: preset (minimal, default, full) or comma-separated list (accuracy,fluency,terminology,hallucination,context)",
+    ),
+    debate: bool = typer.Option(
+        False,
+        "--debate",
+        help="Enable debate mode: agents cross-verify errors to reduce false positives.",
     ),
 ) -> None:
     """
@@ -590,6 +679,43 @@ def check(
         if verbose:
             print_verbose_autodetect_info(mode, detected_glossary, smart_routing, detected_format)
 
+        # Load profile if specified
+        loaded_profile = None
+        if profile:
+            from kttc.core import load_profile as load_mqm_profile
+
+            try:
+                loaded_profile = load_mqm_profile(profile)
+                if verbose:
+                    console.print(
+                        f"[dim]📋 Profile: {loaded_profile.name} - {loaded_profile.description}[/dim]"
+                    )
+                # Override threshold from profile if not explicitly set
+                if threshold == 95.0:  # default value
+                    threshold = loaded_profile.quality_threshold
+            except ValueError as e:
+                console.print(f"[red]Error loading profile: {e}[/red]")
+                raise typer.Exit(code=1)
+
+        # Parse agents selection
+        selected_agents = None
+        if agents:
+            selected_agents = _parse_agents_selection(agents)
+            if verbose:
+                console.print(f"[dim]🤖 Agents: {', '.join(selected_agents)}[/dim]")
+        elif thorough:
+            # Thorough mode: use all agents including hallucination and context
+            selected_agents = ["accuracy", "fluency", "terminology", "hallucination", "context"]
+            if verbose:
+                console.print(
+                    "[dim]🔬 Thorough mode: using all agents (accuracy, fluency, terminology, hallucination, context)[/dim]"
+                )
+
+        # Validate quick and thorough are not both set
+        if quick and thorough:
+            console.print("[red]Error: Cannot use --quick and --thorough together[/red]")
+            raise typer.Exit(code=1)
+
         # Route to appropriate handler
         _route_check_mode(
             mode,
@@ -613,6 +739,7 @@ def check(
             demo,
             quick,
             show_cost,
+            loaded_profile,
         )
 
     except KeyboardInterrupt:

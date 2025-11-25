@@ -452,6 +452,7 @@ async def main() -> None:
         llm = OpenAIProvider(api_key=api_key, model="gpt-4o")
         print("✅ Using OpenAI (gpt-4o)")
     except Exception:
+        # Silently ignore OpenAI setup errors and try Anthropic instead
         pass
 
     # Fall back to Anthropic
@@ -463,6 +464,7 @@ async def main() -> None:
             llm = AnthropicProvider(api_key=api_key, model="claude-3-5-haiku-20241022")
             print("✅ Using Anthropic (claude-3-5-haiku)")
         except Exception:
+            # Silently ignore Anthropic setup errors and continue with error message
             pass
 
     if llm is None:

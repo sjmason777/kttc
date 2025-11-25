@@ -125,6 +125,7 @@ class TermValidator:
 
         except Exception:
             # If glossary loading fails, skip validation
+            # This is acceptable as glossary validation is optional
             pass
 
         return errors

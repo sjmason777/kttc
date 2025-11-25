@@ -1,0 +1,233 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "Chinese",
+    "glossary_type": "汽车术语词典",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Chinese automotive terminology with emphasis on new energy vehicles and Chinese manufacturers",
+    "sources": [
+      "中国汽车工业协会",
+      "比亚迪",
+      "吉利汽车",
+      "长城汽车",
+      "GB汽车标准"
+    ],
+    "total_terms": 280
+  },
+  "categories": {
+    "vehicle_types": [
+      {"zh": "轿车", "en": "Sedan"},
+      {"zh": "SUV", "en": "SUV"},
+      {"zh": "MPV", "en": "MPV"},
+      {"zh": "皮卡", "en": "Pickup truck"},
+      {"zh": "新能源汽车", "en": "New energy vehicle"},
+      {"zh": "纯电动汽车", "en": "Battery electric vehicle"},
+      {"zh": "插电式混合动力", "en": "Plug-in hybrid"},
+      {"zh": "混合动力", "en": "Hybrid"},
+      {"zh": "燃料电池车", "en": "Fuel cell vehicle"}
+    ],
+    "chinese_manufacturers": [
+      {"zh": "比亚迪", "en": "BYD"},
+      {"zh": "吉利汽车", "en": "Geely"},
+      {"zh": "长城汽车", "en": "Great Wall Motors"},
+      {"zh": "奇瑞汽车", "en": "Chery"},
+      {"zh": "一汽集团", "en": "FAW Group"},
+      {"zh": "东风汽车", "en": "Dongfeng"},
+      {"zh": "上汽集团", "en": "SAIC"},
+      {"zh": "长安汽车", "en": "Changan"},
+      {"zh": "广汽集团", "en": "GAC"},
+      {"zh": "北汽集团", "en": "BAIC"}
+    ],
+    "byd_models": [
+      {"zh": "秦", "en": "Qin"},
+      {"zh": "汉", "en": "Han"},
+      {"zh": "唐", "en": "Tang"},
+      {"zh": "宋", "en": "Song"},
+      {"zh": "元", "en": "Yuan"},
+      {"zh": "海豚", "en": "Dolphin"},
+      {"zh": "海豹", "en": "Seal"},
+      {"zh": "海鸥", "en": "Seagull"},
+      {"zh": "腾势", "en": "Denza"},
+      {"zh": "仰望", "en": "Yangwang"},
+      {"zh": "方程豹", "en": "Fangchengbao"}
+    ],
+    "byd_technology": [
+      {"zh": "DM-i", "en": "DM-i (efficiency-focused hybrid)"},
+      {"zh": "DM-p", "en": "DM-p (performance-focused hybrid)"},
+      {"zh": "刀片电池", "en": "Blade Battery"},
+      {"zh": "e平台3.0", "en": "e-Platform 3.0"},
+      {"zh": "CTB电池车身一体化", "en": "Cell to Body integration"},
+      {"zh": "542技术", "en": "542 Technology"}
+    ],
+    "new_ev_makers": [
+      {"zh": "蔚来", "en": "NIO"},
+      {"zh": "理想", "en": "Li Auto"},
+      {"zh": "小鹏", "en": "XPeng"},
+      {"zh": "零跑", "en": "Leapmotor"}
+    ],
+    "three_electric_system": [
+      {"zh": "三电系统", "en": "Three-electric system"},
+      {"zh": "电池", "en": "Battery"},
+      {"zh": "电机", "en": "Electric motor"},
+      {"zh": "电控", "en": "Electronic control"}
+    ],
+    "battery_technology": [
+      {"zh": "动力电池", "en": "Power battery"},
+      {"zh": "三元锂电池", "en": "Ternary lithium battery"},
+      {"zh": "磷酸铁锂电池", "en": "LFP battery"},
+      {"zh": "刀片电池", "en": "Blade battery"},
+      {"zh": "电池组", "en": "Battery pack"},
+      {"zh": "电池模组", "en": "Battery module"},
+      {"zh": "电芯", "en": "Battery cell"},
+      {"zh": "电池管理系统", "en": "BMS"},
+      {"zh": "能量密度", "en": "Energy density"},
+      {"zh": "SOC", "en": "State of Charge"},
+      {"zh": "SOH", "en": "State of Health"},
+      {"zh": "循环寿命", "en": "Cycle life"}
+    ],
+    "charging": [
+      {"zh": "充电桩", "en": "Charging pile"},
+      {"zh": "充电站", "en": "Charging station"},
+      {"zh": "快充", "en": "Fast charging"},
+      {"zh": "慢充", "en": "Slow charging"},
+      {"zh": "交流充电", "en": "AC charging"},
+      {"zh": "直流充电", "en": "DC charging"},
+      {"zh": "车载充电机", "en": "On-board charger"},
+      {"zh": "充电口", "en": "Charging port"},
+      {"zh": "换电站", "en": "Battery swapping station"}
+    ],
+    "engine_powertrain": [
+      {"zh": "发动机", "en": "Engine"},
+      {"zh": "气缸", "en": "Cylinder"},
+      {"zh": "活塞", "en": "Piston"},
+      {"zh": "曲轴", "en": "Crankshaft"},
+      {"zh": "凸轮轴", "en": "Camshaft"},
+      {"zh": "涡轮增压器", "en": "Turbocharger"},
+      {"zh": "火花塞", "en": "Spark plug"}
+    ],
+    "transmission": [
+      {"zh": "变速器", "en": "Transmission"},
+      {"zh": "变速箱", "en": "Gearbox"},
+      {"zh": "AT", "en": "Automatic transmission"},
+      {"zh": "CVT", "en": "CVT"},
+      {"zh": "DCT", "en": "Dual-clutch transmission"},
+      {"zh": "离合器", "en": "Clutch"},
+      {"zh": "驱动桥", "en": "Drive axle"},
+      {"zh": "传动轴", "en": "Drive shaft"}
+    ],
+    "chassis_suspension": [
+      {"zh": "底盘", "en": "Chassis"},
+      {"zh": "车架", "en": "Frame"},
+      {"zh": "悬架", "en": "Suspension"},
+      {"zh": "减震器", "en": "Shock absorber"},
+      {"zh": "螺旋弹簧", "en": "Coil spring"},
+      {"zh": "平衡杆", "en": "Stabilizer bar"}
+    ],
+    "braking_system": [
+      {"zh": "制动系统", "en": "Braking system"},
+      {"zh": "制动器", "en": "Brake"},
+      {"zh": "制动盘", "en": "Brake disc"},
+      {"zh": "制动片", "en": "Brake pad"},
+      {"zh": "制动钳", "en": "Brake caliper"},
+      {"zh": "ABS", "en": "Anti-lock braking system"},
+      {"zh": "EBD", "en": "Electronic brake-force distribution"},
+      {"zh": "ESP", "en": "Electronic stability program"}
+    ],
+    "electrical_system": [
+      {"zh": "电池", "en": "Battery"},
+      {"zh": "发电机", "en": "Alternator"},
+      {"zh": "起动机", "en": "Starter motor"},
+      {"zh": "保险丝", "en": "Fuse"},
+      {"zh": "继电器", "en": "Relay"}
+    ],
+    "lighting": [
+      {"zh": "大灯", "en": "Headlight"},
+      {"zh": "卤素灯", "en": "Halogen light"},
+      {"zh": "氙气灯", "en": "Xenon light"},
+      {"zh": "LED灯", "en": "LED light"},
+      {"zh": "转向灯", "en": "Turn signal"},
+      {"zh": "刹车灯", "en": "Brake light"},
+      {"zh": "雾灯", "en": "Fog light"},
+      {"zh": "日间行车灯", "en": "Daytime running light"}
+    ],
+    "smart_cockpit": [
+      {"zh": "智能座舱", "en": "Smart cockpit"},
+      {"zh": "中控屏", "en": "Center screen"},
+      {"zh": "仪表盘", "en": "Instrument panel"},
+      {"zh": "HUD抬头显示", "en": "Head-up display"},
+      {"zh": "车机", "en": "Infotainment system"},
+      {"zh": "语音控制", "en": "Voice control"},
+      {"zh": "一芯多屏", "en": "One chip multiple screens"}
+    ],
+    "adas": [
+      {"zh": "ADAS", "en": "Advanced driver assistance systems"},
+      {"zh": "自动驾驶", "en": "Autonomous driving"},
+      {"zh": "辅助驾驶", "en": "Driver assistance"},
+      {"zh": "激光雷达", "en": "LiDAR"},
+      {"zh": "毫米波雷达", "en": "Millimeter wave radar"},
+      {"zh": "摄像头", "en": "Camera"},
+      {"zh": "安全气囊", "en": "Airbag"},
+      {"zh": "安全带", "en": "Seatbelt"},
+      {"zh": "自适应巡航", "en": "Adaptive cruise control"},
+      {"zh": "车道偏离预警", "en": "Lane departure warning"},
+      {"zh": "盲点监测", "en": "Blind spot detection"},
+      {"zh": "自动紧急制动", "en": "Automatic emergency braking"}
+    ],
+    "body_exterior": [
+      {"zh": "车身", "en": "Body"},
+      {"zh": "引擎盖", "en": "Hood"},
+      {"zh": "后备箱盖", "en": "Trunk lid"},
+      {"zh": "车门", "en": "Door"},
+      {"zh": "前保险杠", "en": "Front bumper"},
+      {"zh": "后保险杠", "en": "Rear bumper"},
+      {"zh": "挡风玻璃", "en": "Windshield"}
+    ],
+    "interior": [
+      {"zh": "汽车内饰", "en": "Automotive interior"},
+      {"zh": "仪表板", "en": "Dashboard"},
+      {"zh": "座椅", "en": "Seat"},
+      {"zh": "方向盘", "en": "Steering wheel"},
+      {"zh": "中控台", "en": "Center console"},
+      {"zh": "座椅加热", "en": "Seat heating"},
+      {"zh": "座椅通风", "en": "Seat ventilation"},
+      {"zh": "空调系统", "en": "Air conditioning system"}
+    ],
+    "tires_wheels": [
+      {"zh": "轮胎", "en": "Tire"},
+      {"zh": "轮毂", "en": "Wheel hub"},
+      {"zh": "铝合金轮毂", "en": "Alloy wheel"},
+      {"zh": "胎压", "en": "Tire pressure"}
+    ],
+    "documentation": [
+      {"zh": "行驶证", "en": "Driving permit"},
+      {"zh": "登记证书", "en": "Registration certificate"},
+      {"zh": "车牌号", "en": "License plate number"},
+      {"zh": "车架号", "en": "Chassis number"},
+      {"zh": "发动机号", "en": "Engine number"},
+      {"zh": "车辆年检", "en": "Vehicle annual inspection"}
+    ],
+    "performance_metrics": [
+      {"zh": "续航里程", "en": "Driving range"},
+      {"zh": "百公里加速", "en": "0-100 km/h acceleration"},
+      {"zh": "百公里油耗", "en": "Fuel consumption per 100km"},
+      {"zh": "百公里电耗", "en": "Energy consumption per 100km"},
+      {"zh": "最大功率", "en": "Maximum power"},
+      {"zh": "最大扭矩", "en": "Maximum torque"}
+    ],
+    "abbreviations": {
+      "ADAS": "高级驾驶辅助系统",
+      "BMS": "电池管理系统",
+      "EV": "电动汽车",
+      "PHEV": "插电式混合动力汽车",
+      "HEV": "混合动力汽车",
+      "SOC": "电量状态",
+      "SOH": "健康状态",
+      "ABS": "防抱死制动系统",
+      "EBD": "电子制动力分配",
+      "ESP": "车身电子稳定系统",
+      "ACC": "自适应巡航控制",
+      "LiDAR": "激光雷达"
+    }
+  }
+}

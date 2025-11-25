@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Financial Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive financial terminology for translation quality checking",
+    "sources": [
+      "IFRS Official Glossary",
+      "FASB - US GAAP",
+      "SEC Financial Glossaries",
+      "Federal Reserve",
+      "NASDAQ",
+      "Corporate Finance Institute"
+    ],
+    "total_terms": 250
+  },
+  "categories": {
+    "accounting_fundamentals": [
+      "asset", "liability", "equity", "revenue", "expense", "net income",
+      "depreciation", "amortization", "debit", "credit", "double-entry bookkeeping",
+      "accounts payable", "accounts receivable", "accrued expenses", "accrued interest",
+      "allowance for doubtful accounts", "book value", "capital expenditure", "CapEx",
+      "cost of goods sold", "COGS", "current assets", "current liabilities",
+      "deferred revenue", "fixed assets", "general ledger", "goodwill",
+      "gross profit", "impairment", "intangible assets", "inventory",
+      "journal entry", "long-term assets", "long-term liabilities",
+      "operating expenses", "prepaid expenses", "provision", "retained earnings",
+      "working capital", "write-off"
+    ],
+    "financial_statements": [
+      "balance sheet", "income statement", "profit and loss statement", "P&L",
+      "cash flow statement", "statement of shareholders' equity",
+      "statement of changes in equity", "notes to financial statements",
+      "comprehensive income", "operating activities", "investing activities",
+      "financing activities", "free cash flow", "cash and cash equivalents",
+      "earnings per share", "EPS", "gross margin", "net earnings",
+      "operating income", "financial position", "financial performance",
+      "reporting period", "fiscal year"
+    ],
+    "banking_credit": [
+      "loan", "interest rate", "collateral", "credit rating", "credit score",
+      "liquidity", "liquidity risk", "default", "covenant", "principal",
+      "maturity date", "amortization schedule", "line of credit", "term loan",
+      "revolving credit", "secured loan", "unsecured loan", "mortgage",
+      "credit facility", "leverage ratio", "tier 1 capital", "Basel III",
+      "reserve requirements", "wire transfer", "ACH", "deposit"
+    ],
+    "investments_securities": [
+      "stock", "share", "common stock", "preferred stock", "dividend",
+      "dividend yield", "bond", "treasury bond", "corporate bond", "municipal bond",
+      "coupon rate", "yield to maturity", "YTM", "par value", "face value",
+      "portfolio", "mutual fund", "exchange-traded fund", "ETF", "hedge fund",
+      "index fund", "asset allocation", "diversification", "bid price",
+      "ask price", "spread", "volume", "market order", "limit order",
+      "stop-loss order", "broker", "dealer", "market maker", "settlement date",
+      "volatility", "market capitalization", "market cap"
+    ],
+    "corporate_finance": [
+      "initial public offering", "IPO", "mergers and acquisitions", "M&A",
+      "merger", "acquisition", "due diligence", "valuation", "enterprise value",
+      "EV", "EBITDA", "EBIT", "EV/EBITDA multiple", "price-to-earnings ratio",
+      "P/E ratio", "discounted cash flow", "DCF", "comparable company analysis",
+      "comps", "fair value", "capital structure", "cost of capital",
+      "weighted average cost of capital", "WACC", "debt-to-equity ratio",
+      "leverage", "tender offer", "private equity", "venture capital",
+      "leveraged buyout", "LBO", "spin-off", "divestiture", "synergy"
+    ],
+    "derivatives_risk": [
+      "derivative", "underlying asset", "strike price", "expiration date",
+      "premium", "option", "call option", "put option", "in the money",
+      "out of the money", "at the money", "futures contract", "forward contract",
+      "margin", "mark-to-market", "swap", "interest rate swap", "currency swap",
+      "credit default swap", "CDS", "hedging", "speculation", "arbitrage",
+      "delta", "Greeks", "value at risk", "VaR", "counterparty risk",
+      "market risk", "credit risk", "operational risk"
+    ],
+    "capital_markets": [
+      "stock exchange", "NYSE", "NASDAQ", "over-the-counter", "OTC",
+      "primary market", "secondary market", "institutional investor",
+      "retail investor", "investment bank", "underwriter", "syndicate",
+      "securities", "listing", "ticker symbol", "trading volume",
+      "blue chip", "small cap", "mid cap", "large cap", "bull market",
+      "bear market", "correction", "recession", "volatility index", "VIX",
+      "circuit breaker"
+    ],
+    "financial_analysis": [
+      "return on assets", "ROA", "return on equity", "ROE",
+      "return on investment", "ROI", "profit margin", "gross margin",
+      "operating margin", "current ratio", "quick ratio", "cash ratio",
+      "debt ratio", "interest coverage ratio", "debt service coverage ratio",
+      "DSCR", "asset turnover", "inventory turnover", "receivables turnover",
+      "price-to-book ratio", "P/B ratio", "price-to-sales ratio", "P/S ratio",
+      "dividend payout ratio", "beta", "alpha"
+    ],
+    "accounting_standards": [
+      "IFRS", "International Financial Reporting Standards",
+      "GAAP", "Generally Accepted Accounting Principles", "US GAAP",
+      "FASB", "Financial Accounting Standards Board",
+      "IASB", "International Accounting Standards Board",
+      "IAS", "International Accounting Standards",
+      "fair value", "historical cost", "accrual basis", "cash basis",
+      "materiality", "going concern", "consistency", "comparability"
+    ],
+    "regulatory_compliance": [
+      "SEC", "Securities and Exchange Commission",
+      "compliance", "disclosure", "material information",
+      "fiduciary", "fiduciary duty", "good faith", "negligence",
+      "gross negligence", "willful misconduct", "sanction",
+      "beneficial owner", "anti-money laundering", "AML",
+      "know your customer", "KYC", "whistleblower",
+      "conflict of interest", "insider trading", "audit", "auditor",
+      "internal control", "Sarbanes-Oxley", "SOX"
+    ],
+    "abbreviations": {
+      "IPO": "Initial Public Offering",
+      "M&A": "Mergers and Acquisitions",
+      "EBITDA": "Earnings Before Interest, Taxes, Depreciation, and Amortization",
+      "EBIT": "Earnings Before Interest and Taxes",
+      "EPS": "Earnings Per Share",
+      "ROA": "Return on Assets",
+      "ROE": "Return on Equity",
+      "ROI": "Return on Investment",
+      "P/E": "Price-to-Earnings Ratio",
+      "P/B": "Price-to-Book Ratio",
+      "DCF": "Discounted Cash Flow",
+      "NPV": "Net Present Value",
+      "IRR": "Internal Rate of Return",
+      "WACC": "Weighted Average Cost of Capital",
+      "ETF": "Exchange-Traded Fund",
+      "LLC": "Limited Liability Company",
+      "Inc.": "Incorporated",
+      "Corp.": "Corporation"
+    }
+  }
+}

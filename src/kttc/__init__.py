@@ -21,7 +21,7 @@ An autonomous multi-agent platform that transmutes raw translations into
 certified quality through AI-powered quality assurance.
 """
 
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 __author__ = "KTTC Development"
 __email__ = "dev@kt.tc"
 

@@ -46,6 +46,7 @@ async def quick_test() -> None:
         llm = OpenAIProvider(api_key=api_key, model="gpt-4o-mini")
         print("✅ LLM provider ready (OpenAI gpt-4o-mini)")
     except Exception:
+        # Silently ignore Anthropic setup errors and continue with error message
         pass
 
     # Fall back to Anthropic
@@ -57,6 +58,7 @@ async def quick_test() -> None:
             llm = AnthropicProvider(api_key=api_key, model="claude-3-5-haiku-20241022")
             print("✅ LLM provider ready (Anthropic claude-3-5-haiku)")
         except Exception:
+            # Silently ignore OpenAI setup errors and try Anthropic instead
             pass
 
     if llm is None:

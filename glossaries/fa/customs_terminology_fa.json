@@ -1,0 +1,227 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian",
+    "glossary_type": "فرهنگ لغت اصطلاحات گمرکی",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Persian customs terminology including Iran-specific procedures and regulations",
+    "sources": [
+      "گمرک جمهوری اسلامی ایران",
+      "سازمان توسعه تجارت ایران",
+      "سامانه جامع امور گمرکی (EPL)",
+      "سازمان جهانی گمرک",
+      "قانون امور گمرکی ایران"
+    ],
+    "total_terms": 250
+  },
+  "categories": {
+    "customs_authorities": [
+      {"fa": "گمرک جمهوری اسلامی ایران", "en": "Islamic Republic of Iran Customs Administration"},
+      {"fa": "گمرک ایران", "en": "Iran Customs"},
+      {"fa": "اداره کل گمرک", "en": "General Customs Administration"},
+      {"fa": "رئیس گمرک", "en": "Customs Chief"},
+      {"fa": "مدیر گمرک", "en": "Customs Director"},
+      {"fa": "کارشناس گمرکی", "en": "Customs Expert"},
+      {"fa": "بازرس گمرک", "en": "Customs Inspector"},
+      {"fa": "مأمور گمرک", "en": "Customs Officer"}
+    ],
+    "customs_procedures": [
+      {"fa": "ترخیص گمرکی", "en": "Customs clearance"},
+      {"fa": "ترخیص کالا", "en": "Cargo clearance"},
+      {"fa": "اظهارنامه گمرکی", "en": "Customs declaration"},
+      {"fa": "اظهارنامه واردات", "en": "Import declaration"},
+      {"fa": "اظهارنامه صادرات", "en": "Export declaration"},
+      {"fa": "ثبت اظهارنامه", "en": "Declaration registration"},
+      {"fa": "رسیدگی گمرکی", "en": "Customs examination"},
+      {"fa": "بازرسی گمرکی", "en": "Customs inspection"},
+      {"fa": "معاینه کالا", "en": "Cargo inspection"},
+      {"fa": "کنترل اسنادی", "en": "Documentary control"},
+      {"fa": "کنترل فیزیکی", "en": "Physical control"},
+      {"fa": "ترخیص قطعی", "en": "Final clearance"},
+      {"fa": "ترخیص موقت", "en": "Temporary clearance"},
+      {"fa": "واردات موقت", "en": "Temporary import"},
+      {"fa": "صادرات موقت", "en": "Temporary export"},
+      {"fa": "واردات قطعی", "en": "Definitive import"},
+      {"fa": "صادرات قطعی", "en": "Definitive export"},
+      {"fa": "ترانزیت گمرکی", "en": "Customs transit"},
+      {"fa": "ترانزیت بین‌المللی", "en": "International transit"},
+      {"fa": "بازگشت کالا", "en": "Return of goods"}
+    ],
+    "documentation": [
+      {"fa": "اظهارنامه گمرکی", "en": "Customs declaration"},
+      {"fa": "بارنامه", "en": "Bill of lading"},
+      {"fa": "بارنامه دریایی", "en": "Sea waybill"},
+      {"fa": "بارنامه هوایی", "en": "Air waybill"},
+      {"fa": "فاکتور بازرگانی", "en": "Commercial invoice"},
+      {"fa": "پروفرما اینویس", "en": "Proforma invoice"},
+      {"fa": "لیست بسته‌بندی", "en": "Packing list"},
+      {"fa": "گواهی مبدأ", "en": "Certificate of origin"},
+      {"fa": "پروانه واردات", "en": "Import license"},
+      {"fa": "پروانه صادرات", "en": "Export license"},
+      {"fa": "مجوز ورود", "en": "Entry permit"},
+      {"fa": "قرارداد", "en": "Contract"},
+      {"fa": "بیمه‌نامه", "en": "Insurance policy"},
+      {"fa": "مدارک حمل", "en": "Transport documents"},
+      {"fa": "گواهی بهداشت", "en": "Health certificate"},
+      {"fa": "گواهی استاندارد", "en": "Standard certificate"}
+    ],
+    "epl_system": [
+      {"fa": "سامانه EPL", "en": "EPL System"},
+      {"fa": "سامانه جامع امور گمرکی", "en": "Comprehensive Customs System"},
+      {"fa": "ثبت سفارش الکترونیکی", "en": "Electronic order registration"},
+      {"fa": "اظهارنامه الکترونیکی", "en": "Electronic declaration"},
+      {"fa": "پرداخت الکترونیکی", "en": "Electronic payment"},
+      {"fa": "ردیابی آنلاین", "en": "Online tracking"},
+      {"fa": "کد رهگیری", "en": "Tracking code"}
+    ],
+    "tariff_classification": [
+      {"fa": "تعرفه گمرکی", "en": "Customs tariff"},
+      {"fa": "کد تعرفه", "en": "Tariff code"},
+      {"fa": "شماره تعرفه", "en": "Tariff number"},
+      {"fa": "سیستم هماهنگ", "en": "Harmonized System"},
+      {"fa": "HS کد", "en": "HS code"},
+      {"fa": "طبقه‌بندی کالا", "en": "Commodity classification"},
+      {"fa": "شناسه کالا", "en": "Commodity identifier"},
+      {"fa": "ردیف تعرفه", "en": "Tariff line"},
+      {"fa": "عنوان تعرفه", "en": "Tariff heading"},
+      {"fa": "زیرعنوان تعرفه", "en": "Tariff subheading"}
+    ],
+    "duties_taxes": [
+      {"fa": "حقوق گمرکی", "en": "Customs duties"},
+      {"fa": "عوارض گمرکی", "en": "Customs fees"},
+      {"fa": "حقوق ورودی", "en": "Import duty"},
+      {"fa": "حقوق خروجی", "en": "Export duty"},
+      {"fa": "مالیات بر ارزش افزوده", "en": "Value Added Tax"},
+      {"fa": "مالیات", "en": "Tax"},
+      {"fa": "عوارض", "en": "Duties"},
+      {"fa": "نرخ تعرفه", "en": "Tariff rate"},
+      {"fa": "نرخ حقوق", "en": "Duty rate"},
+      {"fa": "معافیت گمرکی", "en": "Customs exemption"},
+      {"fa": "معافیت از حقوق", "en": "Duty exemption"},
+      {"fa": "تخفیف تعرفه‌ای", "en": "Tariff concession"},
+      {"fa": "بخشودگی", "en": "Remission"},
+      {"fa": "تعلیق حقوق", "en": "Duty suspension"},
+      {"fa": "استرداد حقوق", "en": "Duty drawback"}
+    ],
+    "customs_value": [
+      {"fa": "ارزش گمرکی", "en": "Customs value"},
+      {"fa": "تعیین ارزش", "en": "Valuation"},
+      {"fa": "ارزش معاملاتی", "en": "Transaction value"},
+      {"fa": "ارزش اظهاری", "en": "Declared value"},
+      {"fa": "ارزش CIF", "en": "CIF value"},
+      {"fa": "ارزش FOB", "en": "FOB value"},
+      {"fa": "ارزیابی گمرکی", "en": "Customs assessment"},
+      {"fa": "تعدیل ارزش", "en": "Value adjustment"},
+      {"fa": "قیمت مرجع", "en": "Reference price"}
+    ],
+    "customs_broker": [
+      {"fa": "کارگزار گمرکی", "en": "Customs broker"},
+      {"fa": "ترخیص‌کار", "en": "Clearance agent"},
+      {"fa": "نماینده گمرکی", "en": "Customs representative"},
+      {"fa": "وکالت‌نامه", "en": "Power of attorney"},
+      {"fa": "مجوز کارگزاری", "en": "Brokerage license"},
+      {"fa": "پروانه ترخیص‌کاری", "en": "Clearance license"}
+    ],
+    "bonded_facilities": [
+      {"fa": "انبار گمرکی", "en": "Bonded warehouse"},
+      {"fa": "انبار موقت", "en": "Temporary warehouse"},
+      {"fa": "انبار تحت نظارت گمرک", "en": "Customs-supervised warehouse"},
+      {"fa": "منطقه ویژه اقتصادی", "en": "Special Economic Zone"},
+      {"fa": "منطقه آزاد", "en": "Free zone"},
+      {"fa": "منطقه آزاد تجاری", "en": "Free trade zone"},
+      {"fa": "ناحیه ویژه اقتصادی", "en": "Special economic area"},
+      {"fa": "منطقه ویژه صنعتی", "en": "Special industrial zone"}
+    ],
+    "iranian_free_zones": [
+      {"fa": "منطقه آزاد کیش", "en": "Kish Free Zone"},
+      {"fa": "منطقه آزاد قشم", "en": "Qeshm Free Zone"},
+      {"fa": "منطقه آزاد چابهار", "en": "Chabahar Free Zone"},
+      {"fa": "منطقه آزاد انزلی", "en": "Anzali Free Zone"},
+      {"fa": "منطقه آزاد ارس", "en": "Aras Free Zone"},
+      {"fa": "منطقه آزاد ماکو", "en": "Maku Free Zone"},
+      {"fa": "منطقه آزاد ارو���د", "en": "Arvand Free Zone"}
+    ],
+    "origin_agreements": [
+      {"fa": "مبدأ کالا", "en": "Origin of goods"},
+      {"fa": "گواهی مبدأ", "en": "Certificate of origin"},
+      {"fa": "قواعد مبدأ", "en": "Rules of origin"},
+      {"fa": "کشور مبدأ", "en": "Country of origin"},
+      {"fa": "کالای ایرانی", "en": "Iranian goods"},
+      {"fa": "ساخت ایران", "en": "Made in Iran"},
+      {"fa": "موافقت‌نامه تجاری ترجیحی", "en": "Preferential trade agreement"},
+      {"fa": "تعرفه ترجیحی", "en": "Preferential tariff"}
+    ],
+    "trade_facilitation": [
+      {"fa": "تسهیل تجارت", "en": "Trade facilitation"},
+      {"fa": "پنجره واحد تجاری", "en": "Single window"},
+      {"fa": "سامانه یکپارچه", "en": "Integrated system"},
+      {"fa": "اظهار قبلی", "en": "Pre-declaration"},
+      {"fa": "ترخیص سریع", "en": "Fast-track clearance"},
+      {"fa": "ترخیص فوری", "en": "Immediate clearance"},
+      {"fa": "خط سبز", "en": "Green channel"},
+      {"fa": "خط قرمز", "en": "Red channel"},
+      {"fa": "مدیریت ریسک", "en": "Risk management"}
+    ],
+    "registration_procedures": [
+      {"fa": "ثبت سفارش", "en": "Order registration"},
+      {"fa": "سامانه ثبت سفارش", "en": "Order registration system"},
+      {"fa": "کد اقتصادی", "en": "Economic code"},
+      {"fa": "کد فعالیت", "en": "Activity code"},
+      {"fa": "شناسه ملی", "en": "National ID"},
+      {"fa": "شناسه یکتا", "en": "Unique identifier"},
+      {"fa": "ثبت شرکت", "en": "Company registration"}
+    ],
+    "inspection_control": [
+      {"fa": "بازرسی فیزیکی", "en": "Physical inspection"},
+      {"fa": "کنترل کالا", "en": "Cargo control"},
+      {"fa": "معاینه اسکنر", "en": "Scanner inspection"},
+      {"fa": "اشعه ایکس", "en": "X-ray"},
+      {"fa": "سگ‌های ردیاب", "en": "Sniffer dogs"},
+      {"fa": "کنترل کیفیت", "en": "Quality control"},
+      {"fa": "بازرسی استاندارد", "en": "Standard inspection"},
+      {"fa": "قرنطینه", "en": "Quarantine"},
+      {"fa": "کنترل بهداشتی", "en": "Health control"}
+    ],
+    "prohibited_restricted": [
+      {"fa": "کالای ممنوعه", "en": "Prohibited goods"},
+      {"fa": "کالای محدود", "en": "Restricted goods"},
+      {"fa": "کنترل صادرات", "en": "Export control"},
+      {"fa": "محدودیت واردات", "en": "Import restriction"},
+      {"fa": "فهرست ممنوعیت", "en": "Prohibition list"},
+      {"fa": "کالای قاچاق", "en": "Smuggled goods"},
+      {"fa": "تحریم", "en": "Sanctions"},
+      {"fa": "کالای تحریمی", "en": "Sanctioned goods"}
+    ],
+    "violations_penalties": [
+      {"fa": "تخلف گمرکی", "en": "Customs violation"},
+      {"fa": "قاچاق", "en": "Smuggling"},
+      {"fa": "اظهار کاذب", "en": "False declaration"},
+      {"fa": "کم‌ارزش‌گذاری", "en": "Undervaluation"},
+      {"fa": "جریمه", "en": "Fine"},
+      {"fa": "جریمه نقدی", "en": "Monetary fine"},
+      {"fa": "ضبط کالا", "en": "Confiscation of goods"},
+      {"fa": "توقیف", "en": "Seizure"},
+      {"fa": "مصادره", "en": "Forfeiture"},
+      {"fa": "تعزیرات", "en": "Penalties"},
+      {"fa": "اعتراض", "en": "Objection"},
+      {"fa": "شکایت", "en": "Complaint"}
+    ],
+    "payment_procedures": [
+      {"fa": "پرداخت حقوق", "en": "Duty payment"},
+      {"fa": "پرداخت الکترونیکی", "en": "Electronic payment"},
+      {"fa": "درگاه پرداخت", "en": "Payment gateway"},
+      {"fa": "رسید پرداخت", "en": "Payment receipt"},
+      {"fa": "تضمین بانکی", "en": "Bank guarantee"},
+      {"fa": "ضمانت‌نامه", "en": "Letter of guarantee"},
+      {"fa": "سپرده نقدی", "en": "Cash deposit"}
+    ],
+    "abbreviations": {
+      "EPL": "سامانه جامع امور گمرکی",
+      "HS": "سیستم هماهنگ",
+      "CIF": "هزینه، بیمه و کرایه",
+      "FOB": "تحویل روی کشتی",
+      "VAT": "مالیات بر ارزش افزوده"
+    }
+  }
+}

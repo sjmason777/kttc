@@ -4,15 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 # Include only source code, exclude tests and dev files
-packages = ["kttc"]
 package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
 kttc = ["py.typed"]
 
 [project]
 name = "kttc"
-version = "0.4.1"
+version = "0.4.2"
 description = "Knowledge Translation Transmutation Core - Transforming translations into gold-standard quality"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -93,6 +95,11 @@ all-languages = [
     "stanza>=1.11.0",  # Hindi POS/NER/lemma
     "spello>=1.3.0",  # Hindi spell checking
     "dadmatools[full]>=2.3.6",  # Persian (all-in-one)
+]
+
+# Excel export support
+xlsx = [
+    "openpyxl>=3.1.2",
 ]
 
 # Development tools
@@ -232,6 +239,14 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = ["defusedxml", "defusedxml.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["yaml", "yaml.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*"]
 ignore_missing_imports = true
 
 # Allow untyped decorators for CLI commands (typer decorators are not typed)

@@ -1,0 +1,196 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "Hindi",
+    "glossary_type": "सीमा शुल्क शब्दावली",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Hindi customs terminology including India-specific procedures and regulations",
+    "sources": [
+      "केंद्रीय अप्रत्यक्ष कर और सीमा शुल्क बोर्ड (CBIC)",
+      "भारतीय सीमा शुल्क इलेक्ट्रॉनिक गेटवे (ICEGATE)",
+      "भारतीय व्यापार पोर्टल",
+      "विश्व सीमा शुल्क संगठन",
+      "भारतीय सीमा शुल्क अधिनियम"
+    ],
+    "total_terms": 205
+  },
+  "categories": {
+    "customs_authorities": [
+      {"hi": "केंद्रीय अप्रत्यक्ष कर और सीमा शुल्क बोर्ड", "en": "Central Board of Indirect Taxes and Customs"},
+      {"hi": "CBIC", "en": "Central Board of Indirect Taxes and Customs"},
+      {"hi": "सीमा शुल्क विभाग", "en": "Customs Department"},
+      {"hi": "सीमा शुल्क अधिकारी", "en": "Customs Officer"},
+      {"hi": "सीमा शुल्क आयुक्त", "en": "Commissioner of Customs"},
+      {"hi": "सीमा शुल्क निरीक्षक", "en": "Customs Inspector"}
+    ],
+    "customs_procedures": [
+      {"hi": "सीमा शुल्क निकासी", "en": "Customs clearance"},
+      {"hi": "सीमा शुल्क घोषणा", "en": "Customs declaration"},
+      {"hi": "आयात निकासी", "en": "Import clearance"},
+      {"hi": "निर्यात निकासी", "en": "Export clearance"},
+      {"hi": "बिल ऑफ एंट्री", "en": "Bill of Entry"},
+      {"hi": "शिपिंग बिल", "en": "Shipping Bill"},
+      {"hi": "सीमा शुल्क मूल्यांकन", "en": "Customs assessment"},
+      {"hi": "जांच", "en": "Examination"},
+      {"hi": "निरीक्षण", "en": "Inspection"},
+      {"hi": "सत्यापन", "en": "Verification"},
+      {"hi": "माल की रिहाई", "en": "Release of goods"},
+      {"hi": "अस्थायी आयात", "en": "Temporary import"},
+      {"hi": "पुनः आयात", "en": "Re-import"},
+      {"hi": "पुनः निर्यात", "en": "Re-export"},
+      {"hi": "ट्रांजिट", "en": "Transit"},
+      {"hi": "ट्रांसशिपमेंट", "en": "Transshipment"}
+    ],
+    "documentation": [
+      {"hi": "बिल ऑफ एंट्री", "en": "Bill of Entry"},
+      {"hi": "शिपिंग बिल", "en": "Shipping Bill"},
+      {"hi": "कमर्शियल इनवॉइस", "en": "Commercial Invoice"},
+      {"hi": "पैकिंग लिस्ट", "en": "Packing List"},
+      {"hi": "बिल ऑफ लेडिंग", "en": "Bill of Lading"},
+      {"hi": "एयरवे बिल", "en": "Airway Bill"},
+      {"hi": "मूल देश प्रमाणपत्र", "en": "Certificate of Origin"},
+      {"hi": "आयात लाइसेंस", "en": "Import License"},
+      {"hi": "निर्यात लाइसेंस", "en": "Export License"},
+      {"hi": "इनवॉइस", "en": "Invoice"},
+      {"hi": "परमिट", "en": "Permit"},
+      {"hi": "अनुबंध", "en": "Contract"},
+      {"hi": "परिवहन दस्तावेज़", "en": "Transport documents"}
+    ],
+    "tariff_classification": [
+      {"hi": "ITC (HS) कोड", "en": "ITC (HS) Code"},
+      {"hi": "सीमा शुल्क टैरिफ", "en": "Customs Tariff"},
+      {"hi": "टैरिफ कोड", "en": "Tariff Code"},
+      {"hi": "HS कोड", "en": "HS Code"},
+      {"hi": "वस्तु वर्गीकरण", "en": "Commodity classification"},
+      {"hi": "टैरिफ हेडिंग", "en": "Tariff heading"},
+      {"hi": "टैरिफ सबहेडिंग", "en": "Tariff subheading"},
+      {"hi": "हार्मोनाइज्ड सिस्टम", "en": "Harmonized System"}
+    ],
+    "duties_taxes": [
+      {"hi": "सीमा शुल्क", "en": "Customs duty"},
+      {"hi": "आयात शुल्क", "en": "Import duty"},
+      {"hi": "निर्यात शुल्क", "en": "Export duty"},
+      {"hi": "बेसिक कस्टम्स ड्यूटी", "en": "Basic Customs Duty"},
+      {"hi": "BCD", "en": "Basic Customs Duty"},
+      {"hi": "काउंटरवेलिंग ड्यूटी", "en": "Countervailing Duty"},
+      {"hi": "CVD", "en": "Countervailing Duty"},
+      {"hi": "एंटी-डंपिंग ड्यूटी", "en": "Anti-Dumping Duty"},
+      {"hi": "सेफगार्ड ड्यूटी", "en": "Safeguard Duty"},
+      {"hi": "जीएसटी", "en": "GST"},
+      {"hi": "वस्तु एवं सेवा कर", "en": "Goods and Services Tax"},
+      {"hi": "IGST", "en": "Integrated GST"},
+      {"hi": "एकीकृत जीएसटी", "en": "Integrated GST"},
+      {"hi": "शुल्क दर", "en": "Duty rate"},
+      {"hi": "एड वैलोरम शुल्क", "en": "Ad valorem duty"},
+      {"hi": "विशिष्ट शुल्क", "en": "Specific duty"},
+      {"hi": "शुल्क मुक्त", "en": "Duty-free"},
+      {"hi": "छूट", "en": "Exemption"},
+      {"hi": "रियायत", "en": "Concession"},
+      {"hi": "शुल्क वापसी", "en": "Duty drawback"}
+    ],
+    "customs_value": [
+      {"hi": "सीमा शुल्क मूल्य", "en": "Customs value"},
+      {"hi": "लेन-देन मूल्य", "en": "Transaction value"},
+      {"hi": "घोषित मूल्य", "en": "Declared value"},
+      {"hi": "मूल्यांकन", "en": "Valuation"},
+      {"hi": "सीमा शुल्क मूल्यांकन", "en": "Customs valuation"},
+      {"hi": "CIF मूल्य", "en": "CIF value"},
+      {"hi": "FOB मूल्य", "en": "FOB value"},
+      {"hi": "मूल्य समायोजन", "en": "Value adjustment"}
+    ],
+    "icegate_system": [
+      {"hi": "ICEGATE", "en": "Indian Customs Electronic Gateway"},
+      {"hi": "भारतीय सीमा शुल्क इलेक्ट्रॉनिक गेटवे", "en": "Indian Customs Electronic Gateway"},
+      {"hi": "ई-सेंचुरियन", "en": "e-Sanchit"},
+      {"hi": "इलेक्ट्रॉनिक घोषणा", "en": "Electronic declaration"},
+      {"hi": "डिजिटल हस्ताक्षर", "en": "Digital signature"},
+      {"hi": "ऑनलाइन भुगतान", "en": "Online payment"},
+      {"hi": "इलेक्ट्रॉनिक भुगतान गेटवे", "en": "Electronic payment gateway"}
+    ],
+    "aeo_program": [
+      {"hi": "AEO कार्यक्रम", "en": "AEO Programme"},
+      {"hi": "अधिकृत आर्थिक ऑपरेटर", "en": "Authorized Economic Operator"},
+      {"hi": "AEO प्रमाणन", "en": "AEO Certification"},
+      {"hi": "AEO टियर-1", "en": "AEO Tier-1"},
+      {"hi": "AEO टियर-2", "en": "AEO Tier-2"},
+      {"hi": "AEO टियर-3", "en": "AEO Tier-3"}
+    ],
+    "bonded_facilities": [
+      {"hi": "बॉन्डेड वेयरहाउस", "en": "Bonded Warehouse"},
+      {"hi": "कस्टम्स बॉन्डेड वेयरहाउस", "en": "Customs Bonded Warehouse"},
+      {"hi": "प्राइवेट बॉन्डेड वेयरहाउस", "en": "Private Bonded Warehouse"},
+      {"hi": "पब्लिक बॉन्डेड वेयरहाउस", "en": "Public Bonded Warehouse"},
+      {"hi": "विशेष आर्थिक क्षेत्र", "en": "Special Economic Zone"},
+      {"hi": "SEZ", "en": "Special Economic Zone"},
+      {"hi": "निर्यात उन्मुख इकाई", "en": "Export Oriented Unit"},
+      {"hi": "EOU", "en": "Export Oriented Unit"}
+    ],
+    "customs_broker": [
+      {"hi": "कस्टम्स ब्रोकर", "en": "Customs Broker"},
+      {"hi": "सीमा शुल्क दलाल", "en": "Customs Broker"},
+      {"hi": "कस्टम्स हाउस एजेंट", "en": "Customs House Agent"},
+      {"hi": "CHA", "en": "Customs House Agent"},
+      {"hi": "ब्रोकरेज लाइसेंस", "en": "Brokerage License"},
+      {"hi": "पावर ऑफ अटॉर्नी", "en": "Power of Attorney"}
+    ],
+    "fta_preferences": [
+      {"hi": "मुक्त व्यापार समझौता", "en": "Free Trade Agreement"},
+      {"hi": "FTA", "en": "Free Trade Agreement"},
+      {"hi": "व्यापक आर्थिक भागीदारी समझौता", "en": "Comprehensive Economic Partnership Agreement"},
+      {"hi": "CEPA", "en": "Comprehensive Economic Partnership Agreement"},
+      {"hi": "प्राथमिकता व्यापार समझौता", "en": "Preferential Trade Agreement"},
+      {"hi": "उत्पत्ति के नियम", "en": "Rules of Origin"},
+      {"hi": "प्राथमिकता शुल्क", "en": "Preferential duty"},
+      {"hi": "उत्पत्ति प्रमाणपत्र", "en": "Certificate of Origin"}
+    ],
+    "trade_facilitation": [
+      {"hi": "व्यापार सुविधा", "en": "Trade Facilitation"},
+      {"hi": "सिंगल विंडो सिस्टम", "en": "Single Window System"},
+      {"hi": "पूर्व घोषणा", "en": "Advance declaration"},
+      {"hi": "पेपरलेस ट्रेडिंग", "en": "Paperless trading"},
+      {"hi": "रिस्क मैनेजमेंट", "en": "Risk management"},
+      {"hi": "ग्रीन चैनल", "en": "Green channel"},
+      {"hi": "रेड चैनल", "en": "Red channel"},
+      {"hi": "ऑरेंज चैनल", "en": "Orange channel"},
+      {"hi": "त्वरित निकासी", "en": "Expedited clearance"}
+    ],
+    "violations_penalties": [
+      {"hi": "सीमा शुल्क उल्लंघन", "en": "Customs violation"},
+      {"hi": "तस्करी", "en": "Smuggling"},
+      {"hi": "गलत घोषणा", "en": "Misdeclaration"},
+      {"hi": "कम मूल्यांकन", "en": "Undervaluation"},
+      {"hi": "दंड", "en": "Penalty"},
+      {"hi": "जुर्माना", "en": "Fine"},
+      {"hi": "जब्ती", "en": "Confiscation"},
+      {"hi": "ज़ब्त", "en": "Seizure"},
+      {"hi": "अधिसूचना", "en": "Show Cause Notice"},
+      {"hi": "SCN", "en": "Show Cause Notice"},
+      {"hi": "अपील", "en": "Appeal"}
+    ],
+    "prohibited_restricted": [
+      {"hi": "निषिद्ध वस्तुएं", "en": "Prohibited goods"},
+      {"hi": "प्रतिबंधित वस्तुएं", "en": "Restricted goods"},
+      {"hi": "निर्यात नियंत्रण", "en": "Export control"},
+      {"hi": "आयात प्रतिबंध", "en": "Import restriction"},
+      {"hi": "लाइसेंस आवश्यकता", "en": "License requirement"},
+      {"hi": "प्रतिबंधित वस्तुओं की सूची", "en": "Restricted items list"}
+    ],
+    "abbreviations": {
+      "AEO": "अधिकृत आर्थिक ऑपरेटर",
+      "BCD": "बेसिक कस्टम्स ड्यूटी",
+      "CBIC": "केंद्रीय अप्रत्यक्ष कर और सीमा शुल्क बोर्ड",
+      "CEPA": "व्यापक आर्थिक भागीदारी समझौता",
+      "CHA": "कस्टम्स हाउस एजेंट",
+      "CVD": "काउंटरवेलिंग ड्यूटी",
+      "EOU": "निर्यात उन्मुख इकाई",
+      "FTA": "मुक्त व्यापार समझौता",
+      "GST": "वस्तु एवं सेवा कर",
+      "ICEGATE": "भारतीय सीमा शुल्क इलेक्ट्रॉनिक गेटवे",
+      "IGST": "एकीकृत जीएसटी",
+      "ITC": "भारतीय व्यापार वर्गीकरण",
+      "SCN": "अधिसूचना",
+      "SEZ": "विशेष आर्थिक क्षेत्र"
+    }
+  }
+}

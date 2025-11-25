@@ -74,6 +74,7 @@ def detect_system_language() -> str:
             if lang in SUPPORTED_LANGUAGES:
                 return lang
     except (ValueError, TypeError):
+        # Silently ignore locale detection errors and continue with other methods
         pass
 
     # Priority 4: Windows API
@@ -83,6 +84,7 @@ def detect_system_language() -> str:
             if win_lang and win_lang in SUPPORTED_LANGUAGES:
                 return win_lang
         except Exception:
+            # Silently ignore Windows API errors and fall back to default language
             pass
 
     # Default fallback

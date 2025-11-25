@@ -17,5 +17,6 @@
 from .console import ConsoleFormatter
 from .html import HTMLFormatter
 from .markdown import MarkdownFormatter
+from .xlsx import XLSXFormatter
 
-__all__ = ["ConsoleFormatter", "HTMLFormatter", "MarkdownFormatter"]
+__all__ = ["ConsoleFormatter", "HTMLFormatter", "MarkdownFormatter", "XLSXFormatter"]

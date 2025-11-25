@@ -73,6 +73,7 @@ class GigaChatProvider(BaseLLMProvider):
             model: Model name (GigaChat, GigaChat-Pro, etc.)
             timeout: Request timeout in seconds
         """
+        super().__init__()
         self.client_id = client_id
         self.client_secret = client_secret
         self.scope = scope
@@ -236,6 +237,7 @@ class GigaChatProvider(BaseLLMProvider):
                 content = chunk["choices"][0].get("delta", {}).get("content", "")
                 return str(content) if content else None
         except json.JSONDecodeError:
+            # Silently ignore JSON parsing errors and return None
             pass
         return None
 

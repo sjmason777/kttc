@@ -122,6 +122,7 @@ class DemoLLMProvider(BaseLLMProvider):
 
     def __init__(self, model: str = "demo-model", **kwargs: Any) -> None:
         """Initialize demo provider."""
+        super().__init__()
         self.model = model
         self.kwargs = kwargs
 

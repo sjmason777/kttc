@@ -1,0 +1,259 @@
+{
+  "metadata": {
+    "language": "ru",
+    "language_name": "Russian",
+    "glossary_type": "Словарь автомобильных терминов",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Russian automotive terminology including Russian manufacturers and local technical terms",
+    "sources": [
+      "Российские автопроизводители",
+      "АВТОВАЗ",
+      "ГАЗ",
+      "ГОСТ стандарты",
+      "Ассоциация автомобильных инженеров России"
+    ],
+    "total_terms": 300
+  },
+  "categories": {
+    "russian_manufacturers": [
+      {"ru": "АВТОВАЗ", "en": "AvtoVAZ"},
+      {"ru": "ГАЗ", "en": "GAZ"},
+      {"ru": "УАЗ", "en": "UAZ"},
+      {"ru": "КАМАЗ", "en": "KAMAZ"},
+      {"ru": "ИЖ", "en": "IZh"},
+      {"ru": "ЗИЛ", "en": "ZIL"},
+      {"ru": "МОСКВИЧ", "en": "Moskvich"}
+    ],
+    "iconic_models": [
+      {"ru": "Жигули", "en": "Zhiguli"},
+      {"ru": "Лада", "en": "Lada"},
+      {"ru": "Классика", "en": "Classic Lada"},
+      {"ru": "Нива", "en": "Niva"},
+      {"ru": "Волга", "en": "Volga"},
+      {"ru": "Газель", "en": "Gazelle"},
+      {"ru": "Соболь", "en": "Sable"},
+      {"ru": "Буханка", "en": "Bukhanka"}
+    ],
+    "vehicle_types": [
+      {"ru": "Седан", "en": "Sedan"},
+      {"ru": "Хэтчбек", "en": "Hatchback"},
+      {"ru": "Универсал", "en": "Station wagon"},
+      {"ru": "Купе", "en": "Coupe"},
+      {"ru": "Кабриолет", "en": "Convertible"},
+      {"ru": "Внедорожник", "en": "SUV"},
+      {"ru": "Кроссовер", "en": "Crossover"},
+      {"ru": "Паркетник", "en": "Urban SUV"},
+      {"ru": "Грузовик", "en": "Truck"},
+      {"ru": "Фургон", "en": "Van"},
+      {"ru": "Пикап", "en": "Pickup truck"}
+    ],
+    "engine_components": [
+      {"ru": "ДВС", "en": "Internal combustion engine"},
+      {"ru": "Двигатель", "en": "Engine"},
+      {"ru": "Блок цилиндров", "en": "Engine block"},
+      {"ru": "Цилиндр", "en": "Cylinder"},
+      {"ru": "Поршень", "en": "Piston"},
+      {"ru": "Поршневое кольцо", "en": "Piston ring"},
+      {"ru": "Шатун", "en": "Connecting rod"},
+      {"ru": "Коленчатый вал", "en": "Crankshaft"},
+      {"ru": "Коленвал", "en": "Crankshaft"},
+      {"ru": "Распределительный вал", "en": "Camshaft"},
+      {"ru": "Распредвал", "en": "Camshaft"},
+      {"ru": "Клапан", "en": "Valve"},
+      {"ru": "Головка блока цилиндров", "en": "Cylinder head"},
+      {"ru": "ГБЦ", "en": "Cylinder head"},
+      {"ru": "Маховик", "en": "Flywheel"},
+      {"ru": "Картер", "en": "Crankcase"}
+    ],
+    "ignition_fuel": [
+      {"ru": "Свеча зажигания", "en": "Spark plug"},
+      {"ru": "Катушка зажигания", "en": "Ignition coil"},
+      {"ru": "Бобина", "en": "Ignition coil"},
+      {"ru": "Трамблер", "en": "Distributor"},
+      {"ru": "Карбюратор", "en": "Carburetor"},
+      {"ru": "Инжектор", "en": "Fuel injector"},
+      {"ru": "Форсунка", "en": "Injector nozzle"},
+      {"ru": "Топливный насос", "en": "Fuel pump"},
+      {"ru": "Бензонасос", "en": "Fuel pump"},
+      {"ru": "Топливный фильтр", "en": "Fuel filter"}
+    ],
+    "cooling_system": [
+      {"ru": "Радиатор", "en": "Radiator"},
+      {"ru": "Антифриз", "en": "Antifreeze"},
+      {"ru": "Тосол", "en": "Tosol"},
+      {"ru": "Термостат", "en": "Thermostat"},
+      {"ru": "Помпа", "en": "Water pump"},
+      {"ru": "Водяной насос", "en": "Water pump"},
+      {"ru": "Вентилятор", "en": "Cooling fan"},
+      {"ru": "Патрубок", "en": "Hose"}
+    ],
+    "lubrication": [
+      {"ru": "Моторное масло", "en": "Engine oil"},
+      {"ru": "Синтетика", "en": "Synthetic oil"},
+      {"ru": "Полусинтетика", "en": "Semi-synthetic oil"},
+      {"ru": "Минеральное масло", "en": "Mineral oil"},
+      {"ru": "Масляный фильтр", "en": "Oil filter"},
+      {"ru": "Замена масла", "en": "Oil change"}
+    ],
+    "exhaust_system": [
+      {"ru": "Глушитель", "en": "Muffler"},
+      {"ru": "Катализатор", "en": "Catalytic converter"},
+      {"ru": "Резонатор", "en": "Resonator"},
+      {"ru": "Выхлопная труба", "en": "Exhaust pipe"}
+    ],
+    "transmission": [
+      {"ru": "Коробка передач", "en": "Transmission"},
+      {"ru": "КПП", "en": "Transmission"},
+      {"ru": "Механическая КПП", "en": "Manual transmission"},
+      {"ru": "МКПП", "en": "Manual transmission"},
+      {"ru": "Автоматическая КПП", "en": "Automatic transmission"},
+      {"ru": "АКПП", "en": "Automatic transmission"},
+      {"ru": "Вариатор", "en": "CVT"},
+      {"ru": "Робот", "en": "Automated manual transmission"},
+      {"ru": "Сцепление", "en": "Clutch"},
+      {"ru": "Гидротрансформатор", "en": "Torque converter"},
+      {"ru": "Передача", "en": "Gear"},
+      {"ru": "Задняя передача", "en": "Reverse gear"}
+    ],
+    "drivetrain": [
+      {"ru": "Передний привод", "en": "Front-wheel drive"},
+      {"ru": "Задний привод", "en": "Rear-wheel drive"},
+      {"ru": "Полный привод", "en": "All-wheel drive"},
+      {"ru": "Раздаточная коробка", "en": "Transfer case"},
+      {"ru": "Понижайка", "en": "Low-range gear"},
+      {"ru": "Карданный вал", "en": "Driveshaft"},
+      {"ru": "Кардан", "en": "Driveshaft"},
+      {"ru": "ШРУС", "en": "CV joint"},
+      {"ru": "Дифференциал", "en": "Differential"}
+    ],
+    "chassis_suspension": [
+      {"ru": "Шасси", "en": "Chassis"},
+      {"ru": "Рама", "en": "Frame"},
+      {"ru": "Несущий кузов", "en": "Unibody"},
+      {"ru": "Подвеска", "en": "Suspension"},
+      {"ru": "Пружина", "en": "Spring"},
+      {"ru": "Амортизатор", "en": "Shock absorber"},
+      {"ru": "Стойка", "en": "Strut"},
+      {"ru": "Рычаг", "en": "Control arm"},
+      {"ru": "Сайлентблок", "en": "Bushing"},
+      {"ru": "Шаровая опора", "en": "Ball joint"},
+      {"ru": "Стабилизатор", "en": "Stabilizer bar"},
+      {"ru": "Клиренс", "en": "Ground clearance"},
+      {"ru": "Дорожный просвет", "en": "Ground clearance"}
+    ],
+    "braking_system": [
+      {"ru": "Тормозная система", "en": "Brake system"},
+      {"ru": "Дисковые тормоза", "en": "Disc brakes"},
+      {"ru": "Барабанные тормоза", "en": "Drum brakes"},
+      {"ru": "Тормозной диск", "en": "Brake disc"},
+      {"ru": "Тормозные колодки", "en": "Brake pads"},
+      {"ru": "Суппорт", "en": "Brake caliper"},
+      {"ru": "Тормозная жидкость", "en": "Brake fluid"},
+      {"ru": "Педаль тормоза", "en": "Brake pedal"},
+      {"ru": "Ручник", "en": "Handbrake"},
+      {"ru": "ABS", "en": "Anti-lock Braking System"}
+    ],
+    "safety_systems": [
+      {"ru": "Подушка безопасности", "en": "Airbag"},
+      {"ru": "Ремень безопасности", "en": "Seatbelt"},
+      {"ru": "ESP", "en": "Electronic Stability Program"},
+      {"ru": "ABS", "en": "Anti-lock Braking System"},
+      {"ru": "EBD", "en": "Electronic Brakeforce Distribution"}
+    ],
+    "electrical": [
+      {"ru": "Аккумуляторная батарея", "en": "Battery"},
+      {"ru": "АКБ", "en": "Battery"},
+      {"ru": "Генератор", "en": "Alternator"},
+      {"ru": "Стартер", "en": "Starter motor"},
+      {"ru": "Реле", "en": "Relay"},
+      {"ru": "Предохранитель", "en": "Fuse"},
+      {"ru": "Проводка", "en": "Wiring"},
+      {"ru": "ЭБУ", "en": "ECU"},
+      {"ru": "Датчик", "en": "Sensor"},
+      {"ru": "Лямбда-зонд", "en": "Oxygen sensor"},
+      {"ru": "ДМРВ", "en": "Mass air flow sensor"}
+    ],
+    "lighting": [
+      {"ru": "Фара", "en": "Headlight"},
+      {"ru": "Ближний свет", "en": "Low beam"},
+      {"ru": "Дальний свет", "en": "High beam"},
+      {"ru": "Противотуманные фары", "en": "Fog lights"},
+      {"ru": "ПТФ", "en": "Fog lights"},
+      {"ru": "Поворотник", "en": "Turn signal"},
+      {"ru": "Ксенон", "en": "Xenon"},
+      {"ru": "Светодиод", "en": "LED"}
+    ],
+    "steering": [
+      {"ru": "Рулевое управление", "en": "Steering system"},
+      {"ru": "Руль", "en": "Steering wheel"},
+      {"ru": "Рулевая рейка", "en": "Steering rack"},
+      {"ru": "Гидроусилитель руля", "en": "Hydraulic power steering"},
+      {"ru": "ГУР", "en": "Hydraulic power steering"},
+      {"ru": "Электроусилитель руля", "en": "Electric power steering"},
+      {"ru": "ЭУР", "en": "Electric power steering"}
+    ],
+    "documentation": [
+      {"ru": "ПТС", "en": "Vehicle passport"},
+      {"ru": "Паспорт транспортного средства", "en": "Vehicle passport"},
+      {"ru": "СТС", "en": "Vehicle registration certificate"},
+      {"ru": "Свидетельство о регистрации", "en": "Registration certificate"},
+      {"ru": "ОСАГО", "en": "Mandatory auto insurance"},
+      {"ru": "КАСКО", "en": "Comprehensive insurance"},
+      {"ru": "Диагностическая карта", "en": "Diagnostic card"}
+    ],
+    "maintenance": [
+      {"ru": "ТО", "en": "Technical maintenance"},
+      {"ru": "Техосмотр", "en": "Technical inspection"},
+      {"ru": "Техническое обслуживание", "en": "Maintenance service"},
+      {"ru": "Замена масла", "en": "Oil change"},
+      {"ru": "Регламент", "en": "Maintenance schedule"},
+      {"ru": "Пробег", "en": "Mileage"}
+    ],
+    "wheels_tires": [
+      {"ru": "Колесо", "en": "Wheel"},
+      {"ru": "Диск", "en": "Rim"},
+      {"ru": "Шина", "en": "Tire"},
+      {"ru": "Покрышка", "en": "Tire"},
+      {"ru": "Протектор", "en": "Tread"},
+      {"ru": "Летняя резина", "en": "Summer tires"},
+      {"ru": "Зимняя резина", "en": "Winter tires"},
+      {"ru": "Шипованная резина", "en": "Studded tires"},
+      {"ru": "Липучка", "en": "Non-studded winter tires"},
+      {"ru": "Балансировка", "en": "Wheel balancing"},
+      {"ru": "Развал-схождение", "en": "Wheel alignment"}
+    ],
+    "fluids": [
+      {"ru": "Омывающая жидкость", "en": "Washer fluid"},
+      {"ru": "Незамерзайка", "en": "Winter washer fluid"},
+      {"ru": "Тормозная жидкость", "en": "Brake fluid"},
+      {"ru": "Жидкость ГУР", "en": "Power steering fluid"},
+      {"ru": "Трансмиссионное масло", "en": "Transmission fluid"}
+    ],
+    "body_parts": [
+      {"ru": "Кузов", "en": "Body"},
+      {"ru": "Капот", "en": "Hood"},
+      {"ru": "Багажник", "en": "Trunk"},
+      {"ru": "Бампер", "en": "Bumper"},
+      {"ru": "Крыло", "en": "Fender"},
+      {"ru": "Порог", "en": "Rocker panel"}
+    ],
+    "abbreviations": {
+      "АКБ": "Аккумуляторная батарея",
+      "ГБЦ": "Головка блока цилиндров",
+      "ГУР": "Гидроусилитель руля",
+      "ДМРВ": "Датчик массового расхода воздуха",
+      "ДВС": "Двигатель внутреннего сгорания",
+      "КПП": "Коробка передач",
+      "МКПП": "Механическая коробка передач",
+      "АКПП": "Автоматическая коробка передач",
+      "ПТС": "Паспорт транспортного средства",
+      "СТС": "Свидетельство о регистрации транспортного средства",
+      "ТО": "Техническое обслуживание",
+      "ЭБУ": "Электронный блок управления",
+      "ЭУР": "Электроусилитель руля",
+      "ПТФ": "Противотуманные фары",
+      "ШРУС": "Шарнир равных угловых скоростей"
+    }
+  }
+}

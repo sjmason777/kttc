@@ -1,0 +1,254 @@
+{
+  "metadata": {
+    "language": "zh",
+    "language_name": "Chinese",
+    "glossary_type": "医学术语词典",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "中文医学术语词汇表，包括西医和中医术语",
+    "sources": [
+      "国家卫生健康委员会医学名词",
+      "全国科学技术名词审定委员会",
+      "ICD-10中文版",
+      "WHO中医药术语国际标准",
+      "中国药典"
+    ],
+    "total_terms": 220
+  },
+  "categories": {
+    "anatomy_organ_systems": {
+      "description": "解剖学和器官系统",
+      "terms": [
+        {"zh": "心脏", "pinyin": "xīnzàng", "en": "heart"},
+        {"zh": "肺", "pinyin": "fèi", "en": "lung"},
+        {"zh": "肝脏", "pinyin": "gānzàng", "en": "liver"},
+        {"zh": "肾脏", "pinyin": "shènzàng", "en": "kidney"},
+        {"zh": "胃", "pinyin": "wèi", "en": "stomach"},
+        {"zh": "肠", "pinyin": "cháng", "en": "intestine"},
+        {"zh": "大肠", "pinyin": "dàcháng", "en": "large intestine"},
+        {"zh": "小肠", "pinyin": "xiǎocháng", "en": "small intestine"},
+        {"zh": "脾脏", "pinyin": "pízàng", "en": "spleen"},
+        {"zh": "胰腺", "pinyin": "yíxiàn", "en": "pancreas"},
+        {"zh": "胆囊", "pinyin": "dǎnnáng", "en": "gallbladder"},
+        {"zh": "膀胱", "pinyin": "pángguāng", "en": "bladder"},
+        {"zh": "大脑", "pinyin": "dànǎo", "en": "brain"},
+        {"zh": "脊髓", "pinyin": "jǐsuǐ", "en": "spinal cord"},
+        {"zh": "动脉", "pinyin": "dòngmài", "en": "artery"},
+        {"zh": "静脉", "pinyin": "jìngmài", "en": "vein"},
+        {"zh": "毛细血管", "pinyin": "máoxì xuèguǎn", "en": "capillary"},
+        {"zh": "骨骼", "pinyin": "gǔgé", "en": "skeleton"},
+        {"zh": "肌肉", "pinyin": "jīròu", "en": "muscle"},
+        {"zh": "神经", "pinyin": "shénjīng", "en": "nerve"},
+        {"zh": "皮肤", "pinyin": "pífū", "en": "skin"},
+        {"zh": "血液", "pinyin": "xuèyè", "en": "blood"},
+        {"zh": "淋巴", "pinyin": "línbā", "en": "lymph"},
+        {"zh": "甲状腺", "pinyin": "jiǎzhuàngxiàn", "en": "thyroid"},
+        {"zh": "子宫", "pinyin": "zǐgōng", "en": "uterus"}
+      ]
+    },
+    "diseases_conditions": {
+      "description": "疾病和病症",
+      "terms": [
+        {"zh": "高血压", "pinyin": "gāo xuèyā", "en": "hypertension", "icd": "I10"},
+        {"zh": "低血压", "pinyin": "dī xuèyā", "en": "hypotension"},
+        {"zh": "糖尿病", "pinyin": "tángniàobìng", "en": "diabetes mellitus", "icd": "E10-E14"},
+        {"zh": "冠心病", "pinyin": "guānxīnbìng", "en": "coronary heart disease", "formal": "冠状动脉粥样硬化性心脏病"},
+        {"zh": "心肌梗死", "pinyin": "xīnjī gěngsǐ", "en": "myocardial infarction"},
+        {"zh": "脑卒中", "pinyin": "nǎo cùzhòng", "en": "stroke", "colloquial": "中风"},
+        {"zh": "肺炎", "pinyin": "fèiyán", "en": "pneumonia"},
+        {"zh": "支气管炎", "pinyin": "zhīqìguǎnyán", "en": "bronchitis"},
+        {"zh": "哮喘", "pinyin": "xiàochuǎn", "en": "asthma"},
+        {"zh": "肝炎", "pinyin": "gānyán", "en": "hepatitis"},
+        {"zh": "肝硬化", "pinyin": "gān yìnghuà", "en": "cirrhosis"},
+        {"zh": "胃炎", "pinyin": "wèiyán", "en": "gastritis"},
+        {"zh": "胃溃疡", "pinyin": "wèi kuìyáng", "en": "gastric ulcer"},
+        {"zh": "肾衰竭", "pinyin": "shèn shuāijié", "en": "renal failure"},
+        {"zh": "贫血", "pinyin": "pínxuè", "en": "anemia"},
+        {"zh": "白血病", "pinyin": "báixuèbìng", "en": "leukemia"},
+        {"zh": "癌症", "pinyin": "áizhèng", "en": "cancer"},
+        {"zh": "肿瘤", "pinyin": "zhǒngliú", "en": "tumor"},
+        {"zh": "良性肿瘤", "pinyin": "liángxìng zhǒngliú", "en": "benign tumor"},
+        {"zh": "恶性肿瘤", "pinyin": "èxìng zhǒngliú", "en": "malignant tumor"},
+        {"zh": "关节炎", "pinyin": "guānjiéyán", "en": "arthritis"},
+        {"zh": "骨质疏松", "pinyin": "gǔzhì shūsōng", "en": "osteoporosis"},
+        {"zh": "抑郁症", "pinyin": "yìyùzhèng", "en": "depression"},
+        {"zh": "焦虑症", "pinyin": "jiāolǜzhèng", "en": "anxiety disorder"},
+        {"zh": "感染", "pinyin": "gǎnrǎn", "en": "infection"}
+      ]
+    },
+    "symptoms_signs": {
+      "description": "症状和体征",
+      "terms": [
+        {"zh": "发热", "pinyin": "fārè", "en": "fever"},
+        {"zh": "头痛", "pinyin": "tóutòng", "en": "headache"},
+        {"zh": "胸痛", "pinyin": "xiōngtòng", "en": "chest pain"},
+        {"zh": "腹痛", "pinyin": "fùtòng", "en": "abdominal pain"},
+        {"zh": "咳嗽", "pinyin": "késou", "en": "cough"},
+        {"zh": "呼吸困难", "pinyin": "hūxī kùnnan", "en": "dyspnea"},
+        {"zh": "恶心", "pinyin": "ěxīn", "en": "nausea"},
+        {"zh": "呕吐", "pinyin": "ǒutù", "en": "vomiting"},
+        {"zh": "腹泻", "pinyin": "fùxiè", "en": "diarrhea"},
+        {"zh": "便秘", "pinyin": "biànmì", "en": "constipation"},
+        {"zh": "水肿", "pinyin": "shuǐzhǒng", "en": "edema"},
+        {"zh": "黄疸", "pinyin": "huángdǎn", "en": "jaundice"},
+        {"zh": "心悸", "pinyin": "xīnjì", "en": "palpitation"},
+        {"zh": "头晕", "pinyin": "tóuyūn", "en": "dizziness"},
+        {"zh": "晕厥", "pinyin": "yūnjué", "en": "syncope"},
+        {"zh": "乏力", "pinyin": "fálì", "en": "fatigue"},
+        {"zh": "失眠", "pinyin": "shīmián", "en": "insomnia"},
+        {"zh": "出血", "pinyin": "chūxuè", "en": "bleeding"},
+        {"zh": "疼痛", "pinyin": "téngtòng", "en": "pain"},
+        {"zh": "瘙痒", "pinyin": "sàoyǎng", "en": "pruritus"}
+      ]
+    },
+    "medications_dosages": {
+      "description": "药物和剂量",
+      "terms": [
+        {"zh": "药物", "pinyin": "yàowù", "en": "drug/medication"},
+        {"zh": "剂量", "pinyin": "jìliàng", "en": "dosage"},
+        {"zh": "片剂", "pinyin": "piànjì", "en": "tablet"},
+        {"zh": "胶囊", "pinyin": "jiāonáng", "en": "capsule"},
+        {"zh": "注射剂", "pinyin": "zhùshèjì", "en": "injection"},
+        {"zh": "口服", "pinyin": "kǒufú", "en": "oral administration"},
+        {"zh": "静脉注射", "pinyin": "jìngmài zhùshè", "en": "intravenous injection"},
+        {"zh": "肌肉注射", "pinyin": "jīròu zhùshè", "en": "intramuscular injection"},
+        {"zh": "抗生素", "pinyin": "kàngshēngsù", "en": "antibiotic"},
+        {"zh": "止痛药", "pinyin": "zhǐtòng yào", "en": "analgesic"},
+        {"zh": "退烧药", "pinyin": "tuìshāo yào", "en": "antipyretic"},
+        {"zh": "抗病毒药", "pinyin": "kàng bìngdú yào", "en": "antiviral"},
+        {"zh": "降压药", "pinyin": "jiàngyā yào", "en": "antihypertensive"},
+        {"zh": "降糖药", "pinyin": "jiàngtáng yào", "en": "hypoglycemic agent"},
+        {"zh": "毫克", "pinyin": "háokè", "en": "milligram", "abbr": "mg"},
+        {"zh": "微克", "pinyin": "wēikè", "en": "microgram", "abbr": "μg"},
+        {"zh": "毫升", "pinyin": "háoshēng", "en": "milliliter", "abbr": "ml"},
+        {"zh": "副作用", "pinyin": "fùzuòyòng", "en": "side effect"},
+        {"zh": "禁忌症", "pinyin": "jìnjìzhèng", "en": "contraindication"},
+        {"zh": "适应症", "pinyin": "shìyìngzhèng", "en": "indication"}
+      ]
+    },
+    "procedures_tests": {
+      "description": "医疗程序和检查",
+      "terms": [
+        {"zh": "血常规", "pinyin": "xuè chángguī", "en": "complete blood count", "abbr": "CBC"},
+        {"zh": "尿常规", "pinyin": "niào chángguī", "en": "urinalysis"},
+        {"zh": "肝功能检查", "pinyin": "gān gōngnéng jiǎnchá", "en": "liver function test"},
+        {"zh": "肾功能检查", "pinyin": "shèn gōngnéng jiǎnchá", "en": "renal function test"},
+        {"zh": "心电图", "pinyin": "xīndiàntú", "en": "electrocardiogram", "abbr": "ECG"},
+        {"zh": "超声检查", "pinyin": "chāoshēng jiǎnchá", "en": "ultrasound"},
+        {"zh": "CT扫描", "pinyin": "CT sǎomiáo", "en": "CT scan"},
+        {"zh": "磁共振", "pinyin": "cí gòngzhèn", "en": "MRI"},
+        {"zh": "X光检查", "pinyin": "X guāng jiǎnchá", "en": "X-ray"},
+        {"zh": "内镜检查", "pinyin": "nèijìng jiǎnchá", "en": "endoscopy"},
+        {"zh": "胃镜", "pinyin": "wèijìng", "en": "gastroscopy"},
+        {"zh": "肠镜", "pinyin": "chángjìng", "en": "colonoscopy"},
+        {"zh": "活检", "pinyin": "huójiǎn", "en": "biopsy"},
+        {"zh": "手术", "pinyin": "shǒushù", "en": "surgery"},
+        {"zh": "化疗", "pinyin": "huàliáo", "en": "chemotherapy"},
+        {"zh": "放疗", "pinyin": "fàngliáo", "en": "radiotherapy"},
+        {"zh": "透析", "pinyin": "tòuxī", "en": "dialysis"},
+        {"zh": "输血", "pinyin": "shūxuè", "en": "blood transfusion"},
+        {"zh": "麻醉", "pinyin": "mázuì", "en": "anesthesia"}
+      ]
+    },
+    "medical_specialties": {
+      "description": "医学专科",
+      "terms": [
+        {"zh": "内科", "pinyin": "nèikē", "en": "internal medicine"},
+        {"zh": "外科", "pinyin": "wàikē", "en": "surgery"},
+        {"zh": "心内科", "pinyin": "xīn nèikē", "en": "cardiology"},
+        {"zh": "神经内科", "pinyin": "shénjīng nèikē", "en": "neurology"},
+        {"zh": "消化内科", "pinyin": "xiāohuà nèikē", "en": "gastroenterology"},
+        {"zh": "呼吸内科", "pinyin": "hūxī nèikē", "en": "pulmonology"},
+        {"zh": "肿瘤科", "pinyin": "zhǒngliú kē", "en": "oncology"},
+        {"zh": "妇产科", "pinyin": "fùchǎn kē", "en": "obstetrics and gynecology"},
+        {"zh": "儿科", "pinyin": "ér kē", "en": "pediatrics"},
+        {"zh": "骨科", "pinyin": "gǔ kē", "en": "orthopedics"},
+        {"zh": "眼科", "pinyin": "yǎn kē", "en": "ophthalmology"},
+        {"zh": "耳鼻喉科", "pinyin": "ěr bí hóu kē", "en": "ENT"},
+        {"zh": "皮肤科", "pinyin": "pífū kē", "en": "dermatology"},
+        {"zh": "精神科", "pinyin": "jīngshén kē", "en": "psychiatry"},
+        {"zh": "急诊科", "pinyin": "jízhěn kē", "en": "emergency medicine"},
+        {"zh": "麻醉科", "pinyin": "mázuì kē", "en": "anesthesiology"},
+        {"zh": "放射科", "pinyin": "fàngshè kē", "en": "radiology"},
+        {"zh": "病理科", "pinyin": "bìnglǐ kē", "en": "pathology"},
+        {"zh": "中医科", "pinyin": "zhōngyī kē", "en": "traditional Chinese medicine"}
+      ]
+    },
+    "traditional_chinese_medicine": {
+      "description": "中医特有术语",
+      "fundamental_concepts": [
+        {"zh": "气", "pinyin": "qì", "en": "vital energy/qi"},
+        {"zh": "血", "pinyin": "xuè", "en": "blood (TCM concept)"},
+        {"zh": "阴", "pinyin": "yīn", "en": "yin"},
+        {"zh": "阳", "pinyin": "yáng", "en": "yang"},
+        {"zh": "阴阳", "pinyin": "yīnyáng", "en": "yin and yang"},
+        {"zh": "五行", "pinyin": "wǔxíng", "en": "five elements"},
+        {"zh": "精", "pinyin": "jīng", "en": "essence"},
+        {"zh": "神", "pinyin": "shén", "en": "spirit/mind"}
+      ],
+      "zangfu_organs": [
+        {"zh": "脏腑", "pinyin": "zàngfǔ", "en": "zang-fu organs"},
+        {"zh": "五脏", "pinyin": "wǔzàng", "en": "five zang organs", "includes": "心肝脾肺肾"},
+        {"zh": "六腑", "pinyin": "liùfǔ", "en": "six fu organs", "includes": "胆胃小肠大肠膀胱三焦"},
+        {"zh": "三焦", "pinyin": "sānjiāo", "en": "triple burner/san jiao"}
+      ],
+      "meridians_acupoints": [
+        {"zh": "经络", "pinyin": "jīngluò", "en": "meridians and collaterals"},
+        {"zh": "穴位", "pinyin": "xuéwèi", "en": "acupoint"},
+        {"zh": "十二经脉", "pinyin": "shí'èr jīngmài", "en": "twelve meridians"},
+        {"zh": "任脉", "pinyin": "rènmài", "en": "conception vessel"},
+        {"zh": "督脉", "pinyin": "dūmài", "en": "governing vessel"}
+      ],
+      "pathogenic_factors": [
+        {"zh": "六淫", "pinyin": "liùyín", "en": "six exogenous pathogens"},
+        {"zh": "风", "pinyin": "fēng", "en": "wind (pathogenic)"},
+        {"zh": "寒", "pinyin": "hán", "en": "cold (pathogenic)"},
+        {"zh": "暑", "pinyin": "shǔ", "en": "summer-heat"},
+        {"zh": "湿", "pinyin": "shī", "en": "dampness"},
+        {"zh": "燥", "pinyin": "zào", "en": "dryness"},
+        {"zh": "火", "pinyin": "huǒ", "en": "fire/heat"},
+        {"zh": "痰", "pinyin": "tán", "en": "phlegm"},
+        {"zh": "瘀血", "pinyin": "yū xuè", "en": "blood stasis"}
+      ],
+      "diagnosis": [
+        {"zh": "四诊", "pinyin": "sìzhěn", "en": "four diagnostic methods"},
+        {"zh": "望诊", "pinyin": "wàngzhěn", "en": "inspection"},
+        {"zh": "闻诊", "pinyin": "wénzhěn", "en": "listening and smelling"},
+        {"zh": "问诊", "pinyin": "wènzhěn", "en": "inquiry"},
+        {"zh": "切诊", "pinyin": "qièzhěn", "en": "palpation"},
+        {"zh": "脉诊", "pinyin": "màizhěn", "en": "pulse diagnosis"},
+        {"zh": "舌诊", "pinyin": "shézhěn", "en": "tongue diagnosis"},
+        {"zh": "辨证论治", "pinyin": "biànzhèng lùnzhì", "en": "syndrome differentiation and treatment"}
+      ],
+      "treatment_methods": [
+        {"zh": "针灸", "pinyin": "zhēnjiǔ", "en": "acupuncture and moxibustion"},
+        {"zh": "推拿", "pinyin": "tuīná", "en": "Chinese massage"},
+        {"zh": "拔罐", "pinyin": "báguàn", "en": "cupping"},
+        {"zh": "艾灸", "pinyin": "àijiǔ", "en": "moxibustion"},
+        {"zh": "中药", "pinyin": "zhōngyào", "en": "Chinese herbal medicine"},
+        {"zh": "汤剂", "pinyin": "tāngjì", "en": "decoction"}
+      ]
+    },
+    "abbreviations": {
+      "BP": {"zh": "血压", "en": "blood pressure"},
+      "HR": {"zh": "心率", "en": "heart rate"},
+      "WBC": {"zh": "白细胞", "en": "white blood cell"},
+      "RBC": {"zh": "红细胞", "en": "red blood cell"},
+      "Hb": {"zh": "血红蛋白", "en": "hemoglobin"},
+      "PLT": {"zh": "血小板", "en": "platelet"},
+      "ALT": {"zh": "谷丙转氨酶", "en": "alanine aminotransferase"},
+      "AST": {"zh": "谷草转氨酶", "en": "aspartate aminotransferase"},
+      "BUN": {"zh": "血尿素氮", "en": "blood urea nitrogen"},
+      "Cr": {"zh": "肌酐", "en": "creatinine"},
+      "HbA1c": {"zh": "糖化血红蛋白", "en": "glycated hemoglobin"},
+      "ICU": {"zh": "重症监护室", "en": "intensive care unit"},
+      "ER": {"zh": "急诊室", "en": "emergency room"}
+    }
+  },
+  "translation_challenges": [
+    {"zh": "中风", "correct": "stroke", "incorrect": "wind stroke", "note": "TCM term now used for Western stroke"},
+    {"zh": "糖尿病", "literal": "sugar urine disease", "standard": "diabetes mellitus"},
+    {"zh": "贫血", "literal": "poor blood", "standard": "anemia"},
+    {"zh": "上火", "note": "TCM concept, no direct English equivalent", "suggestion": "internal heat"}
+  ]
+}

@@ -30,7 +30,7 @@ from pathlib import Path
 from typing import Any
 
 from kttc.agents import AgentOrchestrator
-from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter
+from kttc.cli.formatters import HTMLFormatter, MarkdownFormatter, XLSXFormatter
 from kttc.cli.ui import (
     console,
     create_step_progress,
@@ -185,6 +185,7 @@ async def run_quality_evaluation(
     verbose: bool,
     api_errors: list[str],
     quick: bool = False,
+    profile: Any = None,
 ) -> tuple[QAReport, AgentOrchestrator]:
     """Run multi-agent quality evaluation.
 
@@ -196,7 +197,13 @@ async def run_quality_evaluation(
         verbose: Enable verbose output
         api_errors: List to collect API errors
         quick: Enable quick mode (3 core agents, no iterations)
+        profile: MQM profile with custom agent weights (optional)
     """
+    # Extract agent weights from profile if provided
+    agent_weights = None
+    if profile and hasattr(profile, "agent_weights"):
+        agent_weights = profile.agent_weights
+
     orchestrator = AgentOrchestrator(
         llm_provider,
         quality_threshold=threshold,
@@ -204,6 +211,7 @@ async def run_quality_evaluation(
         agent_max_tokens=settings.default_max_tokens,
         enable_dynamic_selection=not quick,  # Disable dynamic selection in quick mode
         quick_mode=quick,
+        agent_weights=agent_weights,
     )
 
     if verbose:
@@ -380,6 +388,19 @@ def save_report(report: QAReport, output: str, format: str) -> None:
     elif format == "html" or output.endswith(".html"):
         # Save as HTML using the new formatter
         HTMLFormatter.format_report(report, output_path)
+    elif format == "xlsx" or output.endswith(".xlsx"):
+        # Save as Excel using the XLSX formatter
+        if not XLSXFormatter.is_available():
+            console.print(
+                "[yellow]Warning: openpyxl not installed. "
+                "Install with: pip install kttc[xlsx][/yellow]"
+            )
+            console.print("[dim]Falling back to JSON format...[/dim]")
+            data = report.model_dump(mode="json")
+            json_path = output_path.with_suffix(".json")
+            json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        else:
+            XLSXFormatter.format_report(report, output_path)
     else:
         # Default to JSON
         data = report.model_dump(mode="json")

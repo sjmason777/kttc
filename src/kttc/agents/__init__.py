@@ -46,6 +46,7 @@ from .base import (
 )
 from .consensus import WeightedConsensus
 from .context import ContextAgent
+from .debate import DebateOrchestrator, DebateResult, DebateRound
 from .domain_profiles import (
     DOMAIN_PROFILES,
     DomainDetector,
@@ -84,6 +85,9 @@ __all__ = [
     "get_domain_profile",
     "list_available_domains",
     "DynamicAgentSelector",
+    "DebateOrchestrator",
+    "DebateResult",
+    "DebateRound",
     "ErrorParser",
     "AgentError",
     "AgentEvaluationError",

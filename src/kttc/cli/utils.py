@@ -35,7 +35,7 @@ def auto_detect_format(output: str | None, format: str | None) -> str:
         format: User-specified format (overrides auto-detection)
 
     Returns:
-        Format string: 'text', 'json', 'markdown', or 'html'
+        Format string: 'text', 'json', 'markdown', 'html', or 'xlsx'
     """
     if format:
         return format
@@ -48,6 +48,8 @@ def auto_detect_format(output: str | None, format: str | None) -> str:
             return "markdown"
         elif suffix in [".html", ".htm"]:
             return "html"
+        elif suffix in [".xlsx", ".xls"]:
+            return "xlsx"
 
     return "text"
 
@@ -95,6 +97,7 @@ def get_available_providers(settings: Any) -> list[str]:
         settings.get_llm_provider_key("openai")
         available.append("openai")
     except (ValueError, AttributeError):
+        # Silently ignore missing Yandex credentials and continue checking other providers
         pass
 
     # Check Anthropic
@@ -102,6 +105,7 @@ def get_available_providers(settings: Any) -> list[str]:
         settings.get_llm_provider_key("anthropic")
         available.append("anthropic")
     except (ValueError, AttributeError):
+        # Silently ignore missing GigaChat credentials and continue checking other providers
         pass
 
     # Check GigaChat
@@ -109,6 +113,7 @@ def get_available_providers(settings: Any) -> list[str]:
         settings.get_llm_provider_credentials("gigachat")
         available.append("gigachat")
     except (ValueError, AttributeError):
+        # Silently ignore missing Anthropic API key and continue checking other providers
         pass
 
     # Check Yandex
@@ -116,6 +121,7 @@ def get_available_providers(settings: Any) -> list[str]:
         settings.get_llm_provider_credentials("yandex")
         available.append("yandex")
     except (ValueError, AttributeError):
+        # Silently ignore missing OpenAI API key and continue checking other providers
         pass
 
     return available

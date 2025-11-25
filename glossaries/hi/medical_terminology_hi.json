@@ -1,0 +1,233 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "Hindi",
+    "script": "Devanagari",
+    "glossary_type": "चिकित्सा शब्दावली",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "Hindi medical terminology including Ayurvedic terms",
+    "sources": [
+      "CSTT Medical Glossary",
+      "Ministry of AYUSH",
+      "AIIMS terminology",
+      "Ayurveda classical texts",
+      "Hindi Wikipedia medical terms"
+    ],
+    "total_terms": 215
+  },
+  "categories": {
+    "anatomy": {
+      "description": "शरीर रचना (Anatomy)",
+      "terms": [
+        {"hi": "शरीर", "en": "body", "translit": "sharir"},
+        {"hi": "सिर", "en": "head", "translit": "sir"},
+        {"hi": "मस्तिष्क", "en": "brain", "translit": "mastishk"},
+        {"hi": "हृदय", "en": "heart", "translit": "hridaya"},
+        {"hi": "फेफड़े", "en": "lungs", "translit": "phephde"},
+        {"hi": "यकृत", "en": "liver", "translit": "yakrit"},
+        {"hi": "वृक्क/गुर्दा", "en": "kidney", "translit": "vrukka/gurda"},
+        {"hi": "आमाशय/जठर", "en": "stomach", "translit": "amashaya/jathar"},
+        {"hi": "आंत", "en": "intestine", "translit": "aant"},
+        {"hi": "प्लीहा/तिल्ली", "en": "spleen", "translit": "pleeha/tilli"},
+        {"hi": "अग्न्याशय", "en": "pancreas", "translit": "agnyashaya"},
+        {"hi": "मूत्राशय", "en": "urinary bladder", "translit": "mutrashaya"},
+        {"hi": "रक्त", "en": "blood", "translit": "rakta"},
+        {"hi": "नाड़ी", "en": "pulse/nerve", "translit": "nadi"},
+        {"hi": "धमनी", "en": "artery", "translit": "dhamani"},
+        {"hi": "शिरा", "en": "vein", "translit": "shira"},
+        {"hi": "अस्थि/हड्डी", "en": "bone", "translit": "asthi/haddi"},
+        {"hi": "मांसपेशी", "en": "muscle", "translit": "manspeshi"},
+        {"hi": "त्वचा", "en": "skin", "translit": "tvacha"},
+        {"hi": "आंख/नेत्र", "en": "eye", "translit": "aankh/netra"},
+        {"hi": "कान/कर्ण", "en": "ear", "translit": "kaan/karna"},
+        {"hi": "नाक/नासिका", "en": "nose", "translit": "naak/nasika"},
+        {"hi": "जिह्वा/जीभ", "en": "tongue", "translit": "jihva/jeebh"},
+        {"hi": "गला/कण्ठ", "en": "throat", "translit": "gala/kanth"},
+        {"hi": "रीढ़/मेरुदण्ड", "en": "spine", "translit": "reedh/merudand"}
+      ]
+    },
+    "diseases": {
+      "description": "रोग और विकार (Diseases)",
+      "terms": [
+        {"hi": "रोग/व्याधि", "en": "disease", "translit": "rog/vyadhi"},
+        {"hi": "ज्वर/बुखार", "en": "fever", "translit": "jvar/bukhar"},
+        {"hi": "मधुमेह", "en": "diabetes", "translit": "madhumeh"},
+        {"hi": "उच्च रक्तचाप", "en": "hypertension", "translit": "uchcha raktachap"},
+        {"hi": "निम्न रक्तचाप", "en": "hypotension", "translit": "nimna raktachap"},
+        {"hi": "पीलिया/कामला", "en": "jaundice", "translit": "piliya/kamala"},
+        {"hi": "क्षय रोग/तपेदिक", "en": "tuberculosis", "translit": "kshay rog/tapedik"},
+        {"hi": "हृदय रोग", "en": "heart disease", "translit": "hriday rog"},
+        {"hi": "कैंसर/कर्करोग", "en": "cancer", "translit": "cancer/karkarog"},
+        {"hi": "गठिया/वातरोग", "en": "arthritis", "translit": "gathiya/vatrog"},
+        {"hi": "अम्लपित्त", "en": "acidity", "translit": "amlapitta"},
+        {"hi": "अजीर्ण", "en": "indigestion", "translit": "ajirna"},
+        {"hi": "कब्ज/मलबंध", "en": "constipation", "translit": "kabz/malbandh"},
+        {"hi": "अतिसार/दस्त", "en": "diarrhea", "translit": "atisar/dast"},
+        {"hi": "बवासीर/अर्श", "en": "hemorrhoids", "translit": "bawasir/arsh"},
+        {"hi": "पांडु", "en": "anemia", "translit": "pandu"},
+        {"hi": "श्वास", "en": "asthma", "translit": "shvas"},
+        {"hi": "कास/खांसी", "en": "cough", "translit": "kas/khansi"},
+        {"hi": "प्रतिश्याय/जुकाम", "en": "cold", "translit": "pratishyay/jukam"},
+        {"hi": "अपस्मार/मिर्गी", "en": "epilepsy", "translit": "apasmar/mirgi"}
+      ]
+    },
+    "symptoms": {
+      "description": "लक्षण (Symptoms)",
+      "terms": [
+        {"hi": "दर्द/पीड़ा/वेदना", "en": "pain", "translit": "dard/peeda/vedana"},
+        {"hi": "सिरदर्द", "en": "headache", "translit": "sirdard"},
+        {"hi": "पेटदर्द", "en": "abdominal pain", "translit": "petdard"},
+        {"hi": "थकान/क्लांति", "en": "fatigue", "translit": "thakan/klanti"},
+        {"hi": "कमजोरी", "en": "weakness", "translit": "kamzori"},
+        {"hi": "मतली", "en": "nausea", "translit": "matli"},
+        {"hi": "उल्टी/वमन", "en": "vomiting", "translit": "ulti/vaman"},
+        {"hi": "चक्कर", "en": "dizziness", "translit": "chakkar"},
+        {"hi": "बेहोशी/मूर्च्छा", "en": "unconsciousness", "translit": "behoshi/murchha"},
+        {"hi": "पसीना/स्वेद", "en": "sweating", "translit": "pasina/swed"},
+        {"hi": "सांस फूलना", "en": "breathlessness", "translit": "saans phoolna"},
+        {"hi": "खुजली/कंडू", "en": "itching", "translit": "khujli/kandu"},
+        {"hi": "दाह/जलन", "en": "burning sensation", "translit": "dah/jalan"},
+        {"hi": "सूजन", "en": "swelling", "translit": "sujan"},
+        {"hi": "अनिद्रा", "en": "insomnia", "translit": "anidra"},
+        {"hi": "अरुचि", "en": "loss of appetite", "translit": "aruchi"}
+      ]
+    },
+    "medications": {
+      "description": "औषधियाँ (Medications)",
+      "terms": [
+        {"hi": "औषधि/दवा", "en": "medicine", "translit": "aushadhi/dava"},
+        {"hi": "चूर्ण", "en": "powder", "translit": "churna"},
+        {"hi": "वटी/गोली", "en": "tablet", "translit": "vati/goli"},
+        {"hi": "भस्म", "en": "calcined ash", "translit": "bhasma"},
+        {"hi": "आसव", "en": "fermented preparation (fresh)", "translit": "asava"},
+        {"hi": "अरिष्ट", "en": "fermented preparation (decoction)", "translit": "arishta"},
+        {"hi": "क्वाथ/काढ़ा", "en": "decoction", "translit": "kvath/kadha"},
+        {"hi": "अवलेह/लेह", "en": "confection", "translit": "avaleha/leh"},
+        {"hi": "घृत/घी", "en": "medicated ghee", "translit": "ghrita/ghee"},
+        {"hi": "तैल", "en": "medicated oil", "translit": "taila"},
+        {"hi": "त्रिफला", "en": "three fruits formula", "translit": "triphala"},
+        {"hi": "अश्वगंधा", "en": "Withania somnifera", "translit": "ashwagandha"},
+        {"hi": "शतावरी", "en": "Asparagus racemosus", "translit": "shatavari"},
+        {"hi": "ब्राह्मी", "en": "Bacopa monnieri", "translit": "brahmi"},
+        {"hi": "गुडूची/गिलोय", "en": "Tinospora cordifolia", "translit": "guduchi/giloy"},
+        {"hi": "तुलसी", "en": "holy basil", "translit": "tulsi"},
+        {"hi": "हल्दी/हरिद्रा", "en": "turmeric", "translit": "haldi/haridra"}
+      ]
+    },
+    "procedures": {
+      "description": "चिकित्सा प्रक्रियाएं (Medical Procedures)",
+      "terms": [
+        {"hi": "चिकित्सा", "en": "treatment", "translit": "chikitsa"},
+        {"hi": "निदान", "en": "diagnosis", "translit": "nidan"},
+        {"hi": "परीक्षण/जांच", "en": "examination", "translit": "parikshan/janch"},
+        {"hi": "शोधन", "en": "purification", "translit": "shodhana"},
+        {"hi": "शमन", "en": "palliative treatment", "translit": "shamana"},
+        {"hi": "पंचकर्म", "en": "five purification procedures", "translit": "panchakarma"},
+        {"hi": "वमन", "en": "therapeutic emesis", "translit": "vamana"},
+        {"hi": "विरेचन", "en": "therapeutic purgation", "translit": "virechana"},
+        {"hi": "वस्ति/बस्ति", "en": "medicated enema", "translit": "vasti/basti"},
+        {"hi": "नस्य", "en": "nasal administration", "translit": "nasya"},
+        {"hi": "रक्तमोक्षण", "en": "bloodletting", "translit": "raktamokshana"},
+        {"hi": "स्नेहन", "en": "oleation therapy", "translit": "snehana"},
+        {"hi": "स्वेदन", "en": "sudation therapy", "translit": "swedana"},
+        {"hi": "अभ्यंग", "en": "oil massage", "translit": "abhyanga"},
+        {"hi": "शिरोधारा", "en": "oil pouring on forehead", "translit": "shirodhara"},
+        {"hi": "शल्यकर्म", "en": "surgery", "translit": "shalyakarma"},
+        {"hi": "टीकाकरण", "en": "vaccination", "translit": "teekakaran"}
+      ]
+    },
+    "ayurveda": {
+      "description": "आयुर्वेदिक शब्दावली",
+      "tridosha": {
+        "description": "त्रिदोष (Three Doshas)",
+        "terms": [
+          {"hi": "दोष", "en": "constitutional factor", "translit": "dosha"},
+          {"hi": "वात", "en": "air element", "translit": "vata"},
+          {"hi": "पित्त", "en": "fire element", "translit": "pitta"},
+          {"hi": "कफ", "en": "water element", "translit": "kapha"},
+          {"hi": "प्रकृति", "en": "constitution", "translit": "prakriti"},
+          {"hi": "विकृति", "en": "current state", "translit": "vikriti"}
+        ]
+      },
+      "sapta_dhatu": {
+        "description": "सप्त धातु (Seven Tissues)",
+        "terms": [
+          {"hi": "धातु", "en": "tissue", "translit": "dhatu"},
+          {"hi": "रस", "en": "plasma", "translit": "rasa"},
+          {"hi": "रक्त", "en": "blood", "translit": "rakta"},
+          {"hi": "मांस", "en": "muscle", "translit": "mamsa"},
+          {"hi": "मेद", "en": "fat", "translit": "meda"},
+          {"hi": "अस्थि", "en": "bone", "translit": "asthi"},
+          {"hi": "मज्जा", "en": "marrow", "translit": "majja"},
+          {"hi": "शुक्र", "en": "reproductive tissue", "translit": "shukra"},
+          {"hi": "ओजस", "en": "vital essence", "translit": "ojas"}
+        ]
+      },
+      "mala": {
+        "description": "मल (Waste Products)",
+        "terms": [
+          {"hi": "मल", "en": "waste", "translit": "mala"},
+          {"hi": "पुरीष", "en": "feces", "translit": "pureesha"},
+          {"hi": "मूत्र", "en": "urine", "translit": "mutra"},
+          {"hi": "स्वेद", "en": "sweat", "translit": "sweda"}
+        ]
+      },
+      "agni": {
+        "description": "अग्नि (Digestive Fire)",
+        "terms": [
+          {"hi": "अग्नि", "en": "digestive fire", "translit": "agni"},
+          {"hi": "जठराग्नि", "en": "gastric fire", "translit": "jatharagni"},
+          {"hi": "आम", "en": "undigested toxin", "translit": "ama"},
+          {"hi": "पाचन", "en": "digestion", "translit": "pachana"}
+        ]
+      },
+      "pancha_mahabhuta": {
+        "description": "पंच महाभूत (Five Elements)",
+        "terms": [
+          {"hi": "पृथ्वी", "en": "earth", "translit": "prithvi"},
+          {"hi": "जल/आप", "en": "water", "translit": "jala/apa"},
+          {"hi": "अग्नि/तेज", "en": "fire", "translit": "agni/teja"},
+          {"hi": "वायु", "en": "air", "translit": "vayu"},
+          {"hi": "आकाश", "en": "ether", "translit": "akasha"}
+        ]
+      },
+      "shad_rasa": {
+        "description": "षड् रस (Six Tastes)",
+        "terms": [
+          {"hi": "मधुर", "en": "sweet", "translit": "madhura"},
+          {"hi": "अम्ल", "en": "sour", "translit": "amla"},
+          {"hi": "लवण", "en": "salty", "translit": "lavana"},
+          {"hi": "कटु", "en": "pungent", "translit": "katu"},
+          {"hi": "तिक्त", "en": "bitter", "translit": "tikta"},
+          {"hi": "कषाय", "en": "astringent", "translit": "kashaya"}
+        ]
+      },
+      "ashtanga": {
+        "description": "अष्टांग आयुर्वेद (Eight Branches)",
+        "terms": [
+          {"hi": "कायचिकित्सा", "en": "internal medicine", "translit": "kayachikitsa"},
+          {"hi": "शल्यतंत्र", "en": "surgery", "translit": "shalya tantra"},
+          {"hi": "शालाक्यतंत्र", "en": "ENT & ophthalmology", "translit": "shalakya tantra"},
+          {"hi": "कौमारभृत्य", "en": "pediatrics", "translit": "kaumarabhritya"},
+          {"hi": "अगदतंत्र", "en": "toxicology", "translit": "agada tantra"},
+          {"hi": "भूतविद्या", "en": "psychiatry", "translit": "bhutavidya"},
+          {"hi": "रसायनतंत्र", "en": "rejuvenation", "translit": "rasayana tantra"},
+          {"hi": "वाजीकरण", "en": "aphrodisiac therapy", "translit": "vajikarana"}
+        ]
+      }
+    },
+    "abbreviations": {
+      "OPD": {"hi": "बाह्य रोगी विभाग", "en": "Outpatient Department"},
+      "IPD": {"hi": "अंतःरोगी विभाग", "en": "Inpatient Department"},
+      "ICU": {"hi": "गहन चिकित्सा कक्ष", "en": "Intensive Care Unit"},
+      "ECG": {"hi": "हृदय विद्युत आलेख", "en": "Electrocardiogram"},
+      "BP": {"hi": "रक्तचाप", "en": "Blood Pressure"},
+      "HIV": {"hi": "मानव प्रतिरक्षा न्यूनता विषाणु", "en": "Human Immunodeficiency Virus"},
+      "AIDS": {"hi": "उपार्जित प्रतिरक्षा अपूर्णता संलक्षण", "en": "Acquired Immunodeficiency Syndrome"},
+      "TB": {"hi": "क्षय रोग", "en": "Tuberculosis"},
+      "DM": {"hi": "मधुमेह", "en": "Diabetes Mellitus"},
+      "AYUSH": {"hi": "आयुर्वेद, योग, प्राकृतिक चिकित्सा, यूनानी, सिद्ध, होम्योपैथी", "en": "Traditional Medicine Systems"}
+    }
+  }
+}

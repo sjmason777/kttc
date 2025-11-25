@@ -50,9 +50,37 @@ kttc check SOURCE [TRANSLATIONS...] [OPTIONS]
 
 #### Output & Verbosity
 
-- `--format text|json|markdown|html` - Output format (overrides auto-detection)
+- `--format text|json|markdown|html|xlsx` - Output format (overrides auto-detection)
 - `--verbose` - Show detailed output
 - `--demo` - Demo mode (no API calls, simulated responses)
+
+#### MQM Profiles (NEW in v1.3)
+
+- `--profile NAME` - Use MQM profile: `default`, `strict`, `minimal`, `legal`, `medical`, `marketing`, `literary`, `technical`, or path to custom YAML profile
+
+Built-in profiles:
+
+| Profile | Agents | Threshold | Use Case |
+|---------|--------|-----------|----------|
+| `default` | accuracy, fluency, terminology | 95% | General translation QA |
+| `strict` | accuracy, fluency, terminology, hallucination, context | 98% | High-stakes content |
+| `minimal` | accuracy, fluency, terminology | 90% | Quick checks |
+| `legal` | accuracy, terminology, context, hallucination | 97% | Legal documents |
+| `medical` | accuracy, terminology, hallucination, context | 98% | Medical/pharmaceutical |
+| `marketing` | fluency, accuracy, context | 93% | Marketing/creative |
+| `literary` | style_preservation, accuracy, context | 88% | Literary works |
+| `technical` | accuracy, terminology, fluency, hallucination | 97% | Technical documentation |
+
+#### Agent Selection (NEW in v1.3)
+
+- `--agents PRESET|LIST` - Agent preset or comma-separated list
+
+Presets:
+- `minimal` - accuracy, fluency (2 agents)
+- `default` - accuracy, fluency, terminology (3 agents)
+- `full` - accuracy, fluency, terminology, hallucination, context (5 agents)
+
+Available agents: `accuracy`, `fluency`, `terminology`, `hallucination`, `context`, `style_preservation`, `fluency_russian`, `fluency_chinese`, `fluency_hindi`, `fluency_persian`, `fluency_english`
 
 #### Performance & Cost (NEW in v1.1)
 
@@ -177,6 +205,52 @@ Output:
 ```
 ✓ Translation passed quality check (MQM Score: 96.5)
 💰 Tokens: 1,245 (in: 890, out: 355) | Calls: 5 | Cost: $0.0234
+```
+
+**Use MQM profile for legal documents:**
+
+```bash
+kttc check contract.txt contract_ru.txt \
+  --source-lang en \
+  --target-lang ru \
+  --profile legal
+```
+
+**Use medical profile with XLSX output:**
+
+```bash
+kttc check medical.txt medical_es.txt \
+  --source-lang en \
+  --target-lang es \
+  --profile medical \
+  --output report.xlsx
+```
+
+**Select specific agents:**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --agents accuracy,terminology,hallucination
+```
+
+**Use full agent preset:**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang zh \
+  --agents full
+```
+
+**Custom YAML profile:**
+
+```bash
+kttc check source.txt translation.txt \
+  --source-lang en \
+  --target-lang ru \
+  --profile ./profiles/custom.yaml
 ```
 
 ---

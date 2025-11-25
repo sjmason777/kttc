@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "language": "en",
+    "language_name": "English",
+    "glossary_type": "Medical Terminology Dictionary",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "Comprehensive medical terminology for translation quality checking",
+    "sources": [
+      "WHO ICD-11",
+      "FDA Drugs Glossary",
+      "NHS Terminology and Classifications",
+      "SNOMED CT",
+      "MedlinePlus",
+      "AHRQ PSNet"
+    ],
+    "total_terms": 215
+  },
+  "categories": {
+    "anatomy_body_systems": [
+      "abdomen", "aorta", "artery", "bladder", "bone marrow", "bronchi",
+      "capillary", "cardiac", "cartilage", "cerebral", "cervix", "colon",
+      "cornea", "diaphragm", "duodenum", "esophagus", "femur", "gallbladder",
+      "hepatic", "intestine", "kidney", "larynx", "ligament", "liver",
+      "lymph node", "pancreas", "pelvis", "pericardium", "peritoneum",
+      "pharynx", "pleura", "prostate", "pulmonary", "renal", "retina",
+      "spleen", "sternum", "tendon", "thorax", "thyroid", "trachea",
+      "ureter", "urethra", "uterus", "vein", "ventricle"
+    ],
+    "diseases_conditions": [
+      "anemia", "angina", "arrhythmia", "arthritis", "asthma",
+      "atrial fibrillation", "benign", "bronchitis", "carcinoma", "cirrhosis",
+      "congestive heart failure", "COPD", "coronary artery disease",
+      "Crohn's disease", "cyst", "deep vein thrombosis", "dementia",
+      "diabetes mellitus", "edema", "embolism", "emphysema", "epilepsy",
+      "fibrillation", "fibromyalgia", "gastritis", "glaucoma", "gout",
+      "hemorrhage", "hepatitis", "hernia", "hyperlipidemia", "hypertension",
+      "hypotension", "hypothyroidism", "hyperthyroidism", "infarction",
+      "ischemia", "leukemia", "lymphoma", "malignant", "melanoma",
+      "metastasis", "multiple sclerosis", "myocardial infarction", "neoplasm",
+      "nephritis", "neuropathy", "osteoarthritis", "osteoporosis",
+      "pancreatitis", "Parkinson's disease", "pericarditis", "pleurisy",
+      "pneumonia", "psoriasis", "pulmonary embolism", "renal failure",
+      "rheumatoid arthritis", "sarcoma", "sepsis", "stenosis", "stroke",
+      "thrombosis", "tumor", "ulcer", "ulcerative colitis"
+    ],
+    "symptoms_signs": [
+      "abdominal pain", "anorexia", "apnea", "bradycardia", "cyanosis",
+      "diaphoresis", "diarrhea", "diplopia", "dysphagia", "dyspnea",
+      "dysuria", "fatigue", "fever", "hematuria", "hemoptysis",
+      "hyperglycemia", "hypoglycemia", "jaundice", "lethargy", "malaise",
+      "nausea", "palpitations", "paresthesia", "pruritus", "pyrexia",
+      "syncope", "tachycardia", "tinnitus", "vertigo", "vomiting"
+    ],
+    "medications_dosages": [
+      "adverse reaction", "analgesic", "anesthesia", "antibiotic",
+      "anticoagulant", "antidepressant", "antiemetic", "antihistamine",
+      "anti-inflammatory", "antipsychotic", "antipyretic", "brand name",
+      "contraindication", "dosage", "dose", "drug interaction", "generic name",
+      "half-life", "immunosuppressant", "indication", "infusion", "injection",
+      "loading dose", "maintenance dose", "maximum dose", "milligram",
+      "microgram", "NSAID", "overdose", "pharmacokinetics", "placebo",
+      "prescription", "sedative", "side effect", "therapeutic", "titration",
+      "toxicity", "vaccine", "withdrawal"
+    ],
+    "procedures_tests": [
+      "amniocentesis", "angiography", "angioplasty", "appendectomy",
+      "arthroscopy", "biopsy", "blood transfusion", "bone marrow aspiration",
+      "bronchoscopy", "bypass surgery", "catheterization", "chemotherapy",
+      "cholecystectomy", "colonoscopy", "coronary angiogram", "CT scan",
+      "dialysis", "echocardiogram", "electrocardiogram", "electromyography",
+      "endoscopy", "gastroscopy", "hemodialysis", "hysterectomy",
+      "laparoscopy", "lumbar puncture", "mammography", "mastectomy", "MRI",
+      "pacemaker implantation", "PET scan", "phlebotomy", "radiation therapy",
+      "resection", "stent placement", "transplantation", "ultrasound",
+      "urinalysis", "X-ray"
+    ],
+    "medical_specialties": [
+      "anesthesiology", "cardiology", "dermatology", "emergency medicine",
+      "endocrinology", "gastroenterology", "geriatrics", "gynecology",
+      "hematology", "immunology", "infectious disease", "internal medicine",
+      "nephrology", "neurology", "obstetrics", "oncology", "ophthalmology",
+      "orthopedics", "otolaryngology", "pathology", "pediatrics", "psychiatry",
+      "pulmonology", "radiology", "rheumatology", "surgery", "urology"
+    ],
+    "abbreviations": {
+      "ABG": "Arterial Blood Gas",
+      "ACE": "Angiotensin-Converting Enzyme",
+      "AIDS": "Acquired Immunodeficiency Syndrome",
+      "BID": "Twice a Day (bis in die)",
+      "BMI": "Body Mass Index",
+      "BP": "Blood Pressure",
+      "BUN": "Blood Urea Nitrogen",
+      "CABG": "Coronary Artery Bypass Graft",
+      "CBC": "Complete Blood Count",
+      "CHF": "Congestive Heart Failure",
+      "CNS": "Central Nervous System",
+      "COPD": "Chronic Obstructive Pulmonary Disease",
+      "CPR": "Cardiopulmonary Resuscitation",
+      "CT": "Computed Tomography",
+      "CVA": "Cerebrovascular Accident",
+      "DNR": "Do Not Resuscitate",
+      "DVT": "Deep Vein Thrombosis",
+      "ECG": "Electrocardiogram",
+      "ED": "Emergency Department",
+      "EEG": "Electroencephalogram",
+      "GI": "Gastrointestinal",
+      "HIV": "Human Immunodeficiency Virus",
+      "HR": "Heart Rate",
+      "HTN": "Hypertension",
+      "ICU": "Intensive Care Unit",
+      "IM": "Intramuscular",
+      "IV": "Intravenous",
+      "MI": "Myocardial Infarction",
+      "MRI": "Magnetic Resonance Imaging",
+      "NPO": "Nothing by Mouth",
+      "NSAID": "Non-Steroidal Anti-Inflammatory Drug",
+      "PRN": "As Needed (pro re nata)",
+      "PT": "Prothrombin Time",
+      "RBC": "Red Blood Cell",
+      "STAT": "Immediately (statim)",
+      "TID": "Three Times a Day",
+      "UTI": "Urinary Tract Infection",
+      "WBC": "White Blood Cell"
+    },
+    "clinical_terminology": [
+      "acute", "chronic", "comorbidity", "diagnosis", "differential diagnosis",
+      "etiology", "idiopathic", "morbidity", "mortality", "palliative",
+      "pathogenesis", "prognosis", "prophylaxis", "remission", "relapse",
+      "sequela", "symptomatic", "asymptomatic", "bilateral", "unilateral",
+      "congenital", "acquired", "hereditary", "iatrogenic", "nosocomial",
+      "primary", "secondary", "systemic", "localized", "invasive",
+      "non-invasive", "outpatient", "inpatient", "preoperative", "postoperative"
+    ]
+  },
+  "critical_translation_pairs": [
+    {"term1": "hypertension", "term2": "hypotension", "risk": "opposite conditions"},
+    {"term1": "hyperglycemia", "term2": "hypoglycemia", "risk": "opposite conditions"},
+    {"term1": "mg", "term2": "mcg", "risk": "1000x dosage difference"},
+    {"term1": "benign", "term2": "malignant", "risk": "cancer vs non-cancer"},
+    {"term1": "acute", "term2": "chronic", "risk": "disease progression"}
+  ]
+}

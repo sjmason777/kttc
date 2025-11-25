@@ -224,6 +224,12 @@ class QAReport(BaseModel):
         "(variance, std_dev, agent_weights, etc.)",
     )
 
+    # Cost tracking fields
+    usage_stats: dict[str, Any] | None = Field(
+        default=None,
+        description="Token usage and cost statistics",
+    )
+
     @property
     def error_count(self) -> int:
         """Total number of errors found."""

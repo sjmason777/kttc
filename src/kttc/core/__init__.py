@@ -18,18 +18,30 @@ from kttc.core.batch_processor import BatchFileParser, BatchGrouper, BatchTransl
 from kttc.core.glossary import Glossary, GlossaryManager, GlossaryMetadata, TermEntry
 from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
 from kttc.core.mqm import MQMScorer
+from kttc.core.profiles import (
+    BUILTIN_PROFILES,
+    MQMProfile,
+    get_profile_info,
+    list_available_profiles,
+    load_profile,
+)
 
 __all__ = [
     "BatchFileParser",
     "BatchGrouper",
     "BatchTranslation",
+    "BUILTIN_PROFILES",
     "ErrorAnnotation",
     "ErrorSeverity",
     "Glossary",
     "GlossaryManager",
     "GlossaryMetadata",
+    "MQMProfile",
     "MQMScorer",
     "QAReport",
     "TermEntry",
     "TranslationTask",
+    "get_profile_info",
+    "list_available_profiles",
+    "load_profile",
 ]

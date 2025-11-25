@@ -1,0 +1,178 @@
+{
+  "metadata": {
+    "language": "hi",
+    "language_name": "Hindi",
+    "glossary_type": "लॉजिस्टिक्स शब्दावली",
+    "version": "1.0.0",
+    "created": "2025-11-25",
+    "description": "Comprehensive Hindi logistics terminology including Indian companies and local practices",
+    "sources": [
+      "भारतीय लॉजिस्टिक्स कंपनियां",
+      "डहलीवेरी",
+      "ब्लू डार्ट",
+      "भारतीय रेलवे माल ढुलाई",
+      "भारतीय रिज़र्व बैंक लॉजिस्टिक्स गाइडलाइन्स"
+    ],
+    "total_terms": 245
+  },
+  "categories": {
+    "transportation": [
+      {"hi": "परिवहन", "en": "Transportation"},
+      {"hi": "माल ढुलाई", "en": "Freight transport"},
+      {"hi": "सड़क परिवहन", "en": "Road transport"},
+      {"hi": "रेल परिवहन", "en": "Rail transport"},
+      {"hi": "समुद्री परिवहन", "en": "Sea transport"},
+      {"hi": "हवाई माल ढुलाई", "en": "Air freight"},
+      {"hi": "मल्टीमॉडल परिवहन", "en": "Multimodal transport"},
+      {"hi": "ट्रक", "en": "Truck"},
+      {"hi": "कंटेनर", "en": "Container"},
+      {"hi": "पूर्ण कंटेनर लोड", "en": "Full Container Load (FCL)"},
+      {"hi": "आंशिक कंटेनर लोड", "en": "Less than Container Load (LCL)"},
+      {"hi": "माल वाहक", "en": "Carrier"},
+      {"hi": "भेजने वाला", "en": "Shipper"},
+      {"hi": "प्राप्तकर्ता", "en": "Consignee"}
+    ],
+    "warehouse_storage": [
+      {"hi": "गोदाम", "en": "Warehouse"},
+      {"hi": "भंडारण", "en": "Storage"},
+      {"hi": "गोदाम प्रबंधन", "en": "Warehouse management"},
+      {"hi": "वितरण केंद्र", "en": "Distribution center"},
+      {"hi": "माल प्राप्ति", "en": "Receiving"},
+      {"hi": "इनबाउंड", "en": "Inbound"},
+      {"hi": "आउटबाउंड", "en": "Outbound"},
+      {"hi": "पिकिंग", "en": "Picking"},
+      {"hi": "पैकिंग", "en": "Packing"},
+      {"hi": "शिपिंग", "en": "Shipping"},
+      {"hi": "क्रॉस-डॉकिंग", "en": "Cross-docking"},
+      {"hi": "पैलेट", "en": "Pallet"},
+      {"hi": "रैक", "en": "Rack"},
+      {"hi": "फोर्कलिफ्ट", "en": "Forklift"},
+      {"hi": "स्टॉक", "en": "Stock"},
+      {"hi": "इन्वेंटरी", "en": "Inventory"}
+    ],
+    "supply_chain": [
+      {"hi": "आपूर्ति श्रृंखला", "en": "Supply chain"},
+      {"hi": "आपूर्ति श्रृंखला प्रबंधन", "en": "Supply chain management"},
+      {"hi": "लॉजिस्टिक्स", "en": "Logistics"},
+      {"hi": "तृतीय-पक्ष लॉजिस्टिक्स", "en": "Third-party logistics (3PL)"},
+      {"hi": "चतुर्थ-पक्ष लॉजिस्टिक्स", "en": "Fourth-party logistics (4PL)"},
+      {"hi": "माल अग्रेषण", "en": "Freight forwarding"},
+      {"hi": "माल अग्रेषक", "en": "Freight forwarder"}
+    ],
+    "ecommerce_logistics": [
+      {"hi": "ई-कॉमर्स लॉजिस्टिक्स", "en": "E-commerce logistics"},
+      {"hi": "ऑर्डर पूर्ति", "en": "Order fulfillment"},
+      {"hi": "अंतिम मील डिलीवरी", "en": "Last mile delivery"},
+      {"hi": "होम डिलीवरी", "en": "Home delivery"},
+      {"hi": "डोर-टू-डोर डिलीवरी", "en": "Door-to-door delivery"},
+      {"hi": "सेल्फ-पिकअप", "en": "Self-pickup"},
+      {"hi": "पिकअप पॉइंट", "en": "Pickup point"},
+      {"hi": "कैश ऑन डिलीवरी (COD)", "en": "Cash on Delivery"},
+      {"hi": "रिटर्न", "en": "Returns"},
+      {"hi": "एक्सचेंज", "en": "Exchange"},
+      {"hi": "रिवर्स लॉजिस्टिक्स", "en": "Reverse logistics"}
+    ],
+    "indian_logistics_companies": [
+      {"hi": "डहलीवेरी", "en": "Delhivery"},
+      {"hi": "ब्लू डार्ट", "en": "Blue Dart"},
+      {"hi": "DTDC", "en": "DTDC"},
+      {"hi": "इंडिया पोस्ट", "en": "India Post"},
+      {"hi": "एकार्ट लॉजिस्टिक्स", "en": "Ekart Logistics"},
+      {"hi": "शैडोफैक्स", "en": "Shadowfax"},
+      {"hi": "रिवर्सलॉजिक्स", "en": "Reverse Logistics"},
+      {"hi": "फर्स्टफ्लाइट कूरियर", "en": "Firstflight Courier"},
+      {"hi": "भारतीय रेलवे माल ढुलाई", "en": "Indian Railways Freight"}
+    ],
+    "delivery_tracking": [
+      {"hi": "ट्रैकिंग", "en": "Tracking"},
+      {"hi": "शिपमेंट ट्रैकिंग", "en": "Shipment tracking"},
+      {"hi": "ट्रैकिंग नंबर", "en": "Tracking number"},
+      {"hi": "AWB नंबर", "en": "Airway Bill number"},
+      {"hi": "पॉड (डिलीवरी का प्रमाण)", "en": "Proof of Delivery (POD)"},
+      {"hi": "रियल-टाइम ट्रैकिंग", "en": "Real-time tracking"},
+      {"hi": "जीपीएस ट्रैकिंग", "en": "GPS tracking"},
+      {"hi": "डिलीवरी स्टेटस", "en": "Delivery status"},
+      {"hi": "इन-ट्रांजिट", "en": "In transit"},
+      {"hi": "डिलीवर किया गया", "en": "Delivered"}
+    ],
+    "inventory_management": [
+      {"hi": "इन्वेंटरी प्रबंधन", "en": "Inventory management"},
+      {"hi": "स्टॉक प्रबंधन", "en": "Stock management"},
+      {"hi": "इन्वेंटरी टर्नओवर", "en": "Inventory turnover"},
+      {"hi": "सुरक्षा स्टॉक", "en": "Safety stock"},
+      {"hi": "रीऑर्डर पॉइंट", "en": "Reorder point"},
+      {"hi": "न्यूनतम स्टॉक स्तर", "en": "Minimum stock level"},
+      {"hi": "अधिकतम स्टॉक स्तर", "en": "Maximum stock level"},
+      {"hi": "स्टॉक आउट", "en": "Stock out"},
+      {"hi": "ओवरस्टॉक", "en": "Overstock"},
+      {"hi": "डेड स्टॉक", "en": "Dead stock"},
+      {"hi": "SKU (स्टॉक कीपिंग यूनिट)", "en": "Stock Keeping Unit"}
+    ],
+    "packaging": [
+      {"hi": "पैकेजिंग", "en": "Packaging"},
+      {"hi": "पैकिंग सामग्री", "en": "Packing material"},
+      {"hi": "बॉक्स", "en": "Box"},
+      {"hi": "कार्टन", "en": "Carton"},
+      {"hi": "क्रेट", "en": "Crate"},
+      {"hi": "पैलेट", "en": "Pallet"},
+      {"hi": "बबल रैप", "en": "Bubble wrap"},
+      {"hi": "टेप", "en": "Tape"},
+      {"hi": "लेबल", "en": "Label"},
+      {"hi": "बारकोड", "en": "Barcode"}
+    ],
+    "documentation": [
+      {"hi": "दस्तावेज़", "en": "Documentation"},
+      {"hi": "बिल ऑफ लेडिंग", "en": "Bill of Lading"},
+      {"hi": "एयरवे बिल", "en": "Airway Bill"},
+      {"hi": "पैकिंग लिस्ट", "en": "Packing list"},
+      {"hi": "कमर्शियल इनवॉइस", "en": "Commercial Invoice"},
+      {"hi": "सीमा शुल्क घोषणा", "en": "Customs declaration"},
+      {"hi": "डिलीवरी ऑर्डर", "en": "Delivery order"},
+      {"hi": "शिपिंग दस्तावेज़", "en": "Shipping documents"},
+      {"hi": "मूल देश प्रमाणपत्र", "en": "Certificate of Origin"}
+    ],
+    "cold_chain": [
+      {"hi": "कोल्ड चेन लॉजिस्टिक्स", "en": "Cold chain logistics"},
+      {"hi": "रेफ्रिजरेटेड ट्रांसपोर्ट", "en": "Refrigerated transport"},
+      {"hi": "कोल्ड स्टोरेज", "en": "Cold storage"},
+      {"hi": "तापमान नियंत्रण", "en": "Temperature control"},
+      {"hi": "चिल्ड कार्गो", "en": "Chilled cargo"},
+      {"hi": "फ्रोजन कार्गो", "en": "Frozen cargo"}
+    ],
+    "incoterms": [
+      {"hi": "अंतर्राष्ट्रीय व्यापार शर्तें", "en": "Incoterms"},
+      {"hi": "फैक्ट्री से डिलीवरी (EXW)", "en": "Ex Works"},
+      {"hi": "फ्री कैरियर (FCA)", "en": "Free Carrier"},
+      {"hi": "शिप पर मुफ्त (FOB)", "en": "Free On Board"},
+      {"hi": "लागत और माल ढुलाई (CFR)", "en": "Cost and Freight"},
+      {"hi": "लागत, बीमा और माल ढुलाई (CIF)", "en": "Cost Insurance and Freight"},
+      {"hi": "गंतव्य पर डिलीवरी (DAP)", "en": "Delivered At Place"},
+      {"hi": "शुल्क भुगतान के बाद डिलीवरी (DDP)", "en": "Delivered Duty Paid"}
+    ],
+    "logistics_technology": [
+      {"hi": "गोदाम प्रबंधन प्रणाली (WMS)", "en": "Warehouse Management System"},
+      {"hi": "परिवहन प्रबंधन प्रणाली (TMS)", "en": "Transportation Management System"},
+      {"hi": "ऑर्डर प्रबंधन प्रणाली (OMS)", "en": "Order Management System"},
+      {"hi": "इलेक्ट्रॉनिक डेटा इंटरचेंज (EDI)", "en": "Electronic Data Interchange"},
+      {"hi": "RFID तकनीक", "en": "RFID technology"},
+      {"hi": "बारकोड स्कैनिंग", "en": "Barcode scanning"},
+      {"hi": "स्वचालन", "en": "Automation"},
+      {"hi": "रोबोटिक्स", "en": "Robotics"}
+    ],
+    "abbreviations": {
+      "3PL": "तृतीय-पक्ष लॉजिस्टिक्स",
+      "4PL": "चतुर्थ-पक्ष लॉजिस्टिक्स",
+      "COD": "कैश ऑन डिलीवरी",
+      "POD": "प्रूफ ऑफ डिलीवरी",
+      "AWB": "एयरवे बिल",
+      "FCL": "पूर्ण कंटेनर लोड",
+      "LCL": "आंशिक कंटेनर लोड",
+      "SKU": "स्टॉक कीपिंग यूनिट",
+      "WMS": "गोदाम प्रबंधन प्रणाली",
+      "TMS": "परिवहन प्रबंधन प्रणाली",
+      "OMS": "ऑर्डर प्रबंधन प्रणाली",
+      "EDI": "इलेक्ट्रॉनिक डेटा इंटरचेंज",
+      "RFID": "रेडियो फ्रीक्वेंसी आइडेंटिफिकेशन"
+    }
+  }
+}

@@ -28,6 +28,7 @@ class MockLLMProvider(BaseLLMProvider):
             response: Default JSON response to return
             **kwargs: Additional arguments for customization
         """
+        super().__init__()
         self.response = response
         self.call_count = 0
         self.last_prompt: str | None = None

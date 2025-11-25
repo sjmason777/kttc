@@ -132,7 +132,7 @@ class TestOrchestratorEvaluation:
 
         # Assert
         assert orchestrator.quality_threshold == 80.0
-        assert report.mqm_score >= report.mqm_score  # Always true, but documents behavior
+        assert report.mqm_score >= orchestrator.quality_threshold  # Should pass threshold
 
 
 @pytest.mark.unit

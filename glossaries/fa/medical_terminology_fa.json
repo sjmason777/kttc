@@ -1,0 +1,247 @@
+{
+  "metadata": {
+    "language": "fa",
+    "language_name": "Persian",
+    "script": "Arabic",
+    "glossary_type": "واژه‌نامه اصطلاحات پزشکی",
+    "version": "1.0.0",
+    "created": "2025-11-24",
+    "description": "Persian medical terminology including Iranian Traditional Medicine",
+    "sources": [
+      "فرهنگستان زبان و ادب فارسی",
+      "سامانه واژه‌یار",
+      "وزارت بهداشت ایران",
+      "طب سنتی ایرانی",
+      "قانون ابن سینا"
+    ],
+    "total_terms": 215
+  },
+  "categories": {
+    "anatomy": {
+      "description": "آناتومی و اندام‌ها",
+      "terms": [
+        {"fa": "قلب", "en": "heart", "translit": "qalb"},
+        {"fa": "ریه", "en": "lung", "translit": "riye"},
+        {"fa": "کبد/جگر", "en": "liver", "translit": "kabed/jegar", "note": "formal/colloquial"},
+        {"fa": "کلیه/قلوه", "en": "kidney", "translit": "kolye/gholve", "note": "formal/colloquial"},
+        {"fa": "معده", "en": "stomach", "translit": "me'de"},
+        {"fa": "روده", "en": "intestine", "translit": "rude"},
+        {"fa": "روده بزرگ", "en": "large intestine", "translit": "rude bozorg"},
+        {"fa": "روده کوچک", "en": "small intestine", "translit": "rude kuchak"},
+        {"fa": "طحال", "en": "spleen", "translit": "tehal"},
+        {"fa": "لوزالمعده/پانکراس", "en": "pancreas", "translit": "lowz-ol-me'de"},
+        {"fa": "کیسه صفرا", "en": "gallbladder", "translit": "kise-ye safra"},
+        {"fa": "مثانه", "en": "bladder", "translit": "masane"},
+        {"fa": "مغز", "en": "brain", "translit": "maghz"},
+        {"fa": "نخاع", "en": "spinal cord", "translit": "nokha'"},
+        {"fa": "شریان/سرخ‌رگ", "en": "artery", "translit": "sharyan/sorkh-rag"},
+        {"fa": "ورید/سیاه‌رگ", "en": "vein", "translit": "varid/siyah-rag"},
+        {"fa": "استخوان", "en": "bone", "translit": "ostokhan"},
+        {"fa": "عضله/ماهیچه", "en": "muscle", "translit": "azale/mahiche"},
+        {"fa": "پوست", "en": "skin", "translit": "pust"},
+        {"fa": "خون", "en": "blood", "translit": "khun"},
+        {"fa": "چشم", "en": "eye", "translit": "chashm"},
+        {"fa": "گوش", "en": "ear", "translit": "gush"},
+        {"fa": "بینی", "en": "nose", "translit": "bini"},
+        {"fa": "زبان", "en": "tongue", "translit": "zaban"},
+        {"fa": "حنجره", "en": "larynx", "translit": "hanjare"},
+        {"fa": "رحم", "en": "uterus", "translit": "rahem"},
+        {"fa": "ستون فقرات", "en": "spine", "translit": "sotun-e faqarat"}
+      ]
+    },
+    "diseases": {
+      "description": "بیماری‌ها و اختلالات",
+      "terms": [
+        {"fa": "بیماری", "en": "disease", "translit": "bimari"},
+        {"fa": "تب", "en": "fever", "translit": "tab"},
+        {"fa": "دیابت/قند خون", "en": "diabetes", "translit": "diyabet/qand-e khun"},
+        {"fa": "فشار خون بالا", "en": "hypertension", "translit": "feshar-e khun-e bala"},
+        {"fa": "فشار خون پایین", "en": "hypotension", "translit": "feshar-e khun-e payin"},
+        {"fa": "یرقان/زردی", "en": "jaundice", "translit": "yaraqan/zardi", "note": "formal/colloquial"},
+        {"fa": "سل", "en": "tuberculosis", "translit": "sel"},
+        {"fa": "سرطان", "en": "cancer", "translit": "saratan"},
+        {"fa": "تودینه", "en": "tumor", "translit": "tudine", "note": "فرهنگستان approved"},
+        {"fa": "سکته قلبی", "en": "heart attack", "translit": "sekte-ye qalbi"},
+        {"fa": "سکته مغزی", "en": "stroke", "translit": "sekte-ye maghzi"},
+        {"fa": "ذات‌الریه/سینه‌پهلو", "en": "pneumonia", "translit": "zat-or-riye", "note": "formal/colloquial"},
+        {"fa": "برونشیت", "en": "bronchitis", "translit": "bronshit"},
+        {"fa": "آسم", "en": "asthma", "translit": "asm"},
+        {"fa": "کم‌خونی", "en": "anemia", "translit": "kam-khuni"},
+        {"fa": "سیروز کبدی", "en": "liver cirrhosis", "translit": "siroz-e kabedi"},
+        {"fa": "ورم معده", "en": "gastritis", "translit": "varam-e me'de"},
+        {"fa": "زخم معده", "en": "gastric ulcer", "translit": "zakhm-e me'de"},
+        {"fa": "نارسایی کلیه", "en": "renal failure", "translit": "narasayi-e kolye"},
+        {"fa": "آرتروز", "en": "arthritis", "translit": "artroz"},
+        {"fa": "پوکی استخوان", "en": "osteoporosis", "translit": "puki-e ostokhan", "note": "فرهنگستان approved"},
+        {"fa": "صرع", "en": "epilepsy", "translit": "sar'"},
+        {"fa": "افسردگی", "en": "depression", "translit": "afsordegi"},
+        {"fa": "عفونت", "en": "infection", "translit": "ofonat"}
+      ]
+    },
+    "symptoms": {
+      "description": "علائم و نشانه‌ها",
+      "terms": [
+        {"fa": "درد", "en": "pain", "translit": "dard"},
+        {"fa": "سردرد", "en": "headache", "translit": "sardard"},
+        {"fa": "شکم‌درد", "en": "abdominal pain", "translit": "shekam-dard"},
+        {"fa": "سرفه", "en": "cough", "translit": "sorfe"},
+        {"fa": "تنگی نفس", "en": "dyspnea", "translit": "tangi-e nafas"},
+        {"fa": "تهوع", "en": "nausea", "translit": "tahavo'"},
+        {"fa": "استفراغ", "en": "vomiting", "translit": "estefrag"},
+        {"fa": "اسهال", "en": "diarrhea", "translit": "es-hal"},
+        {"fa": "یبوست", "en": "constipation", "translit": "yobusat"},
+        {"fa": "تورم/ورم", "en": "edema", "translit": "tavorrom/varam"},
+        {"fa": "سرگیجه", "en": "dizziness", "translit": "sargije"},
+        {"fa": "غش/بیهوشی", "en": "fainting", "translit": "ghash/bihushi"},
+        {"fa": "خستگی", "en": "fatigue", "translit": "khastegi"},
+        {"fa": "ضعف", "en": "weakness", "translit": "za'f"},
+        {"fa": "بی‌خوابی", "en": "insomnia", "translit": "bikhabi"},
+        {"fa": "خارش", "en": "itching", "translit": "kharesh"},
+        {"fa": "سوزش", "en": "burning", "translit": "suzesh"},
+        {"fa": "خونریزی", "en": "bleeding", "translit": "khunrizi"},
+        {"fa": "تپش قلب", "en": "palpitation", "translit": "tapesh-e qalb"},
+        {"fa": "تعریق/عرق کردن", "en": "sweating", "translit": "ta'riq"}
+      ]
+    },
+    "medications": {
+      "description": "داروها و دوزها",
+      "terms": [
+        {"fa": "دارو", "en": "medicine", "translit": "daru"},
+        {"fa": "دوز/مقدار", "en": "dosage", "translit": "doz/meqdar"},
+        {"fa": "قرص", "en": "tablet", "translit": "qors"},
+        {"fa": "کپسول", "en": "capsule", "translit": "kapsul"},
+        {"fa": "آمپول", "en": "ampoule", "translit": "ampul"},
+        {"fa": "تزریق", "en": "injection", "translit": "tazriq"},
+        {"fa": "شربت", "en": "syrup", "translit": "sharbat"},
+        {"fa": "پماد", "en": "ointment", "translit": "pomad"},
+        {"fa": "قطره", "en": "drop", "translit": "qatre"},
+        {"fa": "آنتی‌بیوتیک", "en": "antibiotic", "translit": "antibiyotik"},
+        {"fa": "مسکن", "en": "analgesic", "translit": "mosakken"},
+        {"fa": "تب‌بر", "en": "antipyretic", "translit": "tab-bor"},
+        {"fa": "ضدالتهاب", "en": "anti-inflammatory", "translit": "zedd-e eltehab"},
+        {"fa": "میلی‌گرم", "en": "milligram", "translit": "miligeram", "abbr": "mg"},
+        {"fa": "میکروگرم", "en": "microgram", "translit": "mikrogram", "abbr": "μg"},
+        {"fa": "میلی‌لیتر", "en": "milliliter", "translit": "mililiter", "abbr": "ml"},
+        {"fa": "عوارض جانبی", "en": "side effects", "translit": "avarez-e janebi"},
+        {"fa": "موارد منع مصرف", "en": "contraindication", "translit": "mavarede man'-e masraf"},
+        {"fa": "نسخه", "en": "prescription", "translit": "noskhe"}
+      ]
+    },
+    "procedures": {
+      "description": "روش‌های پزشکی و آزمایش‌ها",
+      "terms": [
+        {"fa": "آزمایش خون", "en": "blood test", "translit": "azmayesh-e khun"},
+        {"fa": "آزمایش ادرار", "en": "urinalysis", "translit": "azmayesh-e edrar"},
+        {"fa": "نوار قلب", "en": "ECG", "translit": "navar-e qalb"},
+        {"fa": "سونوگرافی", "en": "ultrasound", "translit": "sonografi"},
+        {"fa": "ام‌آرآی", "en": "MRI", "translit": "em-ar-ay"},
+        {"fa": "سی‌تی‌اسکن", "en": "CT scan", "translit": "si-ti-esken"},
+        {"fa": "رادیوگرافی", "en": "X-ray", "translit": "radiyografi"},
+        {"fa": "آندوسکوپی", "en": "endoscopy", "translit": "andoskopi"},
+        {"fa": "نمونه‌برداری", "en": "biopsy", "translit": "nemune-bardari", "note": "فرهنگستان approved"},
+        {"fa": "جراحی", "en": "surgery", "translit": "jarrahi"},
+        {"fa": "شیمی‌درمانی", "en": "chemotherapy", "translit": "shimi-darmani"},
+        {"fa": "پرتودرمانی", "en": "radiotherapy", "translit": "parto-darmani"},
+        {"fa": "دیالیز", "en": "dialysis", "translit": "diyaliz"},
+        {"fa": "انتقال خون", "en": "blood transfusion", "translit": "enteqal-e khun"},
+        {"fa": "بیهوشی", "en": "anesthesia", "translit": "bihushi"},
+        {"fa": "واکسیناسیون", "en": "vaccination", "translit": "vaксinasyon"}
+      ]
+    },
+    "specialties": {
+      "description": "تخصص‌های پزشکی",
+      "terms": [
+        {"fa": "داخلی", "en": "internal medicine", "translit": "dakheli"},
+        {"fa": "جراحی", "en": "surgery", "translit": "jarrahi"},
+        {"fa": "قلب و عروق", "en": "cardiology", "translit": "qalb va oruq"},
+        {"fa": "مغز و اعصاب", "en": "neurology", "translit": "maghz va a'sab"},
+        {"fa": "گوارش", "en": "gastroenterology", "translit": "gavaresh"},
+        {"fa": "ریه", "en": "pulmonology", "translit": "riye"},
+        {"fa": "انکولوژی", "en": "oncology", "translit": "onkolozhi"},
+        {"fa": "زنان و زایمان", "en": "obstetrics and gynecology", "translit": "zanan va zayman"},
+        {"fa": "اطفال/کودکان", "en": "pediatrics", "translit": "atfal/kudakan"},
+        {"fa": "ارتوپدی", "en": "orthopedics", "translit": "ortopedi"},
+        {"fa": "چشم‌پزشکی", "en": "ophthalmology", "translit": "chashm-pezeshki"},
+        {"fa": "گوش و حلق و بینی", "en": "ENT", "translit": "gush va halq va bini"},
+        {"fa": "پوست", "en": "dermatology", "translit": "pust"},
+        {"fa": "روانپزشکی", "en": "psychiatry", "translit": "ravanpezeshki"},
+        {"fa": "اورژانس", "en": "emergency medicine", "translit": "orazhans"},
+        {"fa": "رادیولوژی", "en": "radiology", "translit": "radiyolozhi"},
+        {"fa": "طب سنتی", "en": "traditional medicine", "translit": "tebb-e sonnati"}
+      ]
+    },
+    "traditional_iranian_medicine": {
+      "description": "طب سنتی ایرانی",
+      "akhlat_arbae": {
+        "description": "اخلاط اربعه (Four Humors)",
+        "terms": [
+          {"fa": "خلط", "en": "humor", "translit": "khelt"},
+          {"fa": "دم/خون", "en": "blood (sanguine)", "translit": "dam/khun"},
+          {"fa": "بلغم", "en": "phlegm", "translit": "balgham"},
+          {"fa": "صفرا", "en": "yellow bile", "translit": "safra"},
+          {"fa": "سودا", "en": "black bile", "translit": "sowda"}
+        ]
+      },
+      "mizaj": {
+        "description": "مزاج‌شناسی (Temperament)",
+        "terms": [
+          {"fa": "مزاج", "en": "temperament", "translit": "mezaj"},
+          {"fa": "گرم", "en": "hot", "translit": "garm"},
+          {"fa": "سرد", "en": "cold", "translit": "sard"},
+          {"fa": "تر", "en": "wet", "translit": "tar"},
+          {"fa": "خشک", "en": "dry", "translit": "khoshk"},
+          {"fa": "معتدل", "en": "balanced", "translit": "mo'tadel"},
+          {"fa": "دموی", "en": "sanguine temperament", "translit": "damavi"},
+          {"fa": "بلغمی", "en": "phlegmatic temperament", "translit": "balghami"},
+          {"fa": "صفراوی", "en": "choleric temperament", "translit": "safravi"},
+          {"fa": "سوداوی", "en": "melancholic temperament", "translit": "sowdavi"}
+        ]
+      },
+      "treatment_methods": {
+        "description": "روش‌های درمانی سنتی",
+        "terms": [
+          {"fa": "حجامت", "en": "cupping therapy", "translit": "hejjamat"},
+          {"fa": "فصد", "en": "bloodletting", "translit": "fasd"},
+          {"fa": "جوشانده", "en": "decoction", "translit": "jushande"},
+          {"fa": "معجون", "en": "electuary", "translit": "ma'jun"},
+          {"fa": "شیاف", "en": "suppository", "translit": "shiyaf"},
+          {"fa": "ضماد", "en": "poultice", "translit": "zemad"},
+          {"fa": "نطول", "en": "fomentation", "translit": "natool"},
+          {"fa": "لعوق", "en": "linctus", "translit": "la'uq"}
+        ]
+      },
+      "ibn_sina_terms": {
+        "description": "اصطلاحات قانون ابن سینا",
+        "terms": [
+          {"fa": "قوه", "en": "faculty/power", "translit": "qovve"},
+          {"fa": "روح", "en": "spirit/pneuma", "translit": "ruh"},
+          {"fa": "طبیعت", "en": "nature", "translit": "tabi'at"},
+          {"fa": "استفراغ", "en": "evacuation", "translit": "estefrag"},
+          {"fa": "تدبیر", "en": "regimen", "translit": "tadbir"},
+          {"fa": "علاج", "en": "treatment", "translit": "'elaj"},
+          {"fa": "سته ضروریه", "en": "six essential factors", "translit": "sette-ye zaruriye"}
+        ]
+      }
+    },
+    "abbreviations": {
+      "BP": {"fa": "فشار خون", "en": "blood pressure"},
+      "HR": {"fa": "ضربان قلب", "en": "heart rate"},
+      "ECG": {"fa": "نوار قلب", "en": "electrocardiogram"},
+      "MRI": {"fa": "تصویربرداری تشدید مغناطیسی", "en": "magnetic resonance imaging"},
+      "CT": {"fa": "توموگرافی کامپیوتری", "en": "computed tomography"},
+      "ICU": {"fa": "بخش مراقبت‌های ویژه", "en": "intensive care unit"},
+      "ER": {"fa": "اورژانس", "en": "emergency room"},
+      "IV": {"fa": "داخل وریدی", "en": "intravenous"},
+      "IM": {"fa": "داخل عضلانی", "en": "intramuscular"},
+      "CBC": {"fa": "شمارش کامل خون", "en": "complete blood count"},
+      "HIV": {"fa": "ویروس نقص ایمنی انسان", "en": "human immunodeficiency virus"}
+    }
+  },
+  "farhangestan_approved": [
+    {"fa": "تودینه", "en": "tumor", "instead_of": "تومور"},
+    {"fa": "نمونه‌برداری", "en": "biopsy", "instead_of": "بیوپسی"},
+    {"fa": "پوکی استخوان", "en": "osteoporosis", "instead_of": "استئوپروز"},
+    {"fa": "سرخ‌رگ", "en": "artery", "instead_of": "شریان عربی"},
+    {"fa": "سیاه‌رگ", "en": "vein", "instead_of": "ورید عربی"}
+  ]
+}

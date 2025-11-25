@@ -144,6 +144,7 @@ async def generate_benchmark_data():
             llm = OpenAIProvider(api_key=api_key, model="gpt-4o-mini")
             print("✅ Using OpenAI GPT-4o-mini for translations\n")
         except Exception:
+            # Silently ignore OpenAI setup errors and try Anthropic instead
             pass
 
     if not llm:
