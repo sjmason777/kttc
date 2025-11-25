@@ -215,7 +215,7 @@ class TermValidator:
 
             return False, None
 
-        except Exception:
+        except (KeyError, ValueError):
             logging.warning("Failed to validate MQM error type", exc_info=True)
             return False, None
 
