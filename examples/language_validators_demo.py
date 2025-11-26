@@ -252,7 +252,7 @@ def persian_validator_example():
                     if isinstance(ex_val, list) and len(ex_val) > 0:
                         print(f"    Example: {ex_val[0]}")
                         break
-                    elif isinstance(ex_val, str):
+                    if isinstance(ex_val, str):
                         print(f"    Example: {ex_val}")
                         break
 
