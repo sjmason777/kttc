@@ -105,7 +105,7 @@ def introduce_error(text: str, error_type: str, lang: str) -> str:
         if lang == "fa":
             return text.replace(".", " امروز.")  # Add "today"
         return text.replace(".", " today.")
-    elif error_type == "omission":
+    if error_type == "omission":
         # Remove a word
         words = text.split()
         if len(words) > 3:
