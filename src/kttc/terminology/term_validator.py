@@ -4,7 +4,7 @@ Term Validator for checking terminology consistency and correctness.
 
 import logging
 from typing import Any
-
+import json
 from kttc.terminology.glossary_manager import GlossaryManager
 
 
@@ -103,7 +103,6 @@ class TermValidator:
                 return errors
 
             # Load approved terms from glossary
-            import json
 
             with open(glossary_path, encoding="utf-8") as f:
                 glossary_data = json.load(f)
@@ -124,11 +123,15 @@ class TermValidator:
                         }
                     )
 
-        except Exception:
-            # If glossary loading fails, skip validation
-            # This is acceptable as glossary validation is optional
-            logging.warning("Failed to load glossary for terminology validation", exc_info=True)
-
+        except FileNotFoundError:
+            # If file not found, skip validation
+            logging.warning("Glossary file not found for terminology validation: %s", glossary_name)
+        except json.JSONDecodeError:
+            # If file isn't valid JSON, skip validation
+            logging.warning("Failed to decode glossary JSON for terminology validation: %s", glossary_name, exc_info=True)
+        except OSError:
+            # If other file IO errors occur, skip validation
+            logging.warning("Glossary file could not be opened for terminology validation: %s", glossary_name, exc_info=True)
         return errors
 
     def detect_false_friends(
@@ -176,8 +179,8 @@ class TermValidator:
                             }
                         )
 
-        except Exception:
-            # If glossary not available, skip
+        except (FileNotFoundError, KeyError):
+            # If glossary not available or key missing, skip
             logging.warning(
                 "Failed to load MQM glossary for false friends detection", exc_info=True
             )
@@ -215,7 +218,7 @@ class TermValidator:
 
             return False, None
 
-        except Exception:
+        except (KeyError, ValueError):
             logging.warning("Failed to validate MQM error type", exc_info=True)
             return False, None
 
@@ -234,7 +237,7 @@ class TermValidator:
             severity_levels = self.glossary_manager.get_severity_levels(language)
             level_data = severity_levels.get(severity_level, {})
             return float(level_data.get("penalty_multiplier", 1.0))
-        except Exception:
+        except (KeyError, TypeError, AttributeError):
             logging.warning("Failed to get severity multiplier, using default value", exc_info=True)
             return 1.0
 
@@ -282,7 +285,7 @@ class TermValidator:
                         }
                     )
 
-        except Exception:
+        except (KeyError, ValueError, TypeError):
             logging.warning("Failed to validate language-specific errors", exc_info=True)
 
         return errors

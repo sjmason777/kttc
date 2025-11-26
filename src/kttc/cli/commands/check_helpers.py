@@ -346,7 +346,8 @@ async def handle_auto_correction(
     except Exception as e:
         console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
         if verbose:
-            console.print_exception()
+            import traceback
+            traceback.print_exc()
 
 
 def display_check_header(
