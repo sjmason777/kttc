@@ -106,7 +106,6 @@ def main(
     Transforming translations into gold-standard quality through
     autonomous multi-agent AI systems.
     """
-    pass
 
 
 @app.command()
