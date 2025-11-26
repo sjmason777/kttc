@@ -2,9 +2,10 @@
 Term Validator for checking terminology consistency and correctness.
 """
 
+import json
 import logging
 from typing import Any
-import json
+
 from kttc.terminology.glossary_manager import GlossaryManager
 
 
@@ -128,10 +129,18 @@ class TermValidator:
             logging.warning("Glossary file not found for terminology validation: %s", glossary_name)
         except json.JSONDecodeError:
             # If file isn't valid JSON, skip validation
-            logging.warning("Failed to decode glossary JSON for terminology validation: %s", glossary_name, exc_info=True)
+            logging.warning(
+                "Failed to decode glossary JSON for terminology validation: %s",
+                glossary_name,
+                exc_info=True,
+            )
         except OSError:
             # If other file IO errors occur, skip validation
-            logging.warning("Glossary file could not be opened for terminology validation: %s", glossary_name, exc_info=True)
+            logging.warning(
+                "Glossary file could not be opened for terminology validation: %s",
+                glossary_name,
+                exc_info=True,
+            )
         return errors
 
     def detect_false_friends(

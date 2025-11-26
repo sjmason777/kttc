@@ -347,6 +347,7 @@ async def handle_auto_correction(
         console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
         if verbose:
             import traceback
+
             traceback.print_exc()
 
 
