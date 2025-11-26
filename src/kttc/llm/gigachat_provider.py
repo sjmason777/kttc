@@ -190,7 +190,7 @@ class GigaChatProvider(BaseLLMProvider):
 
                     if response.status == 429:
                         raise LLMRateLimitError("GigaChat rate limit exceeded")
-                    elif response.status != 200:
+                    if response.status != 200:
                         error_text = await response.text()
                         raise LLMError(
                             f"GigaChat API error (status {response.status}): {error_text}"
@@ -216,9 +216,9 @@ class GigaChatProvider(BaseLLMProvider):
         if response.status == 401:
             self._access_token = await self._get_access_token()
             raise LLMAuthenticationError("GigaChat token expired, retry")
-        elif response.status == 429:
+        if response.status == 429:
             raise LLMRateLimitError("GigaChat rate limit exceeded")
-        elif response.status != 200:
+        if response.status != 200:
             error_text = await response.text()
             raise LLMError(f"GigaChat API error (status {response.status}): {error_text}")
 
