@@ -19,7 +19,11 @@ sys.path.insert(0, str(tests_dir))
 from conftest import MockLLMProvider  # noqa: E402
 
 from kttc.agents.fluency_persian import PersianFluencyAgent  # noqa: E402
-from kttc.core.models import ErrorAnnotation, ErrorSeverity, TranslationTask  # noqa: E402
+from kttc.core.models import (  # noqa: E402
+    ErrorAnnotation,
+    ErrorSeverity,
+    TranslationTask,
+)
 from kttc.helpers.persian import PersianLanguageHelper  # noqa: E402
 
 # ============================================================================
