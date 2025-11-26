@@ -171,7 +171,7 @@ class LanguageHelper(ABC):
         """
         return True  # Override in subclasses that have optional deps
 
-    def get_enrichment_data(self, text: str) -> dict[str, Any]:
+    def get_enrichment_data(self, _text: str) -> dict[str, Any]:
         """Get morphological data for enriching LLM prompts.
 
         Optional method to provide additional context to LLM.

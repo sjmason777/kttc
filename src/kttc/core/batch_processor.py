@@ -447,8 +447,7 @@ class BatchFileParser:
         if suffix in (".xliff", ".xlf"):
             return cls.parse_xliff(file_path)
         raise ValueError(
-            f"Unsupported file format: {suffix}. "
-            f"Supported: .csv, .json, .jsonl, .xliff, .xlf"
+            f"Unsupported file format: {suffix}. " f"Supported: .csv, .json, .jsonl, .xliff, .xlf"
         )
 
 

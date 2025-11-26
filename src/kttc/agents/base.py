@@ -182,7 +182,7 @@ class BaseAgent(ABC):
     async def evaluate_with_retry(
         self,
         task: TranslationTask,
-        hints: list[str] | None = None,
+        _hints: list[str] | None = None,
     ) -> tuple[list[ErrorAnnotation], int]:
         """Evaluate with self-assessment retry mechanism.
 
@@ -204,7 +204,7 @@ class BaseAgent(ABC):
 
         errors = await self.evaluate(task)
 
-        for attempt in range(self.max_retries):
+        for _attempt in range(self.max_retries):
             assessment = await self.self_assess(errors, task)
 
             if not assessment.should_retry:

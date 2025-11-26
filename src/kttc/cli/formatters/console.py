@@ -313,7 +313,7 @@ class ConsoleFormatter:
                     cls._print_issues_compact(result["errors"], "", nlp_insights=None, verbose=True)
 
     @classmethod
-    def print_benchmark_result(
+    def print_benchmark_result(  # pylint: disable=unused-argument
         cls,
         source_lang: str,
         target_lang: str,
@@ -403,7 +403,7 @@ class ConsoleFormatter:
                 )
 
     @classmethod
-    def print_batch_result(
+    def print_batch_result(  # pylint: disable=unused-argument
         cls,
         total: int,
         passed: int,
@@ -700,7 +700,7 @@ class ConsoleFormatter:
             )
 
     @classmethod
-    def _print_verbose_details(
+    def _print_verbose_details(  # pylint: disable=unused-argument
         cls,
         report: QAReport,
         lightweight_scores: Any | None,

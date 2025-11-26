@@ -42,10 +42,6 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 from kttc.core import ErrorAnnotation, QAReport, TranslationTask
-
-if TYPE_CHECKING:
-    from kttc.agents.domain_profiles import DomainProfile
-    from kttc.style import StyleFingerprint, StyleProfile
 from kttc.core.mqm import MQMScorer
 from kttc.helpers import get_helper_for_language
 from kttc.llm import BaseLLMProvider
@@ -67,6 +63,10 @@ from .fluency_russian import RussianFluencyAgent
 from .hallucination import HallucinationAgent
 from .style_preservation import StylePreservationAgent
 from .terminology import TerminologyAgent
+
+if TYPE_CHECKING:
+    from kttc.agents.domain_profiles import DomainProfile
+    from kttc.style import StyleFingerprint, StyleProfile
 
 logger = logging.getLogger(__name__)
 
@@ -218,7 +218,7 @@ class AgentOrchestrator:
             return None
 
     def _get_style_aware_profile(
-        self, task: TranslationTask, style_profile: StyleProfile | None
+        self, _task: TranslationTask, style_profile: StyleProfile | None
     ) -> DomainProfile | None:
         """Get domain profile adjusted for style analysis results.
 

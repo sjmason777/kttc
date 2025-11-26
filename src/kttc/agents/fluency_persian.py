@@ -268,7 +268,7 @@ class PersianFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
         """Perform glossary-based Persian ezafe and grammar validation.
 
         Uses PersianEzafeValidator to check:

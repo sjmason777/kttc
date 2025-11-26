@@ -159,14 +159,14 @@ class PersianTrapsValidator:
 
         # Flatten all ta'arof phrases from different categories
         all_phrases = {}
-        for category, phrases in taarof_categories.items():
+        for _category, phrases in taarof_categories.items():
             if isinstance(phrases, dict):
                 for key, data in phrases.items():
                     if isinstance(data, dict) and "phrase_fa" in data:
                         all_phrases[key] = data
 
         # Search for ta'arof phrases
-        for phrase_key, data in all_phrases.items():
+        for _phrase_key, data in all_phrases.items():
             phrase = data.get("phrase_fa", "")
             # Remove punctuation for matching
             clean_phrase = phrase.replace("؟", "").replace("!", "").strip()
@@ -332,13 +332,13 @@ class PersianTrapsValidator:
 
         # Flatten idioms from all categories
         all_idioms = {}
-        for category, category_data in idiom_categories.items():
+        for _category, category_data in idiom_categories.items():
             if isinstance(category_data, dict):
                 entries = category_data.get("entries", {})
                 all_idioms.update(entries)
 
         # Search for idioms
-        for idiom_key, data in all_idioms.items():
+        for _idiom_key, data in all_idioms.items():
             idiom_fa = data.get("idiom_fa", "")
             # Try to find the idiom (may need partial matching)
             if idiom_fa:
@@ -380,13 +380,13 @@ class PersianTrapsValidator:
 
         # Flatten categories
         all_words = {}
-        for category, items in untranslatable.items():
+        for _category, items in untranslatable.items():
             if isinstance(items, dict):
                 entries = items.get("entries", items)
                 if isinstance(entries, dict):
                     all_words.update(entries)
 
-        for word_key, data in all_words.items():
+        for _word_key, data in all_words.items():
             word = data.get("word_fa", "")
             if word and word in text:
                 found.append(

@@ -1,8 +1,49 @@
 version = 1
 
+# Test file patterns - issues in these files are filtered differently
+test_patterns = [
+    "tests/**",
+    "test_*.py",
+    "**/test_*.py",
+    "**/*_test.py",
+    "conftest.py"
+]
+
+# Exclude from analysis entirely
+exclude_patterns = [
+    "examples/**",
+    "scripts/**",
+    "docs/**",
+    "**/migrations/**",
+    "**/__pycache__/**",
+    ".venv/**",
+    "venv/**",
+    "build/**",
+    "dist/**",
+    "*.egg-info/**"
+]
+
 [[analyzers]]
 name = "python"
+enabled = true
 
   [analyzers.meta]
   runtime_version = "3.x.x"
-  max_line_length = 100
+  max_line_length = 120
+  type_checker = "mypy"
+
+  # Skip doc coverage for these
+  skip_doc_coverage = [
+    "module",
+    "magic",
+    "init",
+    "class"
+  ]
+
+[[transformers]]
+name = "black"
+enabled = true
+
+[[transformers]]
+name = "isort"
+enabled = true

@@ -83,7 +83,7 @@ def detect_system_language() -> str:
             win_lang = _detect_windows_language()
             if win_lang and win_lang in SUPPORTED_LANGUAGES:
                 return win_lang
-        except Exception:
+        except OSError:
             # Silently ignore Windows API errors and fall back to default language
             pass
 

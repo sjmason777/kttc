@@ -206,7 +206,7 @@ def display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
 
 def save_self_check_report(
     output: str,
-    format: str,
+    output_format: str,
     language: str,
     source_path: Path,
     score: float,
@@ -257,7 +257,7 @@ async def self_check_async(
     language: str,
     threshold: float,
     output: str | None,
-    format: str,
+    output_format: str,
     provider: str | None,
     verbose: bool,
     demo: bool = False,
@@ -320,7 +320,7 @@ async def self_check_async(
     if output:
         save_self_check_report(
             output,
-            format,
+            output_format,
             language,
             source_path,
             score,
@@ -346,7 +346,7 @@ def handle_self_check_mode(
     lang: str | None,
     threshold: float,
     output: str | None,
-    format: str | None,
+    output_format: str | None,
     provider: str | None,
     verbose: bool,
     demo: bool,
@@ -378,7 +378,7 @@ def handle_self_check_mode(
             language=source_lang,
             threshold=threshold,
             output=output,
-            format=auto_detect_format(output, format),
+            output_format=auto_detect_format(output, output_format),
             provider=provider,
             verbose=verbose,
             demo=demo,

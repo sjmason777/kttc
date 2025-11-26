@@ -109,7 +109,8 @@ class OpenAIProvider(BaseLLMProvider):
             if content is None:
                 raise LLMError("OpenAI returned empty response")
 
-            assert isinstance(content, str)
+            if not isinstance(content, str):
+                raise LLMError(f"OpenAI returned unexpected type: {type(content)}")
             return content
 
         except openai.AuthenticationError as e:

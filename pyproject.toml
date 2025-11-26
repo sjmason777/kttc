@@ -119,6 +119,7 @@ dev = [
     "mkdocstrings[python]>=0.30.1",
     "mkdocs-autorefs>=1.4.3",
     "bandit>=1.9.2",
+    "pylint>=4.0.3",
 ]
 
 [project.scripts]
@@ -326,3 +327,70 @@ cc_min = "A"  # Strict: Only allow grade A complexity
 mi_min = 20  # Minimum maintainability index (0-100 scale)
 show_complexity = true
 average = true
+
+# Pylint configuration
+[tool.pylint.main]
+py-version = "3.11"
+jobs = 0  # Auto-detect CPU cores
+recursive = true
+source-roots = ["src"]
+ignore = ["tests", "examples", "scripts", "__pycache__"]
+ignore-patterns = ["test_*.py", "conftest.py"]
+
+[tool.pylint.messages_control]
+# Minimal disables - only for things that conflict with other tools or are false positives
+disable = [
+    # Conflicts with black/ruff (they handle these)
+    "line-too-long",                  # C0301 - handled by black
+    "wrong-import-order",             # C0411 - handled by ruff/isort
+    "ungrouped-imports",              # C0412 - handled by ruff/isort
+
+    # False positives with our stack
+    "no-member",                      # E1101 - false positives with pydantic
+    "invalid-overridden-method",      # W0236 - false positives with async overrides
+
+    # Intentional design patterns
+    "import-outside-toplevel",        # C0415 - used to avoid circular imports
+    "duplicate-code",                 # R0801 - similar patterns in agents are intentional
+    "too-few-public-methods",         # R0903 - data classes, protocols, configs
+
+    # Style preferences (not bugs, handled by ruff)
+    "logging-fstring-interpolation",  # W1203 - f-strings are readable
+    "logging-format-interpolation",   # W1202 - same
+]
+
+# Enable important checks that should be fixed
+enable = [
+    "unused-import",      # W0611
+    "unused-variable",    # W0612
+    "unused-argument",    # W0613
+    "unreachable",        # W0101
+    "undefined-variable", # E0602
+    "syntax-error",       # E0001
+]
+
+[tool.pylint.format]
+max-line-length = 120  # Allow slightly longer lines
+
+[tool.pylint.basic]
+good-names = ["i", "j", "k", "n", "x", "y", "z", "f", "e", "ex", "id", "ok", "db", "io", "_"]
+good-names-rgxs = ["^[a-z]$", "^[a-z][a-z0-9]?$"]  # Allow short variable names
+
+[tool.pylint.design]
+max-args = 10           # Allow up to 10 arguments
+max-locals = 20         # Allow up to 20 local variables
+max-attributes = 15     # Allow up to 15 instance attributes
+max-returns = 8         # Allow up to 8 return statements
+max-branches = 15       # Allow up to 15 branches
+max-statements = 60     # Allow up to 60 statements
+
+[tool.pylint.similarities]
+min-similarity-lines = 10  # Ignore small code duplications
+ignore-comments = true
+ignore-docstrings = true
+ignore-imports = true
+
+[tool.pylint.typecheck]
+# Ignore missing member errors for dynamic libraries
+ignored-modules = ["pydantic", "typer", "rich"]
+ignored-classes = ["BaseModel", "BaseSettings"]

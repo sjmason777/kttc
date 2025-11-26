@@ -280,7 +280,7 @@ class RussianFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
         """Perform glossary-based Russian case and aspect validation.
 
         Uses RussianCaseAspectValidator to check:

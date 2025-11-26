@@ -100,7 +100,7 @@ class XLSXFormatter:
         """
         if not OPENPYXL_AVAILABLE:
             raise ImportError(
-                "openpyxl is required for XLSX export. " "Install it with: pip install openpyxl"
+                "openpyxl is required for XLSX export. Install it with: pip install openpyxl"
             )
 
         wb = Workbook()
@@ -144,7 +144,7 @@ class XLSXFormatter:
         """
         if not OPENPYXL_AVAILABLE:
             raise ImportError(
-                "openpyxl is required for XLSX export. " "Install it with: pip install openpyxl"
+                "openpyxl is required for XLSX export. Install it with: pip install openpyxl"
             )
 
         wb = Workbook()

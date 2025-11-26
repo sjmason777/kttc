@@ -113,7 +113,10 @@ class YandexGPTProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload) as response:
+            async with (
+                aiohttp.ClientSession(timeout=self.timeout) as session,
+                session.post(url, headers=headers, json=payload) as response,
+            ):
                 if response.status == 401:
                     raise LLMAuthenticationError("Yandex API authentication failed")
                 if response.status == 429:
@@ -179,7 +182,10 @@ class YandexGPTProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload) as response:
+            async with (
+                aiohttp.ClientSession(timeout=self.timeout) as session,
+                session.post(url, headers=headers, json=payload) as response,
+            ):
                 if response.status == 401:
                     raise LLMAuthenticationError("Yandex API authentication failed")
                 if response.status == 429:

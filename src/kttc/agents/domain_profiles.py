@@ -356,7 +356,7 @@ class DomainDetector:
     def detect_domain(
         self,
         source_text: str,
-        target_lang: str | None = None,
+        _target_lang: str | None = None,
         context: dict[str, Any] | None = None,
     ) -> str:
         """Detect translation domain from source text.

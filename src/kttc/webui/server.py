@@ -104,7 +104,7 @@ app_state: AppState = {
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
     """Lifespan context manager for startup and shutdown events."""
     # Startup
     logger.info("Initializing KTTC orchestrator...")

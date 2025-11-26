@@ -247,9 +247,7 @@ class ErrorParser:
                         and mqm_info["definition"]
                         and "[MQM:" not in error.description
                     ):
-                        error.description = (
-                            f"{error.description} [MQM: {mqm_info['definition']}]"
-                        )
+                        error.description = f"{error.description} [MQM: {mqm_info['definition']}]"
 
                     # Log successful enrichment
                     logger.debug(

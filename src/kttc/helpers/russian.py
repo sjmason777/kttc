@@ -478,7 +478,7 @@ class RussianLanguageHelper(LanguageHelper):
         }
 
         deduplicated = []
-        for location, group in by_location.items():
+        for _location, group in by_location.items():
             if len(group) == 1:
                 deduplicated.append(group[0])
             else:

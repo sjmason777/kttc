@@ -242,7 +242,7 @@ class ChineseFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
         """Perform glossary-based Chinese measure word (classifier) validation.
 
         Uses ChineseMeasureWordValidator to check:

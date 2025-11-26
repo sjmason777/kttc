@@ -271,7 +271,7 @@ class HindiFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
         """Perform glossary-based Hindi postposition and case validation.
 
         Uses HindiPostpositionValidator to check:

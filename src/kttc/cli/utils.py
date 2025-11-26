@@ -27,18 +27,18 @@ from kttc.helpers.detection import detect_language
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 
 
-def auto_detect_format(output: str | None, format: str | None) -> str:
+def auto_detect_format(output: str | None, output_format: str | None) -> str:
     """Auto-detect output format from file extension.
 
     Args:
         output: Output file path
-        format: User-specified format (overrides auto-detection)
+        output_format: User-specified format (overrides auto-detection)
 
     Returns:
         Format string: 'text', 'json', 'markdown', 'html', or 'xlsx'
     """
-    if format:
-        return format
+    if output_format:
+        return output_format
 
     if output:
         suffix = Path(output).suffix.lower()

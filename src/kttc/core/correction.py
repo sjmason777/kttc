@@ -25,7 +25,7 @@ Based on AI Post-Editing 2025 research (40% faster, 60% cost reduction).
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.llm import BaseLLMProvider

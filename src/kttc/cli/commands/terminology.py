@@ -89,8 +89,8 @@ def list_glossaries(
                     file_path = manager.glossaries_dir / file_lang / f"{glossary_type}.json"
 
                     glossaries_info.append((file_lang, glossary_type, term_count, file_path))
-                except Exception:
-                    # Skip invalid glossaries
+                except (OSError, ValueError, KeyError):
+                    # Skip invalid or corrupted glossaries
                     continue
 
         if not glossaries_info:
@@ -189,7 +189,9 @@ def show_glossary(
     lang: str = typer.Argument(..., help="Language code (e.g., en, ru, zh)"),
     category: str = typer.Argument(..., help="Glossary category (e.g., mqm_core, russian_cases)"),
     limit: int = typer.Option(50, "--limit", "-n", help="Maximum entries to display"),
-    format: str = typer.Option("table", "--format", "-f", help="Output format: table or json"),
+    output_format: str = typer.Option(
+        "table", "--format", "-f", help="Output format: table or json"
+    ),
 ) -> None:
     """Show contents of a linguistic reference glossary.
 
@@ -213,7 +215,7 @@ def show_glossary(
         console.print()
 
         # JSON output format
-        if format == "json":
+        if output_format == "json":
             console.print_json(data=glossary_data)
             return
 
@@ -241,7 +243,7 @@ def show_glossary(
 def search_glossaries(
     query: str = typer.Argument(..., help="Search query"),
     lang: str | None = typer.Option(None, "--lang", "-l", help="Filter by language code"),
-    case_sensitive: bool = typer.Option(
+    _case_sensitive: bool = typer.Option(
         False, "--case-sensitive", "-c", help="Case-sensitive search"
     ),
 ) -> None:

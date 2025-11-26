@@ -110,14 +110,13 @@ class GigaChatProvider(BaseLLMProvider):
         data = {"scope": self.scope}
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(
-                self.AUTH_URL, headers=headers, data=data, ssl=False
-            ) as response:
+            async with (
+                aiohttp.ClientSession(timeout=self.timeout) as session,
+                session.post(self.AUTH_URL, headers=headers, data=data, ssl=False) as response,
+            ):
                 if response.status != 200:
                     error_text = await response.text()
-                    raise LLMAuthenticationError(
-                        f"GigaChat authentication failed: {error_text}"
-                    )
+                    raise LLMAuthenticationError(f"GigaChat authentication failed: {error_text}")
 
                 result = await response.json()
                 if "access_token" not in result:
@@ -173,7 +172,10 @@ class GigaChatProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload, ssl=False) as response:
+            async with (
+                aiohttp.ClientSession(timeout=self.timeout) as session,
+                session.post(url, headers=headers, json=payload, ssl=False) as response,
+            ):
                 if response.status == 401:
                     # Token expired, get new one and retry
                     self._access_token = await self._get_access_token()
@@ -190,9 +192,7 @@ class GigaChatProvider(BaseLLMProvider):
                     raise LLMRateLimitError("GigaChat rate limit exceeded")
                 if response.status != 200:
                     error_text = await response.text()
-                    raise LLMError(
-                        f"GigaChat API error (status {response.status}): {error_text}"
-                    )
+                    raise LLMError(f"GigaChat API error (status {response.status}): {error_text}")
 
                 result = await response.json()
 
@@ -264,7 +264,10 @@ class GigaChatProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload, ssl=False) as response:
+            async with (
+                aiohttp.ClientSession(timeout=self.timeout) as session,
+                session.post(url, headers=headers, json=payload, ssl=False) as response,
+            ):
                 await self._handle_stream_response_status(response)
                 async for line in response.content:
                     if line:

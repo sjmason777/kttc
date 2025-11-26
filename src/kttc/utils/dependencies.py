@@ -200,11 +200,8 @@ def install_dependency_group(group: DependencyGroup) -> bool:
 
             # Run pip install (cmd uses sys.executable + enum-controlled group)
             result = subprocess.run(  # nosec B603
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=600,  # 10 minute timeout
-            check=True)
+                cmd, capture_output=True, text=True, timeout=600, check=True  # 10 minute timeout
+            )
 
             progress.update(task, completed=True)
 

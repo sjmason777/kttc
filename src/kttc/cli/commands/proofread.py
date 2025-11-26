@@ -63,7 +63,7 @@ def proofread(
                 language=lang,
                 threshold=threshold,
                 output=output,
-                format="json",
+                output_format="json",
                 provider=provider,
                 verbose=verbose,
                 demo=False,
@@ -71,11 +71,11 @@ def proofread(
         )
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
+        raise typer.Exit(code=130) from None
     except typer.Exit:
         raise
     except Exception as e:
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from e

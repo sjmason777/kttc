@@ -613,7 +613,7 @@ class EnglishTrapsValidator:
         return result
 
     def find_false_friends_in_context(
-        self, source_text: str, target_text: str, source_lang: str
+        self, _source_text: str, target_text: str, source_lang: str
     ) -> list[dict[str, Any]]:
         """Find potential false friend errors in translation.
 
@@ -629,7 +629,7 @@ class EnglishTrapsValidator:
         false_friends = self.get_false_friends(source_lang)
         target_lower = target_text.lower()
 
-        for ff_key, data in false_friends.items():
+        for _ff_key, data in false_friends.items():
             english_word = data.get("english_word", "").lower()
             if english_word and re.search(rf"\b{re.escape(english_word)}\b", target_lower):
                 found.append(

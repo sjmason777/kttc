@@ -75,7 +75,7 @@ class ErrorDetector:
         self,
         source: str,
         translation: str,
-        reference: str | None = None,
+        _reference: str | None = None,
     ) -> list[RuleBasedError]:
         """Run all error detection checks.
 

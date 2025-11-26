@@ -32,8 +32,8 @@ class TermValidator:
         self,
         source_terms: list[str],
         target_terms: list[str],
-        source_lang: str = "en",
-        target_lang: str = "ru",
+        _source_lang: str = "en",
+        _target_lang: str = "ru",
     ) -> list[dict[str, Any]]:
         """
         Validate that source terms are consistently translated.
@@ -143,7 +143,7 @@ class TermValidator:
 
     def detect_false_friends(
         self,
-        source_text: str,
+        _source_text: str,
         target_text: str,
         source_lang: str = "en",
         target_lang: str = "ru",
@@ -250,7 +250,7 @@ class TermValidator:
 
     def validate_language_specific_errors(
         self,
-        text: str,
+        _text: str,
         language: str,
         error_types: list[str] | None = None,
     ) -> list[dict[str, Any]]:

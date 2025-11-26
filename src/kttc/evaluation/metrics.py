@@ -101,7 +101,7 @@ class LightweightMetrics:
         self.chrf = CHRF(word_order=2)  # chrF++ with word order
         self.ter = TER()
 
-    def evaluate(
+    def evaluate(  # pylint: disable=unused-argument
         self,
         translation: str,
         reference: str,

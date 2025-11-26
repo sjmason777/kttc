@@ -33,7 +33,27 @@ class MarkdownFormatter:
         Returns:
             Markdown-formatted report as string
         """
-        md = ["# Translation Quality Report\n", "## Translation Details\n", f"- **Source Language**: {report.task.source_lang}", f"- **Target Language**: {report.task.target_lang}", f"- **Word Count**: {report.task.word_count}", "", "## Quality Scores\n", f"- **MQM Score**: {report.mqm_score:.2f}/100", f"- **Status**: {'✅ PASS' if report.status == 'pass' else '❌ FAIL'}", "", "## Translation Text\n", "### Source", "```", report.task.source_text, "```\n", "### Translation", "```", report.task.translation, "```\n"]
+        md = [
+            "# Translation Quality Report\n",
+            "## Translation Details\n",
+            f"- **Source Language**: {report.task.source_lang}",
+            f"- **Target Language**: {report.task.target_lang}",
+            f"- **Word Count**: {report.task.word_count}",
+            "",
+            "## Quality Scores\n",
+            f"- **MQM Score**: {report.mqm_score:.2f}/100",
+            f"- **Status**: {'✅ PASS' if report.status == 'pass' else '❌ FAIL'}",
+            "",
+            "## Translation Text\n",
+            "### Source",
+            "```",
+            report.task.source_text,
+            "```\n",
+            "### Translation",
+            "```",
+            report.task.translation,
+            "```\n",
+        ]
 
         if report.comet_score is not None:
             md.append(f"- **COMET Score**: {report.comet_score:.4f}")

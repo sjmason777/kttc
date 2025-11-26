@@ -128,9 +128,9 @@ async def _run_compare_mode(
     target_lang: str | None,
     threshold: float,
     provider: str | None,
-    glossary: str | None,
+    _glossary: str | None,
     verbose: bool,
-    demo: bool = False,
+    _demo: bool = False,
 ) -> None:
     """Wrapper for compare mode called from check command."""
     # Check required languages
@@ -157,7 +157,7 @@ async def _check_async(
     target_lang: str,
     threshold: float,
     output: str | None,
-    format: str,
+    output_format: str,
     provider: str | None,
     auto_select_model: bool,
     auto_correct: bool,
@@ -174,6 +174,7 @@ async def _check_async(
     show_cost: bool = False,
     profile: Any = None,
     selected_agents: list[str] | None = None,
+    debate: bool = False,
 ) -> None:
     """Async implementation of check command."""
     # Configure logging
@@ -237,6 +238,45 @@ async def _check_async(
         selected_agents,
     )
 
+    # Debate mode: cross-verify errors between agents
+    debate_summary = None
+    if debate and report.errors:
+        from kttc.agents import DebateOrchestrator
+        from kttc.core import MQMScorer
+
+        if verbose:
+            console.print("\n[bold cyan]🎭 Debate Mode[/bold cyan]: Cross-verifying errors...")
+            console.print(f"[dim]   {len(report.errors)} errors to verify[/dim]")
+
+        debate_orchestrator = DebateOrchestrator(llm_provider)
+        verified_errors, debate_rounds = await debate_orchestrator.run_debate(report.errors, task)
+
+        # Calculate how many errors were filtered
+        original_count = len(report.errors)
+        verified_count = len(verified_errors)
+        rejected_count = original_count - verified_count
+
+        # Update report with verified errors
+        report.errors = verified_errors
+
+        # Recalculate MQM score with filtered errors
+        scorer = MQMScorer()
+        report.mqm_score = scorer.calculate_score(verified_errors, task.word_count)
+        report.status = "pass" if report.mqm_score >= threshold else "fail"
+
+        # Get debate summary for display
+        debate_summary = debate_orchestrator.get_debate_summary(debate_rounds)
+
+        if verbose:
+            console.print(
+                f"[green]   ✓ {verified_count} errors confirmed[/green], "
+                f"[yellow]{rejected_count} rejected as false positives[/yellow]"
+            )
+            if rejected_count > 0:
+                console.print(
+                    f"[dim]   Precision improvement: {debate_summary['precision_improvement']}[/dim]"
+                )
+
     # Calculate metrics
     lightweight_scores, rule_based_errors, rule_based_score = calculate_lightweight_metrics(
         source_text, translation_text, reference, verbose
@@ -292,7 +332,7 @@ async def _check_async(
 
     # Save output
     if output:
-        save_report(report, output, format)
+        save_report(report, output, output_format)
         console.print(f"\n[dim]Report saved to: {output}[/dim]")
 
     # Exit with appropriate code
@@ -325,6 +365,7 @@ def _run_single_mode(
     show_cost: bool = False,
     profile: Any = None,
     selected_agents: list[str] | None = None,
+    debate: bool = False,
 ) -> None:
     """Run single file check mode."""
     if not source_lang or not target_lang:
@@ -334,8 +375,9 @@ def _run_single_mode(
             source_path, translation_path, source_lang, target_lang, verbose
         )
     validate_required_languages(source_lang, target_lang, "(auto-detection failed)")
-    if not (source_lang is not None and target_lang is not None):
-        raise AssertionError
+    # Type narrowing: validate_required_languages raises typer.Exit if None
+    if source_lang is None or target_lang is None:
+        return  # unreachable, but satisfies type checker
 
     asyncio.run(
         _check_async(
@@ -362,6 +404,7 @@ def _run_single_mode(
             show_cost,
             profile,
             selected_agents,
+            debate,
         )
     )
 
@@ -389,8 +432,9 @@ def _run_batch_dir_mode(
     validate_required_languages(
         source_lang, target_lang, "for directory mode (auto-detection failed)"
     )
-    if not (source_lang is not None and target_lang is not None):
-        raise AssertionError
+    # Type narrowing: validate_required_languages raises typer.Exit if None
+    if source_lang is None or target_lang is None:
+        return  # unreachable, but satisfies type checker
 
     asyncio.run(
         batch_async(
@@ -432,6 +476,7 @@ def _route_check_mode(
     show_cost: bool = False,
     profile: Any = None,
     selected_agents: list[str] | None = None,
+    debate: bool = False,
 ) -> None:
     """Route to appropriate handler based on detected mode."""
     if mode == "single":
@@ -458,10 +503,12 @@ def _route_check_mode(
             show_cost,
             profile,
             selected_agents,
+            debate,
         )
     elif mode == "compare":
         translations_list = mode_params["translations"]
-        assert isinstance(translations_list, list), "translations must be a list"
+        if not isinstance(translations_list, list):
+            raise TypeError("translations must be a list")
         asyncio.run(
             _run_compare_mode(
                 str(mode_params["source"]),
@@ -527,7 +574,7 @@ def check(
         "-o",
         help="Output file path - format auto-detected from extension (.json/.html/.md)",
     ),
-    format: str | None = typer.Option(
+    output_format: str | None = typer.Option(
         None,
         "--format",
         "-f",
@@ -677,7 +724,7 @@ def check(
             lang,
             threshold,
             output,
-            format,
+            output_format,
             provider,
             verbose,
             demo,
@@ -688,7 +735,7 @@ def check(
         # 🎯 Auto-detect mode
         mode, mode_params = detect_check_mode(source, translations)
         detected_glossary = auto_detect_glossary(glossary)
-        detected_format = auto_detect_format(output, format)
+        detected_format = auto_detect_format(output, output_format)
 
         # Show auto-detection info if verbose
         if verbose:
@@ -756,11 +803,12 @@ def check(
             show_cost,
             loaded_profile,
             selected_agents,
+            debate,
         )
 
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
+        raise typer.Exit(code=130) from None
     except typer.Exit:
         # Re-raise Exit without catching it (clean exit)
         raise

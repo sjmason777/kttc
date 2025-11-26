@@ -160,7 +160,7 @@ class Glossary:
         source_term: str,
         source_lang: str,
         target_lang: str,
-        case_sensitive: bool | None = None,
+        _case_sensitive: bool | None = None,
     ) -> TermEntry | None:
         """Look up term translation.
 

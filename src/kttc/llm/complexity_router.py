@@ -658,8 +658,8 @@ class ComplexityRouter:
     def route(
         self,
         text: str,
-        source_lang: str,
-        target_lang: str,
+        _source_lang: str,
+        _target_lang: str,
         domain: str | None = None,
         force_model: str | None = None,
         available_providers: list[str] | None = None,

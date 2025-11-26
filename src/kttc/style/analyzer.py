@@ -29,7 +29,6 @@ from __future__ import annotations
 import logging
 import math
 import re
-from typing import TYPE_CHECKING
 
 from .models import (
     StyleDeviation,
@@ -1075,7 +1074,7 @@ class StyleFingerprint:
         return min(score, 1.0)
 
     def _determine_pattern(
-        self, deviations: list[StyleDeviation], deviation_score: float, lang: str
+        self, deviations: list[StyleDeviation], deviation_score: float, _lang: str
     ) -> StylePattern:
         """Determine the primary style pattern."""
         deviation_types = {d.type for d in deviations}
