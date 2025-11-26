@@ -204,7 +204,7 @@ def install_dependency_group(group: DependencyGroup) -> bool:
                 capture_output=True,
                 text=True,
                 timeout=600,  # 10 minute timeout
-            )
+            check=True)
 
             progress.update(task, completed=True)
 
