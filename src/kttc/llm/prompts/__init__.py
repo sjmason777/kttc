@@ -25,8 +25,6 @@ from typing import Any
 class PromptTemplateError(Exception):
     """Raised when there's an error loading or formatting a prompt template."""
 
-    pass
-
 
 class PromptTemplate:
     """Manages prompt templates for QA agents.
