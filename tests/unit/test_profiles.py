@@ -248,7 +248,7 @@ class TestLoadProfile:
 
     def test_load_all_builtin_profiles(self) -> None:
         """Test loading all built-in profiles."""
-        for name in BUILTIN_PROFILES.keys():
+        for name in BUILTIN_PROFILES:
             profile = load_profile(name)
             assert profile.name == name
 
@@ -371,7 +371,7 @@ class TestListAvailableProfiles:
     def test_lists_builtin_profiles(self) -> None:
         """Test function lists all built-in profiles."""
         available = list_available_profiles()
-        for name in BUILTIN_PROFILES.keys():
+        for name in BUILTIN_PROFILES:
             assert name in available
 
     def test_returns_sorted_list(self) -> None:
@@ -402,7 +402,7 @@ class TestGetProfileInfo:
 
     def test_get_all_builtin_profiles_info(self) -> None:
         """Test getting info for all built-in profiles."""
-        for name in BUILTIN_PROFILES.keys():
+        for name in BUILTIN_PROFILES:
             info = get_profile_info(name)
             assert info["name"] == name
             assert info["is_builtin"] is True
