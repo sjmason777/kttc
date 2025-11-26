@@ -30,9 +30,6 @@ from typing import TYPE_CHECKING, Any
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.llm import BaseLLMProvider
 
-if TYPE_CHECKING:
-    pass
-
 logger = logging.getLogger(__name__)
 
 

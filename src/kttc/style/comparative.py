@@ -31,9 +31,6 @@ from .models import (
     StyleProfile,
 )
 
-if TYPE_CHECKING:
-    pass
-
 logger = logging.getLogger(__name__)
 
 
