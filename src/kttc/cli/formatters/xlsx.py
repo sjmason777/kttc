@@ -122,12 +122,11 @@ class XLSXFormatter:
             wb.save(output_path)
             logger.info(f"XLSX report saved to {output_path}")
             return None
-        else:
-            from io import BytesIO
+        from io import BytesIO
 
-            buffer = BytesIO()
-            wb.save(buffer)
-            return buffer.getvalue()
+        buffer = BytesIO()
+        wb.save(buffer)
+        return buffer.getvalue()
 
     @classmethod
     def format_batch_report(

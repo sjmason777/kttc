@@ -318,14 +318,13 @@ class HindiPostpositionValidator:
             if not has_ne:
                 return False, "Ergative marker 'ने' required for transitive verbs in perfective past"
             return True, None
-        elif verb_type == "intransitive":
+        if verb_type == "intransitive":
             if has_ne:
                 return False, "Ergative marker 'ने' should not be used with intransitive verbs"
             return True, None
-        else:
-            if has_ne and tense not in perfective_tenses:
-                return False, f"Ergative marker 'ने' not typically used in {tense}"
-            return True, None
+        if has_ne and tense not in perfective_tenses:
+            return False, f"Ergative marker 'ने' not typically used in {tense}"
+        return True, None
 
     def get_oblique_form_rule(self) -> dict[str, Any]:
         """
@@ -434,7 +433,7 @@ class PersianEzafeValidator:
 
         if should_have_ra and not has_ra:
             return False, f"Object marker 'را' required for {object_type} objects"
-        elif not should_have_ra and has_ra:
+        if not should_have_ra and has_ra:
             return False, f"Object marker 'را' not typically used with {object_type} objects"
 
         return True, None

@@ -212,10 +212,9 @@ def install_dependency_group(group: DependencyGroup) -> bool:
             console.print()
             print_success(f"Successfully installed {group} dependencies!")
             return True
-        else:
-            console.print()
-            print_error(f"Installation failed: {result.stderr}")
-            return False
+        console.print()
+        print_error(f"Installation failed: {result.stderr}")
+        return False
 
     except subprocess.TimeoutExpired:
         console.print()
@@ -251,11 +250,10 @@ def ensure_dependency_group(group: DependencyGroup, command: str, required: bool
 
         if success:
             return True
-        else:
-            if required:
-                print_error("Cannot proceed without required dependencies.")
-                sys.exit(1)
-            return False
+        if required:
+            print_error("Cannot proceed without required dependencies.")
+            sys.exit(1)
+        return False
     else:
         # User declined installation
         if required:

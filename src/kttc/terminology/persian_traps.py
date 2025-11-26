@@ -255,12 +255,11 @@ class PersianTrapsValidator:
 
         if formal_count > colloquial_count * 2:
             return "formal"
-        elif colloquial_count > formal_count * 2:
+        if colloquial_count > formal_count * 2:
             return "colloquial"
-        elif formal_count > 0 and colloquial_count > 0:
+        if formal_count > 0 and colloquial_count > 0:
             return "mixed"
-        else:
-            return "formal"  # Default to formal if unclear
+        return "formal"  # Default to formal if unclear
 
     # ========== COMPOUND VERBS ==========
 

@@ -182,12 +182,12 @@ class Settings(BaseSettings):
                 raise ValueError("OpenAI API key not configured. Set KTTC_OPENAI_API_KEY")
             return {"api_key": self.openai_api_key}
 
-        elif provider == "anthropic":
+        if provider == "anthropic":
             if not self.anthropic_api_key:
                 raise ValueError("Anthropic API key not configured. Set KTTC_ANTHROPIC_API_KEY")
             return {"api_key": self.anthropic_api_key}
 
-        elif provider == "gigachat":
+        if provider == "gigachat":
             if not self.gigachat_client_id or not self.gigachat_client_secret:
                 raise ValueError(
                     "GigaChat credentials not configured. "
@@ -199,7 +199,7 @@ class Settings(BaseSettings):
                 "scope": self.gigachat_scope,
             }
 
-        elif provider == "yandex":
+        if provider == "yandex":
             if not self.yandex_api_key or not self.yandex_folder_id:
                 raise ValueError(
                     "Yandex GPT credentials not configured. "
@@ -209,9 +209,7 @@ class Settings(BaseSettings):
                 "api_key": self.yandex_api_key,
                 "folder_id": self.yandex_folder_id,
             }
-
-        else:
-            raise ValueError(f"Unknown LLM provider: {provider}")
+        raise ValueError(f"Unknown LLM provider: {provider}")
 
     def get_llm_provider_key(self, provider: str | None = None) -> str:
         """Get API key for specified LLM provider (legacy method).
@@ -232,11 +230,10 @@ class Settings(BaseSettings):
 
         if "api_key" in creds:
             return creds["api_key"]
-        else:
-            raise ValueError(
-                f"Provider {provider} does not use simple API key authentication. "
-                f"Use get_llm_provider_credentials() instead."
-            )
+        raise ValueError(
+            f"Provider {provider} does not use simple API key authentication. "
+            f"Use get_llm_provider_credentials() instead."
+        )
 
 
 # Global settings instance
