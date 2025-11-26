@@ -245,10 +245,7 @@ class WMTBenchmark:
         Args:
             output_path: Output file path
         """
-        lines = ["# WMT Benchmark Results", ""]
-        lines.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        lines.append(f"**Total Runs:** {len(self.results)}")
-        lines.append("")
+        lines = ["# WMT Benchmark Results", "", f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}", f"**Total Runs:** {len(self.results)}", ""]
 
         for result in self.results:
             lines.append(f"## {result.dataset_name} - {result.language_pair}")
