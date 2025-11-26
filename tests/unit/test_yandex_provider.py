@@ -4,6 +4,7 @@ Tests Yandex GPT LLM provider with mocking.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
+from urllib.parse import urlparse
 
 import pytest
 
@@ -49,7 +50,7 @@ class TestYandexGPTProvider:
 
     def test_provider_base_url(self) -> None:
         """Test provider has correct base URL."""
-        assert "llm.api.cloud.yandex.net" in YandexGPTProvider.BASE_URL
+        assert urlparse(YandexGPTProvider.BASE_URL).netloc == "llm.api.cloud.yandex.net"
         assert "foundationModels" in YandexGPTProvider.BASE_URL
 
 
