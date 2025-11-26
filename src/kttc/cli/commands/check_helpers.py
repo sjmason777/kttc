@@ -85,9 +85,8 @@ def detect_check_mode(
 
     if len(translations) == 1:
         return "single", {"source": source, "translation": translations[0]}
-    else:
-        # Multiple translations - compare mode
-        return "compare", {"source": source, "translations": translations}
+    # Multiple translations - compare mode
+    return "compare", {"source": source, "translations": translations}
 
 
 def perform_smart_routing(

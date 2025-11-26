@@ -1,6 +1,4 @@
-"""
-Term Validator for checking terminology consistency and correctness.
-"""
+"""Term Validator for checking terminology consistency and correctness."""
 
 import json
 import logging
@@ -227,7 +225,7 @@ class TermValidator:
 
             return False, None
 
-        except (KeyError, ValueError):
+        except (KeyError, ValueError, FileNotFoundError):
             logging.warning("Failed to validate MQM error type", exc_info=True)
             return False, None
 
@@ -246,7 +244,7 @@ class TermValidator:
             severity_levels = self.glossary_manager.get_severity_levels(language)
             level_data = severity_levels.get(severity_level, {})
             return float(level_data.get("penalty_multiplier", 1.0))
-        except (KeyError, TypeError, AttributeError):
+        except (KeyError, TypeError, AttributeError, FileNotFoundError):
             logging.warning("Failed to get severity multiplier, using default value", exc_info=True)
             return 1.0
 
@@ -294,7 +292,7 @@ class TermValidator:
                         }
                     )
 
-        except (KeyError, ValueError, TypeError):
+        except (KeyError, ValueError, TypeError, FileNotFoundError):
             logging.warning("Failed to validate language-specific errors", exc_info=True)
 
         return errors

@@ -521,18 +521,32 @@ class XLSXFormatter:
     @classmethod
     def _auto_adjust_columns(cls, ws: Any, max_width: int = 30) -> None:
         """Auto-adjust column widths based on content."""
-        for column_cells in ws.columns:
-            max_length = 0
-            column = column_cells[0].column_letter
-            for cell in column_cells:
-                try:
-                    if cell.value:
-                        cell_length = len(str(cell.value))
-                        if cell_length > max_length:
-                            max_length = cell_length
-                except (AttributeError, TypeError):
-                    logging.warning(
-                        "Failed to calculate cell length for auto-adjust", exc_info=True
-                    )
-            adjusted_width = min(max_length + 2, max_width)
-            ws.column_dimensions[column].width = adjusted_width
+        try:
+            for column_cells in ws.columns:
+                # Convert generator to tuple to allow indexing and iteration
+                column_cells_tuple = tuple(column_cells)
+                if not column_cells_tuple:
+                    continue
+                max_length = 0
+                first_cell = column_cells_tuple[0]
+                # Handle both Cell objects and tuples
+                if hasattr(first_cell, "column_letter"):
+                    column = first_cell.column_letter
+                elif hasattr(first_cell, "column"):
+                    from openpyxl.utils import get_column_letter
+
+                    column = get_column_letter(first_cell.column)
+                else:
+                    continue
+                for cell in column_cells_tuple:
+                    try:
+                        if cell.value:
+                            cell_length = len(str(cell.value))
+                            if cell_length > max_length:
+                                max_length = cell_length
+                    except (AttributeError, TypeError):
+                        pass
+                adjusted_width = min(max_length + 2, max_width)
+                ws.column_dimensions[column].width = adjusted_width
+        except Exception:
+            logging.warning("Failed to auto-adjust columns", exc_info=True)

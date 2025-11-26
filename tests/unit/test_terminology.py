@@ -176,6 +176,209 @@ class TestTermValidator:
         validator.clear_cache()
         assert len(validator._terminology_cache) == 0
 
+    def test_check_approved_terminology_no_glossary(self, validator):
+        """Test checking terms when glossary doesn't exist."""
+        # Should return empty list when glossary doesn't exist
+        errors = validator.check_approved_terminology(
+            terms=["test", "word"],
+            language="en",
+            glossary_name="nonexistent_glossary",
+        )
+        assert errors == []
+
+    def test_check_approved_terminology_with_glossary(self, validator, tmp_path):
+        """Test checking terms against glossary."""
+        import json
+
+        # Create a temporary glossary
+        glossary_data = {"terms": {"API": "definition", "SDK": "definition"}}
+        glossary_file = tmp_path / "test_glossary.json"
+        glossary_file.write_text(json.dumps(glossary_data), encoding="utf-8")
+
+        # Patch the glossaries_dir to use our temp directory
+        original_dir = validator.glossary_manager.glossaries_dir
+        validator.glossary_manager.glossaries_dir = tmp_path
+
+        try:
+            # Term in glossary - no error
+            errors = validator.check_approved_terminology(
+                terms=["API"],
+                language="en",
+                glossary_name="test_glossary",
+            )
+            assert len(errors) == 0
+
+            # Term not in glossary - should report error
+            errors = validator.check_approved_terminology(
+                terms=["unknown_term"],
+                language="en",
+                glossary_name="test_glossary",
+            )
+            assert len(errors) == 1
+            assert errors[0]["error_type"] == "unapproved_terminology"
+            assert errors[0]["term"] == "unknown_term"
+        finally:
+            validator.glossary_manager.glossaries_dir = original_dir
+
+    def test_check_approved_terminology_case_insensitive(self, validator, tmp_path):
+        """Test that terminology check is case-insensitive."""
+        import json
+
+        glossary_data = {"terms": {"API": "definition"}}
+        glossary_file = tmp_path / "case_test.json"
+        glossary_file.write_text(json.dumps(glossary_data), encoding="utf-8")
+
+        original_dir = validator.glossary_manager.glossaries_dir
+        validator.glossary_manager.glossaries_dir = tmp_path
+
+        try:
+            # Lowercase should match uppercase in glossary
+            errors = validator.check_approved_terminology(
+                terms=["api"],
+                language="en",
+                glossary_name="case_test",
+            )
+            assert len(errors) == 0
+        finally:
+            validator.glossary_manager.glossaries_dir = original_dir
+
+    def test_check_approved_terminology_invalid_json(self, validator, tmp_path):
+        """Test handling of invalid JSON in glossary file."""
+        glossary_file = tmp_path / "invalid.json"
+        glossary_file.write_text("not valid json{", encoding="utf-8")
+
+        original_dir = validator.glossary_manager.glossaries_dir
+        validator.glossary_manager.glossaries_dir = tmp_path
+
+        try:
+            # Should handle gracefully and return empty errors
+            errors = validator.check_approved_terminology(
+                terms=["test"],
+                language="en",
+                glossary_name="invalid",
+            )
+            assert errors == []
+        finally:
+            validator.glossary_manager.glossaries_dir = original_dir
+
+    def test_detect_false_friends_no_matches(self, validator):
+        """Test false friend detection with no matches."""
+        errors = validator.detect_false_friends(
+            source_text="Hello world",
+            target_text="Привет мир",
+            source_lang="en",
+            target_lang="ru",
+        )
+        # Should return empty list or list (depending on glossary content)
+        assert isinstance(errors, list)
+
+    def test_detect_false_friends_missing_glossary(self, validator):
+        """Test false friend detection when glossary is missing."""
+        # Use unsupported language pair
+        errors = validator.detect_false_friends(
+            source_text="Hello",
+            target_text="Bonjour",
+            source_lang="en",
+            target_lang="xx",  # Non-existent language
+        )
+        # Should handle gracefully
+        assert isinstance(errors, list)
+
+    def test_validate_mqm_error_type_subtype(self, validator):
+        """Test validating MQM error subtypes."""
+        # Test subtype validation (mistranslation is a subtype of accuracy)
+        is_valid, info = validator.validate_mqm_error_type("mistranslation", "en")
+        assert is_valid
+        if info:
+            assert "parent_dimension" in info or "id" in info
+
+    def test_validate_mqm_error_type_invalid_language(self, validator):
+        """Test MQM validation with invalid language."""
+        # Should return False for invalid language (FileNotFoundError is caught)
+        is_valid, info = validator.validate_mqm_error_type("accuracy", "xx")
+        # Returns False because glossary doesn't exist
+        assert is_valid is False
+        assert info is None
+
+    def test_get_severity_multiplier_unknown_level(self, validator):
+        """Test getting multiplier for unknown severity level."""
+        # Should return default 1.0
+        multiplier = validator.get_severity_multiplier("unknown_severity", "en")
+        assert multiplier == 1.0
+
+    def test_get_severity_multiplier_invalid_language(self, validator):
+        """Test getting multiplier with invalid language returns default."""
+        # When glossary doesn't exist, should return default 1.0
+        # The function catches exceptions and returns default
+        multiplier = validator.get_severity_multiplier("major", "xx")
+        assert multiplier == 1.0
+
+    def test_validate_language_specific_errors_no_data(self, validator):
+        """Test language-specific validation when no data available."""
+        # When glossary doesn't exist, should return empty list
+        # The function catches FileNotFoundError and returns empty
+        errors = validator.validate_language_specific_errors(
+            text="Test text",
+            language="xx",  # Non-existent language
+            error_types=None,
+        )
+        # Should return empty list
+        assert errors == []
+
+    def test_validate_language_specific_errors_with_filter(self, validator):
+        """Test language-specific validation with error type filter."""
+        errors = validator.validate_language_specific_errors(
+            text="Test text",
+            language="en",
+            error_types=["specific_error_type"],
+        )
+        # Should return filtered results
+        assert isinstance(errors, list)
+
+    def test_validate_terminology_consistency_empty_lists(self, validator):
+        """Test terminology consistency with empty input."""
+        errors = validator.validate_terminology_consistency(
+            source_terms=[],
+            target_terms=[],
+            source_lang="en",
+            target_lang="ru",
+        )
+        assert errors == []
+
+    def test_validate_terminology_consistency_single_occurrence(self, validator):
+        """Test that single occurrences don't trigger inconsistency."""
+        errors = validator.validate_terminology_consistency(
+            source_terms=["API", "SDK", "UI"],
+            target_terms=["API", "SDK", "UI"],
+            source_lang="en",
+            target_lang="ru",
+        )
+        assert len(errors) == 0
+
+    def test_validate_terminology_consistency_multiple_terms(self, validator):
+        """Test consistency check with multiple different terms."""
+        errors = validator.validate_terminology_consistency(
+            source_terms=["API", "API", "SDK", "SDK"],
+            target_terms=["API", "АПИ", "SDK", "SDK"],
+            source_lang="en",
+            target_lang="ru",
+        )
+        # Only API should be flagged as inconsistent
+        assert len(errors) == 1
+        assert errors[0]["source_term"] == "API"
+
+    def test_initialization_with_custom_manager(self):
+        """Test initializing validator with custom glossary manager."""
+        custom_manager = GlossaryManager()
+        validator = TermValidator(glossary_manager=custom_manager)
+        assert validator.glossary_manager is custom_manager
+
+    def test_initialization_creates_default_manager(self):
+        """Test that initialization creates default manager if none provided."""
+        validator = TermValidator(glossary_manager=None)
+        assert validator.glossary_manager is not None
+        assert isinstance(validator.glossary_manager, GlossaryManager)
+
 
 class TestGlossaryIntegration:
     """Integration tests for glossary system."""
