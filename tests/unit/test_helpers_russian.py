@@ -5,7 +5,11 @@ Tests Russian-specific NLP functionality.
 
 import pytest
 
-from kttc.helpers.russian import LANGUAGETOOL_AVAILABLE, MAWO_AVAILABLE, RussianLanguageHelper
+from kttc.helpers.russian import (
+    LANGUAGETOOL_AVAILABLE,
+    MAWO_AVAILABLE,
+    RussianLanguageHelper,
+)
 
 
 @pytest.mark.unit

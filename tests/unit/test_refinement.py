@@ -7,7 +7,11 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from kttc.agents.refinement import ConvergenceCheck, IterativeRefinement, RefinementResult
+from kttc.agents.refinement import (
+    ConvergenceCheck,
+    IterativeRefinement,
+    RefinementResult,
+)
 from kttc.core.models import ErrorAnnotation, ErrorSeverity, QAReport, TranslationTask
 
 

@@ -203,7 +203,6 @@ class AgentOrchestrator:
             return None
 
         try:
-
             profile = self.style_analyzer.analyze(task.source_text, task.source_lang)
 
             if profile.has_significant_deviations:

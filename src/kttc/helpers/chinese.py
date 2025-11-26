@@ -438,7 +438,7 @@ class ChineseLanguageHelper(LanguageHelper):
                                 location=(start_pos, start_pos + len(token)),
                                 description=(
                                     f'Aspect particle "{token}" should follow a verb, '
-                                    f'but follows "{tokens[i-1]}" ({pos_tags[i-1]})'
+                                    f'but follows "{tokens[i - 1]}" ({pos_tags[i - 1]})'
                                 ),
                                 suggestion=None,
                             )
@@ -463,7 +463,7 @@ class ChineseLanguageHelper(LanguageHelper):
                         "number": tokens[i],
                         "measure": tokens[i + 1],
                         "noun": tokens[i + 2],
-                        "pattern": f"{tokens[i]}{tokens[i+1]}{tokens[i+2]}",
+                        "pattern": f"{tokens[i]}{tokens[i + 1]}{tokens[i + 2]}",
                     }
                 )
         return patterns

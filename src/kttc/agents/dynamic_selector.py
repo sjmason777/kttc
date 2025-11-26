@@ -382,7 +382,7 @@ class DynamicAgentSelector:
             selected = ["accuracy"]
 
         logger.info(
-            f"Budget-constrained selection: {len(selected)} agents " f"(~{current_cost} tokens)"
+            f"Budget-constrained selection: {len(selected)} agents (~{current_cost} tokens)"
         )
 
         return selected
