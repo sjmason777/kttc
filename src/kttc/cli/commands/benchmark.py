@@ -32,7 +32,12 @@ from kttc.cli.ui import (
     print_info,
 )
 from kttc.core import TranslationTask
-from kttc.llm import AnthropicProvider, BaseLLMProvider, GigaChatProvider, OpenAIProvider
+from kttc.llm import (
+    AnthropicProvider,
+    BaseLLMProvider,
+    GigaChatProvider,
+    OpenAIProvider,
+)
 from kttc.utils.config import get_settings
 from kttc.utils.dependencies import require_benchmark
 
