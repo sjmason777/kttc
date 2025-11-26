@@ -117,9 +117,9 @@ class YandexGPTProvider(BaseLLMProvider):
                 async with session.post(url, headers=headers, json=payload) as response:
                     if response.status == 401:
                         raise LLMAuthenticationError("Yandex API authentication failed")
-                    elif response.status == 429:
+                    if response.status == 429:
                         raise LLMRateLimitError("Yandex API rate limit exceeded")
-                    elif response.status != 200:
+                    if response.status != 200:
                         error_text = await response.text()
                         raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
 
@@ -184,9 +184,9 @@ class YandexGPTProvider(BaseLLMProvider):
                 async with session.post(url, headers=headers, json=payload) as response:
                     if response.status == 401:
                         raise LLMAuthenticationError("Yandex API authentication failed")
-                    elif response.status == 429:
+                    if response.status == 429:
                         raise LLMRateLimitError("Yandex API rate limit exceeded")
-                    elif response.status != 200:
+                    if response.status != 200:
                         error_text = await response.text()
                         raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
 

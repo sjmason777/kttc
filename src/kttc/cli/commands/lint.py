@@ -99,8 +99,7 @@ def lint(
             if strict or any(e.severity.value == "critical" for e in errors):
                 console.print("\n[red]✗ Lint failed[/red]")
                 raise typer.Exit(code=1)
-            else:
-                console.print("\n[yellow]⚠ Lint completed with warnings[/yellow]")
+            console.print("\n[yellow]⚠ Lint completed with warnings[/yellow]")
         else:
             console.print("\n[green]✓ No issues found[/green]")
 
