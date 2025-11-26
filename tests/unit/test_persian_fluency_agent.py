@@ -273,8 +273,7 @@ class TestPersianFluencyEvaluation:
 class TestDadmaToolsCheck:
     """Test DadmaTools spell checking integration."""
 
-    @pytest.mark.asyncio
-    async def test_dadmatools_check_when_helper_available(
+    def test_dadmatools_check_when_helper_available(
         self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
     ) -> None:
         """Test that DadmaTools check is called when helper is available."""
@@ -282,14 +281,14 @@ class TestDadmaToolsCheck:
         mock_llm = MockLLMProvider(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
-        # Act
-        await agent._dadmatools_check(sample_persian_task)
+        # Act - use the correct method name _dadmatools_check_sync
+        errors = agent._dadmatools_check_sync(sample_persian_task)
 
         # Assert
         assert mock_persian_helper.spell_check_calls == 1
+        assert isinstance(errors, list)
 
-    @pytest.mark.asyncio
-    async def test_dadmatools_check_when_helper_unavailable(
+    def test_dadmatools_check_when_helper_unavailable(
         self,
         mock_persian_helper_unavailable: MockPersianHelper,
         sample_persian_task: TranslationTask,
@@ -299,15 +298,14 @@ class TestDadmaToolsCheck:
         mock_llm = MockLLMProvider(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper_unavailable)
 
-        # Act
-        errors = await agent._dadmatools_check(sample_persian_task)
+        # Act - use the correct method name _dadmatools_check_sync
+        errors = agent._dadmatools_check_sync(sample_persian_task)
 
         # Assert
         assert len(errors) == 0
         assert mock_persian_helper_unavailable.spell_check_calls == 0
 
-    @pytest.mark.asyncio
-    async def test_dadmatools_check_handles_exceptions(
+    def test_dadmatools_check_handles_exceptions(
         self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
     ) -> None:
         """Test that DadmaTools check handles exceptions gracefully."""
@@ -316,8 +314,8 @@ class TestDadmaToolsCheck:
         mock_persian_helper.check_spelling = Mock(side_effect=Exception("DadmaTools error"))
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
-        # Act
-        errors = await agent._dadmatools_check(sample_persian_task)
+        # Act - use the correct method name _dadmatools_check_sync
+        errors = agent._dadmatools_check_sync(sample_persian_task)
 
         # Assert
         assert isinstance(errors, list)

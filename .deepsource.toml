@@ -1,6 +1,12 @@
+# DeepSource Configuration
+# https://docs.deepsource.com/docs/languages/python
+# Updated: November 2025
+
 version = 1
 
-# Test file patterns - issues in these files are filtered differently
+# =============================================================================
+# Test Patterns
+# =============================================================================
 test_patterns = [
     "tests/**",
     "test_*.py",
@@ -9,7 +15,9 @@ test_patterns = [
     "conftest.py"
 ]
 
-# Exclude from analysis entirely
+# =============================================================================
+# Exclusions (aligned with SonarCloud and .gitignore)
+# =============================================================================
 exclude_patterns = [
     "examples/**",
     "scripts/**",
@@ -20,30 +28,52 @@ exclude_patterns = [
     "venv/**",
     "build/**",
     "dist/**",
-    "*.egg-info/**"
+    "*.egg-info/**",
+    "**/*.pyc",
+    "**/*.pyo"
 ]
 
+# =============================================================================
+# Python Analyzer
+# =============================================================================
 [[analyzers]]
 name = "python"
 enabled = true
 
   [analyzers.meta]
+  # Python 3.11+ (use semver format)
   runtime_version = "3.x.x"
-  max_line_length = 120
+
+  # Line length (aligned with black/ruff config in pyproject.toml)
+  max_line_length = 100
+
+  # Type checker integration
   type_checker = "mypy"
 
-  # Skip doc coverage for these
+  # Cyclomatic complexity threshold (2025 feature)
+  # Options: "low" (1-5), "medium" (6-15), "high" (16-25), "very-high" (26-50), "critical" (>50)
+  cyclomatic_complexity_threshold = "high"
+
+  # Skip documentation coverage for specific artifacts
   skip_doc_coverage = [
     "module",
     "magic",
     "init",
-    "class"
+    "class",
+    "nonpublic"
   ]
 
+# =============================================================================
+# Code Transformers (Autofix)
+# =============================================================================
 [[transformers]]
 name = "black"
 enabled = true
 
 [[transformers]]
 name = "isort"
+enabled = true
+
+[[transformers]]
+name = "ruff"
 enabled = true

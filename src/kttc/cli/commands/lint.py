@@ -16,7 +16,6 @@
 
 from __future__ import annotations
 
-import asyncio
 from pathlib import Path
 from typing import Any
 
@@ -69,16 +68,16 @@ def lint(
         console.print(f"[cyan]Linting {file_path.name}...[/cyan]")
 
         # Run fast rule-based check only
-        async def run_lint() -> list[Any]:
+        def run_lint() -> list[Any]:
             agent = SpellingAgent(
                 llm_provider=None,
                 language=lang,
                 use_patterns=True,
                 use_school_rules=True,
             )
-            return await agent.check(text)
+            return agent.check(text)
 
-        errors = asyncio.run(run_lint())
+        errors = run_lint()
 
         if errors:
             console.print(f"\n[yellow]Found {len(errors)} issue(s):[/yellow]\n")

@@ -102,7 +102,7 @@ class TranslationMemory:
         self.encoder: SentenceTransformer | None = None
         self._initialized = False
 
-    async def initialize(self) -> None:
+    def initialize(self) -> None:
         """Initialize database and embedding model.
 
         Creates database schema and loads sentence transformer model.
@@ -182,7 +182,7 @@ class TranslationMemory:
 
         self.db.commit()
 
-    async def add_translation(
+    def add_translation(
         self,
         source: str,
         translation: str,
@@ -263,7 +263,7 @@ class TranslationMemory:
             row = cursor.fetchone()
             return int(row["id"]) if row else 0
 
-    async def search_similar(
+    def search_similar(
         self,
         source: str,
         source_lang: str,
@@ -343,7 +343,7 @@ class TranslationMemory:
         results.sort(key=lambda x: x.similarity, reverse=True)
         return results[:limit]
 
-    async def increment_usage(self, segment_id: int) -> None:
+    def increment_usage(self, segment_id: int) -> None:
         """Increment usage counter for a segment.
 
         Args:
@@ -357,7 +357,7 @@ class TranslationMemory:
         )
         self.db.commit()
 
-    async def get_statistics(self) -> dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """Get Translation Memory statistics.
 
         Returns:
@@ -412,7 +412,7 @@ class TranslationMemory:
 
         return float(dot_product / (norm1 * norm2))
 
-    async def cleanup(self) -> None:
+    def cleanup(self) -> None:
         """Close database connection and cleanup resources."""
         if self.db is not None:
             self.db.close()

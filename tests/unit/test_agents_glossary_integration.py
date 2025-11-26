@@ -53,16 +53,15 @@ class TestRussianFluencyAgentGlossaryIntegration:
         assert isinstance(agent.case_validator, RussianCaseAspectValidator)
 
     def test_agent_has_glossary_check_method(self):
-        """Test agent has _glossary_check method."""
+        """Test agent has _glossary_check_sync method."""
         provider = MockLLMProvider()
         agent = RussianFluencyAgent(provider)
 
-        assert hasattr(agent, "_glossary_check")
-        assert callable(agent._glossary_check)
+        assert hasattr(agent, "_glossary_check_sync")
+        assert callable(agent._glossary_check_sync)
 
-    @pytest.mark.asyncio
-    async def test_glossary_check_returns_error_list(self):
-        """Test _glossary_check returns list of errors."""
+    def test_glossary_check_returns_error_list(self):
+        """Test _glossary_check_sync returns list of errors."""
         provider = MockLLMProvider()
         agent = RussianFluencyAgent(provider)
 
@@ -73,7 +72,7 @@ class TestRussianFluencyAgentGlossaryIntegration:
             target_lang="ru",
         )
 
-        errors = await agent._glossary_check(task)
+        errors = agent._glossary_check_sync(task)
 
         assert isinstance(errors, list)
         # For now, should return empty list (reference data loaded but no active validation yet)
@@ -118,16 +117,15 @@ class TestChineseFluencyAgentGlossaryIntegration:
         assert isinstance(agent.measure_validator, ChineseMeasureWordValidator)
 
     def test_agent_has_glossary_check_method(self):
-        """Test agent has _glossary_check method."""
+        """Test agent has _glossary_check_sync method."""
         provider = MockLLMProvider()
         agent = ChineseFluencyAgent(provider)
 
-        assert hasattr(agent, "_glossary_check")
-        assert callable(agent._glossary_check)
+        assert hasattr(agent, "_glossary_check_sync")
+        assert callable(agent._glossary_check_sync)
 
-    @pytest.mark.asyncio
-    async def test_glossary_check_returns_error_list(self):
-        """Test _glossary_check returns list of errors."""
+    def test_glossary_check_returns_error_list(self):
+        """Test _glossary_check_sync returns list of errors."""
         provider = MockLLMProvider()
         agent = ChineseFluencyAgent(provider)
 
@@ -138,7 +136,7 @@ class TestChineseFluencyAgentGlossaryIntegration:
             target_lang="zh",
         )
 
-        errors = await agent._glossary_check(task)
+        errors = agent._glossary_check_sync(task)
 
         assert isinstance(errors, list)
         assert len(errors) == 0  # Reference data loaded but no active validation yet
@@ -187,16 +185,15 @@ class TestHindiFluencyAgentGlossaryIntegration:
         assert isinstance(agent.case_validator, HindiPostpositionValidator)
 
     def test_agent_has_glossary_check_method(self):
-        """Test agent has _glossary_check method."""
+        """Test agent has _glossary_check_sync method."""
         provider = MockLLMProvider()
         agent = HindiFluencyAgent(provider)
 
-        assert hasattr(agent, "_glossary_check")
-        assert callable(agent._glossary_check)
+        assert hasattr(agent, "_glossary_check_sync")
+        assert callable(agent._glossary_check_sync)
 
-    @pytest.mark.asyncio
-    async def test_glossary_check_returns_error_list(self):
-        """Test _glossary_check returns list of errors."""
+    def test_glossary_check_returns_error_list(self):
+        """Test _glossary_check_sync returns list of errors."""
         provider = MockLLMProvider()
         agent = HindiFluencyAgent(provider)
 
@@ -207,7 +204,7 @@ class TestHindiFluencyAgentGlossaryIntegration:
             target_lang="hi",
         )
 
-        errors = await agent._glossary_check(task)
+        errors = agent._glossary_check_sync(task)
 
         assert isinstance(errors, list)
         assert len(errors) == 0  # Reference data loaded but no active validation yet
@@ -247,16 +244,15 @@ class TestPersianFluencyAgentGlossaryIntegration:
         assert isinstance(agent.ezafe_validator, PersianEzafeValidator)
 
     def test_agent_has_glossary_check_method(self):
-        """Test agent has _glossary_check method."""
+        """Test agent has _glossary_check_sync method."""
         provider = MockLLMProvider()
         agent = PersianFluencyAgent(provider)
 
-        assert hasattr(agent, "_glossary_check")
-        assert callable(agent._glossary_check)
+        assert hasattr(agent, "_glossary_check_sync")
+        assert callable(agent._glossary_check_sync)
 
-    @pytest.mark.asyncio
-    async def test_glossary_check_returns_error_list(self):
-        """Test _glossary_check returns list of errors."""
+    def test_glossary_check_returns_error_list(self):
+        """Test _glossary_check_sync returns list of errors."""
         provider = MockLLMProvider()
         agent = PersianFluencyAgent(provider)
 
@@ -267,7 +263,7 @@ class TestPersianFluencyAgentGlossaryIntegration:
             target_lang="fa",
         )
 
-        errors = await agent._glossary_check(task)
+        errors = agent._glossary_check_sync(task)
 
         assert isinstance(errors, list)
         assert len(errors) == 0  # Reference data loaded but no active validation yet

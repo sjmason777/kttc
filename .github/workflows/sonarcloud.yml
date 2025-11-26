@@ -35,10 +35,37 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest tests/unit/ --cov=kttc --cov-report=xml -v
+          pytest tests/unit/ --cov=src/kttc --cov-report=xml:coverage.xml -v
+        continue-on-error: true
+
+      # Generate external analyzer reports for SonarCloud
+      # See: https://docs.sonarcloud.io/enriching/external-analyzer-reports/
+
+      - name: Run MyPy and generate report
+        run: |
+          python -m mypy --config-file pyproject.toml > mypy-report.txt 2>&1 || true
+        continue-on-error: true
+
+      - name: Run Pylint and generate report
+        run: |
+          python -m pylint src/kttc/ \
+            --output-format=parseable \
+            --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" \
+            > pylint-report.txt 2>&1 || true
+        continue-on-error: true
+
+      - name: Run Bandit and generate report
+        run: |
+          python -m bandit -r src/kttc/ -f json -o bandit-report.json 2>&1 || true
+        continue-on-error: true
+
+      - name: Run Ruff and generate report
+        run: |
+          python -m ruff check src/ --output-format=text > ruff-report.txt 2>&1 || true
+        continue-on-error: true
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6.0.0
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

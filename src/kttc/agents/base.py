@@ -106,6 +106,7 @@ class BaseAgent(ABC):
             >>> errors = await agent.evaluate(task)
             >>> print(f"Found {len(errors)} accuracy errors")
         """
+        ...
 
     @property
     @abstractmethod
@@ -132,7 +133,7 @@ class BaseAgent(ABC):
             >>> print(base_prompt[:100])  # First 100 characters
         """
 
-    async def self_assess(
+    def self_assess(
         self,
         errors: list[ErrorAnnotation],
         task: TranslationTask,
@@ -205,7 +206,7 @@ class BaseAgent(ABC):
         errors = await self.evaluate(task)
 
         for _attempt in range(self.max_retries):
-            assessment = await self.self_assess(errors, task)
+            assessment = self.self_assess(errors, task)
 
             if not assessment.should_retry:
                 logger.debug(

@@ -338,7 +338,7 @@ ignore = ["tests", "examples", "scripts", "__pycache__"]
 ignore-patterns = ["test_*.py", "conftest.py"]
 
 [tool.pylint.messages_control]
-# Minimal disables - only for things that conflict with other tools or are false positives
+# Disables - for things that conflict with other tools, false positives, or acceptable patterns
 disable = [
     # Conflicts with black/ruff (they handle these)
     "line-too-long",                  # C0301 - handled by black
@@ -357,13 +357,29 @@ disable = [
     # Style preferences (not bugs, handled by ruff)
     "logging-fstring-interpolation",  # W1203 - f-strings are readable
     "logging-format-interpolation",   # W1202 - same
+
+    # Complexity metrics - acceptable for complex domain
+    "too-many-positional-arguments",  # R0917 - CLI/agents often need many params
+    "too-many-locals",                # R0914 - complex functions are acceptable
+    "too-many-branches",              # R0912 - complex control flow is acceptable
+    "too-many-statements",            # R0915 - long functions are acceptable
+    "too-many-return-statements",     # R0911 - multiple returns are acceptable
+    "too-many-nested-blocks",         # R1702 - nested blocks are acceptable
+    "too-many-public-methods",        # R0904 - large classes are acceptable
+    "too-many-lines",                 # C0302 - large modules are acceptable
+    "too-many-arguments",             # R0913 - many args are acceptable
+
+    # Acceptable patterns
+    "broad-exception-caught",         # W0718 - graceful degradation pattern
+    "global-statement",               # W0603 - singleton pattern
+    "unnecessary-ellipsis",           # W2301 - abstract methods use ellipsis
+    "unused-argument",                # W0613 - handled by ruff ARG001/ARG002
 ]
 
 # Enable important checks that should be fixed
 enable = [
     "unused-import",      # W0611
     "unused-variable",    # W0612
-    "unused-argument",    # W0613
     "unreachable",        # W0101
     "undefined-variable", # E0602
     "syntax-error",       # E0001
@@ -374,7 +390,7 @@ max-line-length = 120  # Allow slightly longer lines
 
 [tool.pylint.basic]
 good-names = ["i", "j", "k", "n", "x", "y", "z", "f", "e", "ex", "id", "ok", "db", "io", "_"]
-good-names-rgxs = ["^[a-z]$", "^[a-z][a-z0-9]?$"]  # Allow short variable names
+good-names-rgxs = ["^[a-z]$", "^[a-z][a-z0-9]?$", "^[A-Z_]+$"]  # Allow short vars and UPPER_CASE constants
 
 [tool.pylint.design]
 max-args = 10           # Allow up to 10 arguments

@@ -159,9 +159,9 @@ class EnglishFluencyAgent(FluencyAgent):
         # Run LanguageTool, LLM, and Traps checks in parallel
         try:
             results = await asyncio.gather(
-                self._languagetool_check(task),  # Fast, deterministic
-                self._llm_check(task),  # Slow, semantic
-                self._traps_check(task),  # Fast, glossary-based
+                asyncio.to_thread(self._languagetool_check_sync, task),  # Fast
+                self._llm_check(task),  # Slow, semantic (uses await internally)
+                asyncio.to_thread(self._traps_check_sync, task),  # Glossary-based
                 return_exceptions=True,
             )
 
@@ -212,8 +212,8 @@ class EnglishFluencyAgent(FluencyAgent):
             # Fallback to base errors
             return base_errors
 
-    async def _languagetool_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform LanguageTool-based grammar checks.
+    def _languagetool_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform LanguageTool-based grammar checks (synchronous).
 
         Args:
             task: Translation task
@@ -250,8 +250,8 @@ class EnglishFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform English traps checks (homophones, phrasal verbs, idioms, etc.).
+    def _traps_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform English traps checks (synchronous).
 
         Uses glossary-based detection for:
         - Homophone errors (their/there/they're, your/you're, etc.)

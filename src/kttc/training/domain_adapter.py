@@ -454,7 +454,7 @@ DOMAIN-SPECIFIC GUIDELINES ({patterns.domain.upper()}):
 
 
 # Helper function for quick domain adaptation
-async def quick_adapt(agent: BaseAgent, domain: str, training_data_path: str | Path) -> BaseAgent:
+def quick_adapt(agent: BaseAgent, domain: str, training_data_path: str | Path) -> BaseAgent:
     """Quickly adapt an agent to a domain using training data.
 
     Args:

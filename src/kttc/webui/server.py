@@ -169,7 +169,7 @@ def create_app() -> FastAPI:
 
     # Routes
     @app.get("/", response_class=HTMLResponse)
-    async def root() -> str:
+    def root() -> str:
         """Serve main dashboard page."""
         html_file = Path(__file__).parent / "templates" / "index.html"
 
@@ -531,7 +531,7 @@ def create_app() -> FastAPI:
         return JSONResponse(content={"results": results, "total": len(results)})
 
     @app.get("/api/stats", response_model=ServerStats)
-    async def get_stats() -> ServerStats:
+    def get_stats() -> ServerStats:
         """Get server statistics."""
         stats = app_state["stats"]
         uptime = time.time() - stats["start_time"] if stats["start_time"] else 0

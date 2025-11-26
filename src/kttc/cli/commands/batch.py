@@ -199,7 +199,7 @@ def _build_batch_config_info(
     return config_info
 
 
-def _create_batch_progress(total: int) -> Any:
+def _create_batch_progress(_total: int) -> Any:  # noqa: ARG001
     """Create progress bar for batch processing."""
     return Progress(
         SpinnerColumn(),

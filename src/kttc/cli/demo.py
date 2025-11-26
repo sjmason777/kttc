@@ -167,7 +167,7 @@ class DemoLLMProvider(BaseLLMProvider):
             else:
                 yield word
 
-    async def complete_with_response_model(
+    def complete_with_response_model(
         self,
         _prompt: str,
         _response_model: type,

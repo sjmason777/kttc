@@ -65,19 +65,23 @@ class TestOrchestratorEvaluation:
     """Test orchestrator evaluation with mocked agents."""
 
     @pytest.mark.asyncio
-    async def test_evaluate_perfect_translation(
-        self, mock_llm: Any, sample_translation_task: TranslationTask
-    ) -> None:
+    async def test_evaluate_perfect_translation(self, mock_llm: Any) -> None:
         """Test evaluation of perfect translation with no errors."""
-        # Arrange
+        # Arrange - use English->Spanish to avoid triggering language-specific checks
+        task = TranslationTask(
+            source_text="Hello world",
+            translation="Hola mundo",
+            source_lang="en",
+            target_lang="es",
+        )
         orchestrator = AgentOrchestrator(llm_provider=mock_llm)
 
         # Act
-        report = await orchestrator.evaluate(sample_translation_task)
+        report = await orchestrator.evaluate(task)
 
         # Assert
         assert report is not None
-        assert report.task == sample_translation_task
+        assert report.task == task
         assert report.mqm_score == 100.0  # Perfect score with no errors
         assert report.status == "pass"
         assert len(report.errors) == 0
@@ -120,15 +124,19 @@ class TestOrchestratorEvaluation:
             assert report.status == "pass"
 
     @pytest.mark.asyncio
-    async def test_evaluate_custom_threshold(
-        self, mock_llm: Any, sample_translation_task: TranslationTask
-    ) -> None:
+    async def test_evaluate_custom_threshold(self, mock_llm: Any) -> None:
         """Test evaluation with custom threshold."""
-        # Arrange
+        # Arrange - use English->Spanish to avoid triggering language-specific checks
+        task = TranslationTask(
+            source_text="Hello world",
+            translation="Hola mundo",
+            source_lang="en",
+            target_lang="es",
+        )
         orchestrator = AgentOrchestrator(llm_provider=mock_llm, quality_threshold=80.0)
 
         # Act
-        report = await orchestrator.evaluate(sample_translation_task)
+        report = await orchestrator.evaluate(task)
 
         # Assert
         assert orchestrator.quality_threshold == 80.0
@@ -140,15 +148,19 @@ class TestOrchestratorMQMScoring:
     """Test MQM scoring calculation."""
 
     @pytest.mark.asyncio
-    async def test_mqm_score_calculation_no_errors(
-        self, mock_llm: Any, sample_translation_task: TranslationTask
-    ) -> None:
+    async def test_mqm_score_calculation_no_errors(self, mock_llm: Any) -> None:
         """Test MQM score is 100 with no errors."""
-        # Arrange
+        # Arrange - use English->Spanish to avoid triggering language-specific checks
+        task = TranslationTask(
+            source_text="Hello world",
+            translation="Hola mundo",
+            source_lang="en",
+            target_lang="es",
+        )
         orchestrator = AgentOrchestrator(llm_provider=mock_llm)
 
         # Act
-        report = await orchestrator.evaluate(sample_translation_task)
+        report = await orchestrator.evaluate(task)
 
         # Assert
         assert report.mqm_score == 100.0

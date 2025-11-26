@@ -68,7 +68,7 @@ def detect_system_language() -> str:
 
     # Priority 3: Python locale module
     try:
-        lang_locale, _ = locale.getdefaultlocale()
+        lang_locale, _ = locale.getlocale()
         if lang_locale:
             lang = _normalize_language_code(lang_locale)
             if lang in SUPPORTED_LANGUAGES:

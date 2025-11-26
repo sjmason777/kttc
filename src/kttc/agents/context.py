@@ -158,12 +158,12 @@ Output JSON format with errors array."""
 
         try:
             # Check 1: Cross-references
-            cross_ref_errors = await self._check_cross_references(task)
+            cross_ref_errors = self._check_cross_references(task)
             errors.extend(cross_ref_errors)
 
             # Check 2: Term consistency (if we have document context)
             if self.document_segments:
-                consistency_errors = await self._check_term_consistency(task)
+                consistency_errors = self._check_term_consistency(task)
                 errors.extend(consistency_errors)
 
             # Check 3: Coherence
@@ -177,7 +177,7 @@ Output JSON format with errors array."""
             logger.error(f"Context agent evaluation failed: {e}")
             raise AgentEvaluationError(f"Context checking failed: {e}") from e
 
-    async def _check_cross_references(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    def _check_cross_references(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Check if cross-references are preserved.
 
         Detects references like "Section 3.2", "Figure 1", "see above", etc.
@@ -246,7 +246,7 @@ Output JSON format with errors array."""
 
         return list(set(refs))
 
-    async def _check_term_consistency(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    def _check_term_consistency(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Check if terms are translated consistently across document.
 
         Args:

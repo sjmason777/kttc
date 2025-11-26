@@ -152,11 +152,11 @@ class RussianFluencyAgent(FluencyAgent):
         # Run NLP, LLM, glossary, entity, and traps checks in parallel
         try:
             results = await asyncio.gather(
-                self._nlp_check(task),  # Fast, deterministic
-                self._llm_check(task),  # Slow, semantic
-                self._glossary_check(task),  # Glossary-based case/aspect validation
-                self._entity_check(task),  # NER-based entity preservation
-                self._traps_check(task),  # Russian traps: homonyms, idioms, position verbs
+                asyncio.to_thread(self._nlp_check_sync, task),  # Fast, deterministic
+                self._llm_check(task),  # Slow, semantic (uses await internally)
+                asyncio.to_thread(self._glossary_check_sync, task),  # Glossary validation
+                asyncio.to_thread(self._entity_check_sync, task),  # NER entity check
+                asyncio.to_thread(self._traps_check_sync, task),  # Russian traps
                 return_exceptions=True,
             )
 
@@ -242,8 +242,8 @@ class RussianFluencyAgent(FluencyAgent):
             # Fallback to base errors
             return base_errors
 
-    async def _nlp_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform NLP-based grammar checks.
+    def _nlp_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform NLP-based grammar checks (synchronous).
 
         Args:
             task: Translation task
@@ -280,8 +280,8 @@ class RussianFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform glossary-based Russian case and aspect validation.
+    def _glossary_check_sync(self, _task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Russian case and aspect validation (synchronous).
 
         Uses RussianCaseAspectValidator to check:
         - Case agreement (падежное согласование)
@@ -332,8 +332,8 @@ class RussianFluencyAgent(FluencyAgent):
 
         return errors
 
-    async def _entity_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform NER-based entity preservation checks.
+    def _entity_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform NER-based entity preservation checks (synchronous).
 
         Args:
             task: Translation task
@@ -440,12 +440,13 @@ class RussianFluencyAgent(FluencyAgent):
             )
         return errors
 
-    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Check for Russian language traps (idioms, position verbs, homonyms, paronyms)."""
+    def _traps_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Check for Russian language traps (synchronous)."""
         if not self.traps_validator or not self.traps_validator.is_available():
             logger.debug("Traps validator not available, skipping traps checks")
             return []
 
+        errors: list[ErrorAnnotation] = []
         try:
             translation = task.translation
             analysis = self.traps_validator.analyze_text(translation)

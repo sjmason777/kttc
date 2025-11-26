@@ -149,6 +149,7 @@ class BaseLLMProvider(ABC):
             >>> print(response)
             'Hola'
         """
+        ...
 
     @abstractmethod
     def stream(

@@ -161,10 +161,10 @@ class PersianFluencyAgent(FluencyAgent):
         # Run DadmaTools, LLM, glossary, and traps checks in parallel
         try:
             results = await asyncio.gather(
-                self._dadmatools_check(task),  # Fast, DadmaTools
-                self._llm_check(task),  # Slow, semantic
-                self._glossary_check(task),  # Glossary-based ezafe/grammar validation
-                self._traps_check(task),  # Persian traps validation
+                asyncio.to_thread(self._dadmatools_check_sync, task),  # Fast
+                self._llm_check(task),  # Slow, semantic (uses await internally)
+                asyncio.to_thread(self._glossary_check_sync, task),  # Ezafe/grammar
+                asyncio.to_thread(self._traps_check_sync, task),  # Persian traps
                 return_exceptions=True,
             )
 
@@ -230,8 +230,8 @@ class PersianFluencyAgent(FluencyAgent):
             # Fallback to base errors
             return base_errors
 
-    async def _dadmatools_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform DadmaTools-based checks.
+    def _dadmatools_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform DadmaTools-based checks (synchronous).
 
         Args:
             task: Translation task
@@ -268,8 +268,8 @@ class PersianFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, _task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform glossary-based Persian ezafe and grammar validation.
+    def _glossary_check_sync(self, _task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Persian ezafe validation (synchronous).
 
         Uses PersianEzafeValidator to check:
         - Ezafe construction (اضافه) rules
@@ -305,8 +305,8 @@ class PersianFluencyAgent(FluencyAgent):
 
         return errors
 
-    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform Persian traps validation using PersianTrapsValidator.
+    def _traps_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform Persian traps validation (synchronous).
 
         Checks for:
         - Persian-Arabic false friends
