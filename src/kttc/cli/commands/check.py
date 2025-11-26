@@ -334,7 +334,8 @@ def _run_single_mode(
             source_path, translation_path, source_lang, target_lang, verbose
         )
     validate_required_languages(source_lang, target_lang, "(auto-detection failed)")
-    assert source_lang is not None and target_lang is not None  # validated above
+    if not (source_lang is not None and target_lang is not None):
+        raise AssertionError
 
     asyncio.run(
         _check_async(
@@ -388,7 +389,8 @@ def _run_batch_dir_mode(
     validate_required_languages(
         source_lang, target_lang, "for directory mode (auto-detection failed)"
     )
-    assert source_lang is not None and target_lang is not None  # validated above
+    if not (source_lang is not None and target_lang is not None):
+        raise AssertionError
 
     asyncio.run(
         batch_async(
