@@ -75,14 +75,13 @@ def detect_language(text: str) -> str:
         if len(re.findall(r"[پچژگ]", text)) > 0:  # Persian-specific letters
             return "fa"  # Persian
         return "ar"  # Arabic
-    elif arabic_chars / total_chars > 0.3:
+    if arabic_chars / total_chars > 0.3:
         return "ar"  # Arabic
-    elif latin_chars / total_chars > 0.3:
+    if latin_chars / total_chars > 0.3:
         # Could be English, Spanish, French, etc.
         # For now, default to English
         return "en"
-    else:
-        return "en"  # Default fallback
+    return "en"  # Default fallback
 
 
 def get_helper_for_language(language_code: str) -> LanguageHelper | None:
@@ -114,7 +113,7 @@ def get_helper_for_language(language_code: str) -> LanguageHelper | None:
         )
         return None
 
-    elif language_code == "en":
+    if language_code == "en":
         from .english import EnglishLanguageHelper
 
         helper = EnglishLanguageHelper()
@@ -127,7 +126,7 @@ def get_helper_for_language(language_code: str) -> LanguageHelper | None:
         )
         return None
 
-    elif language_code == "zh":
+    if language_code == "zh":
         from .chinese import ChineseLanguageHelper
 
         helper = ChineseLanguageHelper()
@@ -140,7 +139,7 @@ def get_helper_for_language(language_code: str) -> LanguageHelper | None:
         )
         return None
 
-    elif language_code == "hi":
+    if language_code == "hi":
         from .hindi import HindiLanguageHelper
 
         helper = HindiLanguageHelper()
@@ -154,7 +153,7 @@ def get_helper_for_language(language_code: str) -> LanguageHelper | None:
         )
         return None
 
-    elif language_code == "fa":
+    if language_code == "fa":
         from .persian import PersianLanguageHelper
 
         helper = PersianLanguageHelper()

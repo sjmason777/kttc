@@ -763,7 +763,7 @@ def print_lightweight_metrics(
             if score >= 50:
                 return "dim yellow"
             return "red"
-        elif metric_type == "bleu":
+        if metric_type == "bleu":
             if score >= 50:
                 return "green"
             if score >= 40:
@@ -771,14 +771,13 @@ def print_lightweight_metrics(
             if score >= 30:
                 return "dim yellow"
             return "red"
-        else:  # default for TER and composite
-            if score >= 70:
-                return "green"
-            if score >= 60:
-                return "yellow"
-            if score >= 50:
-                return "dim yellow"
-            return "red"
+        if score >= 70:
+            return "green"
+        if score >= 60:
+            return "yellow"
+        if score >= 50:
+            return "dim yellow"
+        return "red"
 
     # Create metrics table
     table = Table(show_header=False, box=None, padding=(0, 2))

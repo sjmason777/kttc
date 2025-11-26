@@ -254,15 +254,14 @@ def ensure_dependency_group(group: DependencyGroup, command: str, required: bool
             print_error("Cannot proceed without required dependencies.")
             sys.exit(1)
         return False
+    # User declined installation
+    if required:
+        print_warning("Command requires additional dependencies.")
+        print_info(f"Install manually: pip install kttc[{group}]")
+        sys.exit(1)
     else:
-        # User declined installation
-        if required:
-            print_warning("Command requires additional dependencies.")
-            print_info(f"Install manually: pip install kttc[{group}]")
-            sys.exit(1)
-        else:
-            print_warning("Proceeding with limited functionality...")
-            return False
+        print_warning("Proceeding with limited functionality...")
+        return False
 
 
 def show_optimization_tips() -> None:
