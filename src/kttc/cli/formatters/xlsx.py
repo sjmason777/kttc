@@ -530,7 +530,7 @@ class XLSXFormatter:
                         cell_length = len(str(cell.value))
                         if cell_length > max_length:
                             max_length = cell_length
-                except Exception:
+                except (AttributeError, TypeError):
                     logging.warning(
                         "Failed to calculate cell length for auto-adjust", exc_info=True
                     )
