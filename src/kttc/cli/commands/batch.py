@@ -215,9 +215,9 @@ def _create_batch_progress(_total: int) -> Any:  # noqa: ARG001
 
 def _get_batch_identifier(idx: int, batch_translation: Any) -> str:
     """Get identifier string for batch translation."""
-    identifier = f"#{idx+1}"
+    identifier = f"#{idx + 1}"
     if batch_translation.metadata and "file" in batch_translation.metadata:
-        identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx+1}"
+        identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx + 1}"
     return identifier
 
 

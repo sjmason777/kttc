@@ -279,7 +279,7 @@ Another agent has identified the following error. Your task is to verify if this
 - Severity: {error.severity.value}
 - Location: characters {error.location[0]}-{error.location[1]}
 - Description: {error.description}
-- Suggestion: {error.suggestion or 'None'}
+- Suggestion: {error.suggestion or "None"}
 
 ## YOUR TASK:
 Analyze this error and provide your verdict:

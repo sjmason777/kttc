@@ -381,8 +381,7 @@ def validate_glossary(file: Path = typer.Argument(..., help="Glossary file to va
                 console.print(f"  {issue}")
             console.print()
             console.print(
-                f"[yellow]Total entries: {len(glossary.entries)} "
-                f"(issues: {len(issues)})[/yellow]"
+                f"[yellow]Total entries: {len(glossary.entries)} (issues: {len(issues)})[/yellow]"
             )
         else:
             console.print("[green]✓ Glossary is valid[/green]")

@@ -48,7 +48,7 @@ terminology_app = typer.Typer(
 
 @terminology_app.command("list")
 def list_glossaries(
-    lang: str | None = typer.Option(None, "--lang", "-l", help="Filter by language code")
+    lang: str | None = typer.Option(None, "--lang", "-l", help="Filter by language code"),
 ) -> None:
     """List all available linguistic reference glossaries.
 
