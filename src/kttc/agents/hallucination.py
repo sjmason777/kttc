@@ -35,9 +35,6 @@ from kttc.llm import BaseLLMProvider
 
 from .base import AgentEvaluationError, AgentParsingError, BaseAgent
 
-if TYPE_CHECKING:
-    pass
-
 logger = logging.getLogger(__name__)
 
 
