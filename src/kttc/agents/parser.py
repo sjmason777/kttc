@@ -242,11 +242,14 @@ class ErrorParser:
 
                 if is_valid and mqm_info:
                     # Add MQM definition to description if available
-                    if "definition" in mqm_info and mqm_info["definition"]:
-                        if "[MQM:" not in error.description:
-                            error.description = (
-                                f"{error.description} [MQM: {mqm_info['definition']}]"
-                            )
+                    if (
+                        "definition" in mqm_info
+                        and mqm_info["definition"]
+                        and "[MQM:" not in error.description
+                    ):
+                        error.description = (
+                            f"{error.description} [MQM: {mqm_info['definition']}]"
+                        )
 
                     # Log successful enrichment
                     logger.debug(
