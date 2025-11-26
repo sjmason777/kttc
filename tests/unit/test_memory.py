@@ -183,25 +183,24 @@ class TestTranslationMemory:
             tm = TranslationMemory(db_path)
 
             # Mock database and encoder
-            with patch.object(tm, "db") as mock_db:
-                with patch.object(tm, "encoder") as mock_encoder:
-                    mock_cursor = MagicMock()
-                    mock_db.execute.return_value = mock_cursor
-                    mock_cursor.lastrowid = 1
-                    # Mock embedding as numpy array
-                    mock_encoder.encode.return_value = np.array([[0.1, 0.2, 0.3]])
-                    tm._initialized = True
+            with patch.object(tm, "db") as mock_db, patch.object(tm, "encoder") as mock_encoder:
+                mock_cursor = MagicMock()
+                mock_db.execute.return_value = mock_cursor
+                mock_cursor.lastrowid = 1
+                # Mock embedding as numpy array
+                mock_encoder.encode.return_value = np.array([[0.1, 0.2, 0.3]])
+                tm._initialized = True
 
-                    # Act
-                    result = await tm.add_translation(
-                        source="Hello",
-                        translation="Hola",
-                        source_lang="en",
-                        target_lang="es",
-                        mqm_score=95.0,
-                    )
+                # Act
+                result = await tm.add_translation(
+                    source="Hello",
+                    translation="Hola",
+                    source_lang="en",
+                    target_lang="es",
+                    mqm_score=95.0,
+                )
 
-                    # Assert
-                    assert result == 1
-                    mock_db.execute.assert_called_once()
-                    mock_db.commit.assert_called_once()
+                # Assert
+                assert result == 1
+                mock_db.execute.assert_called_once()
+                mock_db.commit.assert_called_once()
