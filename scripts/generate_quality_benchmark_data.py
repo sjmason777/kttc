@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Generate high-quality benchmark data using LLM (100+ diverse samples per pair)."""
 
 import asyncio
@@ -12,7 +11,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from kttc.utils.config import get_settings
 
 DIVERSE_TOPICS = [
-    # Technology (20)
     "Artificial intelligence is revolutionizing modern industries.",
     "Cloud computing enables scalable data storage solutions.",
     "Quantum computers promise exponential computational power.",
@@ -33,7 +31,6 @@ DIVERSE_TOPICS = [
     "Distributed systems coordinate across multiple machines.",
     "API integration connects different software applications.",
     "DevOps practices streamline software development cycles.",
-    # Science (20)
     "Climate change affects global weather patterns significantly.",
     "Renewable energy sources reduce carbon emissions effectively.",
     "Genetic engineering modifies organism DNA sequences.",
@@ -54,7 +51,6 @@ DIVERSE_TOPICS = [
     "Quantum entanglement enables secure communications.",
     "Exoplanets orbit stars beyond our solar system.",
     "Synthetic biology creates new biological systems.",
-    # Business (20)
     "Market research identifies consumer preferences and trends.",
     "Supply chain optimization reduces operational costs.",
     "Digital transformation modernizes traditional business models.",
@@ -96,7 +92,6 @@ DIVERSE_TOPICS = [
     "Reading books stimulates imagination and intellect.",
     "Outdoor activities connect people with nature.",
     "Family traditions strengthen generational bonds.",
-    # Education (10)
     "Online learning platforms democratize education access.",
     "Critical thinking skills evaluate information objectively.",
     "Collaborative projects develop teamwork abilities.",
@@ -107,7 +102,6 @@ DIVERSE_TOPICS = [
     "Special education supports students with disabilities.",
     "Literacy programs empower disadvantaged communities.",
     "Higher education prepares workforce for careers.",
-    # Medicine (10)
     "Preventive care reduces chronic disease occurrence.",
     "Telemedicine expands healthcare access remotely.",
     "Vaccination programs protect against infectious diseases.",
