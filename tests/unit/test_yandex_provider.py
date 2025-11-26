@@ -4,9 +4,10 @@ Tests Yandex GPT LLM provider with mocking.
 """
 
 from unittest.mock import AsyncMock, MagicMock, patch
+from urllib.parse import urlparse
 
 import pytest
-from urllib.parse import urlparse
+
 from kttc.llm.yandex_provider import YandexGPTProvider
 
 
