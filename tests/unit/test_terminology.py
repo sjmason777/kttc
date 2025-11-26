@@ -1,6 +1,4 @@
-"""
-Tests for terminology management module.
-"""
+"""Tests for terminology management module."""
 
 import pytest
 

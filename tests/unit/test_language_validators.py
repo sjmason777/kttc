@@ -1,6 +1,4 @@
-"""
-Tests for language-specific validators.
-"""
+"""Tests for language-specific validators."""
 
 import pytest
 

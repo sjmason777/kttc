@@ -1,6 +1,4 @@
-"""
-Glossary Manager for loading and accessing multi-lingual terminology.
-"""
+"""Glossary Manager for loading and accessing multi-lingual terminology."""
 
 import json
 from pathlib import Path
