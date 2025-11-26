@@ -751,7 +751,6 @@ def print_lightweight_metrics(
         │ Composite:      65.90  ✓ Good     │
         └────────────────────────────────────┘
     """
-
     # Color-code scores based on thresholds
     def get_score_color(score: float, metric_type: str = "default") -> str:
         """Get color for score based on thresholds."""
