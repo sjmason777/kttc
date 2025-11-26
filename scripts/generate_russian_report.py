@@ -58,19 +58,7 @@ def format_errors_russian(errors):
 def generate_report(data):
     """Generate Russian report."""
 
-    report = []
-
-    report.append("# ДЕТАЛЬНЫЙ ОТЧЕТ ПРОВЕРКИ КАЧЕСТВА ПЕРЕВОДОВ\n")
-    report.append(f"\n**Дата:** {datetime.now().strftime('%d.%m.%Y %H:%M')}\n")
-    report.append(
-        '**Статья:** "Translation-induced conversion killers: 7 invisible mistakes costing you international sales"\n'
-    )
-    report.append("**Языки:** Английский ↔ Русский ↔ Китайский\n")
-    report.append("**Система проверки:** KTTC (Korona Translation Quality Control)\n")
-    report.append("\n---\n")
-
-    # Executive Summary
-    report.append("\n## 📋 EXECUTIVE SUMMARY\n")
+    report = ["# ДЕТАЛЬНЫЙ ОТЧЕТ ПРОВЕРКИ КАЧЕСТВА ПЕРЕВОДОВ\n", f"\n**Дата:** {datetime.now().strftime('%d.%m.%Y %H:%M')}\n", '**Статья:** "Translation-induced conversion killers: 7 invisible mistakes costing you international sales"\n', "**Языки:** Английский ↔ Русский ↔ Китайский\n", "**Система проверки:** KTTC (Korona Translation Quality Control)\n", "\n---\n", "\n## 📋 EXECUTIVE SUMMARY\n"]
     summary = data["summary"]
     report.append(f"\n- **Средний MQM Score:** {summary['avg_mqm']:.2f}/100\n")
     report.append(f"- **Процент успешных переводов (≥95 MQM):** {summary['pass_rate']:.1f}%\n")
