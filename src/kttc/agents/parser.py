@@ -43,9 +43,20 @@ class ErrorParser:
     multi-lingual error descriptions to parsed errors.
     """
 
-    ERROR_BLOCK_PATTERN = re.compile(r"ERROR_START\s*(.*?)\s*ERROR_END", re.DOTALL | re.IGNORECASE)
+    # Regex to extract content between ERROR_START and ERROR_END delimiters.
+    # Uses non-greedy .*? to match minimal content. Whitespace trimming is done
+    # in _parse_error_block() to avoid overlapping quantifiers (ReDoS safety).
+    ERROR_BLOCK_PATTERN = re.compile(r"ERROR_START(.*?)ERROR_END", re.DOTALL | re.IGNORECASE)
 
+    # Pattern to extract FIELD: value pairs from error blocks.
+    # Applied per-line with length limits to prevent regex backtracking issues.
     FIELD_PATTERN = re.compile(r"^(\w+):\s*(.+)$", re.MULTILINE)
+
+    # Maximum LLM response length to process (ReDoS protection)
+    _MAX_RESPONSE_LENGTH = 500_000
+
+    # Maximum line length for field parsing (ReDoS protection)
+    _MAX_LINE_LENGTH = 2000
 
     @classmethod
     def parse_errors(
@@ -72,6 +83,14 @@ class ErrorParser:
             >>> # Enriched errors include MQM definitions
             >>> errors_enriched = ErrorParser.parse_errors(response, enrich_with_glossary=True)
         """
+        # Length guard for regex safety
+        if len(llm_response) > cls._MAX_RESPONSE_LENGTH:
+            logger.warning(
+                f"LLM response exceeds max length ({len(llm_response)} > {cls._MAX_RESPONSE_LENGTH}), "
+                "truncating for safety"
+            )
+            llm_response = llm_response[: cls._MAX_RESPONSE_LENGTH]
+
         errors = []
         error_blocks = cls.ERROR_BLOCK_PATTERN.findall(llm_response)
 
@@ -108,6 +127,17 @@ class ErrorParser:
             ValueError: If required fields are missing or invalid
             KeyError: If field parsing fails
         """
+        # Strip whitespace (moved from regex to avoid overlapping quantifiers)
+        block = block.strip()
+
+        # Truncate long lines to prevent regex backtracking issues
+        lines = block.split("\n")
+        truncated_lines = [
+            line[: cls._MAX_LINE_LENGTH] if len(line) > cls._MAX_LINE_LENGTH else line
+            for line in lines
+        ]
+        block = "\n".join(truncated_lines)
+
         fields: dict[str, str] = {}
 
         # Extract all field: value pairs

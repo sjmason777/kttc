@@ -112,14 +112,16 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None, None]:
     # Get API key from environment
     api_key = os.getenv("KTTC_OPENAI_API_KEY", "")
     if not api_key:
-        logger.warning("KTTC_OPENAI_API_KEY not set. WebUI will not work properly.")
-        api_key = "dummy-key-for-testing"
+        logger.warning(
+            "KTTC_OPENAI_API_KEY not set. WebUI evaluation endpoints will return 503. "
+            "Set the environment variable to enable full functionality."
+        )
+        app_state["orchestrator"] = None
+    else:
+        # Initialize LLM provider and orchestrator only when API key is available
+        llm = OpenAIProvider(api_key=api_key, model="gpt-4")
+        app_state["orchestrator"] = AgentOrchestrator(llm)
 
-    # Initialize LLM provider
-    llm = OpenAIProvider(api_key=api_key, model="gpt-4")
-
-    # Create orchestrator
-    app_state["orchestrator"] = AgentOrchestrator(llm)
     app_state["stats"]["start_time"] = time.time()
 
     logger.info("✅ KTTC WebUI server ready")

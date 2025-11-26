@@ -939,6 +939,9 @@ Output only valid JSON, no explanation."""
         """Check if error is a digit+genitive false positive."""
         if error.subcategory != "russian_numeral_agreement":
             return False
+        # Length guard for regex safety (error descriptions are typically short)
+        if len(error.description) > 1000:
+            return False
         pattern_match = re.search(r"\d+\s+requires\s+gent", error.description, re.IGNORECASE)
         if pattern_match:
             logger.info(f"Filtered digit+genitive FP: '{pattern_match.group()}'")

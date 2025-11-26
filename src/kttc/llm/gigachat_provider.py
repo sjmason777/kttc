@@ -112,7 +112,7 @@ class GigaChatProvider(BaseLLMProvider):
         try:
             async with (
                 aiohttp.ClientSession(timeout=self.timeout) as session,
-                session.post(self.AUTH_URL, headers=headers, data=data, ssl=False) as response,
+                session.post(self.AUTH_URL, headers=headers, data=data, ssl=True) as response,
             ):
                 if response.status != 200:
                     error_text = await response.text()
@@ -174,7 +174,7 @@ class GigaChatProvider(BaseLLMProvider):
         try:
             async with (
                 aiohttp.ClientSession(timeout=self.timeout) as session,
-                session.post(url, headers=headers, json=payload, ssl=False) as response,
+                session.post(url, headers=headers, json=payload, ssl=True) as response,
             ):
                 if response.status == 401:
                     # Token expired, get new one and retry
@@ -182,7 +182,7 @@ class GigaChatProvider(BaseLLMProvider):
                     headers["Authorization"] = f"Bearer {self._access_token}"
 
                     async with session.post(
-                        url, headers=headers, json=payload, ssl=False
+                        url, headers=headers, json=payload, ssl=True
                     ) as retry_response:
                         if retry_response.status == 401:
                             raise LLMAuthenticationError("GigaChat authentication failed")
@@ -266,7 +266,7 @@ class GigaChatProvider(BaseLLMProvider):
         try:
             async with (
                 aiohttp.ClientSession(timeout=self.timeout) as session,
-                session.post(url, headers=headers, json=payload, ssl=False) as response,
+                session.post(url, headers=headers, json=payload, ssl=True) as response,
             ):
                 await self._handle_stream_response_status(response)
                 async for line in response.content:
