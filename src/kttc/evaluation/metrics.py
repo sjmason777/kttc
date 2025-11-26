@@ -101,7 +101,7 @@ class LightweightMetrics:
         self.chrf = CHRF(word_order=2)  # chrF++ with word order
         self.ter = TER()
 
-    def evaluate(
+    def evaluate(  # pylint: disable=unused-argument
         self,
         translation: str,
         reference: str,
@@ -213,12 +213,11 @@ class LightweightMetrics:
         """
         if chrf_score >= self.THRESHOLD_EXCELLENT:
             return "excellent"
-        elif chrf_score >= self.THRESHOLD_GOOD:
+        if chrf_score >= self.THRESHOLD_GOOD:
             return "good"
-        elif chrf_score >= self.THRESHOLD_ACCEPTABLE:
+        if chrf_score >= self.THRESHOLD_ACCEPTABLE:
             return "acceptable"
-        else:
-            return "poor"
+        return "poor"
 
     def get_interpretation(self, scores: MetricScores) -> str:
         """Get human-readable interpretation of scores.
@@ -239,12 +238,11 @@ class LightweightMetrics:
 
         if level == "excellent":
             return "✓ Excellent quality - ready for deployment"
-        elif level == "good":
+        if level == "good":
             return "✓ Good quality - minor review recommended"
-        elif level == "acceptable":
+        if level == "acceptable":
             return "⚠ Acceptable quality - human review required"
-        else:
-            return "✗ Poor quality - significant revision needed"
+        return "✗ Poor quality - significant revision needed"
 
     def passes_deployment_threshold(
         self,

@@ -281,7 +281,7 @@ class BatchFileParser:
         """Detect XLIFF namespace from root element."""
         if root.tag.startswith("{urn:oasis:names:tc:xliff:document:1.2}"):
             return {"xliff": "urn:oasis:names:tc:xliff:document:1.2"}
-        elif root.tag.startswith("{urn:oasis:names:tc:xliff:document:2.0}"):
+        if root.tag.startswith("{urn:oasis:names:tc:xliff:document:2.0}"):
             return {"xliff": "urn:oasis:names:tc:xliff:document:2.0"}
         return {}
 
@@ -440,17 +440,15 @@ class BatchFileParser:
 
         if suffix == ".csv":
             return cls.parse_csv(file_path)
-        elif suffix == ".json":
+        if suffix == ".json":
             return cls.parse_json(file_path)
-        elif suffix == ".jsonl":
+        if suffix == ".jsonl":
             return cls.parse_jsonl(file_path)
-        elif suffix in (".xliff", ".xlf"):
+        if suffix in (".xliff", ".xlf"):
             return cls.parse_xliff(file_path)
-        else:
-            raise ValueError(
-                f"Unsupported file format: {suffix}. "
-                f"Supported: .csv, .json, .jsonl, .xliff, .xlf"
-            )
+        raise ValueError(
+            f"Unsupported file format: {suffix}. Supported: .csv, .json, .jsonl, .xliff, .xlf"
+        )
 
 
 class BatchGrouper:

@@ -23,7 +23,7 @@ This module handles:
 
 from __future__ import annotations
 
-import subprocess
+import subprocess  # nosec B404 - required for pip install functionality
 import sys
 from typing import Literal
 
@@ -38,7 +38,13 @@ from rich.progress import (
 )
 from rich.prompt import Confirm
 
-from kttc.utils.console import console, print_error, print_info, print_success, print_warning
+from kttc.utils.console import (
+    console,
+    print_error,
+    print_info,
+    print_success,
+    print_warning,
+)
 
 # Optional dependency groups
 DependencyGroup = Literal["metrics", "webui", "benchmark"]
@@ -198,12 +204,13 @@ def install_dependency_group(group: DependencyGroup) -> bool:
                 total=None,  # Indeterminate progress
             )
 
-            # Run pip install
-            result = subprocess.run(
+            # Run pip install (cmd uses sys.executable + enum-controlled group)
+            result = subprocess.run(  # nosec B603
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=600,  # 10 minute timeout
+                timeout=600,
+                check=True,  # 10 minute timeout
             )
 
             progress.update(task, completed=True)
@@ -212,10 +219,9 @@ def install_dependency_group(group: DependencyGroup) -> bool:
             console.print()
             print_success(f"Successfully installed {group} dependencies!")
             return True
-        else:
-            console.print()
-            print_error(f"Installation failed: {result.stderr}")
-            return False
+        console.print()
+        print_error(f"Installation failed: {result.stderr}")
+        return False
 
     except subprocess.TimeoutExpired:
         console.print()
@@ -251,20 +257,18 @@ def ensure_dependency_group(group: DependencyGroup, command: str, required: bool
 
         if success:
             return True
-        else:
-            if required:
-                print_error("Cannot proceed without required dependencies.")
-                sys.exit(1)
-            return False
-    else:
-        # User declined installation
         if required:
-            print_warning("Command requires additional dependencies.")
-            print_info(f"Install manually: pip install kttc[{group}]")
+            print_error("Cannot proceed without required dependencies.")
             sys.exit(1)
-        else:
-            print_warning("Proceeding with limited functionality...")
-            return False
+        return False
+    # User declined installation
+    if required:
+        print_warning("Command requires additional dependencies.")
+        print_info(f"Install manually: pip install kttc[{group}]")
+        sys.exit(1)
+    else:
+        print_warning("Proceeding with limited functionality...")
+        return False
 
 
 def show_optimization_tips() -> None:

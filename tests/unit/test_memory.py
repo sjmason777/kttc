@@ -86,34 +86,28 @@ class TestTerminologyBase:
             assert termbase.db is None
             assert termbase._initialized is False
 
-    @pytest.mark.asyncio
-    async def test_add_term_creates_entry(self) -> None:
+    def test_add_term_creates_entry(self) -> None:
         """Test adding a term to the termbase."""
         # Arrange
         with tempfile.TemporaryDirectory() as tmpdir:
             db_path = Path(tmpdir) / "test.db"
             termbase = TerminologyBase(db_path)
+            termbase.initialize()
 
-            # Mock the database operations
-            with patch.object(termbase, "db") as mock_db:
-                mock_cursor = MagicMock()
-                mock_db.execute.return_value = mock_cursor
-                mock_cursor.lastrowid = 1
-                termbase._initialized = True
+            # Act
+            result = termbase.add_term(
+                source_term="test",
+                target_term="prueba",
+                source_lang="en",
+                target_lang="es",
+                domain="general",
+            )
 
-                # Act
-                result = await termbase.add_term(
-                    source_term="test",
-                    target_term="prueba",
-                    source_lang="en",
-                    target_lang="es",
-                    domain="general",
-                )
+            # Assert
+            assert result == 1
 
-                # Assert
-                assert result == 1
-                mock_db.execute.assert_called_once()
-                mock_db.commit.assert_called_once()
+            # Cleanup
+            termbase.cleanup()
 
     def test_db_path_conversion(self) -> None:
         """Test that string paths are converted to Path objects."""
@@ -172,8 +166,7 @@ class TestTranslationMemory:
             assert tm.db is None
             assert tm._initialized is False
 
-    @pytest.mark.asyncio
-    async def test_add_translation_stores_entry(self) -> None:
+    def test_add_translation_stores_entry(self) -> None:
         """Test adding translation to memory."""
         # Arrange
         import numpy as np
@@ -182,26 +175,25 @@ class TestTranslationMemory:
             db_path = Path(tmpdir) / "test_tm.db"
             tm = TranslationMemory(db_path)
 
-            # Mock database and encoder
-            with patch.object(tm, "db") as mock_db:
-                with patch.object(tm, "encoder") as mock_encoder:
-                    mock_cursor = MagicMock()
-                    mock_db.execute.return_value = mock_cursor
-                    mock_cursor.lastrowid = 1
-                    # Mock embedding as numpy array
-                    mock_encoder.encode.return_value = np.array([[0.1, 0.2, 0.3]])
-                    tm._initialized = True
+            # Mock the sentence transformer
+            with patch("sentence_transformers.SentenceTransformer") as mock_encoder_cls:
+                mock_encoder = MagicMock()
+                mock_encoder.encode.return_value = np.array([[0.1, 0.2, 0.3]])
+                mock_encoder_cls.return_value = mock_encoder
 
-                    # Act
-                    result = await tm.add_translation(
-                        source="Hello",
-                        translation="Hola",
-                        source_lang="en",
-                        target_lang="es",
-                        mqm_score=95.0,
-                    )
+                tm.initialize()
 
-                    # Assert
-                    assert result == 1
-                    mock_db.execute.assert_called_once()
-                    mock_db.commit.assert_called_once()
+                # Act
+                result = tm.add_translation(
+                    source="Hello",
+                    translation="Hola",
+                    source_lang="en",
+                    target_lang="es",
+                    mqm_score=95.0,
+                )
+
+                # Assert
+                assert result == 1
+
+            # Cleanup
+            tm.cleanup()

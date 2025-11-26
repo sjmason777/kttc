@@ -25,13 +25,10 @@ Based on AI Post-Editing 2025 research (40% faster, 60% cost reduction).
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.llm import BaseLLMProvider
-
-if TYPE_CHECKING:
-    pass
 
 logger = logging.getLogger(__name__)
 
@@ -308,7 +305,7 @@ Provide ONLY the corrected translation in {task.target_lang}, without any explan
                 "major": sum(1 for e in errors if e.severity == ErrorSeverity.MAJOR),
                 "minor": sum(1 for e in errors if e.severity == ErrorSeverity.MINOR),
             },
-            "categories": list(set(e.category for e in errors)),
+            "categories": list({e.category for e in errors}),
             "original_length": len(original),
             "corrected_length": len(corrected),
             "length_change": len(corrected) - len(original),

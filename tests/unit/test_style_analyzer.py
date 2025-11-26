@@ -14,7 +14,6 @@
 
 """Tests for style analysis module (literary text detection)."""
 
-
 from kttc.style import (
     ComparativeStyleAnalyzer,
     StyleDeviation,

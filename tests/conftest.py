@@ -106,9 +106,9 @@ def sample_translation_task() -> TranslationTask:
     """Provide a sample translation task for testing."""
     return TranslationTask(
         source_text="Hello world",
-        translation="Hola mundo",
+        translation="Привет мир",
         source_lang="en",
-        target_lang="es",
+        target_lang="ru",
     )
 
 
@@ -154,7 +154,7 @@ def temp_text_files(tmp_path: Path) -> tuple[Path, Path]:
     translation = tmp_path / "translation.txt"
 
     source.write_text("Hello world\nHow are you?", encoding="utf-8")
-    translation.write_text("Hola mundo\n¿Cómo estás?", encoding="utf-8")
+    translation.write_text("Привет мир\nКак дела?", encoding="utf-8")
 
     return source, translation
 
@@ -177,8 +177,6 @@ def cli_runner() -> CliRunner:
 
 def pytest_configure(config: pytest.Config) -> None:
     """Configure pytest environment."""
-    # Register custom markers (defined in pytest.ini)
-    pass
 
 
 def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:

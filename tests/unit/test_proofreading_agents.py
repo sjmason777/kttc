@@ -22,62 +22,63 @@ from kttc.agents.proofreading import GrammarAgent, SpellingAgent
 class TestSpellingAgent:
     """Tests for SpellingAgent."""
 
-    @pytest.mark.asyncio
-    async def test_russian_ne_with_verbs(self) -> None:
+    def test_russian_ne_with_verbs(self) -> None:
         """Test detection of НЕ with verbs written together."""
         agent = SpellingAgent(language="ru")
 
         # Test incorrect forms
         text = "Нехочу идти в школу."
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         # Should detect "нехочу" as incorrect
         assert len(errors) >= 1
         ne_errors = [
-            e for e in errors if "не хочу" in e.suggestion.lower() or "не" in e.description.lower()
+            e
+            for e in errors
+            if (e.suggestion and "не хочу" in e.suggestion.lower()) or "не" in e.description.lower()
         ]
         assert len(ne_errors) >= 1
 
-    @pytest.mark.asyncio
-    async def test_russian_hyphen_indefinite_pronouns(self) -> None:
+    def test_russian_hyphen_indefinite_pronouns(self) -> None:
         """Test detection of missing hyphen in indefinite pronouns."""
         agent = SpellingAgent(language="ru")
 
         text = "Какой то человек пришёл."
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         # Should detect "какой то" as incorrect
         assert len(errors) >= 1
         hyphen_errors = [
             e
             for e in errors
-            if "какой-то" in e.suggestion.lower() or "дефис" in e.description.lower()
+            if (e.suggestion and "какой-то" in e.suggestion.lower())
+            or "дефис" in e.description.lower()
         ]
         assert len(hyphen_errors) >= 1
 
-    @pytest.mark.asyncio
-    async def test_english_should_of_error(self) -> None:
+    def test_english_should_of_error(self) -> None:
         """Test detection of 'should of' instead of 'should have'."""
         agent = SpellingAgent(language="en")
 
         text = "I should of gone to the store."
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         # Should detect "should of" as incorrect
         assert len(errors) >= 1
         should_errors = [
-            e for e in errors if "have" in e.suggestion.lower() or "have" in e.description.lower()
+            e
+            for e in errors
+            if (e.suggestion and "have" in e.suggestion.lower()) or "have" in e.description.lower()
         ]
         assert len(should_errors) >= 1
 
-    @pytest.mark.asyncio
-    async def test_no_false_positives_correct_text(self) -> None:
+    def test_no_false_positives_correct_text(self) -> None:
         """Test that correct text doesn't trigger false positives."""
         agent = SpellingAgent(language="ru")
 
         # Correct Russian text
         text = "Не хочу идти в школу. Какой-то человек пришёл."
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         # Should not detect errors in correct text
         assert len(errors) == 0
@@ -128,13 +129,12 @@ class TestGrammarAgent:
         # Should have rules for English
         assert rules is not None
 
-    @pytest.mark.asyncio
-    async def test_error_annotation_format(self) -> None:
+    def test_error_annotation_format(self) -> None:
         """Test that errors have correct annotation format."""
         agent = SpellingAgent(language="ru")
 
         text = "Нехочу идти."
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         if errors:
             error = errors[0]
@@ -152,37 +152,34 @@ class TestGrammarAgent:
 class TestMultiLanguageSupport:
     """Tests for multi-language support in proofreading."""
 
-    @pytest.mark.asyncio
-    async def test_chinese_de_particles(self) -> None:
+    def test_chinese_de_particles(self) -> None:
         """Test Chinese 的/地/得 detection (placeholder)."""
         agent = SpellingAgent(language="zh")
 
         # Chinese text - basic test that agent works
         text = "这是一个测试。"
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         # Should return a list (may be empty for correct text)
         assert isinstance(errors, list)
 
-    @pytest.mark.asyncio
-    async def test_persian_nim_fasele(self) -> None:
+    def test_persian_nim_fasele(self) -> None:
         """Test Persian nim-fasele detection (placeholder)."""
         agent = SpellingAgent(language="fa")
 
         # Persian text - basic test
         text = "سلام"
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         assert isinstance(errors, list)
 
-    @pytest.mark.asyncio
-    async def test_hindi_support(self) -> None:
+    def test_hindi_support(self) -> None:
         """Test Hindi language support (placeholder)."""
         agent = SpellingAgent(language="hi")
 
         # Hindi text - basic test
         text = "नमस्ते"
-        errors = await agent.check(text)
+        errors = agent.check(text)
 
         assert isinstance(errors, list)
 
@@ -199,16 +196,16 @@ class TestGlossaryIntegration:
         # Check Russian glossaries
         ru_school = glossaries_dir / "ru" / "school_curriculum"
         assert ru_school.exists(), "Russian school curriculum directory should exist"
-        assert (
-            ru_school / "orthography_fgos.json"
-        ).exists(), "Russian orthography glossary should exist"
+        assert (ru_school / "orthography_fgos.json").exists(), (
+            "Russian orthography glossary should exist"
+        )
 
         # Check English glossaries
         en_school = glossaries_dir / "en" / "school_curriculum"
         assert en_school.exists(), "English school curriculum directory should exist"
-        assert (
-            en_school / "spelling_uk_gps.json"
-        ).exists(), "English spelling glossary should exist"
+        assert (en_school / "spelling_uk_gps.json").exists(), (
+            "English spelling glossary should exist"
+        )
 
     def test_glossary_json_valid(self) -> None:
         """Test that glossary JSON files are valid."""

@@ -75,7 +75,7 @@ class ErrorDetector:
         self,
         source: str,
         translation: str,
-        reference: str | None = None,
+        _reference: str | None = None,
     ) -> list[RuleBasedError]:
         """Run all error detection checks.
 
@@ -186,7 +186,7 @@ class ErrorDetector:
                 description=f"Translation too short (ratio: {ratio:.2f}) - possible omission",
                 details={"ratio": ratio, "threshold": self.LENGTH_MIN_RATIO},
             )
-        elif ratio > self.LENGTH_MAX_RATIO:
+        if ratio > self.LENGTH_MAX_RATIO:
             return RuleBasedError(
                 check_type="length_ratio",
                 severity="major",

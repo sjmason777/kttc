@@ -33,6 +33,9 @@ jobs:
       - name: Run mypy
         run: mypy --config-file pyproject.toml
 
+      - name: Run Pylint
+        run: pylint src/kttc --fail-under=9.0
+
       - name: Security audit with pip-audit
         run: |
           pip install pip-audit

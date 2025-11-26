@@ -1,6 +1,4 @@
-"""
-Glossary Manager for loading and accessing multi-lingual terminology.
-"""
+"""Glossary Manager for loading and accessing multi-lingual terminology."""
 
 import json
 from pathlib import Path
@@ -283,6 +281,6 @@ class GlossaryManager:
             if "metadata" in data:
                 return sum(self._count_terms(v) for k, v in data.items() if k != "metadata")
             return sum(self._count_terms(v) for v in data.values())
-        elif isinstance(data, list):
+        if isinstance(data, list):
             return sum(self._count_terms(item) for item in data)
         return 0

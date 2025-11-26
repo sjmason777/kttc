@@ -267,7 +267,7 @@ Be precise and only report actual errors, not stylistic preferences."""
                 # Find JSON in response
                 json_start = response.find("{")
                 json_end = response.rfind("}") + 1
-                if json_start >= 0 and json_end > json_start:
+                if 0 <= json_start < json_end:
                     json_str = response[json_start:json_end]
                     data = json.loads(json_str)
                 else:
@@ -284,7 +284,9 @@ Be precise and only report actual errors, not stylistic preferences."""
                     severity = (
                         ErrorSeverity.CRITICAL
                         if severity_str == "critical"
-                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
+                        else ErrorSeverity.MINOR
+                        if severity_str == "minor"
+                        else ErrorSeverity.MAJOR
                     )
 
                     subcategory = err.get("type", "grammar")

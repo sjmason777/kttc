@@ -283,12 +283,11 @@ class MQMScorer:
         """
         if score >= self.THRESHOLD_EXCELLENT:
             return "excellent"
-        elif score >= self.THRESHOLD_GOOD:
+        if score >= self.THRESHOLD_GOOD:
             return "good"
-        elif score >= self.THRESHOLD_ACCEPTABLE:
+        if score >= self.THRESHOLD_ACCEPTABLE:
             return "acceptable"
-        else:
-            return "poor"
+        return "poor"
 
     def passes_threshold(self, score: float, threshold: float = 95.0) -> bool:
         """Check if MQM score meets quality threshold.

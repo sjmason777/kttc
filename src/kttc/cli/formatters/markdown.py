@@ -33,29 +33,32 @@ class MarkdownFormatter:
         Returns:
             Markdown-formatted report as string
         """
-        md = []
-
-        # Header
-        md.append("# Translation Quality Report\n")
-
-        # Task info
-        md.append("## Translation Details\n")
-        md.append(f"- **Source Language**: {report.task.source_lang}")
-        md.append(f"- **Target Language**: {report.task.target_lang}")
-        md.append(f"- **Word Count**: {report.task.word_count}")
-        md.append("")
-
-        # Scores
-        md.append("## Quality Scores\n")
-        md.append(f"- **MQM Score**: {report.mqm_score:.2f}/100")
-        md.append(f"- **Status**: {'✅ PASS' if report.status == 'pass' else '❌ FAIL'}")
+        md = [
+            "# Translation Quality Report\n",
+            "## Translation Details\n",
+            f"- **Source Language**: {report.task.source_lang}",
+            f"- **Target Language**: {report.task.target_lang}",
+            f"- **Word Count**: {report.task.word_count}",
+            "",
+            "## Quality Scores\n",
+            f"- **MQM Score**: {report.mqm_score:.2f}/100",
+            f"- **Status**: {'✅ PASS' if report.status == 'pass' else '❌ FAIL'}",
+            "",
+            "## Translation Text\n",
+            "### Source",
+            "```",
+            report.task.source_text,
+            "```\n",
+            "### Translation",
+            "```",
+            report.task.translation,
+            "```\n",
+        ]
 
         if report.comet_score is not None:
             md.append(f"- **COMET Score**: {report.comet_score:.4f}")
         if report.kiwi_score is not None:
             md.append(f"- **KIWI Score**: {report.kiwi_score:.4f}")
-
-        md.append("")
 
         # Errors
         if report.errors:
@@ -76,18 +79,6 @@ class MarkdownFormatter:
         else:
             md.append("## Issues Found\n")
             md.append("✅ No issues detected!\n")
-
-        # Source and translation
-        md.append("## Translation Text\n")
-        md.append("### Source")
-        md.append("```")
-        md.append(report.task.source_text)
-        md.append("```\n")
-
-        md.append("### Translation")
-        md.append("```")
-        md.append(report.task.translation)
-        md.append("```\n")
 
         # Join and optionally save
         result = "\n".join(md)

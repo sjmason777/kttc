@@ -199,7 +199,7 @@ def _build_batch_config_info(
     return config_info
 
 
-def _create_batch_progress(total: int) -> Any:
+def _create_batch_progress(_total: int) -> Any:  # noqa: ARG001
     """Create progress bar for batch processing."""
     return Progress(
         SpinnerColumn(),
@@ -215,9 +215,9 @@ def _create_batch_progress(total: int) -> Any:
 
 def _get_batch_identifier(idx: int, batch_translation: Any) -> str:
     """Get identifier string for batch translation."""
-    identifier = f"#{idx+1}"
+    identifier = f"#{idx + 1}"
     if batch_translation.metadata and "file" in batch_translation.metadata:
-        identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx+1}"
+        identifier = f"{Path(batch_translation.metadata['file']).name}:#{idx + 1}"
     return identifier
 
 
@@ -510,7 +510,7 @@ async def batch_from_file_async(
     batch_size: int | None,
     provider: str | None,
     smart_routing: bool,
-    show_cost_savings: bool,
+    _show_cost_savings: bool,
     show_progress: bool,
     glossary: str | None,
     verbose: bool,
@@ -691,7 +691,7 @@ def batch(
     demo: bool = typer.Option(
         False, "--demo", help="Demo mode (no API calls, simulated responses)"
     ),
-    format: str | None = typer.Option(
+    output_format: str | None = typer.Option(
         None,
         "--format",
         help="Output format: json (default), text, markdown, or html.",
@@ -743,7 +743,7 @@ def batch(
                     glossary,
                     verbose,
                     demo,
-                    format,
+                    output_format,
                 )
             )
         elif source_dir and translation_dir:
@@ -766,7 +766,7 @@ def batch(
                     provider,
                     verbose,
                     demo,
-                    format,
+                    output_format,
                 )
             )
         else:
@@ -780,7 +780,7 @@ def batch(
 
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
+        raise typer.Exit(code=130) from None
     except Exception as e:
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:

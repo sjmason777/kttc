@@ -312,7 +312,7 @@ def load_profile_from_file(path: Path) -> MQMProfile:
     """
     if not YAML_AVAILABLE:
         raise ImportError(
-            "PyYAML is required for custom profiles. " "Install with: pip install pyyaml"
+            "PyYAML is required for custom profiles. Install with: pip install pyyaml"
         )
 
     logger.info(f"Loading profile from: {path}")

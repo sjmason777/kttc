@@ -90,9 +90,9 @@ def _filter_by_lang_pair(entries: list[Any], lang_pair: str | None) -> list[Any]
         filtered = [e for e in entries if e.source_lang == src and e.target_lang == tgt]
         console.print(f"[dim]Filtered to {src}→{tgt}[/dim]\n")
         return filtered
-    except ValueError:
+    except ValueError as exc:
         console.print("[red]Error: Invalid language pair format. Use 'en-ru' format[/red]")
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from exc
 
 
 def _build_entry_row(entry: Any) -> tuple[str, str, str, str, str]:
@@ -274,7 +274,7 @@ def merge_glossaries(
 @glossary_app.command("export")
 def export_glossary(
     name: str = typer.Argument(..., help="Glossary name"),
-    format: str = typer.Option("csv", "--format", "-f", help="Output format (csv or json)"),
+    output_format: str = typer.Option("csv", "--format", "-f", help="Output format (csv or json)"),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output file path"),
 ) -> None:
     """Export glossary to different format.
@@ -291,19 +291,19 @@ def export_glossary(
         if output:
             output_path = output
         else:
-            ext = ".csv" if format == "csv" else ".json"
+            ext = ".csv" if output_format == "csv" else ".json"
             output_path = Path(f"{name}{ext}")
 
         # Export
-        if format == "csv":
+        if output_format == "csv":
             glossary.to_csv(output_path)
-        elif format == "json":
+        elif output_format == "json":
             glossary.to_json(output_path)
         else:
-            console.print(f"[red]Error: Unsupported format: {format}[/red]")
+            console.print(f"[red]Error: Unsupported format: {output_format}[/red]")
             raise typer.Exit(code=1)
 
-        console.print(f"[green]✓[/green] Exported '{name}' to {format.upper()} format")
+        console.print(f"[green]✓[/green] Exported '{name}' to {output_format.upper()} format")
         console.print(f"[dim]Output: {output_path}[/dim]")
 
     except Exception as e:
@@ -381,8 +381,7 @@ def validate_glossary(file: Path = typer.Argument(..., help="Glossary file to va
                 console.print(f"  {issue}")
             console.print()
             console.print(
-                f"[yellow]Total entries: {len(glossary.entries)} "
-                f"(issues: {len(issues)})[/yellow]"
+                f"[yellow]Total entries: {len(glossary.entries)} (issues: {len(issues)})[/yellow]"
             )
         else:
             console.print("[green]✓ Glossary is valid[/green]")

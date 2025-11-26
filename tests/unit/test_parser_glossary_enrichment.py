@@ -14,7 +14,6 @@
 
 """Unit tests for ErrorParser glossary enrichment."""
 
-
 from kttc.agents.parser import ErrorParser
 
 

@@ -21,7 +21,6 @@ how well stylistic features are preserved in translation.
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
 
 from .analyzer import StyleFingerprint
 from .models import (
@@ -30,9 +29,6 @@ from .models import (
     StyleDeviationType,
     StyleProfile,
 )
-
-if TYPE_CHECKING:
-    pass
 
 logger = logging.getLogger(__name__)
 

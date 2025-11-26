@@ -106,7 +106,7 @@ class BaseAgent(ABC):
             >>> errors = await agent.evaluate(task)
             >>> print(f"Found {len(errors)} accuracy errors")
         """
-        pass
+        ...
 
     @property
     @abstractmethod
@@ -116,7 +116,6 @@ class BaseAgent(ABC):
         Returns:
             Error category name (e.g., 'accuracy', 'fluency', 'terminology')
         """
-        pass
 
     @abstractmethod
     def get_base_prompt(self) -> str:
@@ -133,9 +132,8 @@ class BaseAgent(ABC):
             >>> base_prompt = agent.get_base_prompt()
             >>> print(base_prompt[:100])  # First 100 characters
         """
-        pass
 
-    async def self_assess(
+    def self_assess(
         self,
         errors: list[ErrorAnnotation],
         task: TranslationTask,
@@ -185,7 +183,7 @@ class BaseAgent(ABC):
     async def evaluate_with_retry(
         self,
         task: TranslationTask,
-        hints: list[str] | None = None,
+        _hints: list[str] | None = None,
     ) -> tuple[list[ErrorAnnotation], int]:
         """Evaluate with self-assessment retry mechanism.
 
@@ -207,8 +205,8 @@ class BaseAgent(ABC):
 
         errors = await self.evaluate(task)
 
-        for attempt in range(self.max_retries):
-            assessment = await self.self_assess(errors, task)
+        for _attempt in range(self.max_retries):
+            assessment = self.self_assess(errors, task)
 
             if not assessment.should_retry:
                 logger.debug(
@@ -238,16 +236,10 @@ class BaseAgent(ABC):
 class AgentError(Exception):
     """Base exception for agent-related errors."""
 
-    pass
-
 
 class AgentEvaluationError(AgentError):
     """Raised when agent evaluation fails."""
 
-    pass
-
 
 class AgentParsingError(AgentError):
     """Raised when parsing LLM response fails."""
-
-    pass

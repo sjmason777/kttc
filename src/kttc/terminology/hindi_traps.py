@@ -317,7 +317,7 @@ class HindiTrapsValidator:
         found = []
         pairs = self.get_aspiration_pairs()
 
-        for key, pair in pairs.items():
+        for _key, pair in pairs.items():
             unasp = pair.get("unaspirated", "")
             asp = pair.get("aspirated", "")
 

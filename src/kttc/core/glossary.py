@@ -79,8 +79,7 @@ class TermEntry:
         """
         if self.case_sensitive:
             return self.source in text
-        else:
-            return self.source.lower() in text.lower()
+        return self.source.lower() in text.lower()
 
 
 @dataclass
@@ -161,7 +160,7 @@ class Glossary:
         source_term: str,
         source_lang: str,
         target_lang: str,
-        case_sensitive: bool | None = None,
+        _case_sensitive: bool | None = None,
     ) -> TermEntry | None:
         """Look up term translation.
 
@@ -388,8 +387,7 @@ class GlossaryManager:
                 if path.exists():
                     if ext == ".json":
                         return Glossary.from_json(path)
-                    else:
-                        return Glossary.from_csv(path)
+                    return Glossary.from_csv(path)
 
         raise FileNotFoundError(
             f"Glossary '{name}' not found in:\n"

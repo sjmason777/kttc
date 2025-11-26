@@ -28,15 +28,12 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import TYPE_CHECKING, Any, cast
+from typing import Any, cast
 
 from kttc.core import ErrorAnnotation, ErrorSeverity, TranslationTask
 from kttc.llm import BaseLLMProvider
 
 from .base import AgentEvaluationError, AgentParsingError, BaseAgent
-
-if TYPE_CHECKING:
-    pass
 
 logger = logging.getLogger(__name__)
 
@@ -404,7 +401,7 @@ Output only valid JSON, no explanation."""
         try:
             # Try direct JSON parsing
             return cast(dict[str, Any], json.loads(response))
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as exc:
             # Try to extract JSON from markdown code blocks
             json_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response, re.DOTALL)
             if json_match:
@@ -421,4 +418,4 @@ Output only valid JSON, no explanation."""
                 except json.JSONDecodeError as e:
                     raise AgentParsingError(f"Failed to parse extracted JSON: {e}") from e
 
-            raise AgentParsingError(f"No valid JSON found in response: {response[:200]}")
+            raise AgentParsingError(f"No valid JSON found in response: {response[:200]}") from exc

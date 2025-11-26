@@ -19,7 +19,11 @@ sys.path.insert(0, str(tests_dir))
 from conftest import MockLLMProvider  # noqa: E402
 
 from kttc.agents.fluency_hindi import HindiFluencyAgent  # noqa: E402
-from kttc.core.models import ErrorAnnotation, ErrorSeverity, TranslationTask  # noqa: E402
+from kttc.core.models import (  # noqa: E402
+    ErrorAnnotation,
+    ErrorSeverity,
+    TranslationTask,
+)
 from kttc.helpers.hindi import HindiLanguageHelper  # noqa: E402
 
 # ============================================================================
@@ -269,8 +273,7 @@ class TestHindiFluencyEvaluation:
 class TestSpelloCheck:
     """Test Spello spell checking integration."""
 
-    @pytest.mark.asyncio
-    async def test_spello_check_when_helper_available(
+    def test_spello_check_when_helper_available(
         self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
     ) -> None:
         """Test that Spello check is called when helper is available."""
@@ -278,14 +281,14 @@ class TestSpelloCheck:
         mock_llm = MockLLMProvider(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
-        # Act
-        await agent._spello_check(sample_hindi_task)
+        # Act - use the correct method name _spello_check_sync
+        errors = agent._spello_check_sync(sample_hindi_task)
 
         # Assert
         assert mock_hindi_helper.spell_check_calls == 1
+        assert isinstance(errors, list)
 
-    @pytest.mark.asyncio
-    async def test_spello_check_when_helper_unavailable(
+    def test_spello_check_when_helper_unavailable(
         self, mock_hindi_helper_unavailable: MockHindiHelper, sample_hindi_task: TranslationTask
     ) -> None:
         """Test that Spello check is skipped when helper unavailable."""
@@ -293,15 +296,14 @@ class TestSpelloCheck:
         mock_llm = MockLLMProvider(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper_unavailable)
 
-        # Act
-        errors = await agent._spello_check(sample_hindi_task)
+        # Act - use the correct method name _spello_check_sync
+        errors = agent._spello_check_sync(sample_hindi_task)
 
         # Assert
         assert len(errors) == 0
         assert mock_hindi_helper_unavailable.spell_check_calls == 0
 
-    @pytest.mark.asyncio
-    async def test_spello_check_handles_exceptions(
+    def test_spello_check_handles_exceptions(
         self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
     ) -> None:
         """Test that Spello check handles exceptions gracefully."""
@@ -310,8 +312,8 @@ class TestSpelloCheck:
         mock_hindi_helper.check_spelling = Mock(side_effect=Exception("Spello error"))
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
-        # Act
-        errors = await agent._spello_check(sample_hindi_task)
+        # Act - use the correct method name _spello_check_sync
+        errors = agent._spello_check_sync(sample_hindi_task)
 
         # Assert
         assert isinstance(errors, list)

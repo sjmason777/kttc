@@ -152,7 +152,7 @@ class RussianTrapsValidator:
         paronyms = self.get_paronyms()
         text_lower = text.lower()
 
-        for pair_name, data in paronyms.items():
+        for _pair_name, data in paronyms.items():
             pair = data.get("pair", [])
             for word in pair:
                 pattern = rf"\b{re.escape(word)}\b"
@@ -252,7 +252,7 @@ class RussianTrapsValidator:
 
         # Flatten idiom categories
         all_idioms = {}
-        for category, items in idioms_data.items():
+        for _category, items in idioms_data.items():
             if isinstance(items, dict):
                 all_idioms.update(items)
 
@@ -298,7 +298,7 @@ class RussianTrapsValidator:
 
         # Flatten categories
         all_words = {}
-        for category, items in untranslatable.items():
+        for _category, items in untranslatable.items():
             if isinstance(items, dict):
                 all_words.update(items)
 

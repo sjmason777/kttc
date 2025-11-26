@@ -149,7 +149,7 @@ class BaseLLMProvider(ABC):
             >>> print(response)
             'Hola'
         """
-        pass
+        ...
 
     @abstractmethod
     def stream(
@@ -176,28 +176,19 @@ class BaseLLMProvider(ABC):
             ...     print(chunk, end="", flush=True)
             Hola
         """
-        pass
 
 
 class LLMError(Exception):
     """Base exception for LLM-related errors."""
 
-    pass
-
 
 class LLMTimeoutError(LLMError):
     """Raised when an LLM request times out."""
-
-    pass
 
 
 class LLMRateLimitError(LLMError):
     """Raised when hitting rate limits."""
 
-    pass
-
 
 class LLMAuthenticationError(LLMError):
     """Raised when authentication fails."""
-
-    pass

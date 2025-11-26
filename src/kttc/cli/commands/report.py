@@ -185,7 +185,7 @@ def _generate_batch_html_report(data: dict[str, Any]) -> str:
 @report_app.command(name="report")
 def report(
     input_file: str = typer.Argument(..., help="Input report file (JSON)"),
-    format: str = typer.Option(
+    output_format: str = typer.Option(
         "markdown", "--format", "-f", help="Output format: markdown or html"
     ),
     output: str | None = typer.Option(None, "--output", "-o", help="Output file path"),
@@ -200,7 +200,7 @@ def report(
     """
     try:
         # Display header
-        console.print(f"\n[bold]Generating {format} report...[/bold]")
+        console.print(f"\n[bold]Generating {output_format} report...[/bold]")
         console.print(f"Input: [cyan]{input_file}[/cyan]\n")
 
         # Load JSON report
@@ -215,16 +215,16 @@ def report(
             output_path = Path(output)
         else:
             # Auto-generate output filename
-            ext = ".md" if format == "markdown" else ".html"
+            ext = ".md" if output_format == "markdown" else ".html"
             output_path = input_path.with_suffix(ext)
 
         # Generate report
-        if format == "markdown":
+        if output_format == "markdown":
             content = _generate_batch_markdown_report(data)
-        elif format == "html":
+        elif output_format == "html":
             content = _generate_batch_html_report(data)
         else:
-            raise ValueError(f"Unsupported format: {format}. Use 'markdown' or 'html'")
+            raise ValueError(f"Unsupported format: {output_format}. Use 'markdown' or 'html'")
 
         # Save report
         output_path.write_text(content, encoding="utf-8")

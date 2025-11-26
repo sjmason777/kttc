@@ -191,17 +191,16 @@ class DynamicAgentSelector:
 
         if complexity == "auto":
             return self._auto_detect_complexity(task)
-        elif complexity == "simple":
+        if complexity == "simple":
             return 0.2
-        elif complexity == "medium":
+        if complexity == "medium":
             return 0.5
-        elif complexity == "complex":
+        if complexity == "complex":
             return 0.9
-        else:
-            raise ValueError(
-                f"Invalid complexity: {complexity}. "
-                f"Use 'auto', 'simple', 'medium', 'complex', or float 0.0-1.0"
-            )
+        raise ValueError(
+            f"Invalid complexity: {complexity}. "
+            f"Use 'auto', 'simple', 'medium', 'complex', or float 0.0-1.0"
+        )
 
     def _auto_detect_complexity(self, task: TranslationTask) -> float:
         """Auto-detect task complexity from various signals.
@@ -383,7 +382,7 @@ class DynamicAgentSelector:
             selected = ["accuracy"]
 
         logger.info(
-            f"Budget-constrained selection: {len(selected)} agents " f"(~{current_cost} tokens)"
+            f"Budget-constrained selection: {len(selected)} agents (~{current_cost} tokens)"
         )
 
         return selected

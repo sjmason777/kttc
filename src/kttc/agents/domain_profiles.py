@@ -356,7 +356,7 @@ class DomainDetector:
     def detect_domain(
         self,
         source_text: str,
-        target_lang: str | None = None,
+        _target_lang: str | None = None,
         context: dict[str, Any] | None = None,
     ) -> str:
         """Detect translation domain from source text.
@@ -436,12 +436,11 @@ class DomainDetector:
         # 1-2 matches: 0.6, 3-4: 0.75, 5+: 0.9
         if matches == 0:
             return 0.5
-        elif matches <= 2:
+        if matches <= 2:
             return 0.6
-        elif matches <= 4:
+        if matches <= 4:
             return 0.75
-        else:
-            return 0.9
+        return 0.9
 
 
 def get_domain_profile(domain_type: str) -> DomainProfile:

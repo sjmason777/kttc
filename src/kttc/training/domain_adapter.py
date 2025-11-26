@@ -208,7 +208,7 @@ Common terms: {common_terms}
         if not data_path.exists():
             raise FileNotFoundError(f"Training data not found: {data_path}")
 
-        with open(data_path) as f:
+        with open(data_path, encoding="utf-8") as f:
             data = json.load(f)
 
         # Update domain if specified
@@ -425,7 +425,7 @@ DOMAIN-SPECIFIC GUIDELINES ({patterns.domain.upper()}):
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_path, "w") as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(patterns.model_dump(), f, indent=2)
 
         logger.info(f"Domain patterns saved to {output_path}")
@@ -444,7 +444,7 @@ DOMAIN-SPECIFIC GUIDELINES ({patterns.domain.upper()}):
         if not patterns_path.exists():
             raise FileNotFoundError(f"Patterns file not found: {patterns_path}")
 
-        with open(patterns_path) as f:
+        with open(patterns_path, encoding="utf-8") as f:
             data = json.load(f)
 
         patterns = DomainPatterns(**data)
@@ -454,7 +454,7 @@ DOMAIN-SPECIFIC GUIDELINES ({patterns.domain.upper()}):
 
 
 # Helper function for quick domain adaptation
-async def quick_adapt(agent: BaseAgent, domain: str, training_data_path: str | Path) -> BaseAgent:
+def quick_adapt(agent: BaseAgent, domain: str, training_data_path: str | Path) -> BaseAgent:
     """Quickly adapt an agent to a domain using training data.
 
     Args:

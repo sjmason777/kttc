@@ -70,7 +70,7 @@ class ConsoleFormatter:
                 "fragment": max(20, int(available * 0.25)),
                 "issue": None,  # Auto-expand to fill remaining space
             }
-        elif "provider" in [c.lower() for c in columns]:
+        if "provider" in [c.lower() for c in columns]:
             # Benchmark table
             return {
                 "provider": None,  # Auto
@@ -79,9 +79,8 @@ class ConsoleFormatter:
                 "time": 8,
                 "status": 8,
             }
-        else:
-            # Default: auto widths
-            return {c.lower(): None for c in columns}
+        # Default: auto widths
+        return {c.lower(): None for c in columns}
 
     @staticmethod
     def _get_status_color(status: str) -> str:
@@ -93,10 +92,9 @@ class ConsoleFormatter:
         """Get color for MQM score."""
         if score >= 95:
             return "green"
-        elif score >= 85:
+        if score >= 85:
             return "yellow"
-        else:
-            return "red"
+        return "red"
 
     @staticmethod
     def _format_errors(critical: int, major: int, minor: int) -> str:
@@ -315,7 +313,7 @@ class ConsoleFormatter:
                     cls._print_issues_compact(result["errors"], "", nlp_insights=None, verbose=True)
 
     @classmethod
-    def print_benchmark_result(
+    def print_benchmark_result(  # pylint: disable=unused-argument
         cls,
         source_lang: str,
         target_lang: str,
@@ -405,7 +403,7 @@ class ConsoleFormatter:
                 )
 
     @classmethod
-    def print_batch_result(
+    def print_batch_result(  # pylint: disable=unused-argument
         cls,
         total: int,
         passed: int,
@@ -702,7 +700,7 @@ class ConsoleFormatter:
             )
 
     @classmethod
-    def _print_verbose_details(
+    def _print_verbose_details(  # pylint: disable=unused-argument
         cls,
         report: QAReport,
         lightweight_scores: Any | None,

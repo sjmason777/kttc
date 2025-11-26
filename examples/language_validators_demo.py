@@ -252,7 +252,7 @@ def persian_validator_example():
                     if isinstance(ex_val, list) and len(ex_val) > 0:
                         print(f"    Example: {ex_val[0]}")
                         break
-                    elif isinstance(ex_val, str):
+                    if isinstance(ex_val, str):
                         print(f"    Example: {ex_val}")
                         break
 
@@ -303,7 +303,7 @@ def factory_pattern_example():
     print("\n3. Error Handling for Unsupported Languages:")
     print("-" * 50)
     try:
-        _validator = LanguageValidatorFactory.create_validator("xx")  # noqa: F841
+        LanguageValidatorFactory.create_validator("xx")
         print("  Unexpected: validator created for unsupported language")
     except ValueError as e:
         print(f"  ✓ Correctly raised ValueError: {e}")

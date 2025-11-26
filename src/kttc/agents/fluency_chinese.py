@@ -148,9 +148,9 @@ class ChineseFluencyAgent(FluencyAgent):
         # Run HanLP, LLM, and glossary checks in parallel
         try:
             results = await asyncio.gather(
-                self._hanlp_check(task),  # Fast, deterministic
-                self._llm_check(task),  # Slow, semantic
-                self._glossary_check(task),  # Glossary-based measure word validation
+                asyncio.to_thread(self._hanlp_check_sync, task),  # Fast, deterministic
+                self._llm_check(task),  # Slow, semantic (uses await internally)
+                asyncio.to_thread(self._glossary_check_sync, task),  # Measure word validation
                 return_exceptions=True,
             )
 
@@ -204,8 +204,8 @@ class ChineseFluencyAgent(FluencyAgent):
             # Fallback to base errors
             return base_errors
 
-    async def _hanlp_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform HanLP-based measure word and grammar checks.
+    def _hanlp_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform HanLP-based measure word and grammar checks (synchronous).
 
         Args:
             task: Translation task
@@ -242,8 +242,8 @@ class ChineseFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform glossary-based Chinese measure word (classifier) validation.
+    def _glossary_check_sync(self, _task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Chinese measure word validation (synchronous).
 
         Uses ChineseMeasureWordValidator to check:
         - Measure word correctness (量词 - 个/本/只/条/张 etc.)

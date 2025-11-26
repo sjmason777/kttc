@@ -87,7 +87,6 @@ def print_summary(results: list[dict[str, Any]]) -> None:
 
 async def main() -> None:
     """Batch processing example."""
-
     # 1. Setup LLM provider
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:

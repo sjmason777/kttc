@@ -63,7 +63,7 @@ def setup_self_check_llm(
         return None
 
 
-async def run_spelling_check(language: str, text: str) -> list[Any]:
+def run_spelling_check(language: str, text: str) -> list[Any]:
     """Run spelling check with progress indicator."""
     from kttc.agents.proofreading import SpellingAgent
 
@@ -79,7 +79,7 @@ async def run_spelling_check(language: str, text: str) -> list[Any]:
             use_patterns=True,
             use_school_rules=True,
         )
-        return await spelling_agent.check(text)
+        return spelling_agent.check(text)
 
 
 async def run_grammar_check(
@@ -168,7 +168,9 @@ def display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
         severity_color = (
             "red"
             if error.severity.value == "critical"
-            else "yellow" if error.severity.value == "major" else "dim"
+            else "yellow"
+            if error.severity.value == "major"
+            else "dim"
         )
         start, end = error.location
         error_text = text[start:end] if start < len(text) and end <= len(text) else ""
@@ -192,7 +194,9 @@ def display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
         severity_icon = (
             "🔴"
             if error.severity.value == "critical"
-            else "🟡" if error.severity.value == "major" else "⚪"
+            else "🟡"
+            if error.severity.value == "major"
+            else "⚪"
         )
         suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
         start, end = error.location
@@ -206,7 +210,7 @@ def display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
 
 def save_self_check_report(
     output: str,
-    format: str,
+    output_format: str,
     language: str,
     source_path: Path,
     score: float,
@@ -257,7 +261,7 @@ async def self_check_async(
     language: str,
     threshold: float,
     output: str | None,
-    format: str,
+    output_format: str,
     provider: str | None,
     verbose: bool,
     demo: bool = False,
@@ -294,7 +298,7 @@ async def self_check_async(
     llm_provider = setup_self_check_llm(provider, settings, verbose, demo)
 
     # Run proofreading agents
-    spelling_errors = await run_spelling_check(language, text)
+    spelling_errors = run_spelling_check(language, text)
     console.print(f"[green]✓[/green] Spelling check: found {len(spelling_errors)} issues")
 
     grammar_errors, all_errors = await run_grammar_check(
@@ -320,7 +324,7 @@ async def self_check_async(
     if output:
         save_self_check_report(
             output,
-            format,
+            output_format,
             language,
             source_path,
             score,
@@ -346,7 +350,7 @@ def handle_self_check_mode(
     lang: str | None,
     threshold: float,
     output: str | None,
-    format: str | None,
+    output_format: str | None,
     provider: str | None,
     verbose: bool,
     demo: bool,
@@ -378,7 +382,7 @@ def handle_self_check_mode(
             language=source_lang,
             threshold=threshold,
             output=output,
-            format=auto_detect_format(output, format),
+            output_format=auto_detect_format(output, output_format),
             provider=provider,
             verbose=verbose,
             demo=demo,

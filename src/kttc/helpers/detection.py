@@ -66,24 +66,22 @@ def detect_language(text: str) -> str:
     # Determine dominant script
     if cyrillic_chars / total_chars > 0.3:
         return "ru"  # Russian
-    elif chinese_chars / total_chars > 0.3:
+    if chinese_chars / total_chars > 0.3:
         return "zh"  # Chinese
-    elif devanagari_chars / total_chars > 0.3:
+    if devanagari_chars / total_chars > 0.3:
         return "hi"  # Hindi
-    elif persian_chars / total_chars > 0.3:
+    if persian_chars / total_chars > 0.3:
         # Distinguish Persian from Arabic by common Persian characters
         if len(re.findall(r"[پچژگ]", text)) > 0:  # Persian-specific letters
             return "fa"  # Persian
-        else:
-            return "ar"  # Arabic
-    elif arabic_chars / total_chars > 0.3:
         return "ar"  # Arabic
-    elif latin_chars / total_chars > 0.3:
+    if arabic_chars / total_chars > 0.3:
+        return "ar"  # Arabic
+    if latin_chars / total_chars > 0.3:
         # Could be English, Spanish, French, etc.
         # For now, default to English
         return "en"
-    else:
-        return "en"  # Default fallback
+    return "en"  # Default fallback
 
 
 def get_helper_for_language(language_code: str) -> LanguageHelper | None:
@@ -109,70 +107,65 @@ def get_helper_for_language(language_code: str) -> LanguageHelper | None:
         if helper and helper.is_available():
             logger.info(f"Using RussianLanguageHelper for language: {language_code}")
             return helper
-        else:
-            logger.warning(
-                "RussianLanguageHelper dependencies not available. "
-                "Install with: pip install mawo-pymorphy3 mawo-razdel mawo-natasha"
-            )
-            return None
+        logger.warning(
+            "RussianLanguageHelper dependencies not available. "
+            "Install with: pip install mawo-pymorphy3 mawo-razdel mawo-natasha"
+        )
+        return None
 
-    elif language_code == "en":
+    if language_code == "en":
         from .english import EnglishLanguageHelper
 
         helper = EnglishLanguageHelper()
         if helper.is_available():
             logger.info(f"Using EnglishLanguageHelper for language: {language_code}")
             return helper
-        else:
-            logger.warning(
-                "EnglishLanguageHelper dependencies not available. "
-                "Install with: pip install spacy && python -m spacy download en_core_web_sm"
-            )
-            return None
+        logger.warning(
+            "EnglishLanguageHelper dependencies not available. "
+            "Install with: pip install spacy && python -m spacy download en_core_web_sm"
+        )
+        return None
 
-    elif language_code == "zh":
+    if language_code == "zh":
         from .chinese import ChineseLanguageHelper
 
         helper = ChineseLanguageHelper()
         if helper.is_available():
             logger.info(f"Using ChineseLanguageHelper for language: {language_code}")
             return helper
-        else:
-            logger.warning(
-                "ChineseLanguageHelper dependencies not available. "
-                "Install with: pip install jieba spacy && python -m spacy download zh_core_web_sm"
-            )
-            return None
+        logger.warning(
+            "ChineseLanguageHelper dependencies not available. "
+            "Install with: pip install jieba spacy && python -m spacy download zh_core_web_sm"
+        )
+        return None
 
-    elif language_code == "hi":
+    if language_code == "hi":
         from .hindi import HindiLanguageHelper
 
         helper = HindiLanguageHelper()
         if helper.is_available():
             logger.info(f"Using HindiLanguageHelper for language: {language_code}")
             return helper
-        else:
-            logger.warning(
-                "HindiLanguageHelper dependencies not available. "
-                'Install with: pip install "kttc[hindi]" or '
-                "pip install indic-nlp-library stanza spello"
-            )
-            return None
+        logger.warning(
+            "HindiLanguageHelper dependencies not available. "
+            'Install with: pip install "kttc[hindi]" or '
+            "pip install indic-nlp-library stanza spello"
+        )
+        return None
 
-    elif language_code == "fa":
+    if language_code == "fa":
         from .persian import PersianLanguageHelper
 
         helper = PersianLanguageHelper()
         if helper.is_available():
             logger.info(f"Using PersianLanguageHelper for language: {language_code}")
             return helper
-        else:
-            logger.warning(
-                "PersianLanguageHelper dependencies not available. "
-                'Install with: pip install "kttc[persian]" or '
-                'pip install "dadmatools[full]"'
-            )
-            return None
+        logger.warning(
+            "PersianLanguageHelper dependencies not available. "
+            'Install with: pip install "kttc[persian]" or '
+            'pip install "dadmatools[full]"'
+        )
+        return None
 
     logger.debug(f"No language helper available for: {language_code}")
     return None

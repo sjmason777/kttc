@@ -115,3 +115,4 @@ claude.md
 *.pth
 models/
 checkpoints/
+.sonar/

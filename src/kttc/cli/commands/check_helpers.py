@@ -85,9 +85,8 @@ def detect_check_mode(
 
     if len(translations) == 1:
         return "single", {"source": source, "translation": translations[0]}
-    else:
-        # Multiple translations - compare mode
-        return "compare", {"source": source, "translations": translations}
+    # Multiple translations - compare mode
+    return "compare", {"source": source, "translations": translations}
 
 
 def perform_smart_routing(
@@ -346,7 +345,9 @@ async def handle_auto_correction(
     except Exception as e:
         console.print(f"[yellow]⚠ Auto-correction failed: {e}[/yellow]")
         if verbose:
-            console.print_exception()
+            import traceback
+
+            traceback.print_exc()
 
 
 def display_check_header(
@@ -377,21 +378,21 @@ def display_check_header(
     print_startup_info(config_info)
 
 
-def save_report(report: QAReport, output: str, format: str) -> None:
+def save_report(report: QAReport, output: str, output_format: str) -> None:
     """Save report to file."""
     output_path = Path(output)
 
-    if format == "json" or output.endswith(".json"):
+    if output_format == "json" or output.endswith(".json"):
         # Save as JSON
         data = report.model_dump(mode="json")
         output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
-    elif format == "markdown" or output.endswith(".md"):
+    elif output_format == "markdown" or output.endswith(".md"):
         # Save as Markdown using the new formatter
         MarkdownFormatter.format_report(report, output_path)
-    elif format == "html" or output.endswith(".html"):
+    elif output_format == "html" or output.endswith(".html"):
         # Save as HTML using the new formatter
         HTMLFormatter.format_report(report, output_path)
-    elif format == "xlsx" or output.endswith(".xlsx"):
+    elif output_format == "xlsx" or output.endswith(".xlsx"):
         # Save as Excel using the XLSX formatter
         if not XLSXFormatter.is_available():
             console.print(

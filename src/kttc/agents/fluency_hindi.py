@@ -164,10 +164,10 @@ class HindiFluencyAgent(FluencyAgent):
         # Run Spello/Stanza, LLM, glossary, and traps checks in parallel
         try:
             results = await asyncio.gather(
-                self._spello_check(task),  # Fast, spell checking
-                self._llm_check(task),  # Slow, semantic + grammar
-                self._glossary_check(task),  # Glossary-based case/postposition validation
-                self._traps_check(task),  # Hindi traps validation (gender, idioms, etc.)
+                asyncio.to_thread(self._spello_check_sync, task),  # Fast, spell checking
+                self._llm_check(task),  # Slow, semantic + grammar (uses await internally)
+                asyncio.to_thread(self._glossary_check_sync, task),  # Case/postposition
+                asyncio.to_thread(self._traps_check_sync, task),  # Hindi traps
                 return_exceptions=True,
             )
 
@@ -233,8 +233,8 @@ class HindiFluencyAgent(FluencyAgent):
             # Fallback to base errors
             return base_errors
 
-    async def _spello_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform Spello-based spell checking.
+    def _spello_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform Spello-based spell checking (synchronous).
 
         Args:
             task: Translation task
@@ -271,8 +271,8 @@ class HindiFluencyAgent(FluencyAgent):
             logger.error(f"LLM check failed: {e}")
             return []
 
-    async def _glossary_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform glossary-based Hindi postposition and case validation.
+    def _glossary_check_sync(self, _task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform glossary-based Hindi postposition validation (synchronous).
 
         Uses HindiPostpositionValidator to check:
         - 8 Hindi cases (कारक) with postpositions
@@ -309,8 +309,8 @@ class HindiFluencyAgent(FluencyAgent):
 
         return errors
 
-    async def _traps_check(self, task: TranslationTask) -> list[ErrorAnnotation]:
-        """Perform Hindi traps validation using HindiTrapsValidator.
+    def _traps_check_sync(self, task: TranslationTask) -> list[ErrorAnnotation]:
+        """Perform Hindi traps validation (synchronous).
 
         Checks for:
         - Gender exceptions (words that don't follow -आ/-ई patterns)

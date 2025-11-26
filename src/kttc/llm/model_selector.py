@@ -26,10 +26,7 @@ Based on Best LLMs for Translation 2025 research findings.
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    pass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -120,12 +117,12 @@ class ModelSelector:
         "gigachat": "gigachat",
     }
 
-    def select_best_model(
+    def select_best_model(  # pylint: disable=unused-argument
         self,
         source_lang: str,
         target_lang: str,
         domain: str | None = None,
-        task_type: str = "qa",  # noqa: ARG002 - Reserved for future use
+        task_type: str = "qa",  # Reserved for future use
         optimize_for: str = "quality",  # "quality" or "cost"
     ) -> str:
         """Select optimal model for given task.
@@ -254,7 +251,7 @@ class ModelSelector:
         self,
         source_lang: str,
         target_lang: str,
-        domain: str | None = None,
+        _domain: str | None = None,
         top_n: int = 3,
     ) -> list[tuple[str, float]]:
         """Get top N recommended models with scores.

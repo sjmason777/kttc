@@ -124,8 +124,7 @@ def clean_quality_file(filepath: Path) -> tuple[bool, str]:
 
         if cleaned_count > 0:
             return True, f"Cleaned {cleaned_count}/{len(data)} entries"
-        else:
-            return True, "Already clean"
+        return True, "Already clean"
 
     except Exception as e:
         return False, f"Error: {e}"

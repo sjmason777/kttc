@@ -74,7 +74,6 @@ class LanguageHelper(ABC):
         Returns:
             Two-letter language code
         """
-        pass
 
     @abstractmethod
     def verify_word_exists(self, word: str, text: str) -> bool:
@@ -94,7 +93,6 @@ class LanguageHelper(ABC):
             >>> helper.verify_word_exists("используется", text)
             False  # Word not in text → LLM hallucination
         """
-        pass
 
     @abstractmethod
     def verify_error_position(self, error: ErrorAnnotation, text: str) -> bool:
@@ -112,7 +110,6 @@ class LanguageHelper(ABC):
             >>> helper.verify_error_position(error, text)
             True  # Position valid
         """
-        pass
 
     @abstractmethod
     def tokenize(self, text: str) -> list[tuple[str, int, int]]:
@@ -128,7 +125,6 @@ class LanguageHelper(ABC):
             >>> helper.tokenize("Быстрая лиса")
             [('Быстрая', 0, 7), ('лиса', 8, 12)]
         """
-        pass
 
     @abstractmethod
     def analyze_morphology(self, text: str) -> list[MorphologyInfo]:
@@ -145,7 +141,6 @@ class LanguageHelper(ABC):
             >>> info[0].pos  # 'ADJF'
             >>> info[0].gender  # 'femn'
         """
-        pass
 
     @abstractmethod
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
@@ -167,7 +162,6 @@ class LanguageHelper(ABC):
             >>> errors = helper.check_grammar("быстрый лиса")
             >>> errors[0].description  # "Gender mismatch: masc ≠ femn"
         """
-        pass
 
     def is_available(self) -> bool:
         """Check if helper's dependencies are available.
@@ -177,7 +171,7 @@ class LanguageHelper(ABC):
         """
         return True  # Override in subclasses that have optional deps
 
-    def get_enrichment_data(self, text: str) -> dict[str, Any]:
+    def get_enrichment_data(self, _text: str) -> dict[str, Any]:
         """Get morphological data for enriching LLM prompts.
 
         Optional method to provide additional context to LLM.

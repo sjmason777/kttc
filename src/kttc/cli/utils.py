@@ -27,28 +27,28 @@ from kttc.helpers.detection import detect_language
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 
 
-def auto_detect_format(output: str | None, format: str | None) -> str:
+def auto_detect_format(output: str | None, output_format: str | None) -> str:
     """Auto-detect output format from file extension.
 
     Args:
         output: Output file path
-        format: User-specified format (overrides auto-detection)
+        output_format: User-specified format (overrides auto-detection)
 
     Returns:
         Format string: 'text', 'json', 'markdown', 'html', or 'xlsx'
     """
-    if format:
-        return format
+    if output_format:
+        return output_format
 
     if output:
         suffix = Path(output).suffix.lower()
         if suffix == ".json":
             return "json"
-        elif suffix in [".md", ".markdown"]:
+        if suffix in [".md", ".markdown"]:
             return "markdown"
-        elif suffix in [".html", ".htm"]:
+        if suffix in [".html", ".htm"]:
             return "html"
-        elif suffix in [".xlsx", ".xls"]:
+        if suffix in [".xlsx", ".xls"]:
             return "xlsx"
 
     return "text"
@@ -420,8 +420,8 @@ def map_model_to_provider(selected_model: str | None, provider: str | None) -> s
     model_lower = selected_model.lower()
     if "gpt" in model_lower and "yandex" not in model_lower:
         return "openai"
-    elif "claude" in model_lower:
+    if "claude" in model_lower:
         return "anthropic"
-    elif "yandex" in model_lower:
+    if "yandex" in model_lower:
         return "yandex"
     return provider

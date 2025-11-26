@@ -1,7 +1,6 @@
-"""
-Term Validator for checking terminology consistency and correctness.
-"""
+"""Term Validator for checking terminology consistency and correctness."""
 
+import json
 import logging
 from typing import Any
 
@@ -33,8 +32,8 @@ class TermValidator:
         self,
         source_terms: list[str],
         target_terms: list[str],
-        source_lang: str = "en",
-        target_lang: str = "ru",
+        source_lang: str = "en",  # noqa: ARG002
+        target_lang: str = "ru",  # noqa: ARG002
     ) -> list[dict[str, Any]]:
         """
         Validate that source terms are consistently translated.
@@ -103,7 +102,6 @@ class TermValidator:
                 return errors
 
             # Load approved terms from glossary
-            import json
 
             with open(glossary_path, encoding="utf-8") as f:
                 glossary_data = json.load(f)
@@ -124,16 +122,28 @@ class TermValidator:
                         }
                     )
 
-        except Exception:
-            # If glossary loading fails, skip validation
-            # This is acceptable as glossary validation is optional
-            logging.warning("Failed to load glossary for terminology validation", exc_info=True)
-
+        except FileNotFoundError:
+            # If file not found, skip validation
+            logging.warning("Glossary file not found for terminology validation: %s", glossary_name)
+        except json.JSONDecodeError:
+            # If file isn't valid JSON, skip validation
+            logging.warning(
+                "Failed to decode glossary JSON for terminology validation: %s",
+                glossary_name,
+                exc_info=True,
+            )
+        except OSError:
+            # If other file IO errors occur, skip validation
+            logging.warning(
+                "Glossary file could not be opened for terminology validation: %s",
+                glossary_name,
+                exc_info=True,
+            )
         return errors
 
     def detect_false_friends(
         self,
-        source_text: str,
+        source_text: str,  # noqa: ARG002
         target_text: str,
         source_lang: str = "en",
         target_lang: str = "ru",
@@ -176,8 +186,8 @@ class TermValidator:
                             }
                         )
 
-        except Exception:
-            # If glossary not available, skip
+        except (FileNotFoundError, KeyError):
+            # If glossary not available or key missing, skip
             logging.warning(
                 "Failed to load MQM glossary for false friends detection", exc_info=True
             )
@@ -215,7 +225,7 @@ class TermValidator:
 
             return False, None
 
-        except Exception:
+        except (KeyError, ValueError, FileNotFoundError):
             logging.warning("Failed to validate MQM error type", exc_info=True)
             return False, None
 
@@ -234,13 +244,13 @@ class TermValidator:
             severity_levels = self.glossary_manager.get_severity_levels(language)
             level_data = severity_levels.get(severity_level, {})
             return float(level_data.get("penalty_multiplier", 1.0))
-        except Exception:
+        except (KeyError, TypeError, AttributeError, FileNotFoundError):
             logging.warning("Failed to get severity multiplier, using default value", exc_info=True)
             return 1.0
 
     def validate_language_specific_errors(
         self,
-        text: str,
+        text: str,  # noqa: ARG002
         language: str,
         error_types: list[str] | None = None,
     ) -> list[dict[str, Any]]:
@@ -282,7 +292,7 @@ class TermValidator:
                         }
                     )
 
-        except Exception:
+        except (KeyError, ValueError, TypeError, FileNotFoundError):
             logging.warning("Failed to validate language-specific errors", exc_info=True)
 
         return errors

@@ -20,7 +20,7 @@ import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="jieba")
 warnings.filterwarnings("ignore", category=FutureWarning, module="torch")
 
-from kttc.cli.main import run  # noqa: E402
+from kttc.cli.main import run  # noqa: E402  # pylint: disable=wrong-import-position
 
 if __name__ == "__main__":
     run()

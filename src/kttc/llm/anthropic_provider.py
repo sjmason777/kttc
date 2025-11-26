@@ -73,9 +73,9 @@ class AnthropicProvider(BaseLLMProvider):
             if "3-5" in model or "3.5" in model:
                 return "claude-3-5-sonnet"
             return "claude-sonnet-4"
-        elif "haiku" in model.lower():
+        if "haiku" in model.lower():
             return "claude-3-5-haiku"
-        elif "opus" in model.lower():
+        if "opus" in model.lower():
             return "claude-3-opus"
         return model
 
@@ -128,8 +128,7 @@ class AnthropicProvider(BaseLLMProvider):
             if hasattr(first_block, "text"):
                 text: str = first_block.text
                 return text
-            else:
-                raise LLMError(f"Unexpected content type: {type(first_block)}")
+            raise LLMError(f"Unexpected content type: {type(first_block)}")
 
         except anthropic.AuthenticationError as e:
             raise LLMAuthenticationError(f"Anthropic authentication failed: {e}") from e

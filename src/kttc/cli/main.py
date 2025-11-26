@@ -83,7 +83,7 @@ def ui_lang_callback(value: str | None) -> None:
 
 @app.callback()
 def main(
-    version: bool = typer.Option(  # noqa: ARG001 - Used by Typer callback
+    _version: bool = typer.Option(  # Used by Typer callback
         False,
         "--version",
         "-v",
@@ -91,7 +91,7 @@ def main(
         callback=version_callback,
         is_eager=True,
     ),
-    ui_lang: str | None = typer.Option(  # noqa: ARG001 - Used by Typer callback
+    _ui_lang: str | None = typer.Option(  # Used by Typer callback
         None,
         "--ui-lang",
         "-L",
@@ -106,7 +106,6 @@ def main(
     Transforming translations into gold-standard quality through
     autonomous multi-agent AI systems.
     """
-    pass
 
 
 @app.command()
@@ -157,12 +156,12 @@ def benchmark(
         )
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
+        raise typer.Exit(code=130) from None
     except Exception as e:
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from e
 
 
 @app.command()
@@ -213,12 +212,12 @@ def compare(
         )
     except KeyboardInterrupt:
         console.print("\n[yellow]⚠ Interrupted by user[/yellow]")
-        raise typer.Exit(code=130)
+        raise typer.Exit(code=130) from None
     except Exception as e:
         console.print(f"\n[red]✗ Error: {e}[/red]")
         if verbose:
             console.print_exception()
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from e
 
 
 def run() -> None:

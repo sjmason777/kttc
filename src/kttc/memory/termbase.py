@@ -98,7 +98,7 @@ class TerminologyBase:
         self.db: sqlite3.Connection | None = None
         self._initialized = False
 
-    async def initialize(self) -> None:
+    def initialize(self) -> None:
         """Initialize database.
 
         Creates database schema.
@@ -165,7 +165,7 @@ class TerminologyBase:
 
         self.db.commit()
 
-    async def add_term(
+    def add_term(
         self,
         source_term: str,
         target_term: str,
@@ -254,7 +254,7 @@ class TerminologyBase:
             row = cursor.fetchone()
             return int(row["id"]) if row else 0
 
-    async def lookup_term(
+    def lookup_term(
         self,
         term: str,
         source_lang: str,
@@ -314,7 +314,7 @@ class TerminologyBase:
 
         return entries
 
-    async def validate_translation(
+    def validate_translation(
         self,
         source_text: str,
         translation: str,
@@ -349,7 +349,7 @@ class TerminologyBase:
 
         for term in source_terms:
             # Lookup term in termbase
-            entries = await self.lookup_term(term, source_lang, target_lang, domain)
+            entries = self.lookup_term(term, source_lang, target_lang, domain)
 
             if entries:
                 # Check if any approved translation is in target
@@ -400,7 +400,7 @@ class TerminologyBase:
 
         return terms
 
-    async def add_glossary(
+    def add_glossary(
         self,
         glossary: dict[str, str],
         source_lang: str,
@@ -425,7 +425,7 @@ class TerminologyBase:
 
         for source_term, target_term in glossary.items():
             try:
-                await self.add_term(
+                self.add_term(
                     source_term=source_term,
                     target_term=target_term,
                     source_lang=source_lang,
@@ -439,7 +439,7 @@ class TerminologyBase:
         logger.info(f"Added {count} terms from glossary")
         return count
 
-    async def get_statistics(self) -> dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """Get terminology base statistics.
 
         Returns:
@@ -466,7 +466,7 @@ class TerminologyBase:
 
         return stats
 
-    async def cleanup(self) -> None:
+    def cleanup(self) -> None:
         """Close database connection."""
         if self.db is not None:
             self.db.close()

@@ -191,7 +191,9 @@ class SpellingAgent:
                     severity = (
                         ErrorSeverity.CRITICAL
                         if severity_str == "critical"
-                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
+                        else ErrorSeverity.MINOR
+                        if severity_str == "minor"
+                        else ErrorSeverity.MAJOR
                     )
 
                     suggestion = ""
@@ -303,7 +305,7 @@ class SpellingAgent:
         errors.extend(self._check_school_common_mistakes(text, rules.get("common_mistakes", {})))
         return errors
 
-    async def check(self, text: str) -> list[ErrorAnnotation]:
+    def check(self, text: str) -> list[ErrorAnnotation]:
         """Check text for spelling errors.
 
         Args:
@@ -345,4 +347,4 @@ class SpellingAgent:
         text_to_check = task.translation or task.source_text
         self.language = task.target_lang or task.source_lang
 
-        return await self.check(text_to_check)
+        return self.check(text_to_check)

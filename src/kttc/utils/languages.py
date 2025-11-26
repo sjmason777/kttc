@@ -21,10 +21,7 @@ Provides language capabilities, resource levels, and model recommendations.
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
-
-if TYPE_CHECKING:
-    pass
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -277,22 +274,21 @@ class LanguageRegistry:
         # Special cases
         if lang_code == "ru":
             return "yandexgpt"  # Best for Russian
-        elif lang_code == "zh":
+        if lang_code == "zh":
             return "gpt-4.5"  # Strong Chinese support
-        elif lang_code == "ja":
+        if lang_code == "ja":
             return "claude-3.5-sonnet"  # Good Japanese support
-        elif lang_code == "hi":
+        if lang_code == "hi":
             return "claude-3.5-sonnet"  # Good Hindi support
-        elif lang_code == "fa":
+        if lang_code == "fa":
             return "claude-3.5-sonnet"  # Good Persian support
 
         # General recommendations by resource level
         if resource_level == "low":
             # Low-resource: Use models with better multilingual coverage
             return "gemini-2.0"  # Google's model has broad language support
-        else:
-            # High/medium-resource: Use best overall model
-            return "claude-3.5-sonnet"
+        # High/medium-resource: Use best overall model
+        return "claude-3.5-sonnet"
 
     def is_language_supported(self, lang_code: str) -> bool:
         """Check if language is supported.

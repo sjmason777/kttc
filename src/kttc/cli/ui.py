@@ -23,7 +23,13 @@ from __future__ import annotations
 from typing import Any
 
 from rich.panel import Panel
-from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+from rich.progress import (
+    BarColumn,
+    Progress,
+    SpinnerColumn,
+    TextColumn,
+    TimeElapsedColumn,
+)
 from rich.table import Table
 from rich.text import Text
 
@@ -244,7 +250,7 @@ def _get_score_color(score: float) -> str:
     """Get color for score display."""
     if score >= 95:
         return "green"
-    elif score >= 85:
+    if score >= 85:
         return "yellow"
     return "red"
 
@@ -253,7 +259,7 @@ def _get_confidence_color(confidence: float) -> str:
     """Get color for confidence display."""
     if confidence >= 0.8:
         return "green"
-    elif confidence >= 0.6:
+    if confidence >= 0.6:
         return "yellow"
     return "red"
 
@@ -262,7 +268,7 @@ def _get_confidence_label(confidence: float) -> str:
     """Get label for confidence level."""
     if confidence >= 0.8:
         return "high"
-    elif confidence >= 0.6:
+    if confidence >= 0.6:
         return "medium"
     return "low"
 
@@ -758,30 +764,26 @@ def print_lightweight_metrics(
         if metric_type == "chrf":
             if score >= 80:
                 return "green"
-            elif score >= 65:
+            if score >= 65:
                 return "yellow"
-            elif score >= 50:
+            if score >= 50:
                 return "dim yellow"
-            else:
-                return "red"
-        elif metric_type == "bleu":
+            return "red"
+        if metric_type == "bleu":
             if score >= 50:
                 return "green"
-            elif score >= 40:
+            if score >= 40:
                 return "yellow"
-            elif score >= 30:
+            if score >= 30:
                 return "dim yellow"
-            else:
-                return "red"
-        else:  # default for TER and composite
-            if score >= 70:
-                return "green"
-            elif score >= 60:
-                return "yellow"
-            elif score >= 50:
-                return "dim yellow"
-            else:
-                return "red"
+            return "red"
+        if score >= 70:
+            return "green"
+        if score >= 60:
+            return "yellow"
+        if score >= 50:
+            return "dim yellow"
+        return "red"
 
     # Create metrics table
     table = Table(show_header=False, box=None, padding=(0, 2))
@@ -859,7 +861,7 @@ def _get_score_color_and_icon(score: float) -> tuple[str, str]:
     """Get color and icon for score display."""
     if score >= 80:
         return "green", "✓"
-    elif score >= 60:
+    if score >= 60:
         return "yellow", "⚠"
     return "red", "✗"
 
@@ -868,7 +870,7 @@ def _get_severity_color(severity: str) -> str:
     """Get color for severity level."""
     if severity == "critical":
         return "red"
-    elif severity == "major":
+    if severity == "major":
         return "yellow"
     return "dim"
 

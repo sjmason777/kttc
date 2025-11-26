@@ -113,36 +113,38 @@ class TestCheckCommand:
         # Arrange
         source, translation = temp_text_files
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
-                # Setup mocks
-                mock_orch = MagicMock()
-                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
-                mock_orch_class.return_value = mock_orch
+        with (
+            patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+        ):
+            # Setup mocks
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_orch_class.return_value = mock_orch
 
-                settings = MagicMock()
-                settings.default_llm_provider = "openai"
-                settings.get_llm_provider_key.return_value = "test-key"
-                mock_settings.return_value = settings
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
 
-                with patch("kttc.cli.utils.OpenAIProvider"):
-                    # Act
-                    result = runner.invoke(
-                        app,
-                        [
-                            "check",
-                            str(source),
-                            str(translation),
-                            "--source-lang",
-                            "en",
-                            "--target-lang",
-                            "es",
-                        ],
-                    )
+            with patch("kttc.cli.utils.OpenAIProvider"):
+                # Act
+                result = runner.invoke(
+                    app,
+                    [
+                        "check",
+                        str(source),
+                        str(translation),
+                        "--source-lang",
+                        "en",
+                        "--target-lang",
+                        "es",
+                    ],
+                )
 
-                    # Assert
-                    assert result.exit_code == 0
-                    assert "MQM:" in result.stdout or "MQM Score" in result.stdout
+                # Assert
+                assert result.exit_code == 0
+                assert "MQM:" in result.stdout or "MQM Score" in result.stdout
 
 
 @pytest.mark.unit
@@ -157,44 +159,46 @@ class TestOutputFormats:
         source, translation = temp_text_files
         output = tmp_path / "report.json"
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
-                mock_orch = MagicMock()
-                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
-                mock_orch_class.return_value = mock_orch
+        with (
+            patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+        ):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_orch_class.return_value = mock_orch
 
-                settings = MagicMock()
-                settings.default_llm_provider = "openai"
-                settings.get_llm_provider_key.return_value = "test-key"
-                mock_settings.return_value = settings
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
 
-                with patch("kttc.cli.utils.OpenAIProvider"):
-                    # Act
-                    result = runner.invoke(
-                        app,
-                        [
-                            "check",
-                            str(source),
-                            str(translation),
-                            "--source-lang",
-                            "en",
-                            "--target-lang",
-                            "es",
-                            "--output",
-                            str(output),
-                            "--format",
-                            "json",
-                        ],
-                    )
+            with patch("kttc.cli.utils.OpenAIProvider"):
+                # Act
+                result = runner.invoke(
+                    app,
+                    [
+                        "check",
+                        str(source),
+                        str(translation),
+                        "--source-lang",
+                        "en",
+                        "--target-lang",
+                        "es",
+                        "--output",
+                        str(output),
+                        "--format",
+                        "json",
+                    ],
+                )
 
-                    # Assert
-                    assert result.exit_code == 0
-                    assert output.exists()
+                # Assert
+                assert result.exit_code == 0
+                assert output.exists()
 
-                    # Verify JSON content
-                    data = json.loads(output.read_text(encoding="utf-8"))
-                    assert "mqm_score" in data
-                    assert data["mqm_score"] == 85.0
+                # Verify JSON content
+                data = json.loads(output.read_text(encoding="utf-8"))
+                assert "mqm_score" in data
+                assert data["mqm_score"] == 85.0
 
     def test_markdown_output(
         self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport, tmp_path: Path
@@ -204,44 +208,46 @@ class TestOutputFormats:
         source, translation = temp_text_files
         output = tmp_path / "report.md"
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check.get_settings") as mock_settings:
-                mock_orch = MagicMock()
-                mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
-                mock_orch_class.return_value = mock_orch
+        with (
+            patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+        ):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_orch_class.return_value = mock_orch
 
-                settings = MagicMock()
-                settings.default_llm_provider = "openai"
-                settings.get_llm_provider_key.return_value = "test-key"
-                mock_settings.return_value = settings
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
 
-                with patch("kttc.cli.utils.OpenAIProvider"):
-                    # Act
-                    result = runner.invoke(
-                        app,
-                        [
-                            "check",
-                            str(source),
-                            str(translation),
-                            "--source-lang",
-                            "en",
-                            "--target-lang",
-                            "es",
-                            "--output",
-                            str(output),
-                            "--format",
-                            "markdown",
-                        ],
-                    )
+            with patch("kttc.cli.utils.OpenAIProvider"):
+                # Act
+                result = runner.invoke(
+                    app,
+                    [
+                        "check",
+                        str(source),
+                        str(translation),
+                        "--source-lang",
+                        "en",
+                        "--target-lang",
+                        "es",
+                        "--output",
+                        str(output),
+                        "--format",
+                        "markdown",
+                    ],
+                )
 
-                    # Assert
-                    assert result.exit_code == 0
-                    assert output.exists()
+                # Assert
+                assert result.exit_code == 0
+                assert output.exists()
 
-                    # Verify Markdown content
-                    content = output.read_text(encoding="utf-8")
-                    assert "# Translation Quality Report" in content
-                    assert "**MQM Score**:" in content or "MQM Score" in content
+                # Verify Markdown content
+                content = output.read_text(encoding="utf-8")
+                assert "# Translation Quality Report" in content
+                assert "**MQM Score**:" in content or "MQM Score" in content
 
 
 @pytest.mark.unit
