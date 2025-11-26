@@ -17,7 +17,6 @@ from kttc.llm.openai_provider import OpenAIProvider
 
 async def main() -> None:
     """Basic translation quality check example."""
-
     # 1. Setup LLM provider
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
