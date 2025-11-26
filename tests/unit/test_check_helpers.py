@@ -296,61 +296,58 @@ class TestDisplayCheckHeader:
 
     def test_display_header_basic(self) -> None:
         """Test basic header display."""
-        with patch("kttc.cli.commands.check_helpers.print_header") as mock_header:
-            with patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
-                display_check_header(
-                    source="source.txt",
-                    translation="trans.txt",
-                    source_lang="en",
-                    target_lang="ru",
-                    threshold=0.8,
-                    auto_select_model=False,
-                    auto_correct=False,
-                    correction_level="minimal",
-                )
+        with patch("kttc.cli.commands.check_helpers.print_header") as mock_header, patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
+            display_check_header(
+                source="source.txt",
+                translation="trans.txt",
+                source_lang="en",
+                target_lang="ru",
+                threshold=0.8,
+                auto_select_model=False,
+                auto_correct=False,
+                correction_level="minimal",
+            )
 
-                mock_header.assert_called_once()
-                mock_info.assert_called_once()
-                call_args = mock_info.call_args[0][0]
-                assert call_args["Source File"] == "source.txt"
-                assert call_args["Translation File"] == "trans.txt"
+            mock_header.assert_called_once()
+            mock_info.assert_called_once()
+            call_args = mock_info.call_args[0][0]
+            assert call_args["Source File"] == "source.txt"
+            assert call_args["Translation File"] == "trans.txt"
 
     def test_display_header_with_auto_model(self) -> None:
         """Test header display with auto model selection."""
-        with patch("kttc.cli.commands.check_helpers.print_header"):
-            with patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
-                display_check_header(
-                    source="source.txt",
-                    translation="trans.txt",
-                    source_lang="en",
-                    target_lang="ru",
-                    threshold=0.8,
-                    auto_select_model=True,
-                    auto_correct=False,
-                    correction_level="minimal",
-                )
+        with patch("kttc.cli.commands.check_helpers.print_header"), patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
+            display_check_header(
+                source="source.txt",
+                translation="trans.txt",
+                source_lang="en",
+                target_lang="ru",
+                threshold=0.8,
+                auto_select_model=True,
+                auto_correct=False,
+                correction_level="minimal",
+            )
 
-                call_args = mock_info.call_args[0][0]
-                assert "Model Selection" in call_args
+            call_args = mock_info.call_args[0][0]
+            assert "Model Selection" in call_args
 
     def test_display_header_with_auto_correct(self) -> None:
         """Test header display with auto correction enabled."""
-        with patch("kttc.cli.commands.check_helpers.print_header"):
-            with patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
-                display_check_header(
-                    source="source.txt",
-                    translation="trans.txt",
-                    source_lang="en",
-                    target_lang="ru",
-                    threshold=0.8,
-                    auto_select_model=False,
-                    auto_correct=True,
-                    correction_level="full",
-                )
+        with patch("kttc.cli.commands.check_helpers.print_header"), patch("kttc.cli.commands.check_helpers.print_startup_info") as mock_info:
+            display_check_header(
+                source="source.txt",
+                translation="trans.txt",
+                source_lang="en",
+                target_lang="ru",
+                threshold=0.8,
+                auto_select_model=False,
+                auto_correct=True,
+                correction_level="full",
+            )
 
-                call_args = mock_info.call_args[0][0]
-                assert "Auto-Correct" in call_args
-                assert "full" in call_args["Auto-Correct"]
+            call_args = mock_info.call_args[0][0]
+            assert "Auto-Correct" in call_args
+            assert "full" in call_args["Auto-Correct"]
 
 
 class TestPrintVerboseAutodetectInfo:
@@ -406,24 +403,23 @@ class TestCalculateLightweightMetrics:
         source = "Hello world"
         translation = "Привет мир"
 
-        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics:
-            with patch("kttc.evaluation.ErrorDetector") as mock_detector:
-                mock_metrics_instance = MagicMock()
-                mock_metrics_instance.evaluate.return_value = {"bleu": 0.5}
-                mock_metrics.return_value = mock_metrics_instance
+        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics, patch("kttc.evaluation.ErrorDetector") as mock_detector:
+            mock_metrics_instance = MagicMock()
+            mock_metrics_instance.evaluate.return_value = {"bleu": 0.5}
+            mock_metrics.return_value = mock_metrics_instance
 
-                mock_detector_instance = MagicMock()
-                mock_detector_instance.detect_all_errors.return_value = []
-                mock_detector_instance.calculate_rule_based_score.return_value = 1.0
-                mock_detector.return_value = mock_detector_instance
+            mock_detector_instance = MagicMock()
+            mock_detector_instance.detect_all_errors.return_value = []
+            mock_detector_instance.calculate_rule_based_score.return_value = 1.0
+            mock_detector.return_value = mock_detector_instance
 
-                scores, errors, rule_score = calculate_lightweight_metrics(
-                    source, translation, None, verbose=False
-                )
+            scores, errors, rule_score = calculate_lightweight_metrics(
+                source, translation, None, verbose=False
+            )
 
-                assert scores == {"bleu": 0.5}
-                assert errors == []
-                assert rule_score == 1.0
+            assert scores == {"bleu": 0.5}
+            assert errors == []
+            assert rule_score == 1.0
 
     def test_metrics_with_reference_file(self, tmp_path: Path) -> None:
         """Test metrics calculation with reference file."""
@@ -432,65 +428,61 @@ class TestCalculateLightweightMetrics:
         reference_file = tmp_path / "reference.txt"
         reference_file.write_text("Привет мир!", encoding="utf-8")
 
-        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics:
-            with patch("kttc.evaluation.ErrorDetector") as mock_detector:
-                mock_metrics_instance = MagicMock()
-                mock_metrics_instance.evaluate.return_value = {"bleu": 0.9}
-                mock_metrics.return_value = mock_metrics_instance
+        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics, patch("kttc.evaluation.ErrorDetector") as mock_detector:
+            mock_metrics_instance = MagicMock()
+            mock_metrics_instance.evaluate.return_value = {"bleu": 0.9}
+            mock_metrics.return_value = mock_metrics_instance
 
-                mock_detector_instance = MagicMock()
-                mock_detector_instance.detect_all_errors.return_value = []
-                mock_detector_instance.calculate_rule_based_score.return_value = 1.0
-                mock_detector.return_value = mock_detector_instance
+            mock_detector_instance = MagicMock()
+            mock_detector_instance.detect_all_errors.return_value = []
+            mock_detector_instance.calculate_rule_based_score.return_value = 1.0
+            mock_detector.return_value = mock_detector_instance
 
-                scores, errors, rule_score = calculate_lightweight_metrics(
-                    source, translation, str(reference_file), verbose=True
-                )
+            scores, errors, rule_score = calculate_lightweight_metrics(
+                source, translation, str(reference_file), verbose=True
+            )
 
-                assert scores is not None
-                mock_metrics_instance.evaluate.assert_called_once()
+            assert scores is not None
+            mock_metrics_instance.evaluate.assert_called_once()
 
     def test_metrics_with_nonexistent_reference(self, tmp_path: Path) -> None:
         """Test metrics with nonexistent reference file."""
         source = "Hello world"
         translation = "Привет мир"
 
-        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics:
-            with patch("kttc.evaluation.ErrorDetector") as mock_detector:
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    mock_metrics_instance = MagicMock()
-                    mock_metrics_instance.evaluate.return_value = {"bleu": 0.5}
-                    mock_metrics.return_value = mock_metrics_instance
+        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics, patch("kttc.evaluation.ErrorDetector") as mock_detector, patch("kttc.cli.commands.check_helpers.console"):
+            mock_metrics_instance = MagicMock()
+            mock_metrics_instance.evaluate.return_value = {"bleu": 0.5}
+            mock_metrics.return_value = mock_metrics_instance
 
-                    mock_detector_instance = MagicMock()
-                    mock_detector_instance.detect_all_errors.return_value = []
-                    mock_detector_instance.calculate_rule_based_score.return_value = 1.0
-                    mock_detector.return_value = mock_detector_instance
+            mock_detector_instance = MagicMock()
+            mock_detector_instance.detect_all_errors.return_value = []
+            mock_detector_instance.calculate_rule_based_score.return_value = 1.0
+            mock_detector.return_value = mock_detector_instance
 
-                    scores, errors, rule_score = calculate_lightweight_metrics(
-                        source, translation, str(tmp_path / "nonexistent.txt"), verbose=True
-                    )
+            scores, errors, rule_score = calculate_lightweight_metrics(
+                source, translation, str(tmp_path / "nonexistent.txt"), verbose=True
+            )
 
-                    # Should still return scores using translation as reference
-                    assert scores is not None
+            # Should still return scores using translation as reference
+            assert scores is not None
 
     def test_metrics_exception_handling(self) -> None:
         """Test metrics calculation handles exceptions gracefully."""
         source = "Hello world"
         translation = "Привет мир"
 
-        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics:
-            with patch("kttc.evaluation.ErrorDetector"):
-                mock_metrics.return_value.evaluate.side_effect = Exception("Calculation failed")
+        with patch("kttc.evaluation.LightweightMetrics") as mock_metrics, patch("kttc.evaluation.ErrorDetector"):
+            mock_metrics.return_value.evaluate.side_effect = Exception("Calculation failed")
 
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    scores, errors, rule_score = calculate_lightweight_metrics(
-                        source, translation, None, verbose=True
-                    )
+            with patch("kttc.cli.commands.check_helpers.console"):
+                scores, errors, rule_score = calculate_lightweight_metrics(
+                    source, translation, None, verbose=True
+                )
 
-                    assert scores is None
-                    assert errors is None
-                    assert rule_score is None
+                assert scores is None
+                assert errors is None
+                assert rule_score is None
 
 
 class TestPerformSmartRouting:
@@ -498,86 +490,82 @@ class TestPerformSmartRouting:
 
     def test_smart_routing_success(self, sample_task: TranslationTask) -> None:
         """Test successful smart routing."""
-        with patch("kttc.llm.ComplexityRouter") as mock_router:
-            with patch("kttc.cli.commands.check_helpers.get_available_providers") as mock_providers:
-                mock_providers.return_value = ["openai", "anthropic"]
+        with patch("kttc.llm.ComplexityRouter") as mock_router, patch("kttc.cli.commands.check_helpers.get_available_providers") as mock_providers:
+            mock_providers.return_value = ["openai", "anthropic"]
 
-                mock_score = MagicMock()
-                mock_score.overall = 0.5
-                mock_score.sentence_length = 0.3
-                mock_score.rare_words = 0.2
-                mock_score.syntactic = 0.4
-                mock_score.domain_specific = 0.1
+            mock_score = MagicMock()
+            mock_score.overall = 0.5
+            mock_score.sentence_length = 0.3
+            mock_score.rare_words = 0.2
+            mock_score.syntactic = 0.4
+            mock_score.domain_specific = 0.1
 
-                mock_router_instance = MagicMock()
-                mock_router_instance.route.return_value = ("gpt-4", mock_score)
-                mock_router.return_value = mock_router_instance
+            mock_router_instance = MagicMock()
+            mock_router_instance.route.return_value = ("gpt-4", mock_score)
+            mock_router.return_value = mock_router_instance
 
-                settings = MagicMock()
+            settings = MagicMock()
 
-                model, score = perform_smart_routing(
-                    source_text="Hello world",
-                    source_lang="en",
-                    target_lang="ru",
-                    task=sample_task,
-                    settings=settings,
-                    show_routing_info=False,
-                )
+            model, score = perform_smart_routing(
+                source_text="Hello world",
+                source_lang="en",
+                target_lang="ru",
+                task=sample_task,
+                settings=settings,
+                show_routing_info=False,
+            )
 
-                assert model == "gpt-4"
-                assert score.overall == 0.5
+            assert model == "gpt-4"
+            assert score.overall == 0.5
 
     def test_smart_routing_with_verbose(self, sample_task: TranslationTask) -> None:
         """Test smart routing with verbose output."""
-        with patch("kttc.llm.ComplexityRouter") as mock_router:
-            with patch("kttc.cli.commands.check_helpers.get_available_providers") as mock_providers:
-                with patch("kttc.cli.commands.check_helpers.console") as mock_console:
-                    mock_providers.return_value = ["openai"]
+        with patch("kttc.llm.ComplexityRouter") as mock_router, patch("kttc.cli.commands.check_helpers.get_available_providers") as mock_providers, patch("kttc.cli.commands.check_helpers.console") as mock_console:
+            mock_providers.return_value = ["openai"]
 
-                    mock_score = MagicMock()
-                    mock_score.overall = 0.5
-                    mock_score.sentence_length = 0.3
-                    mock_score.rare_words = 0.2
-                    mock_score.syntactic = 0.4
-                    mock_score.domain_specific = 0.1
+            mock_score = MagicMock()
+            mock_score.overall = 0.5
+            mock_score.sentence_length = 0.3
+            mock_score.rare_words = 0.2
+            mock_score.syntactic = 0.4
+            mock_score.domain_specific = 0.1
 
-                    mock_router_instance = MagicMock()
-                    mock_router_instance.route.return_value = ("gpt-4", mock_score)
-                    mock_router.return_value = mock_router_instance
+            mock_router_instance = MagicMock()
+            mock_router_instance.route.return_value = ("gpt-4", mock_score)
+            mock_router.return_value = mock_router_instance
 
-                    settings = MagicMock()
+            settings = MagicMock()
 
-                    perform_smart_routing(
-                        source_text="Hello world",
-                        source_lang="en",
-                        target_lang="ru",
-                        task=sample_task,
-                        settings=settings,
-                        show_routing_info=True,
-                    )
+            perform_smart_routing(
+                source_text="Hello world",
+                source_lang="en",
+                target_lang="ru",
+                task=sample_task,
+                settings=settings,
+                show_routing_info=True,
+            )
 
-                    # Should print complexity info
-                    assert mock_console.print.called
+            # Should print complexity info
+            assert mock_console.print.called
 
     def test_smart_routing_failure(self, sample_task: TranslationTask) -> None:
         """Test smart routing handles failures gracefully."""
-        with patch("kttc.llm.ComplexityRouter") as mock_router:
-            with patch("kttc.cli.commands.check_helpers.console"):
-                mock_router.side_effect = Exception("Routing failed")
+        with patch("kttc.llm.ComplexityRouter") as mock_router, patch("kttc.cli.commands.check_helpers.console"):
+            mock_router.side_effect = Exception("Routing failed")
 
-                settings = MagicMock()
+            settings = MagicMock()
 
-                model, score = perform_smart_routing(
-                    source_text="Hello world",
-                    source_lang="en",
-                    target_lang="ru",
-                    task=sample_task,
-                    settings=settings,
-                    show_routing_info=False,
-                )
+            model, score = perform_smart_routing(
+                source_text="Hello world",
+                source_lang="en",
+                target_lang="ru",
+                task=sample_task,
+                settings=settings,
+                show_routing_info=False,
+            )
 
-                assert model is None
-                assert score is None
+            assert model is None
+            assert score is None
 
 
 class TestRunNlpAnalysis:
@@ -595,52 +583,45 @@ class TestRunNlpAnalysis:
 
     def test_nlp_analysis_helper_not_available(self, sample_task: TranslationTask) -> None:
         """Test NLP analysis when helper not available."""
-        with patch("kttc.helpers.get_helper_for_language") as mock_helper:
-            with patch("kttc.cli.commands.check_helpers.console"):
-                mock_helper_instance = MagicMock()
-                mock_helper_instance.is_available.return_value = False
-                mock_helper.return_value = mock_helper_instance
-                api_errors: list[str] = []
+        with patch("kttc.helpers.get_helper_for_language") as mock_helper, patch("kttc.cli.commands.check_helpers.console"):
+            mock_helper_instance = MagicMock()
+            mock_helper_instance.is_available.return_value = False
+            mock_helper.return_value = mock_helper_instance
+            api_errors: list[str] = []
 
-                result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
+            result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
 
-                assert result is None
+            assert result is None
 
     def test_nlp_analysis_success(self, sample_task: TranslationTask) -> None:
         """Test successful NLP analysis."""
-        with patch("kttc.helpers.get_helper_for_language") as mock_helper:
-            with patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
-                with patch("kttc.cli.commands.check_helpers.create_step_progress"):
-                    with patch("kttc.cli.commands.check_helpers.console"):
-                        mock_helper_instance = MagicMock()
-                        mock_helper_instance.is_available.return_value = True
-                        mock_helper.return_value = mock_helper_instance
+        with patch("kttc.helpers.get_helper_for_language") as mock_helper, patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights, patch("kttc.cli.commands.check_helpers.create_step_progress"), patch("kttc.cli.commands.check_helpers.console"):
+            mock_helper_instance = MagicMock()
+            mock_helper_instance.is_available.return_value = True
+            mock_helper.return_value = mock_helper_instance
 
-                        mock_insights.return_value = {"tokens": 10}
-                        api_errors: list[str] = []
+            mock_insights.return_value = {"tokens": 10}
+            api_errors: list[str] = []
 
-                        result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
+            result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
 
-                        assert result == {"tokens": 10}
+            assert result == {"tokens": 10}
 
     def test_nlp_analysis_exception(self, sample_task: TranslationTask) -> None:
         """Test NLP analysis handles exceptions."""
-        with patch("kttc.helpers.get_helper_for_language") as mock_helper:
-            with patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
-                with patch("kttc.cli.commands.check_helpers.create_step_progress"):
-                    with patch("kttc.cli.commands.check_helpers.console"):
-                        mock_helper_instance = MagicMock()
-                        mock_helper_instance.is_available.return_value = True
-                        mock_helper.return_value = mock_helper_instance
+        with patch("kttc.helpers.get_helper_for_language") as mock_helper, patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights, patch("kttc.cli.commands.check_helpers.create_step_progress"), patch("kttc.cli.commands.check_helpers.console"):
+            mock_helper_instance = MagicMock()
+            mock_helper_instance.is_available.return_value = True
+            mock_helper.return_value = mock_helper_instance
 
-                        mock_insights.side_effect = Exception("NLP failed")
-                        api_errors: list[str] = []
+            mock_insights.side_effect = Exception("NLP failed")
+            api_errors: list[str] = []
 
-                        result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
+            result = run_nlp_analysis(sample_task, verbose=True, api_errors=api_errors)
 
-                        assert result is None
-                        assert len(api_errors) == 1
-                        assert "NLP analysis failed" in api_errors[0]
+            assert result is None
+            assert len(api_errors) == 1
+            assert "NLP analysis failed" in api_errors[0]
 
 
 class TestRunStyleAnalysis:
@@ -659,17 +640,16 @@ class TestRunStyleAnalysis:
 
     def test_style_analysis_literary_text(self) -> None:
         """Test style analysis with literary text detection."""
-        with patch("kttc.style.StyleFingerprint") as mock_style:
-            with patch("kttc.cli.commands.check_helpers.console") as mock_console:
-                mock_profile = MagicMock()
-                mock_profile.is_literary = True
-                mock_profile.detected_pattern.value = "poetic_verse"
-                mock_style.return_value.analyze.return_value = mock_profile
+        with patch("kttc.style.StyleFingerprint") as mock_style, patch("kttc.cli.commands.check_helpers.console") as mock_console:
+            mock_profile = MagicMock()
+            mock_profile.is_literary = True
+            mock_profile.detected_pattern.value = "poetic_verse"
+            mock_style.return_value.analyze.return_value = mock_profile
 
-                result = run_style_analysis("Once upon a time...", "en", verbose=True)
+            result = run_style_analysis("Once upon a time...", "en", verbose=True)
 
-                assert result == mock_profile
-                mock_console.print.assert_called()
+            assert result == mock_profile
+            mock_console.print.assert_called()
 
     def test_style_analysis_exception(self) -> None:
         """Test style analysis handles exceptions."""
@@ -686,33 +666,31 @@ class TestRunNlpAnalysisNonVerbose:
 
     def test_nlp_analysis_non_verbose_success(self, sample_task: TranslationTask) -> None:
         """Test NLP analysis in non-verbose mode."""
-        with patch("kttc.helpers.get_helper_for_language") as mock_helper:
-            with patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
-                mock_helper_instance = MagicMock()
-                mock_helper_instance.is_available.return_value = True
-                mock_helper.return_value = mock_helper_instance
+        with patch("kttc.helpers.get_helper_for_language") as mock_helper, patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
+            mock_helper_instance = MagicMock()
+            mock_helper_instance.is_available.return_value = True
+            mock_helper.return_value = mock_helper_instance
 
-                mock_insights.return_value = {"tokens": 10}
-                api_errors: list[str] = []
+            mock_insights.return_value = {"tokens": 10}
+            api_errors: list[str] = []
 
-                result = run_nlp_analysis(sample_task, verbose=False, api_errors=api_errors)
+            result = run_nlp_analysis(sample_task, verbose=False, api_errors=api_errors)
 
-                assert result == {"tokens": 10}
+            assert result == {"tokens": 10}
 
     def test_nlp_analysis_non_verbose_exception(self, sample_task: TranslationTask) -> None:
         """Test NLP analysis exception in non-verbose mode."""
-        with patch("kttc.helpers.get_helper_for_language") as mock_helper:
-            with patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
-                mock_helper_instance = MagicMock()
-                mock_helper_instance.is_available.return_value = True
-                mock_helper.return_value = mock_helper_instance
+        with patch("kttc.helpers.get_helper_for_language") as mock_helper, patch("kttc.cli.commands.check_helpers.get_nlp_insights") as mock_insights:
+            mock_helper_instance = MagicMock()
+            mock_helper_instance.is_available.return_value = True
+            mock_helper.return_value = mock_helper_instance
 
-                mock_insights.side_effect = Exception("NLP failed")
-                api_errors: list[str] = []
+            mock_insights.side_effect = Exception("NLP failed")
+            api_errors: list[str] = []
 
-                result = run_nlp_analysis(sample_task, verbose=False, api_errors=api_errors)
+            result = run_nlp_analysis(sample_task, verbose=False, api_errors=api_errors)
 
-                assert result is None
+            assert result is None
 
 
 class TestRunQualityEvaluation:
@@ -731,28 +709,26 @@ class TestRunQualityEvaluation:
         mock_report = MagicMock()
         mock_report.mqm_score = 85.0
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress:
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    mock_orch = MagicMock()
-                    mock_orch.evaluate = AsyncMock(return_value=mock_report)
-                    mock_orch_class.return_value = mock_orch
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class, patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress, patch("kttc.cli.commands.check_helpers.console"):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=mock_report)
+            mock_orch_class.return_value = mock_orch
 
-                    mock_progress.return_value.__enter__ = MagicMock()
-                    mock_progress.return_value.__exit__ = MagicMock()
+            mock_progress.return_value.__enter__ = MagicMock()
+            mock_progress.return_value.__exit__ = MagicMock()
 
-                    api_errors: list[str] = []
-                    report, orchestrator = await run_quality_evaluation(
-                        llm_provider=mock_llm,
-                        task=sample_task,
-                        threshold=0.8,
-                        settings=mock_settings,
-                        verbose=True,
-                        api_errors=api_errors,
-                    )
+            api_errors: list[str] = []
+            report, orchestrator = await run_quality_evaluation(
+                llm_provider=mock_llm,
+                task=sample_task,
+                threshold=0.8,
+                settings=mock_settings,
+                verbose=True,
+                api_errors=api_errors,
+            )
 
-                    assert report == mock_report
-                    assert orchestrator == mock_orch
+            assert report == mock_report
+            assert orchestrator == mock_orch
 
     @pytest.mark.asyncio
     async def test_run_quality_evaluation_non_verbose(self, sample_task: TranslationTask) -> None:
@@ -767,27 +743,25 @@ class TestRunQualityEvaluation:
         mock_report = MagicMock()
         mock_report.mqm_score = 85.0
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress:
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    mock_orch = MagicMock()
-                    mock_orch.evaluate = AsyncMock(return_value=mock_report)
-                    mock_orch_class.return_value = mock_orch
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class, patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress, patch("kttc.cli.commands.check_helpers.console"):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=mock_report)
+            mock_orch_class.return_value = mock_orch
 
-                    mock_progress.return_value.__enter__ = MagicMock()
-                    mock_progress.return_value.__exit__ = MagicMock()
+            mock_progress.return_value.__enter__ = MagicMock()
+            mock_progress.return_value.__exit__ = MagicMock()
 
-                    api_errors: list[str] = []
-                    report, orchestrator = await run_quality_evaluation(
-                        llm_provider=mock_llm,
-                        task=sample_task,
-                        threshold=0.8,
-                        settings=mock_settings,
-                        verbose=False,
-                        api_errors=api_errors,
-                    )
+            api_errors: list[str] = []
+            report, orchestrator = await run_quality_evaluation(
+                llm_provider=mock_llm,
+                task=sample_task,
+                threshold=0.8,
+                settings=mock_settings,
+                verbose=False,
+                api_errors=api_errors,
+            )
 
-                    assert report == mock_report
+            assert report == mock_report
 
     @pytest.mark.asyncio
     async def test_run_quality_evaluation_with_profile(self, sample_task: TranslationTask) -> None:
@@ -805,30 +779,28 @@ class TestRunQualityEvaluation:
         mock_report = MagicMock()
         mock_report.mqm_score = 85.0
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress:
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    mock_orch = MagicMock()
-                    mock_orch.evaluate = AsyncMock(return_value=mock_report)
-                    mock_orch_class.return_value = mock_orch
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class, patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress, patch("kttc.cli.commands.check_helpers.console"):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=mock_report)
+            mock_orch_class.return_value = mock_orch
 
-                    mock_progress.return_value.__enter__ = MagicMock()
-                    mock_progress.return_value.__exit__ = MagicMock()
+            mock_progress.return_value.__enter__ = MagicMock()
+            mock_progress.return_value.__exit__ = MagicMock()
 
-                    api_errors: list[str] = []
-                    report, orchestrator = await run_quality_evaluation(
-                        llm_provider=mock_llm,
-                        task=sample_task,
-                        threshold=0.8,
-                        settings=mock_settings,
-                        verbose=False,
-                        api_errors=api_errors,
-                        profile=mock_profile,
-                    )
+            api_errors: list[str] = []
+            report, orchestrator = await run_quality_evaluation(
+                llm_provider=mock_llm,
+                task=sample_task,
+                threshold=0.8,
+                settings=mock_settings,
+                verbose=False,
+                api_errors=api_errors,
+                profile=mock_profile,
+            )
 
-                    mock_orch_class.assert_called_once()
-                    call_kwargs = mock_orch_class.call_args[1]
-                    assert call_kwargs["agent_weights"] == {"accuracy": 2.0}
+            mock_orch_class.assert_called_once()
+            call_kwargs = mock_orch_class.call_args[1]
+            assert call_kwargs["agent_weights"] == {"accuracy": 2.0}
 
     @pytest.mark.asyncio
     async def test_run_quality_evaluation_exception(self, sample_task: TranslationTask) -> None:
@@ -840,26 +812,24 @@ class TestRunQualityEvaluation:
         mock_settings.default_temperature = 0.7
         mock_settings.default_max_tokens = 1000
 
-        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class:
-            with patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress:
-                with patch("kttc.cli.commands.check_helpers.console"):
-                    mock_orch = MagicMock()
-                    mock_orch.evaluate = AsyncMock(side_effect=Exception("Evaluation error"))
-                    mock_orch_class.return_value = mock_orch
+        with patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class, patch("kttc.cli.commands.check_helpers.create_step_progress") as mock_progress, patch("kttc.cli.commands.check_helpers.console"):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(side_effect=Exception("Evaluation error"))
+            mock_orch_class.return_value = mock_orch
 
-                    mock_progress.return_value.__enter__ = MagicMock()
-                    mock_progress.return_value.__exit__ = MagicMock(return_value=False)
+            mock_progress.return_value.__enter__ = MagicMock()
+            mock_progress.return_value.__exit__ = MagicMock(return_value=False)
 
-                    api_errors: list[str] = []
-                    with pytest.raises(RuntimeError, match="Evaluation failed"):
-                        await run_quality_evaluation(
-                            llm_provider=mock_llm,
-                            task=sample_task,
-                            threshold=0.8,
-                            settings=mock_settings,
-                            verbose=True,
-                            api_errors=api_errors,
-                        )
+            api_errors: list[str] = []
+            with pytest.raises(RuntimeError, match="Evaluation failed"):
+                await run_quality_evaluation(
+                    llm_provider=mock_llm,
+                    task=sample_task,
+                    threshold=0.8,
+                    settings=mock_settings,
+                    verbose=True,
+                    api_errors=api_errors,
+                )
 
 
 class TestHandleAutoCorrection:
@@ -945,35 +915,33 @@ class TestHandleAutoCorrection:
         mock_settings = MagicMock()
         mock_settings.default_temperature = 0.7
 
-        with patch("kttc.core.correction.AutoCorrector") as mock_corrector_class:
-            with patch("kttc.cli.commands.check_helpers.console"):
-                with patch(
-                    "kttc.cli.commands.check_helpers.create_translation_task"
-                ) as mock_create_task:
-                    mock_corrector = MagicMock()
-                    mock_corrector.auto_correct = AsyncMock(return_value="Corrected text")
-                    mock_corrector_class.return_value = mock_corrector
+        with patch("kttc.core.correction.AutoCorrector") as mock_corrector_class, patch("kttc.cli.commands.check_helpers.console"), patch(
+            "kttc.cli.commands.check_helpers.create_translation_task"
+        ) as mock_create_task:
+            mock_corrector = MagicMock()
+            mock_corrector.auto_correct = AsyncMock(return_value="Corrected text")
+            mock_corrector_class.return_value = mock_corrector
 
-                    mock_create_task.return_value = sample_task
+            mock_create_task.return_value = sample_task
 
-                    await handle_auto_correction(
-                        auto_correct=True,
-                        report=sample_report,
-                        task=sample_task,
-                        orchestrator=mock_orch,
-                        llm_provider=mock_llm,
-                        translation=str(trans_file),
-                        source_text="Hello",
-                        source_lang="en",
-                        target_lang="ru",
-                        correction_level="full",
-                        settings=mock_settings,
-                        verbose=True,
-                    )
+            await handle_auto_correction(
+                auto_correct=True,
+                report=sample_report,
+                task=sample_task,
+                orchestrator=mock_orch,
+                llm_provider=mock_llm,
+                translation=str(trans_file),
+                source_text="Hello",
+                source_lang="en",
+                target_lang="ru",
+                correction_level="full",
+                settings=mock_settings,
+                verbose=True,
+            )
 
-                    mock_corrector.auto_correct.assert_called_once()
-                    corrected_file = tmp_path / "translation_corrected.txt"
-                    assert corrected_file.exists()
+            mock_corrector.auto_correct.assert_called_once()
+            corrected_file = tmp_path / "translation_corrected.txt"
+            assert corrected_file.exists()
 
     @pytest.mark.asyncio
     async def test_auto_correction_exception(
@@ -990,24 +958,23 @@ class TestHandleAutoCorrection:
         mock_settings = MagicMock()
         mock_settings.default_temperature = 0.7
 
-        with patch("kttc.core.correction.AutoCorrector") as mock_corrector_class:
-            with patch("kttc.cli.commands.check_helpers.console"):
-                mock_corrector = MagicMock()
-                mock_corrector.auto_correct = AsyncMock(side_effect=Exception("Correction failed"))
-                mock_corrector_class.return_value = mock_corrector
+        with patch("kttc.core.correction.AutoCorrector") as mock_corrector_class, patch("kttc.cli.commands.check_helpers.console"):
+            mock_corrector = MagicMock()
+            mock_corrector.auto_correct = AsyncMock(side_effect=Exception("Correction failed"))
+            mock_corrector_class.return_value = mock_corrector
 
-                # Should not raise, just log warning
-                await handle_auto_correction(
-                    auto_correct=True,
-                    report=sample_report,
-                    task=sample_task,
-                    orchestrator=mock_orch,
-                    llm_provider=mock_llm,
-                    translation=str(trans_file),
-                    source_text="Hello",
-                    source_lang="en",
-                    target_lang="ru",
-                    correction_level="minimal",
-                    settings=mock_settings,
-                    verbose=True,
-                )
+            # Should not raise, just log warning
+            await handle_auto_correction(
+                auto_correct=True,
+                report=sample_report,
+                task=sample_task,
+                orchestrator=mock_orch,
+                llm_provider=mock_llm,
+                translation=str(trans_file),
+                source_text="Hello",
+                source_lang="en",
+                target_lang="ru",
+                correction_level="minimal",
+                settings=mock_settings,
+                verbose=True,
+            )

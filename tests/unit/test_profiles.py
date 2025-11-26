@@ -344,9 +344,8 @@ quality_threshold: 200.0
         profile_file = tmp_path / "test.yaml"
         profile_file.write_text("name: test", encoding="utf-8")
 
-        with patch("kttc.core.profiles.YAML_AVAILABLE", False):
-            with pytest.raises(ImportError, match="PyYAML"):
-                load_profile_from_file(profile_file)
+        with patch("kttc.core.profiles.YAML_AVAILABLE", False), pytest.raises(ImportError, match="PyYAML"):
+            load_profile_from_file(profile_file)
 
 
 class TestLoadProfileFromPath:

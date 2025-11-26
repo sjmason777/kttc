@@ -113,26 +113,25 @@ class YandexGPTProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session:
-                async with session.post(url, headers=headers, json=payload) as response:
-                    if response.status == 401:
-                        raise LLMAuthenticationError("Yandex API authentication failed")
-                    if response.status == 429:
-                        raise LLMRateLimitError("Yandex API rate limit exceeded")
-                    if response.status != 200:
-                        error_text = await response.text()
-                        raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
+            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload) as response:
+                if response.status == 401:
+                    raise LLMAuthenticationError("Yandex API authentication failed")
+                if response.status == 429:
+                    raise LLMRateLimitError("Yandex API rate limit exceeded")
+                if response.status != 200:
+                    error_text = await response.text()
+                    raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
 
-                    result = await response.json()
+                result = await response.json()
 
-                    # Extract text from response
-                    if "result" in result and "alternatives" in result["result"]:
-                        alternatives = result["result"]["alternatives"]
-                        if alternatives and "message" in alternatives[0]:
-                            text: str = alternatives[0]["message"]["text"]
-                            return text
+                # Extract text from response
+                if "result" in result and "alternatives" in result["result"]:
+                    alternatives = result["result"]["alternatives"]
+                    if alternatives and "message" in alternatives[0]:
+                        text: str = alternatives[0]["message"]["text"]
+                        return text
 
-                    raise LLMError(f"Unexpected Yandex response format: {result}")
+                raise LLMError(f"Unexpected Yandex response format: {result}")
 
         except aiohttp.ClientError as e:
             if "timeout" in str(e).lower():
@@ -180,31 +179,30 @@ class YandexGPTProvider(BaseLLMProvider):
         }
 
         try:
-            async with aiohttp.ClientSession(timeout=self.timeout) as session:
-                async with session.post(url, headers=headers, json=payload) as response:
-                    if response.status == 401:
-                        raise LLMAuthenticationError("Yandex API authentication failed")
-                    if response.status == 429:
-                        raise LLMRateLimitError("Yandex API rate limit exceeded")
-                    if response.status != 200:
-                        error_text = await response.text()
-                        raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
+            async with aiohttp.ClientSession(timeout=self.timeout) as session, session.post(url, headers=headers, json=payload) as response:
+                if response.status == 401:
+                    raise LLMAuthenticationError("Yandex API authentication failed")
+                if response.status == 429:
+                    raise LLMRateLimitError("Yandex API rate limit exceeded")
+                if response.status != 200:
+                    error_text = await response.text()
+                    raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
 
-                    # Stream response line by line
-                    async for line in response.content:
-                        if line:
-                            import json
+                # Stream response line by line
+                async for line in response.content:
+                    if line:
+                        import json
 
-                            try:
-                                chunk = json.loads(line)
-                                if "result" in chunk and "alternatives" in chunk["result"]:
-                                    alternatives = chunk["result"]["alternatives"]
-                                    if alternatives and "message" in alternatives[0]:
-                                        text = alternatives[0]["message"]["text"]
-                                        if text:
-                                            yield text
-                            except json.JSONDecodeError:
-                                continue
+                        try:
+                            chunk = json.loads(line)
+                            if "result" in chunk and "alternatives" in chunk["result"]:
+                                alternatives = chunk["result"]["alternatives"]
+                                if alternatives and "message" in alternatives[0]:
+                                    text = alternatives[0]["message"]["text"]
+                                    if text:
+                                        yield text
+                        except json.JSONDecodeError:
+                            continue
 
         except aiohttp.ClientError as e:
             if "timeout" in str(e).lower():
