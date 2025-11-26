@@ -102,10 +102,9 @@ def introduce_error(text: str, error_type: str, lang: str) -> str:
         # Add extra word
         if lang == "hi":
             return text.replace("।", " आज।")  # Add "today"
-        elif lang == "fa":
+        if lang == "fa":
             return text.replace(".", " امروز.")  # Add "today"
-        else:
-            return text.replace(".", " today.")
+        return text.replace(".", " today.")
     elif error_type == "omission":
         # Remove a word
         words = text.split()
@@ -115,10 +114,9 @@ def introduce_error(text: str, error_type: str, lang: str) -> str:
         # Wrong word
         if lang == "hi":
             return text.replace("बुद्धिमत्ता", "खुफिया")  # AI -> intelligence (wrong context)
-        elif lang == "fa":
+        if lang == "fa":
             return text.replace("هوش", "اطلاعات")  # AI -> information (wrong)
-        else:
-            return text.replace("artificial", "natural")
+        return text.replace("artificial", "natural")
     return text
 
 

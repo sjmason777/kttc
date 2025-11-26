@@ -47,10 +47,9 @@ def get_llm_provider(use_demo: bool, provider_type: str, api_key: str) -> Any:
         from kttc.llm import OpenAIProvider
 
         return OpenAIProvider(api_key=api_key)
-    else:
-        from kttc.llm import AnthropicProvider
+    from kttc.llm import AnthropicProvider
 
-        return AnthropicProvider(api_key=api_key)
+    return AnthropicProvider(api_key=api_key)
 
 
 async def evaluate_translation(

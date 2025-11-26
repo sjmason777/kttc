@@ -625,22 +625,21 @@ class ComplexityEstimator:
                 "Falling back to anthropic/claude-3.5-sonnet"
             )
             return "claude-3.5-sonnet"
-        elif "openai" in available_providers:
+        if "openai" in available_providers:
             logger.warning(
                 f"No optimal model available for complexity {overall_score:.2f}. "
                 "Falling back to openai/gpt-4-turbo"
             )
             return "gpt-4-turbo"
-        elif "yandex" in available_providers:
+        if "yandex" in available_providers:
             logger.warning(
                 f"No optimal model available for complexity {overall_score:.2f}. "
                 "Falling back to yandex/yandexgpt/latest"
             )
             return "yandexgpt/latest"
-        else:
-            # This should never happen if function called correctly
-            logger.error("No available providers! Returning default model")
-            return "gpt-4-turbo"
+        # This should never happen if function called correctly
+        logger.error("No available providers! Returning default model")
+        return "gpt-4-turbo"
 
 
 class ComplexityRouter:
