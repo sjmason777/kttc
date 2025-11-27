@@ -28,7 +28,7 @@ class TestTranslateCommandHelpers:
         assert text.startswith("@")
         file_path = Path(text[1:])
         assert file_path.exists()
-        assert file_path.read_text() == "Text from file"
+        assert file_path.read_text(encoding="utf-8") == "Text from file"
 
     def test_file_not_found_error(self, tmp_path: Path) -> None:
         """Test FileNotFoundError for nonexistent file reference."""
@@ -168,7 +168,7 @@ class TestTranslateAsyncFunction:
             )
 
             assert output_file.exists()
-            assert output_file.read_text() == "Final translation"
+            assert output_file.read_text(encoding="utf-8") == "Final translation"
 
     @pytest.mark.asyncio
     @patch("kttc.cli.commands.translate.get_settings")

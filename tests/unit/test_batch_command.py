@@ -308,7 +308,7 @@ class TestSaveBatchReport:
         _save_batch_report(results, str(output_file), 95.0)
 
         assert output_file.exists()
-        data = json.loads(output_file.read_text())
+        data = json.loads(output_file.read_text(encoding="utf-8"))
         assert "summary" in data
         assert data["summary"]["total_files"] == 2
         assert data["summary"]["passed"] == 1
@@ -323,7 +323,7 @@ class TestSaveBatchReport:
         _save_batch_report(results, str(output_file), 95.0)
 
         assert output_file.exists()
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
         assert "BATCH TRANSLATION QUALITY REPORT" in content
         assert "Total files:    1" in content
         assert "PASS" in content
@@ -338,7 +338,7 @@ class TestSaveBatchReport:
         _save_batch_report(results, str(output_file), 95.0)
 
         assert output_file.exists()
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
         assert "# Batch Translation Quality Report" in content
         assert "| Metric | Value |" in content
         assert "file1.txt" in content
@@ -351,7 +351,7 @@ class TestSaveBatchReport:
         _save_batch_report(results, str(output_file), 95.0)
 
         assert output_file.exists()
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
         assert "<!DOCTYPE html>" in content
         assert "Batch Translation Quality Report" in content
         assert "file1.txt" in content
@@ -363,12 +363,12 @@ class TestSaveBatchReport:
         # Test .md extension
         md_file = tmp_path / "report.md"
         _save_batch_report(results, str(md_file), 95.0)
-        assert "# Batch Translation Quality Report" in md_file.read_text()
+        assert "# Batch Translation Quality Report" in md_file.read_text(encoding="utf-8")
 
         # Test .html extension
         html_file = tmp_path / "report.html"
         _save_batch_report(results, str(html_file), 95.0)
-        assert "<!DOCTYPE html>" in html_file.read_text()
+        assert "<!DOCTYPE html>" in html_file.read_text(encoding="utf-8")
 
     def test_explicit_format_overrides_extension(self, tmp_path: Path) -> None:
         """Test explicit format parameter overrides file extension."""
@@ -377,7 +377,7 @@ class TestSaveBatchReport:
 
         _save_batch_report(results, str(output_file), 95.0, output_format="markdown")
 
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
         assert "# Batch Translation Quality Report" in content  # Markdown content
 
     def test_unknown_format_defaults_to_json(self, tmp_path: Path) -> None:
@@ -387,6 +387,6 @@ class TestSaveBatchReport:
 
         _save_batch_report(results, str(output_file), 95.0, output_format="invalid_format")
 
-        content = output_file.read_text()
+        content = output_file.read_text(encoding="utf-8")
         data = json.loads(content)  # Should be valid JSON
         assert "summary" in data

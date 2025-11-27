@@ -426,7 +426,8 @@ def _save_batch_report(
                 lines.append("| Severity | Category | Description |")
                 lines.append("|----------|----------|-------------|")
                 for e in report.errors:
-                    desc = e.description.replace("|", "\\|")
+                    # Escape special Markdown characters
+                    desc = e.description.replace("|", "\\|").replace("\\", "\\\\")
                     lines.append(f"| {e.severity.value} | {e.category}/{e.subcategory} | {desc} |")
                 lines.append("")
         output_path.write_text("\n".join(lines), encoding="utf-8")

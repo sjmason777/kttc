@@ -398,7 +398,7 @@ def _register_routes(app: FastAPI) -> None:
         """Serve main dashboard page."""
         html_file = Path(__file__).parent / "templates" / "index.html"
         if html_file.exists():
-            return html_file.read_text()
+            return html_file.read_text(encoding="utf-8")
         return _get_fallback_html()
 
     @app.post("/api/evaluate", response_model=EvaluateResponse)
