@@ -77,3 +77,10 @@ enabled = true
 [[transformers]]
 name = "ruff"
 enabled = true
+
+# =============================================================================
+# Test Coverage Analyzer
+# =============================================================================
+[[analyzers]]
+name = "test-coverage"
+enabled = true
