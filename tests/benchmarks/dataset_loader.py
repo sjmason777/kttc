@@ -49,7 +49,7 @@ class DatasetLoader:
 
             return samples
 
-        except (ImportError, Exception):
+        except Exception:
             # Fallback to sample data if datasets not available
             return DatasetLoader._get_sample_data(language_pair, sample_size)
 
@@ -87,7 +87,7 @@ class DatasetLoader:
 
             return samples
 
-        except (ImportError, Exception):
+        except Exception:
             # Fallback to sample data
             return DatasetLoader._get_sample_data(language_pair, sample_size)
 
@@ -124,7 +124,7 @@ class DatasetLoader:
 
             return samples
 
-        except (ImportError, Exception):
+        except Exception:
             # Fallback to sample data
             return DatasetLoader._get_sample_data(language_pair, sample_size)
 
