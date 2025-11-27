@@ -242,7 +242,7 @@ class TestHomophonePatterns:
         """Test all patterns are valid regex."""
         import re
 
-        for pattern, wrong, correct in EnglishTrapsValidator.HOMOPHONE_ERROR_PATTERNS:
+        for pattern, _, _ in EnglishTrapsValidator.HOMOPHONE_ERROR_PATTERNS:
             # Should not raise
             re.compile(pattern, re.IGNORECASE)
 

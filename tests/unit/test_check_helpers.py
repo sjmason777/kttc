@@ -453,7 +453,7 @@ class TestCalculateLightweightMetrics:
             mock_detector_instance.calculate_rule_based_score.return_value = 1.0
             mock_detector.return_value = mock_detector_instance
 
-            scores, errors, rule_score = calculate_lightweight_metrics(
+            scores, _, _ = calculate_lightweight_metrics(
                 source, translation, str(reference_file), verbose=True
             )
 
@@ -479,7 +479,7 @@ class TestCalculateLightweightMetrics:
             mock_detector_instance.calculate_rule_based_score.return_value = 1.0
             mock_detector.return_value = mock_detector_instance
 
-            scores, errors, rule_score = calculate_lightweight_metrics(
+            scores, _, _ = calculate_lightweight_metrics(
                 source, translation, str(tmp_path / "nonexistent.txt"), verbose=True
             )
 
@@ -814,7 +814,7 @@ class TestRunQualityEvaluation:
             mock_progress.return_value.__exit__ = MagicMock()
 
             api_errors: list[str] = []
-            report, orchestrator = await run_quality_evaluation(
+            report, _ = await run_quality_evaluation(
                 llm_provider=mock_llm,
                 task=sample_task,
                 threshold=0.8,
@@ -854,7 +854,7 @@ class TestRunQualityEvaluation:
             mock_progress.return_value.__exit__ = MagicMock()
 
             api_errors: list[str] = []
-            report, orchestrator = await run_quality_evaluation(
+            await run_quality_evaluation(
                 llm_provider=mock_llm,
                 task=sample_task,
                 threshold=0.8,

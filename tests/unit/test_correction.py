@@ -361,7 +361,7 @@ class TestCorrectAndReevaluate:
 
         corrector = AutoCorrector(llm_provider=mock_llm)
 
-        final, reports = await corrector.correct_and_reevaluate(
+        _, reports = await corrector.correct_and_reevaluate(
             task=sample_task,
             errors=sample_errors,
             orchestrator=mock_orchestrator,
@@ -402,7 +402,7 @@ class TestCorrectAndReevaluate:
 
         corrector = AutoCorrector(llm_provider=mock_llm)
 
-        final, reports = await corrector.correct_and_reevaluate(
+        _, reports = await corrector.correct_and_reevaluate(
             task=sample_task,
             errors=sample_errors,
             orchestrator=mock_orchestrator,

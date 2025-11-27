@@ -215,7 +215,7 @@ class TestDebateOrchestrator:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate([sample_error], sample_task)
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task)
 
         assert len(rounds) == 1
         assert rounds[0].round_number == 1
@@ -237,7 +237,7 @@ class TestDebateOrchestrator:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate([sample_error], sample_task)
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task)
 
         # Rejected errors should not be in verified list
         assert len(rounds) == 1
@@ -259,9 +259,7 @@ class TestDebateOrchestrator:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate(
-            [sample_error], sample_task, max_rounds=2
-        )
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task, max_rounds=2)
 
         # Should have 2 rounds
         assert len(rounds) == 2
@@ -297,7 +295,7 @@ class TestDebateOrchestratorVerification:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate([error], sample_task)
+        await orchestrator.run_debate([error], sample_task)
 
         # Verify LLM was called
         assert mock_llm_provider.complete.called
@@ -319,7 +317,7 @@ class TestDebateOrchestratorVerification:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider, confidence_threshold=0.6)
-        verified_errors, rounds = await orchestrator.run_debate([sample_error], sample_task)
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task)
 
         # Low confidence should result in rejection
         assert len(rounds) == 1
@@ -361,7 +359,7 @@ class TestDebateOrchestratorErrorHandling:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate([sample_error], sample_task)
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task)
 
         # Should handle missing fields gracefully
         assert isinstance(rounds, list)
@@ -379,7 +377,7 @@ class TestDebateOrchestratorErrorHandling:
         orchestrator = DebateOrchestrator(mock_llm_provider)
 
         # Should handle exception gracefully
-        verified_errors, rounds = await orchestrator.run_debate([sample_error], sample_task)
+        verified_errors, _ = await orchestrator.run_debate([sample_error], sample_task)
         assert isinstance(verified_errors, list)
 
 
@@ -429,7 +427,7 @@ class TestDebateOrchestratorIntegration:
         mock_llm_provider.complete = AsyncMock(side_effect=responses)
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate(errors, sample_task)
+        _, rounds = await orchestrator.run_debate(errors, sample_task)
 
         assert len(rounds) == 1
         assert rounds[0].errors_debated == 3
@@ -456,7 +454,7 @@ class TestDebateOrchestratorIntegration:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        verified_errors, rounds = await orchestrator.run_debate([original_error], sample_task)
+        verified_errors, _ = await orchestrator.run_debate([original_error], sample_task)
 
         # Verified error should preserve original details
         if verified_errors:
