@@ -79,7 +79,7 @@ async def run_spelling_check(language: str, text: str) -> list[Any]:
             use_patterns=True,
             use_school_rules=True,
         )
-        return await spelling_agent.check(text)
+        return spelling_agent.check(text)
 
 
 async def run_grammar_check(

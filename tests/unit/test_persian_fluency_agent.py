@@ -6,25 +6,18 @@ Focus: Fast, isolated tests that find real bugs.
 Philosophy: "Tests must find errors, not tests for the sake of tests!"
 """
 
-import sys
-from pathlib import Path
+from typing import Any
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-# Add tests directory to path to import conftest
-tests_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(tests_dir))
-
-from conftest import MockLLMProvider  # noqa: E402
-
-from kttc.agents.fluency_persian import PersianFluencyAgent  # noqa: E402
-from kttc.core.models import (  # noqa: E402
+from kttc.agents.fluency_persian import PersianFluencyAgent
+from kttc.core.models import (
     ErrorAnnotation,
     ErrorSeverity,
     TranslationTask,
 )
-from kttc.helpers.persian import PersianLanguageHelper  # noqa: E402
+from kttc.helpers.persian import PersianLanguageHelper
 
 # ============================================================================
 # Mock PersianLanguageHelper
@@ -120,7 +113,7 @@ def sample_persian_task() -> TranslationTask:
 class TestPersianFluencyAgentBasics:
     """Test basic Persian fluency agent functionality."""
 
-    def test_instantiation_with_helper(self, mock_llm: MockLLMProvider) -> None:
+    def test_instantiation_with_helper(self, mock_llm: Any) -> None:
         """Test that PersianFluencyAgent can be instantiated with custom helper."""
         # Arrange
         helper = MockPersianHelper()
@@ -133,7 +126,7 @@ class TestPersianFluencyAgentBasics:
         assert agent.helper is helper
         assert agent.category == "fluency"
 
-    def test_instantiation_without_helper(self, mock_llm: MockLLMProvider) -> None:
+    def test_instantiation_without_helper(self, mock_llm: Any) -> None:
         """Test that PersianFluencyAgent creates helper if none provided."""
         # Act
         agent = PersianFluencyAgent(mock_llm)
@@ -143,9 +136,7 @@ class TestPersianFluencyAgentBasics:
         assert agent.helper is not None
         assert isinstance(agent.helper, PersianLanguageHelper)
 
-    def test_category_property(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
-    ) -> None:
+    def test_category_property(self, mock_llm: Any, mock_persian_helper: MockPersianHelper) -> None:
         """Test agent reports correct category."""
         # Arrange
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
@@ -154,7 +145,7 @@ class TestPersianFluencyAgentBasics:
         assert agent.category == "fluency"
 
     def test_get_base_prompt_includes_persian_specifics(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that base prompt includes Persian-specific instructions."""
         # Arrange
@@ -181,7 +172,7 @@ class TestPersianFluencyEvaluation:
     @pytest.mark.asyncio
     async def test_evaluate_persian_task_uses_hybrid_approach(
         self,
-        mock_llm: MockLLMProvider,
+        mock_llm: Any,
         mock_persian_helper: MockPersianHelper,
         sample_persian_task: TranslationTask,
     ) -> None:
@@ -199,7 +190,7 @@ class TestPersianFluencyEvaluation:
 
     @pytest.mark.asyncio
     async def test_evaluate_non_persian_task_falls_back_to_base(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that non-Persian tasks fall back to base fluency checks."""
         # Arrange
@@ -221,7 +212,10 @@ class TestPersianFluencyEvaluation:
 
     @pytest.mark.asyncio
     async def test_evaluate_merges_dadmatools_and_llm_errors(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that evaluation merges errors from both DadmaTools and LLM."""
         # Arrange
@@ -236,7 +230,7 @@ class TestPersianFluencyEvaluation:
                 "suggestion": "Fix"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
 
         # Mock helper to return one spelling error
         mock_persian_helper.check_spelling = Mock(
@@ -274,11 +268,14 @@ class TestDadmaToolsCheck:
     """Test DadmaTools spell checking integration."""
 
     def test_dadmatools_check_when_helper_available(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that DadmaTools check is called when helper is available."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
         # Act - use the correct method name _dadmatools_check_sync
@@ -290,12 +287,13 @@ class TestDadmaToolsCheck:
 
     def test_dadmatools_check_when_helper_unavailable(
         self,
+        mock_llm_class: Any,
         mock_persian_helper_unavailable: MockPersianHelper,
         sample_persian_task: TranslationTask,
     ) -> None:
         """Test that DadmaTools check is skipped when helper unavailable."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper_unavailable)
 
         # Act - use the correct method name _dadmatools_check_sync
@@ -306,11 +304,14 @@ class TestDadmaToolsCheck:
         assert mock_persian_helper_unavailable.spell_check_calls == 0
 
     def test_dadmatools_check_handles_exceptions(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that DadmaTools check handles exceptions gracefully."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         mock_persian_helper.check_spelling = Mock(side_effect=Exception("DadmaTools error"))
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
@@ -333,11 +334,14 @@ class TestLLMCheck:
 
     @pytest.mark.asyncio
     async def test_llm_check_sends_correct_prompt(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that LLM check sends Persian-specific prompt."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
         # Act
@@ -376,7 +380,7 @@ class TestLLMVerification:
     """Test LLM error verification (anti-hallucination)."""
 
     def test_verify_llm_errors_filters_invalid_positions(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that verification filters errors with invalid positions."""
         # Arrange
@@ -402,7 +406,7 @@ class TestLLMVerification:
         assert mock_persian_helper.verify_position_calls == 1
 
     def test_verify_llm_errors_filters_hallucinated_words(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that verification filters errors mentioning nonexistent words."""
         # Arrange
@@ -428,7 +432,7 @@ class TestLLMVerification:
         assert mock_persian_helper.verify_word_calls == 1
 
     def test_verify_llm_errors_keeps_valid_errors(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that verification keeps valid errors."""
         # Arrange
@@ -454,7 +458,7 @@ class TestLLMVerification:
         assert verified[0] == errors[0]
 
     def test_verify_llm_errors_without_helper_returns_all(
-        self, mock_llm: MockLLMProvider, mock_persian_helper_unavailable: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper_unavailable: MockPersianHelper
     ) -> None:
         """Test that without helper, all errors are returned (can't verify)."""
         # Arrange
@@ -489,7 +493,7 @@ class TestErrorDeduplication:
     """Test error deduplication logic."""
 
     def test_remove_duplicates_filters_overlapping_errors(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that overlapping DadmaTools errors are removed."""
         # Arrange
@@ -522,7 +526,7 @@ class TestErrorDeduplication:
         assert len(unique) == 0  # DadmaTools error should be removed
 
     def test_remove_duplicates_keeps_non_overlapping_errors(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that non-overlapping errors are kept."""
         # Arrange
@@ -555,7 +559,7 @@ class TestErrorDeduplication:
         assert len(unique) == 1  # DadmaTools error should be kept
 
     def test_errors_overlap_detects_overlap(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that overlap detection works correctly."""
         # Arrange
@@ -582,7 +586,7 @@ class TestErrorDeduplication:
         assert overlaps is True
 
     def test_errors_overlap_detects_no_overlap(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that non-overlapping errors are detected."""
         # Arrange
@@ -609,7 +613,7 @@ class TestErrorDeduplication:
         assert overlaps is False
 
     def test_errors_overlap_edge_case_adjacent(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test overlap detection for adjacent (but not overlapping) errors."""
         # Arrange
@@ -646,7 +650,7 @@ class TestJSONParsing:
     """Test JSON response parsing."""
 
     def test_parse_json_response_valid_json(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test parsing valid JSON response."""
         # Arrange
@@ -662,7 +666,7 @@ class TestJSONParsing:
         assert len(parsed["errors"]) == 1
 
     def test_parse_json_response_json_in_markdown(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test parsing JSON wrapped in markdown code block."""
         # Arrange
@@ -677,7 +681,7 @@ class TestJSONParsing:
         assert "errors" in parsed
 
     def test_parse_json_response_invalid_json_returns_empty(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test that invalid JSON returns empty errors."""
         # Arrange
@@ -693,7 +697,7 @@ class TestJSONParsing:
         assert len(parsed["errors"]) == 0
 
     def test_parse_json_response_json_embedded_in_text(
-        self, mock_llm: MockLLMProvider, mock_persian_helper: MockPersianHelper
+        self, mock_llm: Any, mock_persian_helper: MockPersianHelper
     ) -> None:
         """Test parsing JSON embedded in text."""
         # Arrange
@@ -719,7 +723,10 @@ class TestPersianFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_full_evaluation_workflow(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test complete evaluation workflow from start to finish."""
         # Arrange
@@ -733,7 +740,7 @@ class TestPersianFluencyIntegration:
                 "suggestion": "Fix it"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
         # Act
@@ -751,7 +758,10 @@ class TestPersianFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_parallel_execution_error_handling(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that parallel execution handles errors gracefully."""
         # Arrange
@@ -759,7 +769,7 @@ class TestPersianFluencyIntegration:
         mock_persian_helper.check_spelling = Mock(side_effect=Exception("DadmaTools failed"))
 
         # Make LLM succeed
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = PersianFluencyAgent(mock_llm, helper=mock_persian_helper)
 
         # Act
@@ -771,7 +781,10 @@ class TestPersianFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_verify_and_deduplicate_workflow(
-        self, mock_persian_helper: MockPersianHelper, sample_persian_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_persian_helper: MockPersianHelper,
+        sample_persian_task: TranslationTask,
     ) -> None:
         """Test that verification and deduplication work together."""
         # Arrange
@@ -799,7 +812,7 @@ class TestPersianFluencyIntegration:
                 "suggestion": "Fix"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
 
         # DadmaTools returns 1 error at same position as LLM error #3
         mock_persian_helper.check_spelling = Mock(

@@ -6,25 +6,18 @@ Focus: Fast, isolated tests that find real bugs.
 Philosophy: "Tests must find errors, not tests for the sake of tests!"
 """
 
-import sys
-from pathlib import Path
+from typing import Any
 from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-# Add tests directory to path to import conftest
-tests_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(tests_dir))
-
-from conftest import MockLLMProvider  # noqa: E402
-
-from kttc.agents.fluency_hindi import HindiFluencyAgent  # noqa: E402
-from kttc.core.models import (  # noqa: E402
+from kttc.agents.fluency_hindi import HindiFluencyAgent
+from kttc.core.models import (
     ErrorAnnotation,
     ErrorSeverity,
     TranslationTask,
 )
-from kttc.helpers.hindi import HindiLanguageHelper  # noqa: E402
+from kttc.helpers.hindi import HindiLanguageHelper
 
 # ============================================================================
 # Mock HindiLanguageHelper
@@ -120,7 +113,7 @@ def sample_hindi_task() -> TranslationTask:
 class TestHindiFluencyAgentBasics:
     """Test basic Hindi fluency agent functionality."""
 
-    def test_instantiation_with_helper(self, mock_llm: MockLLMProvider) -> None:
+    def test_instantiation_with_helper(self, mock_llm: Any) -> None:
         """Test that HindiFluencyAgent can be instantiated with custom helper."""
         # Arrange
         helper = MockHindiHelper()
@@ -133,7 +126,7 @@ class TestHindiFluencyAgentBasics:
         assert agent.helper is helper
         assert agent.category == "fluency"
 
-    def test_instantiation_without_helper(self, mock_llm: MockLLMProvider) -> None:
+    def test_instantiation_without_helper(self, mock_llm: Any) -> None:
         """Test that HindiFluencyAgent creates helper if none provided."""
         # Act
         agent = HindiFluencyAgent(mock_llm)
@@ -143,9 +136,7 @@ class TestHindiFluencyAgentBasics:
         assert agent.helper is not None
         assert isinstance(agent.helper, HindiLanguageHelper)
 
-    def test_category_property(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
-    ) -> None:
+    def test_category_property(self, mock_llm: Any, mock_hindi_helper: MockHindiHelper) -> None:
         """Test agent reports correct category."""
         # Arrange
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
@@ -154,7 +145,7 @@ class TestHindiFluencyAgentBasics:
         assert agent.category == "fluency"
 
     def test_get_base_prompt_includes_hindi_specifics(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that base prompt includes Hindi-specific instructions."""
         # Arrange
@@ -181,7 +172,7 @@ class TestHindiFluencyEvaluation:
     @pytest.mark.asyncio
     async def test_evaluate_hindi_task_uses_hybrid_approach(
         self,
-        mock_llm: MockLLMProvider,
+        mock_llm: Any,
         mock_hindi_helper: MockHindiHelper,
         sample_hindi_task: TranslationTask,
     ) -> None:
@@ -199,7 +190,7 @@ class TestHindiFluencyEvaluation:
 
     @pytest.mark.asyncio
     async def test_evaluate_non_hindi_task_falls_back_to_base(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that non-Hindi tasks fall back to base fluency checks."""
         # Arrange
@@ -221,7 +212,10 @@ class TestHindiFluencyEvaluation:
 
     @pytest.mark.asyncio
     async def test_evaluate_merges_spello_and_llm_errors(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that evaluation merges errors from both Spello and LLM."""
         # Arrange
@@ -236,7 +230,7 @@ class TestHindiFluencyEvaluation:
                 "suggestion": "Fix"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
 
         # Mock helper to return one spelling error
         mock_hindi_helper.check_spelling = Mock(
@@ -274,11 +268,14 @@ class TestSpelloCheck:
     """Test Spello spell checking integration."""
 
     def test_spello_check_when_helper_available(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that Spello check is called when helper is available."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
         # Act - use the correct method name _spello_check_sync
@@ -289,11 +286,14 @@ class TestSpelloCheck:
         assert isinstance(errors, list)
 
     def test_spello_check_when_helper_unavailable(
-        self, mock_hindi_helper_unavailable: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper_unavailable: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that Spello check is skipped when helper unavailable."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper_unavailable)
 
         # Act - use the correct method name _spello_check_sync
@@ -304,11 +304,14 @@ class TestSpelloCheck:
         assert mock_hindi_helper_unavailable.spell_check_calls == 0
 
     def test_spello_check_handles_exceptions(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that Spello check handles exceptions gracefully."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         mock_hindi_helper.check_spelling = Mock(side_effect=Exception("Spello error"))
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
@@ -331,11 +334,14 @@ class TestLLMCheck:
 
     @pytest.mark.asyncio
     async def test_llm_check_sends_correct_prompt(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that LLM check sends Hindi-specific prompt."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
         # Act
@@ -374,7 +380,7 @@ class TestLLMVerification:
     """Test LLM error verification (anti-hallucination)."""
 
     def test_verify_llm_errors_filters_invalid_positions(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that verification filters errors with invalid positions."""
         # Arrange
@@ -400,7 +406,7 @@ class TestLLMVerification:
         assert mock_hindi_helper.verify_position_calls == 1
 
     def test_verify_llm_errors_filters_hallucinated_words(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that verification filters errors mentioning nonexistent words."""
         # Arrange
@@ -426,7 +432,7 @@ class TestLLMVerification:
         assert mock_hindi_helper.verify_word_calls == 1
 
     def test_verify_llm_errors_keeps_valid_errors(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that verification keeps valid errors."""
         # Arrange
@@ -452,7 +458,7 @@ class TestLLMVerification:
         assert verified[0] == errors[0]
 
     def test_verify_llm_errors_without_helper_returns_all(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper_unavailable: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper_unavailable: MockHindiHelper
     ) -> None:
         """Test that without helper, all errors are returned (can't verify)."""
         # Arrange
@@ -487,7 +493,7 @@ class TestErrorDeduplication:
     """Test error deduplication logic."""
 
     def test_remove_duplicates_filters_overlapping_errors(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that overlapping Spello errors are removed."""
         # Arrange
@@ -520,7 +526,7 @@ class TestErrorDeduplication:
         assert len(unique) == 0  # Spello error should be removed
 
     def test_remove_duplicates_keeps_non_overlapping_errors(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that non-overlapping errors are kept."""
         # Arrange
@@ -553,7 +559,7 @@ class TestErrorDeduplication:
         assert len(unique) == 1  # Spello error should be kept
 
     def test_errors_overlap_detects_overlap(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that overlap detection works correctly."""
         # Arrange
@@ -580,7 +586,7 @@ class TestErrorDeduplication:
         assert overlaps is True
 
     def test_errors_overlap_detects_no_overlap(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that non-overlapping errors are detected."""
         # Arrange
@@ -607,7 +613,7 @@ class TestErrorDeduplication:
         assert overlaps is False
 
     def test_errors_overlap_edge_case_adjacent(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test overlap detection for adjacent (but not overlapping) errors."""
         # Arrange
@@ -644,7 +650,7 @@ class TestJSONParsing:
     """Test JSON response parsing."""
 
     def test_parse_json_response_valid_json(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test parsing valid JSON response."""
         # Arrange
@@ -660,7 +666,7 @@ class TestJSONParsing:
         assert len(parsed["errors"]) == 1
 
     def test_parse_json_response_json_in_markdown(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test parsing JSON wrapped in markdown code block."""
         # Arrange
@@ -675,7 +681,7 @@ class TestJSONParsing:
         assert "errors" in parsed
 
     def test_parse_json_response_invalid_json_returns_empty(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test that invalid JSON returns empty errors."""
         # Arrange
@@ -691,7 +697,7 @@ class TestJSONParsing:
         assert len(parsed["errors"]) == 0
 
     def test_parse_json_response_json_embedded_in_text(
-        self, mock_llm: MockLLMProvider, mock_hindi_helper: MockHindiHelper
+        self, mock_llm: Any, mock_hindi_helper: MockHindiHelper
     ) -> None:
         """Test parsing JSON embedded in text."""
         # Arrange
@@ -717,7 +723,10 @@ class TestHindiFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_full_evaluation_workflow(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test complete evaluation workflow from start to finish."""
         # Arrange
@@ -731,7 +740,7 @@ class TestHindiFluencyIntegration:
                 "suggestion": "Fix it"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
         # Act
@@ -749,7 +758,10 @@ class TestHindiFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_parallel_execution_error_handling(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that parallel execution handles errors gracefully."""
         # Arrange
@@ -757,7 +769,7 @@ class TestHindiFluencyIntegration:
         mock_hindi_helper.check_spelling = Mock(side_effect=Exception("Spello failed"))
 
         # Make LLM succeed
-        mock_llm = MockLLMProvider(response='{"errors": []}')
+        mock_llm = mock_llm_class(response='{"errors": []}')
         agent = HindiFluencyAgent(mock_llm, helper=mock_hindi_helper)
 
         # Act
@@ -769,7 +781,10 @@ class TestHindiFluencyIntegration:
 
     @pytest.mark.asyncio
     async def test_verify_and_deduplicate_workflow(
-        self, mock_hindi_helper: MockHindiHelper, sample_hindi_task: TranslationTask
+        self,
+        mock_llm_class: Any,
+        mock_hindi_helper: MockHindiHelper,
+        sample_hindi_task: TranslationTask,
     ) -> None:
         """Test that verification and deduplication work together."""
         # Arrange
@@ -797,7 +812,7 @@ class TestHindiFluencyIntegration:
                 "suggestion": "Fix"
             }
         ]}"""
-        mock_llm = MockLLMProvider(response=llm_response)
+        mock_llm = mock_llm_class(response=llm_response)
 
         # Spello returns 1 error at same position as LLM error #3
         mock_hindi_helper.check_spelling = Mock(

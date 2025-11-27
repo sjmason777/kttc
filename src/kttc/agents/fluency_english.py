@@ -571,7 +571,7 @@ Output only valid JSON, no explanation."""
             return cast(dict[str, Any], json.loads(response))
         except json.JSONDecodeError:
             # Try to extract JSON from markdown
-            json_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response, re.DOTALL)
+            json_match = re.search(r"```(?:json)?\s*(\{[^\}]*\})\s*```", response, re.DOTALL)
             if json_match:
                 try:
                     return cast(dict[str, Any], json.loads(json_match.group(1)))

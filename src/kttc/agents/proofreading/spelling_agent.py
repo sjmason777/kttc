@@ -188,11 +188,12 @@ class SpellingAgent:
             try:
                 for match in re.finditer(pattern, text, re.IGNORECASE):
                     severity_str = pattern_def.get("severity", "major")
-                    severity = (
-                        ErrorSeverity.CRITICAL
-                        if severity_str == "critical"
-                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
-                    )
+                    if severity_str == "critical":
+                        severity = ErrorSeverity.CRITICAL
+                    elif severity_str == "minor":
+                        severity = ErrorSeverity.MINOR
+                    else:
+                        severity = ErrorSeverity.MAJOR
 
                     suggestion = ""
                     if "correct" in pattern_def:
@@ -303,7 +304,7 @@ class SpellingAgent:
         errors.extend(self._check_school_common_mistakes(text, rules.get("common_mistakes", {})))
         return errors
 
-    async def check(self, text: str) -> list[ErrorAnnotation]:
+    def check(self, text: str) -> list[ErrorAnnotation]:
         """Check text for spelling errors.
 
         Args:
@@ -333,7 +334,7 @@ class SpellingAgent:
 
         return all_errors
 
-    async def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
+    def evaluate(self, task: TranslationTask) -> list[ErrorAnnotation]:
         """Evaluate task in proofreading mode (compatibility method).
 
         Args:
@@ -345,4 +346,4 @@ class SpellingAgent:
         text_to_check = task.translation or task.source_text
         self.language = task.target_lang or task.source_lang
 
-        return await self.check(text_to_check)
+        return self.check(text_to_check)

@@ -889,7 +889,7 @@ Output only valid JSON, no explanation."""
             return cast(dict[str, Any], json.loads(response))
         except json.JSONDecodeError:
             # Try to extract JSON from markdown
-            json_match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", response, re.DOTALL)
+            json_match = re.search(r"```(?:json)?\s*(\{[^\}]*\})\s*```", response, re.DOTALL)
             if json_match:
                 try:
                     return cast(dict[str, Any], json.loads(json_match.group(1)))
@@ -943,7 +943,11 @@ Output only valid JSON, no explanation."""
         # Length guard for regex safety (error descriptions are typically short)
         if len(error.description) > 1000:
             return False
-        pattern_match = re.search(r"\d+\s+requires\s+gent", error.description, re.IGNORECASE)
+        # Use limited quantifiers to prevent ReDoS (max 10 digits, max 5 spaces)
+        # Pattern matches: "5 requires gent", "10 requires gent", etc.
+        pattern_match = re.search(
+            r"\d{1,10}\s{1,5}requires\s{1,5}gent", error.description, re.IGNORECASE
+        )
         if pattern_match:
             logger.info(f"Filtered digit+genitive FP: '{pattern_match.group()}'")
             return True

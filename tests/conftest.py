@@ -57,6 +57,20 @@ def mock_llm() -> MockLLMProvider:
 
 
 @pytest.fixture
+def mock_llm_class() -> type[MockLLMProvider]:
+    """Provide MockLLMProvider class for tests that need custom instances.
+
+    Use this fixture when you need to create MockLLMProvider with custom
+    responses rather than using the default mock_llm fixture.
+
+    Example:
+        def test_with_custom_response(mock_llm_class):
+            provider = mock_llm_class(response='{"errors": [...]}')
+    """
+    return MockLLMProvider
+
+
+@pytest.fixture
 def mock_llm_with_errors() -> MockLLMProvider:
     """Provide a mock LLM that returns translation errors in correct format."""
     error_response = """ERROR_START

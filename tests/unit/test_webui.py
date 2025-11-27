@@ -3,10 +3,20 @@
 Tests web server initialization and basic routes.
 """
 
+from unittest.mock import MagicMock
+
 import pytest
 from pydantic import ValidationError
 
-from kttc.webui.server import EvaluateRequest, EvaluateResponse, create_app
+from kttc.webui.server import (
+    EvaluateRequest,
+    EvaluateResponse,
+    ServerStats,
+    _format_errors_list,
+    _get_fallback_html,
+    _prepare_error_response,
+    create_app,
+)
 
 
 @pytest.mark.unit
@@ -196,3 +206,87 @@ class TestEvaluateResponse:
             processing_time=3.2,
         )
         assert response.status == "fail"
+
+
+@pytest.mark.unit
+class TestServerStats:
+    """Test ServerStats model."""
+
+    def test_server_stats_defaults(self) -> None:
+        """Test ServerStats with default values."""
+        stats = ServerStats()
+        assert stats.total_evaluations == 0
+        assert stats.average_mqm_score == 0.0
+        assert stats.uptime_seconds == 0.0
+
+    def test_server_stats_with_values(self) -> None:
+        """Test ServerStats with custom values."""
+        stats = ServerStats(
+            total_evaluations=100,
+            average_mqm_score=85.5,
+            uptime_seconds=3600.0,
+        )
+        assert stats.total_evaluations == 100
+        assert stats.average_mqm_score == 85.5
+        assert stats.uptime_seconds == 3600.0
+
+
+@pytest.mark.unit
+class TestHelperFunctions:
+    """Test helper functions."""
+
+    def test_get_fallback_html(self) -> None:
+        """Test fallback HTML generation."""
+        html = _get_fallback_html()
+        assert isinstance(html, str)
+        assert "KTTC Dashboard" in html
+        assert "<!DOCTYPE html>" in html
+        assert "<form" in html
+
+    def test_prepare_error_response(self) -> None:
+        """Test error response preparation."""
+        mock_report = MagicMock()
+        mock_error1 = MagicMock()
+        mock_error1.severity.value = "critical"
+        mock_error2 = MagicMock()
+        mock_error2.severity.value = "minor"
+        mock_error3 = MagicMock()
+        mock_error3.severity.value = "minor"
+        mock_report.errors = [mock_error1, mock_error2, mock_error3]
+
+        result = _prepare_error_response(mock_report)
+
+        assert result["critical"] == 1
+        assert result["major"] == 0
+        assert result["minor"] == 2
+
+    def test_format_errors_list(self) -> None:
+        """Test errors list formatting."""
+        mock_report = MagicMock()
+        mock_error = MagicMock()
+        mock_error.category = "Accuracy"
+        mock_error.subcategory = "Mistranslation"
+        mock_error.severity.value = "critical"
+        mock_error.description = "Wrong translation"
+        mock_error.suggestion = "Use correct term"
+        mock_error.location = "line 1"
+        mock_report.errors = [mock_error]
+
+        result = _format_errors_list(mock_report)
+
+        assert len(result) == 1
+        assert result[0]["category"] == "Accuracy"
+        assert result[0]["subcategory"] == "Mistranslation"
+        assert result[0]["severity"] == "critical"
+        assert result[0]["description"] == "Wrong translation"
+        assert result[0]["suggestion"] == "Use correct term"
+        assert result[0]["location"] == "line 1"
+
+    def test_format_errors_list_empty(self) -> None:
+        """Test formatting empty errors list."""
+        mock_report = MagicMock()
+        mock_report.errors = []
+
+        result = _format_errors_list(mock_report)
+
+        assert result == []

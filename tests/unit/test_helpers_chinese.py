@@ -3,6 +3,8 @@
 Tests Chinese-specific NLP functionality.
 """
 
+from unittest.mock import patch
+
 import pytest
 
 from kttc.helpers.chinese import ChineseLanguageHelper
@@ -31,16 +33,25 @@ class TestChineseLanguageHelper:
         result = helper.is_available()
         assert isinstance(result, bool)
 
-    @pytest.mark.xfail(reason="Flaky in full test suite due to jieba state pollution")
-    def test_tokenize_simple_text(self, helper: ChineseLanguageHelper) -> None:
-        """Test tokenizing simple Chinese text."""
-        text = "你好世界"
-        # Tokenize always returns a list (even if empty when deps unavailable)
-        tokens = helper.tokenize(text)
-        assert isinstance(tokens, list)
-        # If dependencies are available, we should get non-empty tokens
-        if helper.is_available():
-            assert len(tokens) > 0
+    def test_tokenize_simple_text(self) -> None:
+        """Test tokenizing simple Chinese text with mocked jieba."""
+        # Use mocking to avoid jieba state pollution issues
+        with patch("kttc.helpers.chinese.HANLP_AVAILABLE", False):
+            with patch("kttc.helpers.chinese.JIEBA_AVAILABLE", True):
+                with patch("kttc.helpers.chinese.SPACY_AVAILABLE", False):
+                    with patch("kttc.helpers.chinese.jieba") as mock_jieba:
+                        # Mock jieba.cut to return expected tokens
+                        mock_jieba.cut.return_value = ["你好", "世界"]
+
+                        helper = ChineseLanguageHelper()
+                        text = "你好世界"
+                        tokens = helper.tokenize(text)
+
+                        assert isinstance(tokens, list)
+                        # With mocked jieba, we should get tokens
+                        assert len(tokens) == 2
+                        # Verify jieba.cut was called with the text
+                        mock_jieba.cut.assert_called_once_with(text)
 
     def test_check_grammar_simple(self, helper: ChineseLanguageHelper) -> None:
         """Test grammar check on simple text."""

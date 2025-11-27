@@ -50,7 +50,8 @@ class ErrorParser:
 
     # Pattern to extract FIELD: value pairs from error blocks.
     # Applied per-line with length limits to prevent regex backtracking issues.
-    FIELD_PATTERN = re.compile(r"^(\w+):\s*(.+)$", re.MULTILINE)
+    # Uses [^\r\n]+ instead of .+ to explicitly prevent backtracking on newlines (ReDoS safety).
+    FIELD_PATTERN = re.compile(r"^(\w+):\s*([^\r\n]+)$", re.MULTILINE)
 
     # Maximum LLM response length to process (ReDoS protection)
     _MAX_RESPONSE_LENGTH = 500_000

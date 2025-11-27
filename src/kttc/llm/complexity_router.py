@@ -78,6 +78,16 @@ class ComplexityEstimator:
         >>> print(score.recommendation)  # "gpt-3.5-turbo"
     """
 
+    def __init__(self, simple_threshold: float = 0.3, complex_threshold: float = 0.7) -> None:
+        """Initialize complexity estimator with configurable thresholds.
+
+        Args:
+            simple_threshold: Complexity threshold for simple texts (default: 0.3)
+            complex_threshold: Complexity threshold for complex texts (default: 0.7)
+        """
+        self.simple_threshold = simple_threshold
+        self.complex_threshold = complex_threshold
+
     # Common words (top 1000 most frequent English words)
     # This is a simplified set - in production, use a proper word frequency list
     COMMON_WORDS = {
@@ -546,10 +556,10 @@ class ComplexityEstimator:
     ) -> str:
         """Recommend model based on complexity score and available providers.
 
-        Thresholds:
-        - < 0.3: Simple → gpt-3.5-turbo (cheapest)
-        - 0.3-0.7: Medium → gpt-4-turbo (balanced)
-        - > 0.7: Complex → claude-3.5-sonnet (best quality)
+        Thresholds (configurable):
+        - < simple_threshold: Simple → gpt-3.5-turbo (cheapest)
+        - simple_threshold to complex_threshold: Medium → gpt-4-turbo (balanced)
+        - > complex_threshold: Complex → claude-3.5-sonnet (best quality)
 
         Args:
             overall_score: Overall complexity score (0.0-1.0)
@@ -563,8 +573,8 @@ class ComplexityEstimator:
             If preferred model provider unavailable, falls back to available provider
             with closest capability tier.
         """
-        # Model recommendations by complexity tier
-        if overall_score < 0.3:
+        # Model recommendations by complexity tier (using configurable thresholds)
+        if overall_score < self.simple_threshold:
             preferred = MODEL_GPT_35_TURBO  # $0.001/1K tokens
             alternatives = [
                 MODEL_GPT_35_TURBO,
@@ -574,7 +584,7 @@ class ComplexityEstimator:
                 MODEL_YANDEXGPT,
                 MODEL_CLAUDE_35_SONNET,
             ]
-        elif overall_score < 0.7:
+        elif overall_score < self.complex_threshold:
             preferred = MODEL_GPT_4_TURBO  # $0.01/1K tokens
             alternatives = [
                 MODEL_GPT_4_TURBO,
@@ -661,9 +671,14 @@ class ComplexityRouter:
         >>> print(score.overall)  # 0.25
     """
 
-    def __init__(self) -> None:
-        """Initialize complexity router."""
-        self.estimator = ComplexityEstimator()
+    def __init__(self, simple_threshold: float = 0.3, complex_threshold: float = 0.7) -> None:
+        """Initialize complexity router with configurable thresholds.
+
+        Args:
+            simple_threshold: Complexity threshold for simple texts (default: 0.3)
+            complex_threshold: Complexity threshold for complex texts (default: 0.7)
+        """
+        self.estimator = ComplexityEstimator(simple_threshold, complex_threshold)
 
     def route(
         self,

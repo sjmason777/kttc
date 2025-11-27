@@ -76,7 +76,7 @@ def lint(
                 use_patterns=True,
                 use_school_rules=True,
             )
-            return await agent.check(text)
+            return agent.check(text)
 
         errors = asyncio.run(run_lint())
 

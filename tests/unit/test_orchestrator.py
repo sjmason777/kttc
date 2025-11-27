@@ -4,20 +4,12 @@ Tests orchestrator logic with mocked agents.
 Focus: Coordination, parallel execution, MQM scoring.
 """
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import pytest
 
-# Add tests directory to path to import conftest
-tests_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(tests_dir))
-
-from conftest import MockLLMProvider  # noqa: E402
-
-from kttc.agents.orchestrator import AgentOrchestrator  # noqa: E402
-from kttc.core.models import TranslationTask  # noqa: E402
+from kttc.agents.orchestrator import AgentOrchestrator
+from kttc.core.models import TranslationTask
 
 
 @pytest.mark.unit
@@ -167,7 +159,7 @@ class TestOrchestratorMQMScoring:
 
     @pytest.mark.asyncio
     async def test_mqm_score_with_critical_error(
-        self, mock_llm: Any, sample_translation_task: TranslationTask
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
     ) -> None:
         """Test MQM score deduction for critical error."""
         # Arrange
@@ -179,7 +171,7 @@ SEVERITY: critical
 LOCATION: 0-5
 DESCRIPTION: Critical mistranslation
 ERROR_END"""
-        mock_llm_critical = MockLLMProvider(response=critical_error_response)
+        mock_llm_critical = mock_llm_class(response=critical_error_response)
         orchestrator = AgentOrchestrator(llm_provider=mock_llm_critical)
 
         # Act

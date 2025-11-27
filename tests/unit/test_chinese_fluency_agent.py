@@ -14,19 +14,13 @@ Tests Chinese-specific checks:
 Philosophy: "Tests must find errors, not tests for the sake of tests!"
 """
 
-import sys
 from pathlib import Path
+from typing import Any
 
 import pytest
 
-# Add tests directory to path to import conftest
-tests_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(tests_dir))
-
-from conftest import MockLLMProvider  # noqa: E402
-
-from kttc.agents.fluency_chinese import ChineseFluencyAgent  # noqa: E402
-from kttc.core.models import ErrorAnnotation, TranslationTask  # noqa: E402
+from kttc.agents.fluency_chinese import ChineseFluencyAgent
+from kttc.core.models import ErrorAnnotation, TranslationTask
 
 # ============================================================================
 # Mock ChineseLanguageHelper
@@ -170,17 +164,19 @@ def separable_verb_error_task() -> TranslationTask:
 class TestChineseAgentInitialization:
     """Test agent initialization and configuration."""
 
-    def test_agent_initializes_with_helper(self, mock_chinese_helper: MockChineseHelper) -> None:
+    def test_agent_initializes_with_helper(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Agent should initialize with helper."""
-        mock_provider = MockLLMProvider()
+        mock_provider = mock_llm_class()
         agent = ChineseFluencyAgent(mock_provider, helper=mock_chinese_helper)
 
         assert agent.helper is mock_chinese_helper
         assert agent.helper.is_available()
 
-    def test_agent_initializes_without_helper(self) -> None:
+    def test_agent_initializes_without_helper(self, mock_llm_class: Any) -> None:
         """Agent should initialize without helper (LLM-only mode)."""
-        mock_provider = MockLLMProvider()
+        mock_provider = mock_llm_class()
         agent = ChineseFluencyAgent(mock_provider, helper=None)
 
         # Agent should have its own helper (auto-created)
@@ -207,11 +203,11 @@ class TestLLMResponseParsing:
 
     @pytest.mark.asyncio
     async def test_parse_measure_word_error_response(
-        self, mock_chinese_helper: MockChineseHelper
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
     ) -> None:
         """Agent should parse measure word error from LLM response."""
         # Use response with measure word error
-        mock_provider = MockLLMProvider(
+        mock_provider = mock_llm_class(
             response="""{
                 "errors": [
                     {
@@ -240,10 +236,10 @@ class TestLLMResponseParsing:
 
     @pytest.mark.asyncio
     async def test_parse_de_particle_error_response(
-        self, mock_chinese_helper: MockChineseHelper
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
     ) -> None:
         """Agent should parse 的/地/得 particle error from LLM response."""
-        mock_provider = MockLLMProvider(
+        mock_provider = mock_llm_class(
             response="""{
                 "errors": [
                     {
@@ -272,10 +268,10 @@ class TestLLMResponseParsing:
 
     @pytest.mark.asyncio
     async def test_parse_word_order_trap_response(
-        self, mock_chinese_helper: MockChineseHelper
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
     ) -> None:
         """Agent should parse word order trap error from LLM response."""
-        mock_provider = MockLLMProvider(
+        mock_provider = mock_llm_class(
             response="""{
                 "errors": [
                     {
@@ -312,9 +308,11 @@ class TestNonChineseLanguage:
     """Test agent behavior with non-Chinese target language."""
 
     @pytest.mark.asyncio
-    async def test_fallback_for_non_chinese(self, mock_chinese_helper: MockChineseHelper) -> None:
+    async def test_fallback_for_non_chinese(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Agent should fallback to base fluency for non-Chinese languages."""
-        mock_provider = MockLLMProvider(response='{"errors": []}')
+        mock_provider = mock_llm_class(response='{"errors": []}')
 
         agent = ChineseFluencyAgent(mock_provider, helper=mock_chinese_helper)
         task = TranslationTask(
@@ -339,9 +337,11 @@ class TestErrorVerification:
     """Test error verification with helper."""
 
     @pytest.mark.asyncio
-    async def test_verify_error_position(self, mock_chinese_helper: MockChineseHelper) -> None:
+    async def test_verify_error_position(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Agent should verify error positions."""
-        mock_provider = MockLLMProvider(
+        mock_provider = mock_llm_class(
             response="""{
                 "errors": [
                     {
@@ -420,9 +420,11 @@ class TestChineseErrorSamples:
     """Test with realistic Chinese error samples."""
 
     @pytest.mark.asyncio
-    async def test_correct_chinese_no_errors(self, mock_chinese_helper: MockChineseHelper) -> None:
+    async def test_correct_chinese_no_errors(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Correct Chinese should have no errors."""
-        mock_provider = MockLLMProvider(response='{"errors": []}')
+        mock_provider = mock_llm_class(response='{"errors": []}')
 
         agent = ChineseFluencyAgent(mock_provider, helper=mock_chinese_helper)
         task = TranslationTask(
@@ -439,9 +441,11 @@ class TestChineseErrorSamples:
         assert len(chinese_errors) == 0
 
     @pytest.mark.asyncio
-    async def test_ba_bei_construction_check(self, mock_chinese_helper: MockChineseHelper) -> None:
+    async def test_ba_bei_construction_check(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Agent should check 把字句/被字句 constructions."""
-        mock_provider = MockLLMProvider(
+        mock_provider = mock_llm_class(
             response="""{
                 "errors": [
                     {
@@ -478,9 +482,11 @@ class TestPromptContent:
     """Test that prompts contain required checks."""
 
     @pytest.mark.asyncio
-    async def test_prompt_contains_all_checks(self, mock_chinese_helper: MockChineseHelper) -> None:
+    async def test_prompt_contains_all_checks(
+        self, mock_llm_class: Any, mock_chinese_helper: MockChineseHelper
+    ) -> None:
         """Prompt should contain all Chinese-specific checks."""
-        mock_provider = MockLLMProvider(response='{"errors": []}')
+        mock_provider = mock_llm_class(response='{"errors": []}')
 
         agent = ChineseFluencyAgent(mock_provider, helper=mock_chinese_helper)
         task = TranslationTask(

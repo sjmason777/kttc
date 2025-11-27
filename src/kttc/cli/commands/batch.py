@@ -285,7 +285,7 @@ async def _process_batch_translations(
     return results
 
 
-def _display_batch_summary(results: list[tuple[str, QAReport]], threshold: float) -> None:
+def _display_batch_summary(results: list[tuple[str, QAReport]]) -> None:
     """Display summary of batch processing results."""
     total = len(results)
     passed = sum(1 for _, report in results if report.status == "pass")
@@ -570,7 +570,7 @@ async def batch_from_file_async(
     )
 
     console.print()
-    _display_batch_summary(results, threshold)
+    _display_batch_summary(results)
     _save_batch_report(results, output, threshold, output_format)
     console.print(f"\n[dim]Detailed report saved to: {output}[/dim]")
 
@@ -640,7 +640,7 @@ async def batch_async(
 
     # Generate aggregated report
     console.print()
-    _display_batch_summary(results, threshold)
+    _display_batch_summary(results)
 
     # Save detailed report
     _save_batch_report(results, output, threshold, output_format)

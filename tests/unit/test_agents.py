@@ -4,20 +4,12 @@ Tests agent logic with mocked LLM responses.
 Focus: Fast, isolated tests without real API calls.
 """
 
-import sys
-from pathlib import Path
 from typing import Any
 
 import pytest
 
-# Add tests directory to path to import conftest
-tests_dir = Path(__file__).parent.parent
-sys.path.insert(0, str(tests_dir))
-
-from conftest import MockLLMProvider  # noqa: E402
-
-from kttc.agents import AccuracyAgent, FluencyAgent, TerminologyAgent  # noqa: E402
-from kttc.core.models import TranslationTask  # noqa: E402
+from kttc.agents import AccuracyAgent, FluencyAgent, TerminologyAgent
+from kttc.core.models import TranslationTask
 
 
 @pytest.mark.unit
@@ -60,7 +52,7 @@ class TestAccuracyAgent:
 
     @pytest.mark.asyncio
     async def test_evaluate_filters_wrong_category(
-        self, sample_translation_task: TranslationTask
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
     ) -> None:
         """Test agent filters out errors from wrong category."""
         # Arrange
@@ -71,7 +63,7 @@ SEVERITY: minor
 LOCATION: 0-5
 DESCRIPTION: Grammar issue
 ERROR_END"""
-        mock_llm = MockLLMProvider(response=response_with_fluency_error)
+        mock_llm = mock_llm_class(response=response_with_fluency_error)
         agent = AccuracyAgent(mock_llm)
 
         # Act
@@ -109,7 +101,9 @@ class TestFluencyAgent:
         assert len(errors) == 0
 
     @pytest.mark.asyncio
-    async def test_evaluate_fluency_errors(self, sample_translation_task: TranslationTask) -> None:
+    async def test_evaluate_fluency_errors(
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
+    ) -> None:
         """Test fluency agent detects fluency errors."""
         # Arrange
         response = """ERROR_START
@@ -119,7 +113,7 @@ SEVERITY: minor
 LOCATION: 5-10
 DESCRIPTION: Grammar mistake
 ERROR_END"""
-        mock_llm = MockLLMProvider(response=response)
+        mock_llm = mock_llm_class(response=response)
         agent = FluencyAgent(mock_llm)
 
         # Act
@@ -160,7 +154,7 @@ class TestTerminologyAgent:
 
     @pytest.mark.asyncio
     async def test_evaluate_terminology_errors(
-        self, sample_translation_task: TranslationTask
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
     ) -> None:
         """Test terminology agent detects terminology errors."""
         # Arrange
@@ -172,7 +166,7 @@ LOCATION: 0-5
 DESCRIPTION: Inconsistent term translation
 SUGGESTION: Use standard term
 ERROR_END"""
-        mock_llm = MockLLMProvider(response=response)
+        mock_llm = mock_llm_class(response=response)
         agent = TerminologyAgent(mock_llm)
 
         # Act
@@ -198,10 +192,12 @@ class TestAgentErrorHandling:
     """Test agent error handling."""
 
     @pytest.mark.asyncio
-    async def test_invalid_json_response(self, sample_translation_task: TranslationTask) -> None:
+    async def test_invalid_json_response(
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
+    ) -> None:
         """Test agent handles invalid JSON gracefully."""
         # Arrange
-        mock_llm = MockLLMProvider(response="Not valid JSON")
+        mock_llm = mock_llm_class(response="Not valid JSON")
         agent = AccuracyAgent(mock_llm)
 
         # Act
@@ -213,10 +209,12 @@ class TestAgentErrorHandling:
         assert len(errors) == 0
 
     @pytest.mark.asyncio
-    async def test_missing_errors_key(self, sample_translation_task: TranslationTask) -> None:
+    async def test_missing_errors_key(
+        self, mock_llm_class: Any, sample_translation_task: TranslationTask
+    ) -> None:
         """Test agent handles missing 'errors' key."""
         # Arrange
-        mock_llm = MockLLMProvider(response='{"result": "no errors key"}')
+        mock_llm = mock_llm_class(response='{"result": "no errors key"}')
         agent = AccuracyAgent(mock_llm)
 
         # Act

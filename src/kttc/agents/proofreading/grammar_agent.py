@@ -281,11 +281,12 @@ Be precise and only report actual errors, not stylistic preferences."""
                         pos = 0
 
                     severity_str = err.get("severity", "major")
-                    severity = (
-                        ErrorSeverity.CRITICAL
-                        if severity_str == "critical"
-                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
-                    )
+                    if severity_str == "critical":
+                        severity = ErrorSeverity.CRITICAL
+                    elif severity_str == "minor":
+                        severity = ErrorSeverity.MINOR
+                    else:
+                        severity = ErrorSeverity.MAJOR
 
                     subcategory = err.get("type", "grammar")
                     if subcategory not in ["grammar", "spelling", "punctuation"]:

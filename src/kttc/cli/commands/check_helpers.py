@@ -100,12 +100,28 @@ def perform_smart_routing(
     task: TranslationTask,
     settings: Any,
     show_routing_info: bool,
+    simple_threshold: float = 0.3,
+    complex_threshold: float = 0.7,
 ) -> tuple[str | None, Any]:
-    """Perform smart routing to select optimal model."""
+    """Perform smart routing to select optimal model.
+
+    Args:
+        source_text: Source text to analyze
+        source_lang: Source language code
+        target_lang: Target language code
+        task: Translation task with context
+        settings: Application settings
+        show_routing_info: Whether to display routing information
+        simple_threshold: Complexity threshold for simple texts (default: 0.3)
+        complex_threshold: Complexity threshold for complex texts (default: 0.7)
+
+    Returns:
+        Tuple of (selected_model, complexity_score)
+    """
     from kttc.llm import ComplexityRouter
 
     try:
-        router = ComplexityRouter()
+        router = ComplexityRouter(simple_threshold, complex_threshold)
         available_providers = get_available_providers(settings)
 
         selected_model, complexity_score = router.route(

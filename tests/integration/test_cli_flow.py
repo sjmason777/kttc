@@ -1,6 +1,8 @@
 """Integration tests for full CLI flow.
 
-Tests complete CLI workflows with multiple components.
+Tests complete CLI workflows with multiple components using demo mode.
+Demo mode provides predictable responses without API calls, enabling
+stricter assertions and reliable CI/CD integration.
 """
 
 import json
@@ -16,17 +18,17 @@ runner = CliRunner()
 
 @pytest.mark.integration
 class TestCLIIntegrationFlow:
-    """Test complete CLI workflows."""
+    """Test complete CLI workflows using demo mode for predictable results."""
 
     def test_check_command_end_to_end(
         self, temp_text_files: tuple[Path, Path], tmp_path: Path
     ) -> None:
-        """Test complete check command flow with real components."""
+        """Test complete check command flow with demo provider."""
         # Arrange
         source, translation = temp_text_files
         output = tmp_path / "report.json"
 
-        # Act - Note: Will use mocked LLM providers from conftest
+        # Act - Use --demo flag for predictable responses without API calls
         result = runner.invoke(
             app,
             [
@@ -41,13 +43,21 @@ class TestCLIIntegrationFlow:
                 str(output),
                 "--format",
                 "json",
+                "--demo",
             ],
         )
 
-        # Assert
-        # This is integration test - checks real flow but with mocked LLM
-        # May pass or fail depending on LLM provider availability
-        assert result.exit_code in [0, 1, 2]  # Various valid exit codes
+        # Assert - Demo mode should always succeed
+        assert (
+            result.exit_code == 0
+        ), f"Expected success, got exit_code={result.exit_code}, output: {result.stdout}"
+        assert output.exists(), "Output file should be created"
+
+        # Verify JSON structure
+        data = json.loads(output.read_text(encoding="utf-8"))
+        assert "mqm_score" in data, "Report should contain mqm_score"
+        assert "errors" in data, "Report should contain errors list"
+        assert isinstance(data["mqm_score"], int | float), "mqm_score should be numeric"
 
     def test_markdown_report_generation(
         self, temp_text_files: tuple[Path, Path], tmp_path: Path
@@ -72,18 +82,23 @@ class TestCLIIntegrationFlow:
                 str(output),
                 "--format",
                 "markdown",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # If output exists, verify it's valid markdown
-        if output.exists():
-            content = output.read_text(encoding="utf-8")
-            assert "# Translation Quality Report" in content or "translation" in content.lower()
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "Markdown output file should be created"
+
+        # Verify markdown content
+        content = output.read_text(encoding="utf-8")
+        assert len(content) > 0, "Markdown report should not be empty"
+        assert (
+            "translation" in content.lower() or "#" in content
+        ), "Should contain markdown headers or translation content"
 
     def test_plain_text_output(self, temp_text_files: tuple[Path, Path], tmp_path: Path) -> None:
-        """Test plain text output format (currently outputs JSON)."""
+        """Test plain text output format."""
         # Arrange
         source, translation = temp_text_files
         output = tmp_path / "report.txt"
@@ -103,18 +118,18 @@ class TestCLIIntegrationFlow:
                 str(output),
                 "--format",
                 "text",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # If output exists, verify it contains valid content
-        # Note: "text" format currently outputs JSON
-        if output.exists():
-            content = output.read_text(encoding="utf-8")
-            assert len(content) > 0
-            # Check for JSON fields that are actually in the output
-            assert "mqm_score" in content or "status" in content or "errors" in content
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "Text output file should be created"
+
+        content = output.read_text(encoding="utf-8")
+        assert len(content) > 0, "Text report should not be empty"
+        # Check for expected content fields
+        assert "mqm_score" in content or "status" in content or "errors" in content
 
     def test_check_without_output_file(self, temp_text_files: tuple[Path, Path]) -> None:
         """Test check command prints to stdout when no output file specified."""
@@ -132,18 +147,18 @@ class TestCLIIntegrationFlow:
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # Should print something to stdout
-        assert len(result.stdout) > 0
+        # Assert - Should succeed and print to stdout
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert len(result.stdout) > 0, "Should print report to stdout"
 
 
 @pytest.mark.integration
 class TestAgentPipelineIntegration:
-    """Test agent orchestration with real components (but mocked LLM)."""
+    """Test agent orchestration with demo provider for predictable results."""
 
     def test_multiple_agents_work_together(
         self, temp_text_files: tuple[Path, Path], tmp_path: Path
@@ -168,24 +183,25 @@ class TestAgentPipelineIntegration:
                 str(output),
                 "--format",
                 "json",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # If successful, check report structure
-        if result.exit_code == 0 and output.exists():
-            data = json.loads(output.read_text(encoding="utf-8"))
-            assert "mqm_score" in data
-            assert "errors" in data
-            assert isinstance(data["errors"], list)
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "Report file should be created"
 
-    def test_quality_threshold_enforcement(self, temp_text_files: tuple[Path, Path]) -> None:
-        """Test that quality threshold is enforced."""
+        data = json.loads(output.read_text(encoding="utf-8"))
+        assert "mqm_score" in data, "Should contain MQM score"
+        assert "errors" in data, "Should contain errors list"
+        assert isinstance(data["errors"], list), "Errors should be a list"
+
+    def test_quality_threshold_enforcement_pass(self, temp_text_files: tuple[Path, Path]) -> None:
+        """Test that quality threshold is enforced - pass scenario."""
         # Arrange
         source, translation = temp_text_files
 
-        # Act - Set very high threshold (should likely fail)
+        # Act - Set threshold below demo score (~95.0)
         result = runner.invoke(
             app,
             [
@@ -197,41 +213,70 @@ class TestAgentPipelineIntegration:
                 "--target-lang",
                 "es",
                 "--threshold",
-                "99.9",
+                "90.0",
+                "--demo",
             ],
         )
 
-        # Assert - Exit code depends on translation quality
-        assert result.exit_code in [0, 1, 2]
-        # If it failed, should be exit code 1 (quality threshold not met)
-        # If passed, should be exit code 0
+        # Assert - Should pass with demo score of ~95
+        assert result.exit_code == 0, f"Expected success with threshold 90.0, got: {result.stdout}"
 
+    def test_quality_threshold_enforcement_fail(self, tmp_path: Path) -> None:
+        """Test that quality threshold is enforced - fail scenario.
 
-@pytest.mark.integration
-class TestBatchProcessing:
-    """Test batch processing capabilities."""
+        Uses Russian target language which has rule-based checks that can
+        detect real errors and produce lower scores.
+        """
+        # Arrange - Use text that will trigger Russian grammar checks
+        source = tmp_path / "source.txt"
+        translation = tmp_path / "translation.txt"
+        source.write_text("Hello world", encoding="utf-8")
+        # Missing comma in Russian greeting - should trigger error
+        translation.write_text("Привет мир", encoding="utf-8")
 
-    def test_batch_file_with_multiple_segments(self, tmp_path: Path) -> None:
-        """Test processing batch file with multiple translation segments."""
-        # Arrange
-        batch_file = tmp_path / "batch.txt"
-        batch_content = """SOURCE: Hello world
-TRANSLATION: Hola mundo
----
-SOURCE: How are you?
-TRANSLATION: ¿Cómo estás?
----
-SOURCE: Good morning
-TRANSLATION: Buenos días"""
-        batch_file.write_text(batch_content, encoding="utf-8")
-        output = tmp_path / "batch_report.json"
-
-        # Act
+        # Act - Set threshold at 95 (default), Russian check should fail
         result = runner.invoke(
             app,
             [
                 "check",
-                str(batch_file),
+                str(source),
+                str(translation),
+                "--source-lang",
+                "en",
+                "--target-lang",
+                "ru",
+                "--threshold",
+                "95.0",
+                "--demo",
+            ],
+        )
+
+        # Assert - Russian grammar check finds missing comma, score drops below 95
+        assert (
+            result.exit_code == 1
+        ), f"Expected exit code 1 for threshold failure (Russian grammar), got: {result.exit_code}"
+
+
+@pytest.mark.integration
+class TestBatchProcessing:
+    """Test batch processing capabilities with demo mode."""
+
+    def test_batch_file_with_multiple_segments(self, tmp_path: Path) -> None:
+        """Test processing multiple translation pairs."""
+        # Arrange - Create source and translation files
+        source = tmp_path / "source.txt"
+        translation = tmp_path / "translation.txt"
+        source.write_text("Hello world\nHow are you?\nGood morning", encoding="utf-8")
+        translation.write_text("Hola mundo\n¿Cómo estás?\nBuenos días", encoding="utf-8")
+        output = tmp_path / "batch_report.json"
+
+        # Act - Use standard check command with two files
+        result = runner.invoke(
+            app,
+            [
+                "check",
+                str(source),
+                str(translation),
                 "--source-lang",
                 "en",
                 "--target-lang",
@@ -240,11 +285,13 @@ TRANSLATION: Buenos días"""
                 str(output),
                 "--format",
                 "json",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "Output file should be created"
 
 
 @pytest.mark.integration
@@ -267,11 +314,13 @@ class TestErrorHandling:
                 "invalid_lang",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert - Should either handle gracefully or exit with error
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Should handle invalid language gracefully
+        # Demo mode still processes but language detection may warn
+        assert result.exit_code in [0, 1], f"Expected 0 or 1, got: {result.exit_code}"
 
     def test_missing_source_file(self, tmp_path: Path) -> None:
         """Test handling of missing source file."""
@@ -291,11 +340,15 @@ class TestErrorHandling:
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert - Should exit with error code
-        assert result.exit_code != 0
+        # Assert - Should exit with error code for missing file
+        assert (
+            result.exit_code == 1
+        ), f"Expected error code 1 for missing file, got: {result.exit_code}"
+        assert "not found" in result.stdout.lower() or "error" in result.stdout.lower()
 
     def test_empty_source_file(self, tmp_path: Path) -> None:
         """Test handling of empty source file."""
@@ -316,26 +369,41 @@ class TestErrorHandling:
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert - Should handle gracefully or error
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Should handle empty file with error
+        assert (
+            result.exit_code == 1
+        ), f"Expected error code 1 for empty file, got: {result.exit_code}"
 
 
 @pytest.mark.integration
 class TestLanguagePairs:
-    """Test different language pairs."""
+    """Test different language pairs with demo mode."""
 
-    def test_english_to_spanish(self, tmp_path: Path) -> None:
-        """Test English to Spanish translation check."""
+    @pytest.mark.parametrize(
+        "target_lang,translation_text",
+        [
+            ("es", "Hola mundo"),
+            ("fr", "Bonjour monde"),
+            ("de", "Hallo Welt"),
+            ("ru", "Привет, мир"),  # With comma for correct Russian punctuation
+        ],
+        ids=["en-es", "en-fr", "en-de", "en-ru"],
+    )
+    def test_english_to_various_languages(
+        self, tmp_path: Path, target_lang: str, translation_text: str
+    ) -> None:
+        """Test English to various language translation checks."""
         # Arrange
         source = tmp_path / "en_source.txt"
-        translation = tmp_path / "es_translation.txt"
+        translation = tmp_path / f"{target_lang}_translation.txt"
         source.write_text("Hello world", encoding="utf-8")
-        translation.write_text("Hola mundo", encoding="utf-8")
+        translation.write_text(translation_text, encoding="utf-8")
 
-        # Act
+        # Act - Use lower threshold to allow for minor language-specific rules
         result = runner.invoke(
             app,
             [
@@ -345,92 +413,22 @@ class TestLanguagePairs:
                 "--source-lang",
                 "en",
                 "--target-lang",
-                "es",
+                target_lang,
+                "--threshold",
+                "60.0",  # Lower threshold to allow for language-specific checks
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-
-    def test_english_to_french(self, tmp_path: Path) -> None:
-        """Test English to French translation check."""
-        # Arrange
-        source = tmp_path / "en_source.txt"
-        translation = tmp_path / "fr_translation.txt"
-        source.write_text("Hello world", encoding="utf-8")
-        translation.write_text("Bonjour monde", encoding="utf-8")
-
-        # Act
-        result = runner.invoke(
-            app,
-            [
-                "check",
-                str(source),
-                str(translation),
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "fr",
-            ],
-        )
-
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-
-    def test_english_to_german(self, tmp_path: Path) -> None:
-        """Test English to German translation check."""
-        # Arrange
-        source = tmp_path / "en_source.txt"
-        translation = tmp_path / "de_translation.txt"
-        source.write_text("Hello world", encoding="utf-8")
-        translation.write_text("Hallo Welt", encoding="utf-8")
-
-        # Act
-        result = runner.invoke(
-            app,
-            [
-                "check",
-                str(source),
-                str(translation),
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "de",
-            ],
-        )
-
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-
-    def test_english_to_russian(self, tmp_path: Path) -> None:
-        """Test English to Russian translation check."""
-        # Arrange
-        source = tmp_path / "en_source.txt"
-        translation = tmp_path / "ru_translation.txt"
-        source.write_text("Hello world", encoding="utf-8")
-        translation.write_text("Привет мир", encoding="utf-8")
-
-        # Act
-        result = runner.invoke(
-            app,
-            [
-                "check",
-                str(source),
-                str(translation),
-                "--source-lang",
-                "en",
-                "--target-lang",
-                "ru",
-            ],
-        )
-
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - All language pairs should succeed with relaxed threshold
+        assert (
+            result.exit_code == 0
+        ), f"Expected success for en->{target_lang}, got: {result.stdout}"
 
 
 @pytest.mark.integration
 class TestOutputFormatsIntegration:
-    """Test different output formats with real components."""
+    """Test different output formats with demo mode."""
 
     def test_html_output_format(self, temp_text_files: tuple[Path, Path], tmp_path: Path) -> None:
         """Test HTML output format generation."""
@@ -453,15 +451,16 @@ class TestOutputFormatsIntegration:
                 str(output),
                 "--format",
                 "html",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # If output exists, verify it's valid HTML
-        if output.exists():
-            content = output.read_text(encoding="utf-8")
-            assert "<html" in content.lower() or "<!doctype" in content.lower()
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "HTML output file should be created"
+
+        content = output.read_text(encoding="utf-8")
+        assert "<html" in content.lower() or "<!doctype" in content.lower(), "Should be valid HTML"
 
     def test_json_output_structure(
         self, temp_text_files: tuple[Path, Path], tmp_path: Path
@@ -486,26 +485,27 @@ class TestOutputFormatsIntegration:
                 str(output),
                 "--format",
                 "json",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
-        # If successful, verify JSON structure
-        if result.exit_code == 0 and output.exists():
-            data = json.loads(output.read_text(encoding="utf-8"))
-            # Check required fields
-            assert "mqm_score" in data
-            assert "errors" in data
-            assert "status" in data
-            assert isinstance(data["mqm_score"], int | float)
-            assert isinstance(data["errors"], list)
-            assert data["status"] in ["pass", "fail"]
+        # Assert - Demo mode should succeed
+        assert result.exit_code == 0, f"Expected success, got: {result.stdout}"
+        assert output.exists(), "JSON output file should be created"
+
+        data = json.loads(output.read_text(encoding="utf-8"))
+        # Check required fields
+        assert "mqm_score" in data, "Should contain mqm_score"
+        assert "errors" in data, "Should contain errors"
+        assert "status" in data, "Should contain status"
+        assert isinstance(data["mqm_score"], int | float), "mqm_score should be numeric"
+        assert isinstance(data["errors"], list), "errors should be a list"
+        assert data["status"] in ["pass", "fail"], "status should be pass or fail"
 
 
 @pytest.mark.integration
 class TestTextProcessing:
-    """Test processing of different text types."""
+    """Test processing of different text types with demo mode."""
 
     def test_longer_text_processing(self, tmp_path: Path) -> None:
         """Test processing of longer text (multiple paragraphs)."""
@@ -536,11 +536,12 @@ El aseguramiento de calidad es importante para las traducciones."""
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Demo mode should handle longer text
+        assert result.exit_code == 0, f"Expected success for longer text, got: {result.stdout}"
 
     def test_special_characters_handling(self, tmp_path: Path) -> None:
         """Test handling of special characters and symbols."""
@@ -561,11 +562,12 @@ El aseguramiento de calidad es importante para las traducciones."""
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Demo mode should handle special characters
+        assert result.exit_code == 0, f"Expected success for special chars, got: {result.stdout}"
 
     def test_unicode_emoji_handling(self, tmp_path: Path) -> None:
         """Test handling of Unicode emojis."""
@@ -586,41 +588,44 @@ El aseguramiento de calidad es importante para las traducciones."""
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Demo mode should handle emojis
+        assert result.exit_code == 0, f"Expected success for emojis, got: {result.stdout}"
 
 
 @pytest.mark.integration
 class TestPerformance:
-    """Test performance characteristics."""
+    """Test performance characteristics with demo mode."""
 
     def test_multiple_segments_performance(self, tmp_path: Path) -> None:
-        """Test performance with multiple translation segments."""
-        # Arrange
-        batch_file = tmp_path / "multi_segment.txt"
-        segments = []
-        for i in range(5):
-            segments.append(f"SOURCE: This is sentence {i + 1}.")
-            segments.append(f"TRANSLATION: Esta es la oración {i + 1}.")
-            segments.append("---")
-        batch_content = "\n".join(segments)
-        batch_file.write_text(batch_content, encoding="utf-8")
+        """Test performance with multiple translation lines."""
+        # Arrange - Create source and translation files with multiple lines
+        source = tmp_path / "multi_source.txt"
+        translation = tmp_path / "multi_translation.txt"
+
+        source_lines = [f"This is sentence {i + 1}." for i in range(5)]
+        translation_lines = [f"Esta es la oración {i + 1}." for i in range(5)]
+
+        source.write_text("\n".join(source_lines), encoding="utf-8")
+        translation.write_text("\n".join(translation_lines), encoding="utf-8")
 
         # Act
         result = runner.invoke(
             app,
             [
                 "check",
-                str(batch_file),
+                str(source),
+                str(translation),
                 "--source-lang",
                 "en",
                 "--target-lang",
                 "es",
+                "--demo",
             ],
         )
 
-        # Assert
-        assert result.exit_code in [0, 1, 2]
+        # Assert - Demo mode should handle multiple lines
+        assert result.exit_code == 0, f"Expected success for multi-segment, got: {result.stdout}"

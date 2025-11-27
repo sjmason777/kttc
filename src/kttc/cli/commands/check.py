@@ -164,8 +164,8 @@ async def _check_async(
     correction_level: str,
     smart_routing: bool,
     show_routing_info: bool,
-    simple_threshold: float,  # noqa: ARG001 - Reserved for future use
-    complex_threshold: float,  # noqa: ARG001 - Reserved for future use
+    simple_threshold: float,
+    complex_threshold: float,
     glossary: str | None,
     reference: str | None,
     verbose: bool,
@@ -207,7 +207,14 @@ async def _check_async(
     selected_model = None
     if smart_routing:
         selected_model, _ = perform_smart_routing(
-            source_text, source_lang, target_lang, task, settings, show_routing_info
+            source_text,
+            source_lang,
+            target_lang,
+            task,
+            settings,
+            show_routing_info,
+            simple_threshold,
+            complex_threshold,
         )
         provider = map_model_to_provider(selected_model, provider)
 
