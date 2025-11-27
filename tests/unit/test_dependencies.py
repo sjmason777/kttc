@@ -102,7 +102,7 @@ class TestDependencyGroups:
 
     def test_package_descriptions(self) -> None:
         """Test that packages have descriptions."""
-        for group_name, packages in DEPENDENCY_GROUPS.items():
+        for _, packages in DEPENDENCY_GROUPS.items():
             for pkg_name, description in packages.items():
                 assert isinstance(pkg_name, str)
                 assert isinstance(description, str)

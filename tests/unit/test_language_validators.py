@@ -282,7 +282,7 @@ class TestLanguageValidatorIntegration:
             "fa": PersianEzafeValidator,
         }
 
-        for lang, validator_class in validators.items():
+        for _, validator_class in validators.items():
             validator = validator_class()
             assert validator is not None
             assert validator.glossary_manager is not None
