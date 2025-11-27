@@ -18,7 +18,7 @@ class TestEnglishLanguageHelperInitialization:
         """Test initialization when spaCy is available."""
         with (
             patch("kttc.helpers.english.SPACY_AVAILABLE", True),
-            patch("kttc.helpers.english.spacy") as mock_spacy,
+            patch("kttc.helpers.english.spacy", create=True) as mock_spacy,
             patch("kttc.helpers.english.LANGUAGETOOL_AVAILABLE", False),
         ):
             mock_nlp = MagicMock()
@@ -65,7 +65,7 @@ class TestIsAvailable:
         """Test is_available returns True when spaCy initialized."""
         with (
             patch("kttc.helpers.english.SPACY_AVAILABLE", True),
-            patch("kttc.helpers.english.spacy") as mock_spacy,
+            patch("kttc.helpers.english.spacy", create=True) as mock_spacy,
             patch("kttc.helpers.english.LANGUAGETOOL_AVAILABLE", False),
         ):
             mock_spacy.load.return_value = MagicMock()
@@ -209,7 +209,7 @@ class TestTokenize:
         """Test tokenize uses spaCy when available."""
         with (
             patch("kttc.helpers.english.SPACY_AVAILABLE", True),
-            patch("kttc.helpers.english.spacy") as mock_spacy,
+            patch("kttc.helpers.english.spacy", create=True) as mock_spacy,
             patch("kttc.helpers.english.LANGUAGETOOL_AVAILABLE", False),
         ):
             mock_nlp = MagicMock()
