@@ -33,6 +33,8 @@ try:
     INDIC_NLP_AVAILABLE = True
     logger.info("Using Indic NLP Library for Hindi tokenization and normalization")
 except ImportError:
+    IndicNormalizerFactory = None  # Allow patching in tests
+    trivial_tokenize = None  # Allow patching in tests
     INDIC_NLP_AVAILABLE = False
     logger.warning(
         "Indic NLP Library not installed. "
@@ -47,6 +49,7 @@ try:
     STANZA_AVAILABLE = True
     logger.info("Stanza available for Hindi NLP (POS, NER, lemmatization)")
 except ImportError:
+    stanza = None  # Allow patching in tests
     STANZA_AVAILABLE = False
     logger.warning(
         "Stanza not installed. "
@@ -61,6 +64,7 @@ try:
     SPELLO_AVAILABLE = True
     logger.info("Spello available for Hindi spell checking")
 except ImportError:
+    SpellCorrectionModel = None  # Allow patching in tests
     SPELLO_AVAILABLE = False
     logger.warning(
         "Spello not installed. "

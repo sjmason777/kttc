@@ -32,6 +32,7 @@ try:
     DADMATOOLS_AVAILABLE = True
     logger.info("DadmaTools available for Persian NLP (all-in-one solution)")
 except ImportError:
+    dadma_language = None  # Allow patching in tests
     DADMATOOLS_AVAILABLE = False
     logger.warning(
         "DadmaTools not installed. "
