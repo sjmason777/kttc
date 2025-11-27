@@ -91,9 +91,8 @@ class TestTranslationMemory:
         tm = TranslationMemory(db_path)
 
         # Act & Assert
-        with patch.dict("sys.modules", {"sentence_transformers": None}):
-            with pytest.raises(RuntimeError, match="Failed to import sentence-transformers"):
-                tm.initialize()
+        with patch.dict("sys.modules", {"sentence_transformers": None}), pytest.raises(RuntimeError, match="Failed to import sentence-transformers"):
+            tm.initialize()
 
         # Cleanup
         Path(db_path).unlink(missing_ok=True)
