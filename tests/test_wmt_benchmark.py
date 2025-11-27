@@ -67,8 +67,8 @@ async def main() -> None:
         report_md = Path(tmpdir) / "test_report.md"
         report_json = Path(tmpdir) / "test_report.json"
 
-        benchmark.export_report(str(report_md), file_format="markdown")
-        benchmark.export_report(str(report_json), file_format="json")
+        benchmark.export_report(str(report_md), format="markdown")
+        benchmark.export_report(str(report_json), format="json")
 
         print("\n📄 Reports exported:")
         print(f"   - {report_md}")
