@@ -259,9 +259,7 @@ class TestDebateOrchestrator:
         )
 
         orchestrator = DebateOrchestrator(mock_llm_provider)
-        _, rounds = await orchestrator.run_debate(
-            [sample_error], sample_task, max_rounds=2
-        )
+        _, rounds = await orchestrator.run_debate([sample_error], sample_task, max_rounds=2)
 
         # Should have 2 rounds
         assert len(rounds) == 2
