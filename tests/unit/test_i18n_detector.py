@@ -98,7 +98,10 @@ class TestDetectSystemLanguage:
 
     def test_default_fallback(self) -> None:
         """Test default fallback when no language detected."""
-        with patch.dict(os.environ, {}, clear=True), patch("locale.getdefaultlocale", return_value=(None, None)):
+        with (
+            patch.dict(os.environ, {}, clear=True),
+            patch("locale.getdefaultlocale", return_value=(None, None)),
+        ):
             lang = detect_system_language()
             assert lang == DEFAULT_LANGUAGE
 
