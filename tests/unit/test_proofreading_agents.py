@@ -22,13 +22,14 @@ from kttc.agents.proofreading import GrammarAgent, SpellingAgent
 class TestSpellingAgent:
     """Tests for SpellingAgent."""
 
-    def test_russian_ne_with_verbs(self) -> None:
+    @pytest.mark.asyncio
+    async def test_russian_ne_with_verbs(self) -> None:
         """Test detection of НЕ with verbs written together."""
         agent = SpellingAgent(language="ru")
 
         # Test incorrect forms
         text = "Нехочу идти в школу."
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         # Should detect "нехочу" as incorrect
         assert len(errors) >= 1
@@ -39,12 +40,13 @@ class TestSpellingAgent:
         ]
         assert len(ne_errors) >= 1
 
-    def test_russian_hyphen_indefinite_pronouns(self) -> None:
+    @pytest.mark.asyncio
+    async def test_russian_hyphen_indefinite_pronouns(self) -> None:
         """Test detection of missing hyphen in indefinite pronouns."""
         agent = SpellingAgent(language="ru")
 
         text = "Какой то человек пришёл."
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         # Should detect "какой то" as incorrect
         assert len(errors) >= 1
@@ -56,12 +58,13 @@ class TestSpellingAgent:
         ]
         assert len(hyphen_errors) >= 1
 
-    def test_english_should_of_error(self) -> None:
+    @pytest.mark.asyncio
+    async def test_english_should_of_error(self) -> None:
         """Test detection of 'should of' instead of 'should have'."""
         agent = SpellingAgent(language="en")
 
         text = "I should of gone to the store."
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         # Should detect "should of" as incorrect
         assert len(errors) >= 1
@@ -72,13 +75,14 @@ class TestSpellingAgent:
         ]
         assert len(should_errors) >= 1
 
-    def test_no_false_positives_correct_text(self) -> None:
+    @pytest.mark.asyncio
+    async def test_no_false_positives_correct_text(self) -> None:
         """Test that correct text doesn't trigger false positives."""
         agent = SpellingAgent(language="ru")
 
         # Correct Russian text
         text = "Не хочу идти в школу. Какой-то человек пришёл."
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         # Should not detect errors in correct text
         assert len(errors) == 0
@@ -129,12 +133,13 @@ class TestGrammarAgent:
         # Should have rules for English
         assert rules is not None
 
-    def test_error_annotation_format(self) -> None:
+    @pytest.mark.asyncio
+    async def test_error_annotation_format(self) -> None:
         """Test that errors have correct annotation format."""
         agent = SpellingAgent(language="ru")
 
         text = "Нехочу идти."
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         if errors:
             error = errors[0]
@@ -152,34 +157,37 @@ class TestGrammarAgent:
 class TestMultiLanguageSupport:
     """Tests for multi-language support in proofreading."""
 
-    def test_chinese_de_particles(self) -> None:
+    @pytest.mark.asyncio
+    async def test_chinese_de_particles(self) -> None:
         """Test Chinese 的/地/得 detection (placeholder)."""
         agent = SpellingAgent(language="zh")
 
         # Chinese text - basic test that agent works
         text = "这是一个测试。"
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         # Should return a list (may be empty for correct text)
         assert isinstance(errors, list)
 
-    def test_persian_nim_fasele(self) -> None:
+    @pytest.mark.asyncio
+    async def test_persian_nim_fasele(self) -> None:
         """Test Persian nim-fasele detection (placeholder)."""
         agent = SpellingAgent(language="fa")
 
         # Persian text - basic test
         text = "سلام"
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         assert isinstance(errors, list)
 
-    def test_hindi_support(self) -> None:
+    @pytest.mark.asyncio
+    async def test_hindi_support(self) -> None:
         """Test Hindi language support (placeholder)."""
         agent = SpellingAgent(language="hi")
 
         # Hindi text - basic test
         text = "नमस्ते"
-        errors = agent.check(text)
+        errors = await agent.check(text)
 
         assert isinstance(errors, list)
 
