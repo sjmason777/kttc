@@ -284,9 +284,7 @@ Be precise and only report actual errors, not stylistic preferences."""
                     severity = (
                         ErrorSeverity.CRITICAL
                         if severity_str == "critical"
-                        else ErrorSeverity.MINOR
-                        if severity_str == "minor"
-                        else ErrorSeverity.MAJOR
+                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
                     )
 
                     subcategory = err.get("type", "grammar")

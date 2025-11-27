@@ -168,9 +168,7 @@ def display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
         severity_color = (
             "red"
             if error.severity.value == "critical"
-            else "yellow"
-            if error.severity.value == "major"
-            else "dim"
+            else "yellow" if error.severity.value == "major" else "dim"
         )
         start, end = error.location
         error_text = text[start:end] if start < len(text) and end <= len(text) else ""
@@ -187,17 +185,17 @@ def display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
         console.print(f"[dim]... and {len(all_errors) - 20} more errors[/dim]")
 
 
+def _get_severity_icon(severity_value: str) -> str:
+    """Map severity value to display icon."""
+    severity_icons = {"critical": "🔴", "major": "🟡", "minor": "⚪"}
+    return severity_icons.get(severity_value, "⚪")
+
+
 def display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
     """Display compact error view."""
     console.print("\n[bold]Top Issues:[/bold]")
     for error in all_errors[:5]:
-        severity_icon = (
-            "🔴"
-            if error.severity.value == "critical"
-            else "🟡"
-            if error.severity.value == "major"
-            else "⚪"
-        )
+        severity_icon = _get_severity_icon(error.severity.value)
         suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
         start, end = error.location
         error_text = text[start:end] if start < len(text) and end <= len(text) else ""

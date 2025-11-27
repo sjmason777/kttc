@@ -204,16 +204,16 @@ class TestGlossaryIntegration:
         # Check Russian glossaries
         ru_school = glossaries_dir / "ru" / "school_curriculum"
         assert ru_school.exists(), "Russian school curriculum directory should exist"
-        assert (ru_school / "orthography_fgos.json").exists(), (
-            "Russian orthography glossary should exist"
-        )
+        assert (
+            ru_school / "orthography_fgos.json"
+        ).exists(), "Russian orthography glossary should exist"
 
         # Check English glossaries
         en_school = glossaries_dir / "en" / "school_curriculum"
         assert en_school.exists(), "English school curriculum directory should exist"
-        assert (en_school / "spelling_uk_gps.json").exists(), (
-            "English spelling glossary should exist"
-        )
+        assert (
+            en_school / "spelling_uk_gps.json"
+        ).exists(), "English spelling glossary should exist"
 
     def test_glossary_json_valid(self) -> None:
         """Test that glossary JSON files are valid."""

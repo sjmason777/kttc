@@ -191,9 +191,7 @@ class SpellingAgent:
                     severity = (
                         ErrorSeverity.CRITICAL
                         if severity_str == "critical"
-                        else ErrorSeverity.MINOR
-                        if severity_str == "minor"
-                        else ErrorSeverity.MAJOR
+                        else ErrorSeverity.MINOR if severity_str == "minor" else ErrorSeverity.MAJOR
                     )
 
                     suggestion = ""

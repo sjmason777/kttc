@@ -100,7 +100,9 @@ class TestDetectSystemLanguage:
         """Test default fallback when no language detected."""
         with (
             patch.dict(os.environ, {}, clear=True),
-            patch("locale.getdefaultlocale", return_value=(None, None)),
+            patch("kttc.i18n.detector._detect_from_env_vars", return_value=None),
+            patch("kttc.i18n.detector._detect_from_locale", return_value=None),
+            patch("kttc.i18n.detector._detect_from_windows_api", return_value=None),
         ):
             lang = detect_system_language()
             assert lang == DEFAULT_LANGUAGE

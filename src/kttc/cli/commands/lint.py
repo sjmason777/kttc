@@ -80,17 +80,16 @@ def lint(
 
         errors = asyncio.run(run_lint())
 
+        def get_severity_icon(severity_value: str) -> str:
+            """Map severity value to display icon."""
+            severity_icons = {"critical": "🔴", "major": "🟡", "minor": "⚪"}
+            return severity_icons.get(severity_value, "⚪")
+
         if errors:
             console.print(f"\n[yellow]Found {len(errors)} issue(s):[/yellow]\n")
 
             for error in errors:
-                severity_icon = (
-                    "🔴"
-                    if error.severity.value == "critical"
-                    else "🟡"
-                    if error.severity.value == "major"
-                    else "⚪"
-                )
+                severity_icon = get_severity_icon(error.severity.value)
                 console.print(
                     f"  {severity_icon} Line ~{error.location[0] // 50 + 1}: {error.description}"
                 )

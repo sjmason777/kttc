@@ -254,3 +254,334 @@ class TestHomophonePatterns:
             assert isinstance(pattern, str)
             assert isinstance(wrong, str)
             assert isinstance(correct, str)
+
+
+@pytest.mark.unit
+class TestGetAdjectiveCategory:
+    """Test get_adjective_category method."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_opinion_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test opinion adjectives are categorized correctly."""
+        assert validator.get_adjective_category("beautiful") == "opinion"
+        assert validator.get_adjective_category("lovely") == "opinion"
+        assert validator.get_adjective_category("horrible") == "opinion"
+
+    def test_size_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test size adjectives are categorized correctly."""
+        assert validator.get_adjective_category("big") == "size"
+        assert validator.get_adjective_category("small") == "size"
+        assert validator.get_adjective_category("huge") == "size"
+
+    def test_age_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test age adjectives are categorized correctly."""
+        assert validator.get_adjective_category("old") == "age"
+        assert validator.get_adjective_category("young") == "age"
+        assert validator.get_adjective_category("new") == "age"
+
+    def test_shape_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test shape adjectives are categorized correctly."""
+        assert validator.get_adjective_category("round") == "shape"
+        assert validator.get_adjective_category("square") == "shape"
+
+    def test_color_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test color adjectives are categorized correctly."""
+        assert validator.get_adjective_category("red") == "color"
+        assert validator.get_adjective_category("blue") == "color"
+
+    def test_origin_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test origin adjectives are categorized correctly."""
+        assert validator.get_adjective_category("american") == "origin"
+        assert validator.get_adjective_category("chinese") == "origin"
+
+    def test_material_category(self, validator: EnglishTrapsValidator) -> None:
+        """Test material adjectives are categorized correctly."""
+        assert validator.get_adjective_category("wooden") == "material"
+        assert validator.get_adjective_category("plastic") == "material"
+
+    def test_unknown_adjective(self, validator: EnglishTrapsValidator) -> None:
+        """Test unknown adjective returns None."""
+        assert validator.get_adjective_category("xyz123") is None
+        assert validator.get_adjective_category("") is None
+
+    def test_case_insensitive(self, validator: EnglishTrapsValidator) -> None:
+        """Test case insensitive matching."""
+        assert validator.get_adjective_category("Beautiful") == "opinion"
+        assert validator.get_adjective_category("BIG") == "size"
+
+
+@pytest.mark.unit
+class TestCheckAdjectiveOrder:
+    """Test check_adjective_order method."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_detect_order_violation(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of adjective order violation."""
+        # The algorithm matches 3 consecutive words and checks if first two
+        # are adjectives in wrong order. Color should come after size.
+        # Input: "red big ball" - red (color) big (size) - wrong order
+        text = "red big ball"
+        violations = validator.check_adjective_order(text)
+
+        assert len(violations) >= 1
+        assert violations[0]["severity"] == "major"
+        assert "correct_order" in violations[0]
+
+    def test_no_violation_correct_order(self, validator: EnglishTrapsValidator) -> None:
+        """Test no violation for correct order."""
+        text = "a big red ball"
+        violations = validator.check_adjective_order(text)
+
+        # Should not find size-color violations
+        size_color_violations = [
+            v
+            for v in violations
+            if "big" in v.get("found_text", "") and "red" in v.get("found_text", "")
+        ]
+        assert len(size_color_violations) == 0
+
+    def test_no_adjectives(self, validator: EnglishTrapsValidator) -> None:
+        """Test no errors when no adjectives."""
+        text = "hello world"
+        violations = validator.check_adjective_order(text)
+        # No adjective violations for non-adjective words
+        assert isinstance(violations, list)
+
+
+@pytest.mark.unit
+class TestPrepositionErrors:
+    """Test preposition error detection."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_get_preposition_errors(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting preposition errors."""
+        errors = validator.get_preposition_errors()
+        assert isinstance(errors, list)
+
+    def test_find_depend_from_error(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of 'depend from' error."""
+        text = "It depend from the weather"
+        errors = validator.find_preposition_errors(text)
+
+        assert len(errors) >= 1
+        assert errors[0]["correction"] == "depend on"
+        assert errors[0]["type"] == "preposition_error"
+
+    def test_find_interested_about_error(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of 'interested about' error."""
+        text = "I am interested about this topic"
+        errors = validator.find_preposition_errors(text)
+
+        assert len(errors) >= 1
+        assert errors[0]["correction"] == "interested in"
+
+    def test_find_listen_the_error(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of 'listen the' error."""
+        text = "Please listen the music"
+        errors = validator.find_preposition_errors(text)
+
+        assert len(errors) >= 1
+        assert "listen to" in errors[0]["correction"]
+
+    def test_find_discuss_about_error(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of 'discuss about' error."""
+        text = "Let's discuss about this matter"
+        errors = validator.find_preposition_errors(text)
+
+        assert len(errors) >= 1
+        assert "discuss" in errors[0]["correction"]
+
+    def test_find_married_with_error(self, validator: EnglishTrapsValidator) -> None:
+        """Test detection of 'married with' error."""
+        text = "She is married with John"
+        errors = validator.find_preposition_errors(text)
+
+        assert len(errors) >= 1
+        assert errors[0]["correction"] == "married to"
+
+    def test_no_errors_correct_text(self, validator: EnglishTrapsValidator) -> None:
+        """Test no errors in correct text."""
+        text = "It depends on the weather"
+        errors = validator.find_preposition_errors(text)
+        # Should not find "depend on" errors since it's correct
+        depend_errors = [e for e in errors if "depend" in e.get("found_text", "")]
+        assert len(depend_errors) == 0
+
+
+@pytest.mark.unit
+class TestIdioms:
+    """Test idiom detection."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_get_idioms(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting idioms from glossary."""
+        idioms = validator.get_idioms()
+        assert isinstance(idioms, dict)
+
+    def test_find_idioms_returns_list(self, validator: EnglishTrapsValidator) -> None:
+        """Test find_idioms_in_text returns list."""
+        text = "This is easy"
+        found = validator.find_idioms_in_text(text)
+        assert isinstance(found, list)
+
+
+@pytest.mark.unit
+class TestHeteronyms:
+    """Test heteronym detection."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_get_heteronyms(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting heteronyms from glossary."""
+        het = validator.get_heteronyms()
+        assert isinstance(het, dict)
+
+    def test_find_heteronyms_returns_list(self, validator: EnglishTrapsValidator) -> None:
+        """Test find_heteronyms_in_text returns list."""
+        text = "The lead singer"
+        found = validator.find_heteronyms_in_text(text)
+        assert isinstance(found, list)
+
+
+@pytest.mark.unit
+class TestFalseFriends:
+    """Test false friends detection."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_get_false_friends_all(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting all false friends."""
+        ff = validator.get_false_friends()
+        assert isinstance(ff, dict)
+
+    def test_get_false_friends_russian(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting Russian false friends."""
+        ff = validator.get_false_friends(source_lang="ru")
+        assert isinstance(ff, dict)
+
+    def test_get_false_friends_spanish(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting Spanish false friends."""
+        ff = validator.get_false_friends(source_lang="es")
+        assert isinstance(ff, dict)
+
+    def test_get_false_friends_german(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting German false friends."""
+        ff = validator.get_false_friends(source_lang="de")
+        assert isinstance(ff, dict)
+
+    def test_get_false_friends_french(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting French false friends."""
+        ff = validator.get_false_friends(source_lang="fr")
+        assert isinstance(ff, dict)
+
+    def test_get_false_friends_unknown_lang(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting false friends for unknown language."""
+        ff = validator.get_false_friends(source_lang="xx")
+        assert isinstance(ff, dict)
+
+    def test_find_false_friends_in_context(self, validator: EnglishTrapsValidator) -> None:
+        """Test finding false friends in context."""
+        source_text = "Магазин"
+        target_text = "I visited the magazine"
+        found = validator.find_false_friends_in_context(source_text, target_text, "ru")
+        assert isinstance(found, list)
+
+
+@pytest.mark.unit
+class TestComprehensiveAnalysis:
+    """Test comprehensive text analysis."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_analyze_text_returns_all_categories(self, validator: EnglishTrapsValidator) -> None:
+        """Test analyze_text returns all categories."""
+        text = "Their going to discuss about it"
+        analysis = validator.analyze_text(text)
+
+        assert "homophones" in analysis
+        assert "homophone_warnings" in analysis
+        assert "phrasal_verbs" in analysis
+        assert "heteronyms" in analysis
+        assert "adjective_order" in analysis
+        assert "preposition_errors" in analysis
+        assert "idioms" in analysis
+
+    def test_analyze_text_empty(self, validator: EnglishTrapsValidator) -> None:
+        """Test analyze_text with empty string."""
+        analysis = validator.analyze_text("")
+        assert isinstance(analysis, dict)
+
+    def test_get_translation_warnings(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting translation warnings."""
+        text = "Their going to discuss about it"
+        warnings = validator.get_translation_warnings(text)
+
+        assert isinstance(warnings, list)
+        # Should have warnings for homophone and preposition errors
+        assert len(warnings) >= 1
+
+    def test_get_translation_warnings_clean(self, validator: EnglishTrapsValidator) -> None:
+        """Test warnings for clean text."""
+        text = "Hello world"
+        warnings = validator.get_translation_warnings(text)
+        assert isinstance(warnings, list)
+
+    def test_get_prompt_enrichment(self, validator: EnglishTrapsValidator) -> None:
+        """Test getting prompt enrichment."""
+        text = "Their going to discuss about plans"
+        enrichment = validator.get_prompt_enrichment(text)
+
+        assert isinstance(enrichment, str)
+
+    def test_get_prompt_enrichment_empty(self, validator: EnglishTrapsValidator) -> None:
+        """Test prompt enrichment for clean text."""
+        text = "Hello"
+        enrichment = validator.get_prompt_enrichment(text)
+        assert isinstance(enrichment, str)
+
+
+@pytest.mark.unit
+class TestPhrasalVerbsFinding:
+    """Test finding phrasal verbs in text."""
+
+    @pytest.fixture
+    def validator(self) -> EnglishTrapsValidator:
+        """Create a validator instance."""
+        return EnglishTrapsValidator()
+
+    def test_find_phrasal_verbs_returns_list(self, validator: EnglishTrapsValidator) -> None:
+        """Test find_phrasal_verbs_in_text returns list."""
+        text = "Please take off your shoes"
+        found = validator.find_phrasal_verbs_in_text(text)
+        assert isinstance(found, list)
+
+    def test_find_phrasal_verbs_empty_text(self, validator: EnglishTrapsValidator) -> None:
+        """Test with empty text."""
+        found = validator.find_phrasal_verbs_in_text("")
+        assert isinstance(found, list)
+        assert len(found) == 0

@@ -251,3 +251,164 @@ class TestAutoCorrector:
         assert "terminology" in summary["categories"]
         assert summary["original_length"] == len(sample_task.translation)
         assert summary["corrected_length"] == len("¡Hola mundo!")
+
+
+@pytest.mark.unit
+class TestCorrectAndReevaluate:
+    """Test correct_and_reevaluate method."""
+
+    @pytest.fixture
+    def sample_task(self) -> TranslationTask:
+        """Provide a sample translation task."""
+        return TranslationTask(
+            source_text="Hello world",
+            translation="Hola mundo",
+            source_lang="en",
+            target_lang="es",
+        )
+
+    @pytest.fixture
+    def sample_errors(self) -> list[ErrorAnnotation]:
+        """Provide sample errors for testing."""
+        return [
+            ErrorAnnotation(
+                category="accuracy",
+                subcategory="mistranslation",
+                severity=ErrorSeverity.CRITICAL,
+                location=(0, 4),
+                description="Wrong translation",
+            ),
+        ]
+
+    @pytest.mark.asyncio
+    async def test_correct_and_reevaluate_success(
+        self, sample_task: TranslationTask, sample_errors: list[ErrorAnnotation]
+    ) -> None:
+        """Test correct_and_reevaluate stops when quality threshold reached."""
+        mock_llm = AsyncMock()
+        mock_llm.complete.return_value = "¡Hola mundo!"
+
+        mock_orchestrator = AsyncMock()
+        mock_report = MagicMock()
+        mock_report.mqm_score = 98.0
+        mock_report.status = "pass"
+        mock_report.error_count = 0
+        mock_report.errors = []
+        mock_orchestrator.evaluate.return_value = mock_report
+
+        corrector = AutoCorrector(llm_provider=mock_llm)
+
+        final, reports = await corrector.correct_and_reevaluate(
+            task=sample_task,
+            errors=sample_errors,
+            orchestrator=mock_orchestrator,
+            correction_level="light",
+            max_iterations=3,
+        )
+
+        assert final == "¡Hola mundo!"
+        assert len(reports) == 1
+        assert reports[0].status == "pass"
+
+    @pytest.mark.asyncio
+    async def test_correct_and_reevaluate_no_changes(
+        self, sample_task: TranslationTask, sample_errors: list[ErrorAnnotation]
+    ) -> None:
+        """Test correct_and_reevaluate stops when no changes made."""
+        mock_llm = AsyncMock()
+        mock_llm.complete.return_value = sample_task.translation  # No change
+
+        mock_orchestrator = AsyncMock()
+        corrector = AutoCorrector(llm_provider=mock_llm)
+
+        final, reports = await corrector.correct_and_reevaluate(
+            task=sample_task,
+            errors=sample_errors,
+            orchestrator=mock_orchestrator,
+            correction_level="light",
+        )
+
+        # Should return original since no changes
+        assert final == sample_task.translation
+        assert len(reports) == 0
+
+    @pytest.mark.asyncio
+    async def test_correct_and_reevaluate_stagnation(
+        self, sample_task: TranslationTask, sample_errors: list[ErrorAnnotation]
+    ) -> None:
+        """Test correct_and_reevaluate stops when improvement stagnates."""
+        mock_llm = AsyncMock()
+        # Returns different corrections each time
+        mock_llm.complete.side_effect = ["¡Hola mundo!", "Hola mundo!", "Hello mundo!"]
+
+        mock_orchestrator = AsyncMock()
+
+        # First report - some improvement
+        mock_report1 = MagicMock()
+        mock_report1.mqm_score = 85.0
+        mock_report1.status = "fail"
+        mock_report1.error_count = 2
+        mock_report1.errors = sample_errors
+
+        # Second report - stagnated (less than 1 point improvement)
+        mock_report2 = MagicMock()
+        mock_report2.mqm_score = 85.5
+        mock_report2.status = "fail"
+        mock_report2.error_count = 2
+        mock_report2.errors = sample_errors
+
+        mock_orchestrator.evaluate.side_effect = [mock_report1, mock_report2]
+
+        corrector = AutoCorrector(llm_provider=mock_llm)
+
+        final, reports = await corrector.correct_and_reevaluate(
+            task=sample_task,
+            errors=sample_errors,
+            orchestrator=mock_orchestrator,
+            correction_level="full",
+            max_iterations=5,
+        )
+
+        # Should stop after stagnation
+        assert len(reports) == 2
+
+    @pytest.mark.asyncio
+    async def test_correct_and_reevaluate_max_iterations(
+        self, sample_task: TranslationTask, sample_errors: list[ErrorAnnotation]
+    ) -> None:
+        """Test correct_and_reevaluate respects max_iterations."""
+        mock_llm = AsyncMock()
+        mock_llm.complete.side_effect = [
+            "Version 1",
+            "Version 2",
+            "Version 3",
+        ]
+
+        mock_orchestrator = AsyncMock()
+
+        def make_report(score: float) -> MagicMock:
+            report = MagicMock()
+            report.mqm_score = score
+            report.status = "fail"
+            report.error_count = 1
+            report.errors = sample_errors
+            return report
+
+        # Each iteration improves by 5 points to avoid stagnation
+        mock_orchestrator.evaluate.side_effect = [
+            make_report(70.0),
+            make_report(75.0),
+        ]
+
+        corrector = AutoCorrector(llm_provider=mock_llm)
+
+        final, reports = await corrector.correct_and_reevaluate(
+            task=sample_task,
+            errors=sample_errors,
+            orchestrator=mock_orchestrator,
+            correction_level="full",
+            max_iterations=2,  # Limit to 2 iterations
+        )
+
+        # Should respect max_iterations
+        assert len(reports) == 2

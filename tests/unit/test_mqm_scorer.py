@@ -190,3 +190,191 @@ class TestMQMCategoryWeights:
     def test_style_has_lower_weight(self, scorer: MQMScorer) -> None:
         """Test style has lower weight than accuracy."""
         assert scorer.category_weights["style"] < scorer.category_weights["accuracy"]
+
+
+@pytest.mark.unit
+class TestMQMQualityLevel:
+    """Test quality level determination."""
+
+    @pytest.fixture
+    def scorer(self) -> MQMScorer:
+        """Provide MQMScorer with default weights."""
+        return MQMScorer(use_glossary_weights=False)
+
+    def test_get_quality_level_excellent(self, scorer: MQMScorer) -> None:
+        """Test excellent quality level."""
+        assert scorer.get_quality_level(96.0) == "excellent"
+        assert scorer.get_quality_level(95.0) == "excellent"
+        assert scorer.get_quality_level(100.0) == "excellent"
+
+    def test_get_quality_level_good(self, scorer: MQMScorer) -> None:
+        """Test good quality level."""
+        assert scorer.get_quality_level(94.5) == "good"
+        assert scorer.get_quality_level(90.0) == "good"
+
+    def test_get_quality_level_acceptable(self, scorer: MQMScorer) -> None:
+        """Test acceptable quality level."""
+        assert scorer.get_quality_level(89.9) == "acceptable"
+        assert scorer.get_quality_level(80.0) == "acceptable"
+
+    def test_get_quality_level_poor(self, scorer: MQMScorer) -> None:
+        """Test poor quality level."""
+        assert scorer.get_quality_level(79.9) == "poor"
+        assert scorer.get_quality_level(50.0) == "poor"
+        assert scorer.get_quality_level(0.0) == "poor"
+
+
+@pytest.mark.unit
+class TestMQMPassesThreshold:
+    """Test passes_threshold method."""
+
+    @pytest.fixture
+    def scorer(self) -> MQMScorer:
+        """Provide MQMScorer with default weights."""
+        return MQMScorer(use_glossary_weights=False)
+
+    def test_passes_default_threshold(self, scorer: MQMScorer) -> None:
+        """Test passing default threshold."""
+        assert scorer.passes_threshold(95.0) is True
+        assert scorer.passes_threshold(100.0) is True
+
+    def test_fails_default_threshold(self, scorer: MQMScorer) -> None:
+        """Test failing default threshold."""
+        assert scorer.passes_threshold(94.9) is False
+        assert scorer.passes_threshold(50.0) is False
+
+    def test_custom_threshold(self, scorer: MQMScorer) -> None:
+        """Test with custom threshold."""
+        assert scorer.passes_threshold(85.0, threshold=80.0) is True
+        assert scorer.passes_threshold(75.0, threshold=80.0) is False
+
+
+@pytest.mark.unit
+class TestMQMScoreBreakdown:
+    """Test get_score_breakdown method."""
+
+    @pytest.fixture
+    def scorer(self) -> MQMScorer:
+        """Provide MQMScorer with default weights."""
+        return MQMScorer(use_glossary_weights=False)
+
+    def test_breakdown_no_errors(self, scorer: MQMScorer) -> None:
+        """Test breakdown with no errors."""
+        breakdown = scorer.get_score_breakdown(errors=[], word_count=100)
+
+        assert breakdown["total_penalty"] == 0.0
+        assert breakdown["penalty_per_1k"] == 0.0
+        assert breakdown["score"] == 100.0
+        assert breakdown["category_breakdown"] == {}
+        assert breakdown["severity_breakdown"] == {}
+        assert breakdown["word_count"] == 100
+        assert breakdown["error_count"] == 0
+
+    def test_breakdown_single_error(self, scorer: MQMScorer) -> None:
+        """Test breakdown with single error."""
+        errors = [
+            ErrorAnnotation(
+                category="accuracy",
+                subcategory="mistranslation",
+                severity=ErrorSeverity.MAJOR,
+                location=(0, 10),
+                description="Test error",
+            )
+        ]
+        breakdown = scorer.get_score_breakdown(errors=errors, word_count=100)
+
+        assert breakdown["total_penalty"] > 0
+        assert breakdown["error_count"] == 1
+        assert "accuracy" in breakdown["category_breakdown"]
+        assert "major" in breakdown["severity_breakdown"]
+
+    def test_breakdown_multiple_categories(self, scorer: MQMScorer) -> None:
+        """Test breakdown with multiple categories."""
+        errors = [
+            ErrorAnnotation(
+                category="accuracy",
+                subcategory="mistranslation",
+                severity=ErrorSeverity.MAJOR,
+                location=(0, 5),
+                description="Accuracy error",
+            ),
+            ErrorAnnotation(
+                category="fluency",
+                subcategory="grammar",
+                severity=ErrorSeverity.MINOR,
+                location=(10, 15),
+                description="Fluency error",
+            ),
+        ]
+        breakdown = scorer.get_score_breakdown(errors=errors, word_count=100)
+
+        assert "accuracy" in breakdown["category_breakdown"]
+        assert "fluency" in breakdown["category_breakdown"]
+        assert breakdown["error_count"] == 2
+
+    def test_breakdown_invalid_word_count(self, scorer: MQMScorer) -> None:
+        """Test breakdown with invalid word count raises error."""
+        with pytest.raises(ValueError, match="word_count must be greater than 0"):
+            scorer.get_score_breakdown(errors=[], word_count=0)
+
+        with pytest.raises(ValueError, match="word_count must be greater than 0"):
+            scorer.get_score_breakdown(errors=[], word_count=-5)
+
+
+@pytest.mark.unit
+class TestMQMScoreValidation:
+    """Test score calculation edge cases."""
+
+    @pytest.fixture
+    def scorer(self) -> MQMScorer:
+        """Provide MQMScorer with default weights."""
+        return MQMScorer(use_glossary_weights=False)
+
+    def test_calculate_score_invalid_word_count_zero(self, scorer: MQMScorer) -> None:
+        """Test calculate_score with zero word count raises error."""
+        with pytest.raises(ValueError, match="word_count must be greater than 0"):
+            scorer.calculate_score(errors=[], word_count=0)
+
+    def test_calculate_score_invalid_word_count_negative(self, scorer: MQMScorer) -> None:
+        """Test calculate_score with negative word count raises error."""
+        with pytest.raises(ValueError, match="word_count must be greater than 0"):
+            scorer.calculate_score(errors=[], word_count=-10)
+
+    def test_calculate_score_with_custom_weights(self, scorer: MQMScorer) -> None:
+        """Test calculate_score with custom weights."""
+        errors = [
+            ErrorAnnotation(
+                category="accuracy",
+                subcategory="mistranslation",
+                severity=ErrorSeverity.MAJOR,
+                location=(0, 10),
+                description="Test error",
+            )
+        ]
+        custom_weights = {"accuracy": 2.0}  # Double the accuracy weight
+
+        score_default = scorer.calculate_score(errors=errors, word_count=100)
+        score_custom = scorer.calculate_score(
+            errors=errors, word_count=100, custom_weights=custom_weights
+        )
+
+        # Custom weights should result in different score
+        assert score_custom != score_default
+        # Higher weight means more penalty, so lower score
+        assert score_custom < score_default
+
+    def test_calculate_score_unknown_category(self, scorer: MQMScorer) -> None:
+        """Test calculate_score with unknown category defaults to weight 1.0."""
+        errors = [
+            ErrorAnnotation(
+                category="unknown_category",
+                subcategory="unknown_sub",
+                severity=ErrorSeverity.MINOR,
+                location=(0, 5),
+                description="Unknown error",
+            )
+        ]
+
+        # Should not raise error, should use default weight 1.0
+        score = scorer.calculate_score(errors=errors, word_count=100)
+        assert score < 100.0
