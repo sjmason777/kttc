@@ -87,7 +87,9 @@ def lint(
                 severity_icon = (
                     "🔴"
                     if error.severity.value == "critical"
-                    else "🟡" if error.severity.value == "major" else "⚪"
+                    else "🟡"
+                    if error.severity.value == "major"
+                    else "⚪"
                 )
                 console.print(
                     f"  {severity_icon} Line ~{error.location[0] // 50 + 1}: {error.description}"
