@@ -208,21 +208,21 @@ class WMTBenchmark:
         src, tgt = self._parse_language_pair(language_pair)
         return src if which == "source" else tgt
 
-    def export_report(self, filename: str, format: str = "json") -> None:
+    def export_report(self, filename: str, report_format: str = "json") -> None:
         """Export benchmark report.
 
         Args:
             filename: Output filename
-            format: Report format ('json' or 'markdown')
+            report_format: Report format ('json' or 'markdown')
         """
         output_path = Path(filename)
 
-        if format == "json":
+        if report_format == "json":
             self._export_json(output_path)
-        elif format == "markdown":
+        elif report_format == "markdown":
             self._export_markdown(output_path)
         else:
-            raise ValueError(f"Unsupported format: {format}")
+            raise ValueError(f"Unsupported format: {report_format}")
 
     def _export_json(self, output_path: Path) -> None:
         """Export results as JSON.
