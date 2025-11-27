@@ -301,8 +301,9 @@ class ChineseLanguageHelper(LanguageHelper):
 
         return errors
 
+    @staticmethod
     def _find_measure_position(
-        self, text: str, number: str, measure: str, noun: str
+        text: str, number: str, measure: str, noun: str
     ) -> tuple[int, int] | None:
         """Find the position of a measure word in text.
 
@@ -326,8 +327,9 @@ class ChineseLanguageHelper(LanguageHelper):
         measure_start = start_pos + len(number)
         return (measure_start, measure_start + len(measure))
 
+    @staticmethod
     def _create_measure_word_error(
-        self, measure: str, noun: str, location: tuple[int, int], suggested: list[str]
+        measure: str, noun: str, location: tuple[int, int], suggested: list[str]
     ) -> ErrorAnnotation:
         """Create an error annotation for incorrect measure word.
 

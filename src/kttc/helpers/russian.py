@@ -571,9 +571,11 @@ class RussianLanguageHelper(LanguageHelper):
         # Skip genitive case - masculine and neuter have identical endings
         adj_case = getattr(adj_token, "case", None)
         noun_case = getattr(noun_token, "case", None)
-        if adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]:
-            if {adj_gender, noun_gender} == {"masc", "neut"}:
-                return True
+        if (adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]) and {
+            adj_gender,
+            noun_gender,
+        } == {"masc", "neut"}:
+            return True
 
         return False
 
@@ -781,10 +783,11 @@ class RussianLanguageHelper(LanguageHelper):
                 return True
 
         # Check if word is likely an English loanword (ends with common suffixes)
-        if any(clean_word.endswith(suffix) for suffix in ["инг", "ить", "ер", "мент"]):
+        if any(clean_word.endswith(suffix) for suffix in ["инг", "ить", "ер", "мент"]) and any(
+            root in clean_word for root in ["дебаг", "рефактор", "деплой", "релиз"]
+        ):
             # Could be IT term, but also check if it looks like technical jargon
-            if any(root in clean_word for root in ["дебаг", "рефактор", "деплой", "релиз"]):
-                return True
+            return True
 
         return False
 

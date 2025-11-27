@@ -443,7 +443,8 @@ class RussianTrapsValidator:
 
         return "\n".join(sections) if sections else ""
 
-    def _format_homonyms_section(self, homonyms: list[dict[str, Any]]) -> list[str]:
+    @staticmethod
+    def _format_homonyms_section(homonyms: list[dict[str, Any]]) -> list[str]:
         """Format homonyms section for prompt enrichment."""
         if not homonyms:
             return []
@@ -455,7 +456,8 @@ class RussianTrapsValidator:
             lines.append(f"- '{h['word']}': {meanings_str}")
         return lines
 
-    def _format_idioms_section(self, idioms: list[dict[str, Any]]) -> list[str]:
+    @staticmethod
+    def _format_idioms_section(idioms: list[dict[str, Any]]) -> list[str]:
         """Format idioms section for prompt enrichment."""
         if not idioms:
             return []
@@ -466,7 +468,8 @@ class RussianTrapsValidator:
                 lines.append(f"  English equivalent: {i['english_equivalent']}")
         return lines
 
-    def _format_untranslatable_section(self, untranslatable: list[dict[str, Any]]) -> list[str]:
+    @staticmethod
+    def _format_untranslatable_section(untranslatable: list[dict[str, Any]]) -> list[str]:
         """Format untranslatable words section for prompt enrichment."""
         if not untranslatable:
             return []
@@ -475,7 +478,8 @@ class RussianTrapsValidator:
             lines.append(f"- '{u['word']}': {u['why_untranslatable'][:100]}...")
         return lines
 
-    def _format_stress_section(self, stress_homographs: list[dict[str, Any]]) -> list[str]:
+    @staticmethod
+    def _format_stress_section(stress_homographs: list[dict[str, Any]]) -> list[str]:
         """Format stress-dependent meanings section for prompt enrichment."""
         if not stress_homographs:
             return []

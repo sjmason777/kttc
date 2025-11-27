@@ -73,7 +73,8 @@ class YandexGPTProvider(BaseLLMProvider):
         self.model_uri = f"gpt://{folder_id}/{model}"
         self.timeout = aiohttp.ClientTimeout(total=timeout)
 
-    async def _check_response_status(self, response: aiohttp.ClientResponse) -> None:
+    @staticmethod
+    async def _check_response_status(response: aiohttp.ClientResponse) -> None:
         """Check HTTP response status and raise appropriate exceptions.
 
         Args:
@@ -92,7 +93,8 @@ class YandexGPTProvider(BaseLLMProvider):
             error_text = await response.text()
             raise LLMError(f"Yandex API error (status {response.status}): {error_text}")
 
-    def _extract_text_from_result(self, result: dict[str, Any]) -> str | None:
+    @staticmethod
+    def _extract_text_from_result(result: dict[str, Any]) -> str | None:
         """Extract text from Yandex API response result.
 
         Args:

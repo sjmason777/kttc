@@ -349,7 +349,8 @@ class EnglishLanguageHelper(LanguageHelper):
                 }
         return verb_tenses
 
-    def _find_noun_after_article(self, doc: Any, article_idx: int) -> int | None:
+    @staticmethod
+    def _find_noun_after_article(doc: Any, article_idx: int) -> int | None:
         """Find the first noun within 4 tokens after an article.
 
         Args:
@@ -364,7 +365,8 @@ class EnglishLanguageHelper(LanguageHelper):
                 return j
         return None
 
-    def _check_article_correctness(self, doc: Any, article_idx: int, article: str) -> bool:
+    @staticmethod
+    def _check_article_correctness(doc: Any, article_idx: int, article: str) -> bool:
         """Check if article (a/an) is correct based on following word.
 
         Args:

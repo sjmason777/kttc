@@ -241,42 +241,46 @@ async def _process_batch_translations(
     results: list[tuple[str, QAReport]] = []
     semaphore = asyncio.Semaphore(parallel)
 
-    progress = _create_batch_progress(len(translations)) if show_progress else None
-    task_id = (
-        progress.add_task("[cyan]Processing translations...", total=len(translations))
-        if progress
-        else None
-    )
+    if show_progress:
+        # Progress mode - create progress bar
+        progress = _create_batch_progress(len(translations))
+        task_id = progress.add_task("[cyan]Processing translations...", total=len(translations))
 
-    async def process_one(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
-        async with semaphore:
-            task = batch_translation.to_task()
-            report = await orchestrator.evaluate(task)
-            if progress and task_id is not None:
+        async def process_one(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
+            async with semaphore:
+                task = batch_translation.to_task()
+                report = await orchestrator.evaluate(task)
                 progress.update(task_id, advance=1)
-            return _get_batch_identifier(idx, batch_translation), report
+                return _get_batch_identifier(idx, batch_translation), report
 
-    tasks = [process_one(idx, t) for idx, t in enumerate(translations)]
-    output_console = progress.console if progress else console
+        tasks = [process_one(idx, t) for idx, t in enumerate(translations)]
 
-    if progress:
         with progress:
             for coro in asyncio.as_completed(tasks):
                 try:
                     identifier, report = await coro
                     results.append((identifier, report))
                     if not verbose:
-                        _print_batch_result(identifier, report, output_console)
+                        _print_batch_result(identifier, report, progress.console)
                 except Exception as e:
-                    output_console.print(f"  [red]✗ Error processing translation: {e}[/red]")
+                    progress.console.print(f"  [red]✗ Error processing translation: {e}[/red]")
     else:
+        # No progress mode - direct processing
+        async def process_one(idx: int, batch_translation: Any) -> tuple[str, QAReport]:
+            async with semaphore:
+                task = batch_translation.to_task()
+                report = await orchestrator.evaluate(task)
+                return _get_batch_identifier(idx, batch_translation), report
+
+        tasks = [process_one(idx, t) for idx, t in enumerate(translations)]
+
         for coro in asyncio.as_completed(tasks):
             try:
                 identifier, report = await coro
                 results.append((identifier, report))
-                _print_batch_result(identifier, report, output_console)
+                _print_batch_result(identifier, report, console)
             except Exception as e:
-                output_console.print(f"  [red]✗ Error processing translation: {e}[/red]")
+                console.print(f"  [red]✗ Error processing translation: {e}[/red]")
 
     return results
 

@@ -213,8 +213,8 @@ class GlossaryManager:
             self._check_value_match(value, query, results, current_path)
             self._recurse_into_value(value, query, results, current_path)
 
+    @staticmethod
     def _check_key_match(
-        self,
         key: str,
         value: Any,
         query: str,
@@ -225,8 +225,8 @@ class GlossaryManager:
         if query in key.lower():
             results.append({"path": " > ".join(path), "data": value})
 
+    @staticmethod
     def _check_value_match(
-        self,
         value: Any,
         query: str,
         results: list[dict[str, Any]],
