@@ -571,9 +571,12 @@ class RussianLanguageHelper(LanguageHelper):
         # Skip genitive case - masculine and neuter have identical endings
         adj_case = getattr(adj_token, "case", None)
         noun_case = getattr(noun_token, "case", None)
-        if adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]:
-            if {adj_gender, noun_gender} == {"masc", "neut"}:
-                return True
+        if (
+            adj_case in ["gent", "gen"]
+            or noun_case in ["gent", "gen"]
+            and {adj_gender, noun_gender} == {"masc", "neut"}
+        ):
+            return True
 
         return False
 
