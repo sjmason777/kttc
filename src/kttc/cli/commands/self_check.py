@@ -168,7 +168,9 @@ def display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
         severity_color = (
             "red"
             if error.severity.value == "critical"
-            else "yellow" if error.severity.value == "major" else "dim"
+            else "yellow"
+            if error.severity.value == "major"
+            else "dim"
         )
         start, end = error.location
         error_text = text[start:end] if start < len(text) and end <= len(text) else ""

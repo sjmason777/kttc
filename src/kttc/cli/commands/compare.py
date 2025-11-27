@@ -270,7 +270,9 @@ def _display_comparison_results(results: list[dict[str, Any]], verbose: bool) ->
                     severity_color = (
                         "red"
                         if error.severity.value == "critical"
-                        else "yellow" if error.severity.value == "major" else "dim"
+                        else "yellow"
+                        if error.severity.value == "major"
+                        else "dim"
                     )
                     error_table.add_row(
                         error.category,
