@@ -26,6 +26,10 @@ from kttc.core import TranslationTask
 from kttc.helpers.detection import detect_language
 from kttc.llm import AnthropicProvider, BaseLLMProvider, OpenAIProvider
 
+# File extension constants
+JSON_EXT = ".json"
+TEXT_FILE_EXTENSIONS = (".txt", ".md", JSON_EXT)
+
 
 def auto_detect_format(output: str | None, output_format: str | None) -> str:
     """Auto-detect output format from file extension.
@@ -42,7 +46,7 @@ def auto_detect_format(output: str | None, output_format: str | None) -> str:
 
     if output:
         suffix = Path(output).suffix.lower()
-        if suffix == ".json":
+        if suffix == JSON_EXT:
             return "json"
         if suffix in [".md", ".markdown"]:
             return "markdown"
@@ -127,6 +131,71 @@ def get_available_providers(settings: Any) -> list[str]:
     return available
 
 
+def _resolve_provider_name(provider: str | None, settings: Any) -> str:
+    """Resolve provider name from user input or available providers.
+
+    Args:
+        provider: User-specified provider name or None
+        settings: Application settings
+
+    Returns:
+        Resolved provider name
+
+    Raises:
+        RuntimeError: If no providers are configured
+    """
+    if provider is not None:
+        return provider
+
+    available_providers = get_available_providers(settings)
+    if not available_providers:
+        raise RuntimeError(
+            "No LLM providers configured. Please set at least one of:\n"
+            "  - KTTC_OPENAI_API_KEY\n"
+            "  - KTTC_ANTHROPIC_API_KEY\n"
+            "  - KTTC_GIGACHAT_CLIENT_ID and KTTC_GIGACHAT_CLIENT_SECRET"
+        )
+
+    if settings.default_llm_provider in available_providers:
+        return str(settings.default_llm_provider)
+    return str(available_providers[0])
+
+
+def _create_provider_instance(provider_name: str, settings: Any, model: str) -> BaseLLMProvider:
+    """Create LLM provider instance based on provider name.
+
+    Args:
+        provider_name: Name of the provider (openai, anthropic, gigachat)
+        settings: Application settings
+        model: Model name to use
+
+    Returns:
+        Configured provider instance
+
+    Raises:
+        ValueError: If provider is unknown
+    """
+    from kttc.llm import GigaChatProvider
+
+    if provider_name == "openai":
+        api_key = settings.get_llm_provider_key(provider_name)
+        return OpenAIProvider(api_key=api_key, model=model)
+
+    if provider_name == "anthropic":
+        api_key = settings.get_llm_provider_key(provider_name)
+        return AnthropicProvider(api_key=api_key, model=model)
+
+    if provider_name == "gigachat":
+        credentials = settings.get_llm_provider_credentials(provider_name)
+        return GigaChatProvider(
+            client_id=credentials["client_id"],
+            client_secret=credentials["client_secret"],
+            model=model,
+        )
+
+    raise ValueError(f"Unknown provider: {provider_name}. Supported: openai, anthropic, gigachat")
+
+
 def setup_llm_provider(
     provider: str | None,
     settings: Any,
@@ -153,10 +222,8 @@ def setup_llm_provider(
         RuntimeError: If provider setup fails
     """
     from kttc.cli.demo import DemoLLMProvider
-    from kttc.llm import GigaChatProvider
     from kttc.llm.model_selector import ModelSelector
 
-    # Use demo provider if demo mode enabled
     if demo:
         if verbose:
             console.print(
@@ -164,60 +231,22 @@ def setup_llm_provider(
             )
         return DemoLLMProvider(model="demo-model")
 
-    # If no provider specified, select from available providers
-    if provider is None:
-        available_providers = get_available_providers(settings)
-        if not available_providers:
-            raise RuntimeError(
-                "No LLM providers configured. Please set at least one of:\n"
-                "  - KTTC_OPENAI_API_KEY\n"
-                "  - KTTC_ANTHROPIC_API_KEY\n"
-                "  - KTTC_GIGACHAT_CLIENT_ID and KTTC_GIGACHAT_CLIENT_SECRET"
-            )
-        # Use default or first available
-        provider_name = (
-            settings.default_llm_provider
-            if settings.default_llm_provider in available_providers
-            else available_providers[0]
-        )
-    else:
-        provider_name = provider
-
-    # Intelligent model selection if enabled and task provided
+    provider_name = _resolve_provider_name(provider, settings)
     model = settings.default_model
+
     if auto_select_model and task is not None:
         selector = ModelSelector()
-        recommended_model = selector.select_best_model(
+        model = selector.select_best_model(
             source_lang=task.source_lang,
             target_lang=task.target_lang,
             domain=task.context.get("domain") if task.context else None,
             task_type="qa",
             optimize_for="quality",
         )
-        model = recommended_model
         if verbose:
             console.print(f"[dim]🤖 Auto-selected model: {model}[/dim]")
 
-    # Setup provider based on type
-    llm_provider: BaseLLMProvider
-    if provider_name == "openai":
-        api_key = settings.get_llm_provider_key(provider_name)
-        llm_provider = OpenAIProvider(api_key=api_key, model=model)
-    elif provider_name == "anthropic":
-        api_key = settings.get_llm_provider_key(provider_name)
-        llm_provider = AnthropicProvider(api_key=api_key, model=model)
-    elif provider_name == "gigachat":
-        # GigaChat uses client_id + client_secret instead of API key
-        credentials = settings.get_llm_provider_credentials(provider_name)
-        llm_provider = GigaChatProvider(
-            client_id=credentials["client_id"],
-            client_secret=credentials["client_secret"],
-            model=model,
-        )
-    else:
-        raise ValueError(
-            f"Unknown provider: {provider_name}. Supported: openai, anthropic, gigachat"
-        )
+    llm_provider = _create_provider_instance(provider_name, settings, model)
 
     if verbose:
         console.print(f"[dim]Using {provider_name} provider with model {model}[/dim]\n")
@@ -358,6 +387,28 @@ def detect_languages_from_files(
     return source_lang, target_lang
 
 
+def _detect_language_from_dir(directory: Path, label: str) -> str | None:
+    """Detect language from first text file in directory.
+
+    Args:
+        directory: Path to directory to scan
+        label: Label for console output (e.g., "source", "target")
+
+    Returns:
+        Detected language code or None if detection failed
+    """
+    if not directory.exists():
+        return None
+
+    for f in directory.iterdir():
+        if f.is_file() and f.suffix in TEXT_FILE_EXTENSIONS:
+            sample = f.read_text(encoding="utf-8")[:1000]
+            detected = detect_language(sample)
+            console.print(f"[dim]🔍 Auto-detected {label} language: {detected}[/dim]")
+            return detected
+    return None
+
+
 def detect_languages_from_directory(
     source_dir: Path,
     translation_dir: Path,
@@ -378,21 +429,11 @@ def detect_languages_from_directory(
         Tuple of (source_lang, target_lang) - may contain None if detection failed
     """
     try:
-        if source_dir.exists() and not source_lang:
-            for f in source_dir.iterdir():
-                if f.is_file() and f.suffix in (".txt", ".md", ".json"):
-                    sample = f.read_text(encoding="utf-8")[:1000]
-                    source_lang = detect_language(sample)
-                    console.print(f"[dim]🔍 Auto-detected source language: {source_lang}[/dim]")
-                    break
+        if not source_lang:
+            source_lang = _detect_language_from_dir(source_dir, "source")
 
-        if translation_dir.exists() and not target_lang:
-            for f in translation_dir.iterdir():
-                if f.is_file() and f.suffix in (".txt", ".md", ".json"):
-                    sample = f.read_text(encoding="utf-8")[:1000]
-                    target_lang = detect_language(sample)
-                    console.print(f"[dim]🔍 Auto-detected target language: {target_lang}[/dim]")
-                    break
+        if not target_lang:
+            target_lang = _detect_language_from_dir(translation_dir, "target")
     except Exception as e:
         if verbose:
             console.print(f"[dim]⚠ Language auto-detection failed: {e}[/dim]")

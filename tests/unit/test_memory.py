@@ -12,6 +12,19 @@ import pytest
 from kttc.memory.termbase import TermEntry, TerminologyBase, TermViolation
 from kttc.memory.tm import TMSearchResult, TMSegment, TranslationMemory
 
+# Check if sentence_transformers is available
+try:
+    import sentence_transformers  # noqa: F401
+
+    HAS_SENTENCE_TRANSFORMERS = True
+except ImportError:
+    HAS_SENTENCE_TRANSFORMERS = False
+
+requires_sentence_transformers = pytest.mark.skipif(
+    not HAS_SENTENCE_TRANSFORMERS,
+    reason="sentence_transformers not installed",
+)
+
 
 @pytest.mark.unit
 class TestTermEntry:
@@ -149,6 +162,7 @@ class TestTMSearchResult:
 
 
 @pytest.mark.unit
+@requires_sentence_transformers
 class TestTranslationMemory:
     """Test TranslationMemory with mocked database."""
 

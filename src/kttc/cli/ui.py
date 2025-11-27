@@ -44,6 +44,15 @@ from kttc.utils.console import (
     print_warning,
 )
 
+# Style constants
+STYLE_BOLD_CYAN = "bold cyan"
+STYLE_DIM_YELLOW = "dim yellow"
+
+# Status label constants
+STATUS_GOOD = "✓ Good"
+STATUS_ACCEPTABLE = "⚠ Acceptable"
+STATUS_POOR = "✗ Poor"
+
 __all__ = [
     "console",
     "print_error",
@@ -70,7 +79,7 @@ def print_header(title: str, subtitle: str | None = None) -> None:
     Use bold for structure, avoid large panels that waste vertical space.
     """
     console.print()
-    console.print(f"[bold cyan]{title}[/bold cyan]")
+    console.print(f"[{STYLE_BOLD_CYAN}]{title}[/{STYLE_BOLD_CYAN}]")
     if subtitle:
         console.print(f"[dim]{subtitle}[/dim]")
     console.print()
@@ -211,7 +220,7 @@ def print_nlp_insights(task: Any, helper: Any) -> None:
 
     # Create insights table
     table = Table(show_header=False, box=None, padding=(0, 2))
-    table.add_column(style="bold cyan", width=20)
+    table.add_column(style=STYLE_BOLD_CYAN, width=20)
     table.add_column()
 
     table.add_row("Word Count:", str(insights.get("word_count", 0)))
@@ -309,7 +318,7 @@ def _add_domain_to_table(results_table: Table, report: QAReport, verbose: bool) 
     else:
         domain_conf_color = "dim"
 
-    domain_text = Text(domain_display, style="bold cyan")
+    domain_text = Text(domain_display, style=STYLE_BOLD_CYAN)
     if domain_confidence > 0.5:
         domain_text += Text(f" ({domain_confidence:.0%} confidence)", style=domain_conf_color)
 
@@ -517,7 +526,7 @@ def _print_unified_error_table(
     issues: list[dict[str, Any]], verbose: bool, show_suggestions: bool = False
 ) -> None:
     """Print unified error table with all issues (QA errors, NLP, API)."""
-    table = Table(title="Issues Found", show_header=True, header_style="bold cyan")
+    table = Table(title="Issues Found", show_header=True, header_style=STYLE_BOLD_CYAN)
     table.add_column("Category", style="cyan", no_wrap=True)
     table.add_column("Subcategory", style="dim", no_wrap=True)
     table.add_column("Severity", no_wrap=True)
@@ -584,7 +593,7 @@ def print_comparison_table(comparisons: list[dict[str, Any]]) -> None:
     table = Table(
         title="Translation Comparison",
         show_header=True,
-        header_style="bold cyan",
+        header_style=STYLE_BOLD_CYAN,
         title_style="bold",
     )
 
@@ -633,7 +642,7 @@ def print_benchmark_summary(results: dict[str, Any]) -> None:
     """
     # Summary statistics
     stats_table = Table(show_header=False, box=None, padding=(0, 2))
-    stats_table.add_column(style="bold cyan")
+    stats_table.add_column(style=STYLE_BOLD_CYAN)
     stats_table.add_column()
 
     stats_table.add_row("Total Providers:", str(results.get("total_providers", 0)))
@@ -738,6 +747,52 @@ def print_available_extensions() -> None:
     console.print()
 
 
+def _get_metric_color(score: float, thresholds: tuple[float, float, float]) -> str:
+    """Get color for metric score based on thresholds.
+
+    Args:
+        score: The metric score value
+        thresholds: Tuple of (green, yellow, dim_yellow) threshold values
+
+    Returns:
+        Color string for Rich styling
+    """
+    green_thresh, yellow_thresh, dim_yellow_thresh = thresholds
+    if score >= green_thresh:
+        return "green"
+    if score >= yellow_thresh:
+        return "yellow"
+    if score >= dim_yellow_thresh:
+        return STYLE_DIM_YELLOW
+    return "red"
+
+
+def _get_quality_status(score: float, good_thresh: float, acceptable_thresh: float) -> str:
+    """Get quality status label based on score thresholds.
+
+    Args:
+        score: The metric score value
+        good_thresh: Threshold for "Good" status
+        acceptable_thresh: Threshold for "Acceptable" status
+
+    Returns:
+        Status string (Good, Acceptable, or Poor)
+    """
+    if score >= good_thresh:
+        return STATUS_GOOD
+    if score >= acceptable_thresh:
+        return STATUS_ACCEPTABLE
+    return STATUS_POOR
+
+
+# Metric threshold configurations: (green, yellow, dim_yellow)
+_METRIC_THRESHOLDS = {
+    "chrf": (80, 65, 50),
+    "bleu": (50, 40, 30),
+    "default": (70, 60, 50),
+}
+
+
 def print_lightweight_metrics(
     scores: Any,
     verbose: bool = False,
@@ -757,60 +812,31 @@ def print_lightweight_metrics(
         │ Composite:      65.90  ✓ Good     │
         └────────────────────────────────────┘
     """
-
-    # Color-code scores based on thresholds
-    def get_score_color(score: float, metric_type: str = "default") -> str:
-        """Get color for score based on thresholds."""
-        if metric_type == "chrf":
-            if score >= 80:
-                return "green"
-            if score >= 65:
-                return "yellow"
-            if score >= 50:
-                return "dim yellow"
-            return "red"
-        if metric_type == "bleu":
-            if score >= 50:
-                return "green"
-            if score >= 40:
-                return "yellow"
-            if score >= 30:
-                return "dim yellow"
-            return "red"
-        if score >= 70:
-            return "green"
-        if score >= 60:
-            return "yellow"
-        if score >= 50:
-            return "dim yellow"
-        return "red"
-
-    # Create metrics table
     table = Table(show_header=False, box=None, padding=(0, 2))
-    table.add_column(style="bold cyan", width=18)
+    table.add_column(style=STYLE_BOLD_CYAN, width=18)
     table.add_column(justify="right", width=8)
     table.add_column(width=15)
 
-    # Add scores
-    chrf_color = get_score_color(scores.chrf, "chrf")
+    # chrF score
+    chrf_color = _get_metric_color(scores.chrf, _METRIC_THRESHOLDS["chrf"])
     table.add_row(
         "chrF:",
         Text(f"{scores.chrf:.2f}", style=chrf_color),
         Text(f"✓ {scores.quality_level.title()}", style=chrf_color),
     )
 
-    bleu_color = get_score_color(scores.bleu, "bleu")
-    bleu_status = (
-        "✓ Good" if scores.bleu >= 40 else "⚠ Acceptable" if scores.bleu >= 25 else "✗ Poor"
-    )
+    # BLEU score
+    bleu_color = _get_metric_color(scores.bleu, _METRIC_THRESHOLDS["bleu"])
+    bleu_status = _get_quality_status(scores.bleu, 40, 25)
     table.add_row(
         "BLEU:",
         Text(f"{scores.bleu:.2f}", style=bleu_color),
         Text(bleu_status, style=bleu_color),
     )
 
-    ter_color = get_score_color(scores.ter)
-    ter_status = "✓ Good" if scores.ter >= 70 else "⚠ Acceptable" if scores.ter >= 50 else "✗ Poor"
+    # TER score
+    ter_color = _get_metric_color(scores.ter, _METRIC_THRESHOLDS["default"])
+    ter_status = _get_quality_status(scores.ter, 70, 50)
     table.add_row(
         "TER (inverted):",
         Text(f"{scores.ter:.2f}", style=ter_color),
@@ -818,8 +844,9 @@ def print_lightweight_metrics(
     )
 
     # Length ratio
-    length_status = "✓" if 0.8 <= scores.length_ratio <= 1.2 else "⚠"
-    length_color = "green" if 0.8 <= scores.length_ratio <= 1.2 else "yellow"
+    is_length_ok = 0.8 <= scores.length_ratio <= 1.2
+    length_color = "green" if is_length_ok else "yellow"
+    length_status = "✓" if is_length_ok else "⚠"
     table.add_row(
         "Length Ratio:",
         Text(f"{scores.length_ratio:.2f}", style=length_color),
@@ -828,10 +855,8 @@ def print_lightweight_metrics(
 
     # Composite score
     composite = scores.composite_score
-    composite_color = get_score_color(composite)
-    composite_status = (
-        "✓ Good" if composite >= 65 else "⚠ Acceptable" if composite >= 50 else "✗ Poor"
-    )
+    composite_color = _get_metric_color(composite, _METRIC_THRESHOLDS["default"])
+    composite_status = _get_quality_status(composite, 65, 50)
     table.add_row(
         "Composite:",
         Text(f"{composite:.2f}", style=composite_color),
@@ -846,7 +871,6 @@ def print_lightweight_metrics(
     )
     console.print(panel)
 
-    # Show interpretation if verbose
     if verbose:
         from kttc.evaluation import LightweightMetrics
 
@@ -882,7 +906,7 @@ def _build_rule_based_summary_table(
     score_color, score_icon = _get_score_color_and_icon(rule_based_score)
 
     table = Table(show_header=False, box=None, padding=(0, 2))
-    table.add_column(style="bold cyan", width=18)
+    table.add_column(style=STYLE_BOLD_CYAN, width=18)
     table.add_column()
 
     table.add_row(
@@ -903,7 +927,7 @@ def _build_rule_based_summary_table(
 
 def _build_rule_based_error_table(errors: list[Any], verbose: bool) -> Table:
     """Build detailed error table for rule-based checks."""
-    error_table = Table(title="Rule-Based Errors", show_header=True, header_style="bold cyan")
+    error_table = Table(title="Rule-Based Errors", show_header=True, header_style=STYLE_BOLD_CYAN)
     error_table.add_column("Check Type", style="cyan", no_wrap=True)
     error_table.add_column("Severity", no_wrap=True)
     error_table.add_column("Description", max_width=60 if not verbose else None)

@@ -199,6 +199,28 @@ class HindiLanguageHelper(LanguageHelper):
 
         return True
 
+    @staticmethod
+    def _find_word_positions(text: str, words: list[str]) -> list[tuple[str, int, int]]:
+        """Find positions of words in text.
+
+        Args:
+            text: Original text
+            words: List of words to find
+
+        Returns:
+            List of (word, start, end) tuples
+        """
+        tokens = []
+        start = 0
+        for word in words:
+            if not word or not word.strip():
+                continue
+            idx = text.find(word, start)
+            if idx != -1:
+                tokens.append((word, idx, idx + len(word)))
+                start = idx + len(word)
+        return tokens
+
     def tokenize(self, text: str) -> list[tuple[str, int, int]]:
         """Tokenize Hindi text with accurate positions using Indic NLP Library.
 
@@ -208,49 +230,61 @@ class HindiLanguageHelper(LanguageHelper):
         Returns:
             List of (word, start, end) tuples
         """
-        # Handle empty string
         if not text or not text.strip():
             return []
 
         if not self.is_available():
-            # Fallback: simple split on whitespace
-            tokens = []
-            start = 0
-            for word in text.split():
-                idx = text.find(word, start)
-                if idx != -1:
-                    tokens.append((word, idx, idx + len(word)))
-                    start = idx + len(word)
-            return tokens
+            return self._find_word_positions(text, text.split())
 
-        # Use Indic NLP Library tokenization
         try:
-            # Normalize first
-            if self._normalizer:
-                normalized_text = self._normalizer.normalize(text)
-            else:
-                normalized_text = text
-
-            # Tokenize
+            normalized_text = self._normalizer.normalize(text) if self._normalizer else text
             words = trivial_tokenize(normalized_text, lang="hi")
-
-            # Find positions
-            tokens = []
-            start = 0
-            for word in words:
-                # Skip empty tokens
-                if not word or not word.strip():
-                    continue
-                idx = normalized_text.find(word, start)
-                if idx != -1:
-                    tokens.append((word, idx, idx + len(word)))
-                    start = idx + len(word)
-
-            return tokens
+            return self._find_word_positions(normalized_text, words)
 
         except Exception as e:
             logger.error(f"Tokenization failed: {e}")
             return []
+
+    @staticmethod
+    def _parse_feats_string(feats: str | None) -> dict[str, str]:
+        """Parse Stanza feats string to dictionary.
+
+        Args:
+            feats: String like "Gender=Masc|Case=Nom" or None
+
+        Returns:
+            Dictionary of feature key-value pairs
+        """
+        if not feats:
+            return {}
+        result = {}
+        for feat in feats.split("|"):
+            if "=" in feat:
+                key, value = feat.split("=", 1)
+                result[key] = value
+        return result
+
+    def _token_to_morphology_info(self, token: Any) -> MorphologyInfo:
+        """Convert a Stanza token to MorphologyInfo.
+
+        Args:
+            token: Stanza token object
+
+        Returns:
+            MorphologyInfo instance
+        """
+        word = token.words[0]
+        feats = self._parse_feats_string(word.feats)
+        return MorphologyInfo(
+            word=word.text,
+            pos=word.upos,
+            gender=feats.get("Gender"),
+            case=feats.get("Case"),
+            number=feats.get("Number"),
+            aspect=feats.get("Aspect"),
+            start=token.start_char,
+            stop=token.end_char,
+        )
 
     def analyze_morphology(self, text: str) -> list[MorphologyInfo]:
         """Analyze morphology of all words in text using Stanza.
@@ -266,35 +300,11 @@ class HindiLanguageHelper(LanguageHelper):
 
         try:
             doc = self._stanza_nlp(text)
-            results = []
-
-            for sentence in doc.sentences:
-                for token in sentence.tokens:
-                    word = token.words[0]  # Get first word
-
-                    # Parse feats string to dictionary
-                    # feats is a string like "Gender=Masc|Case=Nom" or None
-                    feats_dict = {}
-                    if word.feats:
-                        for feat in word.feats.split("|"):
-                            if "=" in feat:
-                                key, value = feat.split("=", 1)
-                                feats_dict[key] = value
-
-                    results.append(
-                        MorphologyInfo(
-                            word=word.text,
-                            pos=word.upos,
-                            gender=feats_dict.get("Gender"),
-                            case=feats_dict.get("Case"),
-                            number=feats_dict.get("Number"),
-                            aspect=feats_dict.get("Aspect"),
-                            start=token.start_char,
-                            stop=token.end_char,
-                        )
-                    )
-
-            return results
+            return [
+                self._token_to_morphology_info(token)
+                for sentence in doc.sentences
+                for token in sentence.tokens
+            ]
 
         except Exception as e:
             logger.error(f"Morphology analysis failed: {e}")
@@ -583,6 +593,63 @@ class HindiLanguageHelper(LanguageHelper):
             logger.error(f"Spello check failed: {e}")
             return []
 
+    @staticmethod
+    def _count_pos_tags(doc: Any) -> dict[str, int]:
+        """Count POS tags from Stanza document.
+
+        Args:
+            doc: Stanza document
+
+        Returns:
+            Dictionary of POS tag counts
+        """
+        pos_counts: dict[str, int] = {}
+        for sentence in doc.sentences:
+            for token in sentence.tokens:
+                upos = token.words[0].upos
+                if upos:
+                    pos_counts[upos] = pos_counts.get(upos, 0) + 1
+        return pos_counts
+
+    @staticmethod
+    def _extract_entities_from_doc(doc: Any) -> list[dict[str, Any]]:
+        """Extract named entities from Stanza document.
+
+        Args:
+            doc: Stanza document
+
+        Returns:
+            List of entity dictionaries
+        """
+        return [
+            {
+                "text": ent.text,
+                "type": ent.type,
+                "start": ent.start_char,
+                "end": ent.end_char,
+            }
+            for sentence in doc.sentences
+            for ent in sentence.ents
+        ]
+
+    def _get_stanza_enrichment(self, text: str) -> dict[str, Any]:
+        """Get Stanza-based linguistic enrichment.
+
+        Args:
+            text: Text to analyze
+
+        Returns:
+            Dictionary with Stanza analysis results
+        """
+        doc = self._stanza_nlp(text)
+        return {
+            "word_count": sum(len(sent.tokens) for sent in doc.sentences),
+            "sentence_count": len(doc.sentences),
+            "pos_distribution": self._count_pos_tags(doc),
+            "entities": self._extract_entities_from_doc(doc),
+            "has_stanza": True,
+        }
+
     def get_enrichment_data(self, text: str) -> dict[str, Any]:
         """Get comprehensive linguistic data for enriching LLM prompts.
 
@@ -603,54 +670,15 @@ class HindiLanguageHelper(LanguageHelper):
 
         enrichment: dict[str, Any] = {"has_morphology": True}
 
-        # Normalize text
         if self._normalizer:
             try:
-                normalized = self._normalizer.normalize(text)
-                enrichment["normalized_text"] = normalized
+                enrichment["normalized_text"] = self._normalizer.normalize(text)
             except Exception as e:
                 logger.error(f"Normalization failed: {e}")
 
-        # Use Stanza for detailed analysis
         if self._stanza_available and self._stanza_nlp:
             try:
-                doc = self._stanza_nlp(text)
-
-                # Count POS tags
-                pos_counts: dict[str, int] = {}
-                for sentence in doc.sentences:
-                    for token in sentence.tokens:
-                        word = token.words[0]
-                        if word.upos:
-                            pos_counts[word.upos] = pos_counts.get(word.upos, 0) + 1
-
-                # Extract named entities
-                entities = []
-                for sentence in doc.sentences:
-                    for ent in sentence.ents:
-                        entities.append(
-                            {
-                                "text": ent.text,
-                                "type": ent.type,
-                                "start": ent.start_char,
-                                "end": ent.end_char,
-                            }
-                        )
-
-                # Count words and sentences
-                word_count = sum(len(sent.tokens) for sent in doc.sentences)
-                sent_count = len(doc.sentences)
-
-                enrichment.update(
-                    {
-                        "word_count": word_count,
-                        "sentence_count": sent_count,
-                        "pos_distribution": pos_counts,
-                        "entities": entities,
-                        "has_stanza": True,
-                    }
-                )
-
+                enrichment.update(self._get_stanza_enrichment(text))
             except Exception as e:
                 logger.error(f"Stanza enrichment failed: {e}")
 

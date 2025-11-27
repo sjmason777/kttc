@@ -372,6 +372,68 @@ class RussianLanguageHelper(LanguageHelper):
 
         return results
 
+    def _should_skip_lt_match(self, text: str, match: Any) -> bool:
+        """Check if a LanguageTool match should be skipped.
+
+        Args:
+            text: Original text
+            match: LanguageTool match object
+
+        Returns:
+            True if match should be skipped
+        """
+        if not self._is_translation_relevant(match):
+            return True
+
+        if self._is_csv_or_code_context(text, match):
+            logger.debug(f"Skipping CSV/code context: {match.ruleId}")
+            return True
+
+        error_word = text[match.offset : match.offset + match.errorLength].lower()
+        if self._is_it_term(error_word):
+            logger.debug(f"Skipping IT term: {error_word}")
+            return True
+
+        return False
+
+    def _match_to_error(self, match: Any) -> ErrorAnnotation:
+        """Convert LanguageTool match to ErrorAnnotation.
+
+        Args:
+            match: LanguageTool match object
+
+        Returns:
+            ErrorAnnotation instance
+        """
+        return ErrorAnnotation(
+            category="fluency",
+            subcategory=f"russian_{match.ruleId}",
+            severity=self._map_severity(match),
+            location=(match.offset, match.offset + match.errorLength),
+            description=match.message,
+            suggestion=match.replacements[0] if match.replacements else None,
+        )
+
+    def _run_languagetool_checks(self, text: str) -> list[ErrorAnnotation]:
+        """Run LanguageTool grammar checks.
+
+        Args:
+            text: Text to check
+
+        Returns:
+            List of errors found
+        """
+        errors = []
+        try:
+            matches = self._language_tool.check(text)
+            for match in matches:
+                if not self._should_skip_lt_match(text, match):
+                    errors.append(self._match_to_error(match))
+            logger.debug(f"LanguageTool found {len(errors)} grammar errors")
+        except Exception as e:
+            logger.error(f"LanguageTool check failed: {e}")
+        return errors
+
     def check_grammar(self, text: str) -> list[ErrorAnnotation]:
         """Check Russian grammar using LanguageTool + custom rules.
 
@@ -396,45 +458,9 @@ class RussianLanguageHelper(LanguageHelper):
         """
         errors = []
 
-        # 1. LanguageTool checks (930+ rules)
         if self._lt_available:
-            try:
-                matches = self._language_tool.check(text)
+            errors.extend(self._run_languagetool_checks(text))
 
-                for match in matches:
-                    # Filter out style-only suggestions not relevant for translation
-                    if not self._is_translation_relevant(match):
-                        continue
-
-                    # Skip CSV/code context false positives (comma spacing in CSV)
-                    if self._is_csv_or_code_context(text, match):
-                        logger.debug(f"Skipping CSV/code context: {match.ruleId}")
-                        continue
-
-                    # Skip errors for IT terminology (false positives)
-                    error_word = text[match.offset : match.offset + match.errorLength].lower()
-                    if self._is_it_term(error_word):
-                        logger.debug(f"Skipping IT term: {error_word}")
-                        continue
-
-                    # Map to our error format
-                    errors.append(
-                        ErrorAnnotation(
-                            category="fluency",
-                            subcategory=f"russian_{match.ruleId}",
-                            severity=self._map_severity(match),
-                            location=(match.offset, match.offset + match.errorLength),
-                            description=match.message,
-                            suggestion=match.replacements[0] if match.replacements else None,
-                        )
-                    )
-
-                logger.debug(f"LanguageTool found {len(errors)} grammar errors")
-
-            except Exception as e:
-                logger.error(f"LanguageTool check failed: {e}")
-
-        # 2. Custom agreement checks (using MAWO core morphology)
         if self.is_available():
             try:
                 custom_errors = self._check_adjective_noun_agreement(text)
@@ -443,10 +469,7 @@ class RussianLanguageHelper(LanguageHelper):
             except Exception as e:
                 logger.error(f"Custom agreement checks failed: {e}")
 
-        # 3. Deduplicate errors (same location = same error)
-        errors = self._deduplicate_errors(errors)
-
-        return errors
+        return self._deduplicate_errors(errors)
 
     def _deduplicate_errors(self, errors: list[ErrorAnnotation]) -> list[ErrorAnnotation]:
         """Remove duplicate errors at the same location.
@@ -488,6 +511,72 @@ class RussianLanguageHelper(LanguageHelper):
 
         return deduplicated
 
+    # Words to skip in agreement checking (numerals, demonstrative pronouns)
+    _AGREEMENT_SKIP_WORDS = frozenset(
+        [
+            "один",
+            "одна",
+            "одно",
+            "этот",
+            "эта",
+            "это",
+            "тот",
+            "та",
+            "то",
+            "весь",
+            "вся",
+            "всё",
+        ]
+    )
+
+    @staticmethod
+    def _find_next_noun(tokens: list[Any], start_idx: int) -> Any | None:
+        """Find the next noun token after an adjective.
+
+        Args:
+            tokens: List of tokens
+            start_idx: Index to start searching from
+
+        Returns:
+            Noun token or None if not found
+        """
+        j = start_idx
+        while j < len(tokens):
+            if tokens[j].pos in ["ADJF", "ADJS"]:
+                j += 1
+                continue
+            if tokens[j].pos == "NOUN":
+                return tokens[j]
+            break
+        return None
+
+    def _is_agreement_false_positive(
+        self, adj_token: Any, noun_token: Any, adj_gender: str, noun_gender: str
+    ) -> bool:
+        """Check if a gender mismatch is a false positive.
+
+        Args:
+            adj_token: Adjective token
+            noun_token: Noun token
+            adj_gender: Adjective gender
+            noun_gender: Noun gender
+
+        Returns:
+            True if this should be skipped as false positive
+        """
+        adj_text = adj_token.text.lower()
+        if adj_text in self._AGREEMENT_SKIP_WORDS:
+            return True
+
+        # Skip genitive case - masculine and neuter have identical endings
+        adj_case = getattr(adj_token, "case", None)
+        noun_case = getattr(noun_token, "case", None)
+        if adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]:
+            if {adj_gender, noun_gender} == {"masc", "neut"}:
+                return True
+
+        return False
+
     def _check_adjective_noun_agreement(self, text: str) -> list[ErrorAnnotation]:
         """Check adjective-noun agreement using MAWO core morphology.
 
@@ -505,74 +594,36 @@ class RussianLanguageHelper(LanguageHelper):
             return []
 
         errors = []
-
-        # Get morphological analysis
         doc = self._nlp(text)
         tokens = list(doc.tokens)
 
         for i, token in enumerate(tokens):
-            # Find adjectives
-            if token.pos not in ["ADJF", "ADJS"]:
+            if token.pos not in ["ADJF", "ADJS"] or not token.gender:
                 continue
 
-            adj_gender = token.gender
-            if not adj_gender:
+            next_noun = self._find_next_noun(tokens, i + 1)
+            if not next_noun or not next_noun.gender:
                 continue
 
-            # Find next noun (skip other adjectives)
-            j = i + 1
-            next_noun = None
-            while j < len(tokens):
-                if tokens[j].pos in ["ADJF", "ADJS"]:
-                    j += 1
-                    continue
-                if tokens[j].pos == "NOUN":
-                    next_noun = tokens[j]
-                    break
-                break
-
-            if not next_noun:
+            if token.gender == next_noun.gender:
                 continue
 
-            noun_gender = next_noun.gender
-            if not noun_gender:
+            if self._is_agreement_false_positive(token, next_noun, token.gender, next_noun.gender):
                 continue
 
-            # Check if genders match
-            if adj_gender != noun_gender:
-                # Skip common false positives
-                adj_text = token.text.lower()
-
-                # Skip cases like "один человек" (один can be masc but used with any gender)
-                if adj_text in ["один", "одна", "одно"]:
-                    continue
-
-                # Skip demonstrative pronouns (этот, тот, etc)
-                if adj_text in ["этот", "эта", "это", "тот", "та", "то", "весь", "вся", "всё"]:
-                    continue
-
-                # Skip genitive case - masculine and neuter have identical endings
-                # e.g., "машинного обучения" - both are neuter but adj may be parsed as masc
-                adj_case = getattr(token, "case", None)
-                noun_case = getattr(next_noun, "case", None)
-                if adj_case in ["gent", "gen"] or noun_case in ["gent", "gen"]:
-                    # In genitive, masc/neut ambiguity is common - skip this check
-                    if {adj_gender, noun_gender} == {"masc", "neut"}:
-                        continue
-
-                errors.append(
-                    ErrorAnnotation(
-                        category="fluency",
-                        subcategory="russian_adj_noun_gender_agreement",
-                        severity=ErrorSeverity.MAJOR,
-                        location=(token.start, next_noun.end),
-                        description=(
-                            f"Adjective-noun gender mismatch: '{token.text}' is {adj_gender}, "
-                            f"but '{next_noun.text}' is {noun_gender}"
-                        ),
-                        suggestion=None,  # No auto-suggestion for gender mismatch
-                    )
+            errors.append(
+                ErrorAnnotation(
+                    category="fluency",
+                    subcategory="russian_adj_noun_gender_agreement",
+                    severity=ErrorSeverity.MAJOR,
+                    location=(token.start, next_noun.end),
+                    description=(
+                        f"Adjective-noun gender mismatch: '{token.text}' is {token.gender}, "
+                        f"but '{next_noun.text}' is {next_noun.gender}"
+                    ),
+                    suggestion=None,
                 )
+            )
 
         return errors
 

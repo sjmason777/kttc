@@ -22,19 +22,22 @@ from typing import Any
 
 from kttc.llm import BaseLLMProvider
 
+# Response constants
+_EMPTY_ERRORS_JSON = '{\n  "errors": []\n}'
+
 # Demo response templates for different agent types
 _DEMO_RESPONSES: dict[str, tuple[list[str], str]] = {
     "json_empty": (
         ["russian-specific", "output only valid json"],
-        '{\n  "errors": []\n}',
+        _EMPTY_ERRORS_JSON,
     ),
     "entity": (
         ["entity preservation", "hallucination"],
-        '{\n  "errors": []\n}',
+        _EMPTY_ERRORS_JSON,
     ),
     "coherence": (
         ["coherence"],
-        '{\n  "errors": []\n}',
+        _EMPTY_ERRORS_JSON,
     ),
     "accuracy": (
         ["accuracy", "meaning", "omission"],

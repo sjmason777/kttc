@@ -30,6 +30,14 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# Model name constants to avoid duplication
+MODEL_CLAUDE_35_SONNET = "claude-3.5-sonnet"
+MODEL_GPT_45 = "gpt-4.5"
+MODEL_GPT_4_TURBO = "gpt-4-turbo"
+MODEL_GEMINI_20 = "gemini-2.0"
+MODEL_YANDEXGPT = "yandexgpt"
+MODEL_GIGACHAT = "gigachat"
+
 
 class ModelSelector:
     """Intelligent LLM selection based on task characteristics.
@@ -54,67 +62,67 @@ class ModelSelector:
     PERFORMANCE_MATRIX = {
         # English to other languages
         ("en", "es"): {
-            "claude-3.5-sonnet": 0.89,
-            "gpt-4.5": 0.87,
-            "gemini-2.0": 0.85,
+            MODEL_CLAUDE_35_SONNET: 0.89,
+            MODEL_GPT_45: 0.87,
+            MODEL_GEMINI_20: 0.85,
         },
         ("en", "ru"): {
-            "claude-3.5-sonnet": 0.86,
-            "gpt-4.5": 0.84,
-            "yandexgpt": 0.88,  # Best for Russian
-            "gigachat": 0.87,  # Sber's model, strong for Russian
+            MODEL_CLAUDE_35_SONNET: 0.86,
+            MODEL_GPT_45: 0.84,
+            MODEL_YANDEXGPT: 0.88,  # Best for Russian
+            MODEL_GIGACHAT: 0.87,  # Sber's model, strong for Russian
         },
         ("en", "zh"): {
-            "gpt-4.5": 0.88,
-            "claude-3.5-sonnet": 0.85,
-            "gemini-2.0": 0.87,
+            MODEL_GPT_45: 0.88,
+            MODEL_CLAUDE_35_SONNET: 0.85,
+            MODEL_GEMINI_20: 0.87,
         },
         ("en", "fr"): {
-            "claude-3.5-sonnet": 0.90,
-            "gpt-4.5": 0.88,
-            "gemini-2.0": 0.86,
+            MODEL_CLAUDE_35_SONNET: 0.90,
+            MODEL_GPT_45: 0.88,
+            MODEL_GEMINI_20: 0.86,
         },
         ("en", "de"): {
-            "claude-3.5-sonnet": 0.89,
-            "gpt-4.5": 0.87,
-            "gemini-2.0": 0.85,
+            MODEL_CLAUDE_35_SONNET: 0.89,
+            MODEL_GPT_45: 0.87,
+            MODEL_GEMINI_20: 0.85,
         },
         # Russian to English
         ("ru", "en"): {
-            "yandexgpt": 0.87,
-            "gigachat": 0.86,
-            "claude-3.5-sonnet": 0.84,
-            "gpt-4.5": 0.83,
+            MODEL_YANDEXGPT: 0.87,
+            MODEL_GIGACHAT: 0.86,
+            MODEL_CLAUDE_35_SONNET: 0.84,
+            MODEL_GPT_45: 0.83,
         },
     }
 
     # Domain preferences (overrides language pair)
     DOMAIN_PREFERENCES = {
-        "legal": "gpt-4.5",  # Best for legal domain
-        "medical": "gpt-4.5",  # High accuracy needed
-        "general": "claude-3.5-sonnet",  # Best overall
-        "technical": "claude-3.5-sonnet",  # Technical accuracy
-        "creative": "claude-3.5-sonnet",  # Better at nuance
-        "financial": "gpt-4.5",  # Precision needed
+        "legal": MODEL_GPT_45,  # Best for legal domain
+        "medical": MODEL_GPT_45,  # High accuracy needed
+        "general": MODEL_CLAUDE_35_SONNET,  # Best overall
+        "technical": MODEL_CLAUDE_35_SONNET,  # Technical accuracy
+        "creative": MODEL_CLAUDE_35_SONNET,  # Better at nuance
+        "financial": MODEL_GPT_45,  # Precision needed
     }
 
     # Cost tiers (relative cost per 1M tokens)
     MODEL_COSTS = {
-        "claude-3.5-sonnet": 3.0,
-        "gpt-4.5": 5.0,
-        "gemini-2.0": 2.0,
-        "yandexgpt": 1.5,
-        "gigachat": 1.0,
+        MODEL_CLAUDE_35_SONNET: 3.0,
+        MODEL_GPT_45: 5.0,
+        MODEL_GEMINI_20: 2.0,
+        MODEL_YANDEXGPT: 1.5,
+        MODEL_GIGACHAT: 1.0,
     }
 
     # Provider availability mapping
     PROVIDER_MAP = {
-        "claude-3.5-sonnet": "anthropic",
-        "gpt-4.5": "openai",
-        "gpt-4-turbo": "openai",
-        "gemini-2.0": "google",
-        "yandexgpt": "yandex",
-        "gigachat": "gigachat",
+        MODEL_CLAUDE_35_SONNET: "anthropic",
+        MODEL_GPT_45: "openai",
+        MODEL_GPT_4_TURBO: "openai",
+        MODEL_GEMINI_20: "google",
+        MODEL_YANDEXGPT: "yandex",
+        MODEL_GIGACHAT: "gigachat",
     }
 
     def select_best_model(  # pylint: disable=unused-argument
@@ -168,7 +176,7 @@ class ModelSelector:
 
         # 3. Fallback to general-purpose best
         logger.info(f"Using fallback model for {source_lang}->{target_lang}")
-        return "claude-3.5-sonnet"
+        return MODEL_CLAUDE_35_SONNET
 
     def _select_cost_effective(self, performance_scores: dict[str, float]) -> str:
         """Select most cost-effective model balancing quality and cost.
@@ -275,7 +283,7 @@ class ModelSelector:
 
         if lang_pair not in self.PERFORMANCE_MATRIX:
             # Fallback recommendation
-            return [("claude-3.5-sonnet", 0.85)]
+            return [(MODEL_CLAUDE_35_SONNET, 0.85)]
 
         scores = self.PERFORMANCE_MATRIX[lang_pair]
 

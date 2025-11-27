@@ -38,6 +38,69 @@ WINDOWS_LCID_MAP = {
 }
 
 
+def _get_supported_language(lang_string: str | None) -> str | None:
+    """Normalize language string and return if supported.
+
+    Args:
+        lang_string: Language string to normalize, or None
+
+    Returns:
+        Supported language code or None
+    """
+    if not lang_string:
+        return None
+    lang = _normalize_language_code(lang_string)
+    return lang if lang in SUPPORTED_LANGUAGES else None
+
+
+def _detect_from_env_vars() -> str | None:
+    """Try to detect language from environment variables.
+
+    Returns:
+        Supported language code or None
+    """
+    # Check KTTC-specific env var first
+    result = _get_supported_language(os.environ.get("KTTC_UI_LANG"))
+    if result:
+        return result
+
+    # Check standard locale environment variables
+    for env_var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
+        result = _get_supported_language(os.environ.get(env_var))
+        if result:
+            return result
+
+    return None
+
+
+def _detect_from_locale() -> str | None:
+    """Try to detect language from Python locale module.
+
+    Returns:
+        Supported language code or None
+    """
+    try:
+        lang_locale, _ = locale.getlocale()
+        return _get_supported_language(lang_locale)
+    except (ValueError, TypeError):
+        return None
+
+
+def _detect_from_windows_api() -> str | None:
+    """Try to detect language from Windows API.
+
+    Returns:
+        Supported language code or None
+    """
+    if os.name != "nt":
+        return None
+    try:
+        win_lang = _detect_windows_language()
+        return win_lang if win_lang in SUPPORTED_LANGUAGES else None
+    except OSError:
+        return None
+
+
 def detect_system_language() -> str:
     """Detect system language (cross-platform).
 
@@ -51,44 +114,12 @@ def detect_system_language() -> str:
     Returns:
         Two-letter language code (en, ru, zh, fa, hi)
     """
-    # Priority 1: KTTC_UI_LANG environment variable
-    kttc_lang = os.environ.get("KTTC_UI_LANG")
-    if kttc_lang:
-        lang = _normalize_language_code(kttc_lang)
-        if lang in SUPPORTED_LANGUAGES:
-            return lang
-
-    # Priority 2: Standard locale environment variables (Linux/macOS)
-    for env_var in ("LC_ALL", "LC_MESSAGES", "LANG", "LANGUAGE"):
-        lang_env = os.environ.get(env_var)
-        if lang_env:
-            lang = _normalize_language_code(lang_env)
-            if lang in SUPPORTED_LANGUAGES:
-                return lang
-
-    # Priority 3: Python locale module
-    try:
-        lang_locale, _ = locale.getlocale()
-        if lang_locale:
-            lang = _normalize_language_code(lang_locale)
-            if lang in SUPPORTED_LANGUAGES:
-                return lang
-    except (ValueError, TypeError):
-        # Silently ignore locale detection errors and continue with other methods
-        pass
-
-    # Priority 4: Windows API
-    if os.name == "nt":
-        try:
-            win_lang = _detect_windows_language()
-            if win_lang and win_lang in SUPPORTED_LANGUAGES:
-                return win_lang
-        except OSError:
-            # Silently ignore Windows API errors and fall back to default language
-            pass
-
-    # Default fallback
-    return DEFAULT_LANGUAGE
+    return (
+        _detect_from_env_vars()
+        or _detect_from_locale()
+        or _detect_from_windows_api()
+        or DEFAULT_LANGUAGE
+    )
 
 
 def _normalize_language_code(lang_string: str) -> str:

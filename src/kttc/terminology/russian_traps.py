@@ -434,34 +434,55 @@ class RussianTrapsValidator:
             Prompt section with Russian-specific guidance
         """
         analysis = self.analyze_text(text)
-        sections = []
+        sections: list[str] = []
 
-        if analysis["homonyms"]:
-            sections.append("## HOMONYMS DETECTED (context-dependent meaning):")
-            for h in analysis["homonyms"][:5]:  # Limit to 5
-                meanings_str = ", ".join(
-                    [f"{m['meaning']} ({m['english']})" for m in h.get("meanings", [])[:3]]
-                )
-                sections.append(f"- '{h['word']}': {meanings_str}")
-
-        if analysis["idioms"]:
-            sections.append("\n## IDIOMS DETECTED (DO NOT translate literally!):")
-            for i in analysis["idioms"][:5]:
-                sections.append(f"- '{i['idiom']}': means '{i['meaning']}', NOT '{i['literal']}'")
-                if i.get("english_equivalent"):
-                    sections.append(f"  English equivalent: {i['english_equivalent']}")
-
-        if analysis["untranslatable"]:
-            sections.append("\n## UNTRANSLATABLE WORDS (require special handling):")
-            for u in analysis["untranslatable"][:3]:
-                sections.append(f"- '{u['word']}': {u['why_untranslatable'][:100]}...")
-
-        if analysis["stress_homographs"]:
-            sections.append("\n## STRESS-DEPENDENT MEANINGS (verify context):")
-            for s in analysis["stress_homographs"][:3]:
-                variants = s.get("variants", [])
-                if variants:
-                    var_str = "; ".join([f"{v['stress']} = {v['meaning']}" for v in variants[:2]])
-                    sections.append(f"- '{s['word']}': {var_str}")
+        sections.extend(self._format_homonyms_section(analysis["homonyms"]))
+        sections.extend(self._format_idioms_section(analysis["idioms"]))
+        sections.extend(self._format_untranslatable_section(analysis["untranslatable"]))
+        sections.extend(self._format_stress_section(analysis["stress_homographs"]))
 
         return "\n".join(sections) if sections else ""
+
+    def _format_homonyms_section(self, homonyms: list[dict[str, Any]]) -> list[str]:
+        """Format homonyms section for prompt enrichment."""
+        if not homonyms:
+            return []
+        lines = ["## HOMONYMS DETECTED (context-dependent meaning):"]
+        for h in homonyms[:5]:
+            meanings_str = ", ".join(
+                [f"{m['meaning']} ({m['english']})" for m in h.get("meanings", [])[:3]]
+            )
+            lines.append(f"- '{h['word']}': {meanings_str}")
+        return lines
+
+    def _format_idioms_section(self, idioms: list[dict[str, Any]]) -> list[str]:
+        """Format idioms section for prompt enrichment."""
+        if not idioms:
+            return []
+        lines = ["\n## IDIOMS DETECTED (DO NOT translate literally!):"]
+        for i in idioms[:5]:
+            lines.append(f"- '{i['idiom']}': means '{i['meaning']}', NOT '{i['literal']}'")
+            if i.get("english_equivalent"):
+                lines.append(f"  English equivalent: {i['english_equivalent']}")
+        return lines
+
+    def _format_untranslatable_section(self, untranslatable: list[dict[str, Any]]) -> list[str]:
+        """Format untranslatable words section for prompt enrichment."""
+        if not untranslatable:
+            return []
+        lines = ["\n## UNTRANSLATABLE WORDS (require special handling):"]
+        for u in untranslatable[:3]:
+            lines.append(f"- '{u['word']}': {u['why_untranslatable'][:100]}...")
+        return lines
+
+    def _format_stress_section(self, stress_homographs: list[dict[str, Any]]) -> list[str]:
+        """Format stress-dependent meanings section for prompt enrichment."""
+        if not stress_homographs:
+            return []
+        lines = ["\n## STRESS-DEPENDENT MEANINGS (verify context):"]
+        for s in stress_homographs[:3]:
+            variants = s.get("variants", [])
+            if variants:
+                var_str = "; ".join([f"{v['stress']} = {v['meaning']}" for v in variants[:2]])
+                lines.append(f"- '{s['word']}': {var_str}")
+        return lines

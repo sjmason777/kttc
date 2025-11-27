@@ -517,33 +517,43 @@ class XLSXFormatter:
             )
             cell.alignment = Alignment(horizontal="center")
 
+    @staticmethod
+    def _get_column_letter_from_cell(cell: Any) -> str | None:
+        """Extract column letter from a cell object."""
+        if hasattr(cell, "column_letter"):
+            return str(cell.column_letter)
+        if hasattr(cell, "column"):
+            from openpyxl.utils import get_column_letter
+
+            return str(get_column_letter(cell.column))
+        return None
+
+    @staticmethod
+    def _calculate_column_max_length(column_cells: tuple[Any, ...]) -> int:
+        """Calculate maximum content length for a column."""
+        max_length = 0
+        for cell in column_cells:
+            try:
+                if cell.value:
+                    max_length = max(max_length, len(str(cell.value)))
+            except (AttributeError, TypeError):
+                pass
+        return max_length
+
     @classmethod
     def _auto_adjust_columns(cls, ws: Any, max_width: int = 30) -> None:
         """Auto-adjust column widths based on content."""
         try:
             for column_cells in ws.columns:
-                # Convert generator to tuple to allow indexing and iteration
                 column_cells_tuple = tuple(column_cells)
                 if not column_cells_tuple:
                     continue
-                max_length = 0
-                first_cell = column_cells_tuple[0]
-                # Handle both Cell objects and tuples
-                if hasattr(first_cell, "column_letter"):
-                    column = first_cell.column_letter
-                elif hasattr(first_cell, "column"):
-                    from openpyxl.utils import get_column_letter
 
-                    column = get_column_letter(first_cell.column)
-                else:
+                column = cls._get_column_letter_from_cell(column_cells_tuple[0])
+                if column is None:
                     continue
-                for cell in column_cells_tuple:
-                    try:
-                        if cell.value:
-                            cell_length = len(str(cell.value))
-                            max_length = max(max_length, cell_length)
-                    except (AttributeError, TypeError):
-                        pass
+
+                max_length = cls._calculate_column_max_length(column_cells_tuple)
                 adjusted_width = min(max_length + 2, max_width)
                 ws.column_dimensions[column].width = adjusted_width
         except Exception:

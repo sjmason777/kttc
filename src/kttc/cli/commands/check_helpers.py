@@ -45,6 +45,10 @@ from kttc.cli.utils import (
 from kttc.core import QAReport, TranslationTask
 from kttc.llm import BaseLLMProvider
 
+# File extension constants
+JSON_EXT = ".json"
+BATCH_INPUT_EXTENSIONS = (".csv", JSON_EXT, ".jsonl")
+
 
 def detect_check_mode(
     source: str, translations: list[str] | None
@@ -58,7 +62,7 @@ def detect_check_mode(
     source_path = Path(source)
 
     # Check if source is CSV/JSON/JSONL file (batch mode)
-    if source_path.is_file() and source_path.suffix.lower() in [".csv", ".json", ".jsonl"]:
+    if source_path.is_file() and source_path.suffix.lower() in BATCH_INPUT_EXTENSIONS:
         return "batch_file", {"file_path": source}
 
     # Check if source is directory (batch mode)
@@ -382,7 +386,7 @@ def save_report(report: QAReport, output: str, output_format: str) -> None:
     """Save report to file."""
     output_path = Path(output)
 
-    if output_format == "json" or output.endswith(".json"):
+    if output_format == "json" or output.endswith(JSON_EXT):
         # Save as JSON
         data = report.model_dump(mode="json")
         output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -401,7 +405,7 @@ def save_report(report: QAReport, output: str, output_format: str) -> None:
             )
             console.print("[dim]Falling back to JSON format...[/dim]")
             data = report.model_dump(mode="json")
-            json_path = output_path.with_suffix(".json")
+            json_path = output_path.with_suffix(JSON_EXT)
             json_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
         else:
             XLSXFormatter.format_report(report, output_path)

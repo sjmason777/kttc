@@ -63,7 +63,7 @@ def setup_self_check_llm(
         return None
 
 
-def run_spelling_check(language: str, text: str) -> list[Any]:
+async def run_spelling_check(language: str, text: str) -> list[Any]:
     """Run spelling check with progress indicator."""
     from kttc.agents.proofreading import SpellingAgent
 
@@ -79,7 +79,7 @@ def run_spelling_check(language: str, text: str) -> list[Any]:
             use_patterns=True,
             use_school_rules=True,
         )
-        return spelling_agent.check(text)
+        return await spelling_agent.check(text)
 
 
 async def run_grammar_check(
@@ -168,9 +168,7 @@ def display_self_check_errors_verbose(all_errors: list[Any], text: str) -> None:
         severity_color = (
             "red"
             if error.severity.value == "critical"
-            else "yellow"
-            if error.severity.value == "major"
-            else "dim"
+            else "yellow" if error.severity.value == "major" else "dim"
         )
         start, end = error.location
         error_text = text[start:end] if start < len(text) and end <= len(text) else ""
@@ -194,9 +192,7 @@ def display_self_check_errors_compact(all_errors: list[Any], text: str) -> None:
         severity_icon = (
             "🔴"
             if error.severity.value == "critical"
-            else "🟡"
-            if error.severity.value == "major"
-            else "⚪"
+            else "🟡" if error.severity.value == "major" else "⚪"
         )
         suggestion_text = f" → '{error.suggestion}'" if error.suggestion else ""
         start, end = error.location
@@ -298,7 +294,7 @@ async def self_check_async(
     llm_provider = setup_self_check_llm(provider, settings, verbose, demo)
 
     # Run proofreading agents
-    spelling_errors = run_spelling_check(language, text)
+    spelling_errors = await run_spelling_check(language, text)
     console.print(f"[green]✓[/green] Spelling check: found {len(spelling_errors)} issues")
 
     grammar_errors, all_errors = await run_grammar_check(

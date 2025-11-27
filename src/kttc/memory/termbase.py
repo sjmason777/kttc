@@ -34,6 +34,9 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
+# Error message constant
+ERR_TERMBASE_NOT_INITIALIZED = "Terminology Base not initialized"
+
 
 class TermEntry(BaseModel):
     """Terminology entry.
@@ -193,7 +196,7 @@ class TerminologyBase:
             RuntimeError: If termbase not initialized
         """
         if not self._initialized or self.db is None:
-            raise RuntimeError("Terminology Base not initialized. Call initialize() first.")
+            raise RuntimeError(f"{ERR_TERMBASE_NOT_INITIALIZED}. Call initialize() first.")
 
         try:
             cursor = self.db.execute(
@@ -276,7 +279,7 @@ class TerminologyBase:
             RuntimeError: If termbase not initialized
         """
         if not self._initialized or self.db is None:
-            raise RuntimeError("Terminology Base not initialized")
+            raise RuntimeError(ERR_TERMBASE_NOT_INITIALIZED)
 
         query = """
             SELECT id, source_term, target_term, source_lang, target_lang,
@@ -340,7 +343,7 @@ class TerminologyBase:
             RuntimeError: If termbase not initialized
         """
         if not self._initialized or self.db is None:
-            raise RuntimeError("Terminology Base not initialized")
+            raise RuntimeError(ERR_TERMBASE_NOT_INITIALIZED)
 
         # Extract potential terms from source (words and phrases)
         source_terms = self._extract_terms(source_text)
@@ -446,7 +449,7 @@ class TerminologyBase:
             Dictionary with statistics
         """
         if not self._initialized or self.db is None:
-            raise RuntimeError("Terminology Base not initialized")
+            raise RuntimeError(ERR_TERMBASE_NOT_INITIALIZED)
 
         stats = {}
 

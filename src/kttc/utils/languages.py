@@ -25,6 +25,9 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# Model name constants
+MODEL_CLAUDE_35_SONNET = "claude-3.5-sonnet"
+
 
 class LanguageRegistry:
     """Centralized language support registry.
@@ -277,18 +280,18 @@ class LanguageRegistry:
         if lang_code == "zh":
             return "gpt-4.5"  # Strong Chinese support
         if lang_code == "ja":
-            return "claude-3.5-sonnet"  # Good Japanese support
+            return MODEL_CLAUDE_35_SONNET  # Good Japanese support
         if lang_code == "hi":
-            return "claude-3.5-sonnet"  # Good Hindi support
+            return MODEL_CLAUDE_35_SONNET  # Good Hindi support
         if lang_code == "fa":
-            return "claude-3.5-sonnet"  # Good Persian support
+            return MODEL_CLAUDE_35_SONNET  # Good Persian support
 
         # General recommendations by resource level
         if resource_level == "low":
             # Low-resource: Use models with better multilingual coverage
             return "gemini-2.0"  # Google's model has broad language support
         # High/medium-resource: Use best overall model
-        return "claude-3.5-sonnet"
+        return MODEL_CLAUDE_35_SONNET
 
     def is_language_supported(self, lang_code: str) -> bool:
         """Check if language is supported.

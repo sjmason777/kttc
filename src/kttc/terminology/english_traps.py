@@ -37,6 +37,9 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
+# Common word constants to avoid duplication
+WORD_YOURE = "you're"
+
 
 class EnglishTrapsValidator:
     """Validator for English language traps and peculiarities.
@@ -62,8 +65,8 @@ class EnglishTrapsValidator:
         (r"\btheir\s+(is|are|was|were|going|coming|doing)\b", "their", "they're"),
         (r"\btheir\s+(a|an|the)\b", "their", "there"),
         # your/you're
-        (r"\byour\s+(welcome|right|wrong|amazing|beautiful)\b", "your", "you're"),
-        (r"\byour\s+going\b", "your", "you're"),
+        (r"\byour\s+(welcome|right|wrong|amazing|beautiful)\b", "your", WORD_YOURE),
+        (r"\byour\s+going\b", "your", WORD_YOURE),
         # its/it's
         (r"\bit's\s+(tail|color|colour|name|size|shape)\b", "it's", "its"),
         (r"\bits\s+(going|raining|been|a|the)\b", "its", "it's"),
@@ -288,7 +291,7 @@ class EnglishTrapsValidator:
             "there",
             "they're",
             "your",
-            "you're",
+            WORD_YOURE,
             "its",
             "it's",
             "to",

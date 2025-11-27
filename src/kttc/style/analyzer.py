@@ -39,6 +39,9 @@ from .models import (
 
 logger = logging.getLogger(__name__)
 
+# Regex pattern for splitting text into sentences
+SENTENCE_SPLIT_PATTERN = r"[.!?]+"
+
 
 class StyleFingerprint:
     """Automatic stylistic fingerprint analyzer.
@@ -756,12 +759,12 @@ class StyleFingerprint:
         # Use root TTR for longer texts to reduce length bias
         if len(words) > 100:
             return len(unique_words) / math.sqrt(len(words))
-        return len(unique_words) / len(words) if words else 0.0
+        return len(unique_words) / len(words)
 
     def _compute_sentence_stats(self, text: str) -> tuple[float, float]:
         """Compute average sentence length and variance."""
         # Split by sentence-ending punctuation
-        sentences = re.split(r"[.!?]+", text)
+        sentences = re.split(SENTENCE_SPLIT_PATTERN, text)
         sentences = [s.strip() for s in sentences if s.strip()]
 
         if not sentences:
@@ -961,7 +964,7 @@ class StyleFingerprint:
                 locations.append((match.start(), match.end()))
 
         # Also check for very long sentences (stream of consciousness)
-        sentences = re.split(r"[.!?]+", text)
+        sentences = re.split(SENTENCE_SPLIT_PATTERN, text)
         long_sentences = [s for s in sentences if len(s.split()) > 50]
 
         if long_sentences:
@@ -1011,7 +1014,7 @@ class StyleFingerprint:
 
     def _detect_fragmentation(self, text: str) -> StyleDeviation | None:
         """Detect sentence fragmentation."""
-        sentences = re.split(r"[.!?]+", text)
+        sentences = re.split(SENTENCE_SPLIT_PATTERN, text)
         short_sentences = [s.strip() for s in sentences if s.strip() and len(s.split()) <= 3]
 
         if len(short_sentences) >= 5:

@@ -567,7 +567,9 @@ def check(
     target_lang: str | None = typer.Option(
         None, "--target-lang", help="Target language code (e.g., 'es') - auto-detected from file"
     ),
-    threshold: float = typer.Option(95.0, "--threshold", help="Minimum MQM score to pass (0-100)"),
+    threshold: float | None = typer.Option(
+        None, "--threshold", help="Minimum MQM score to pass (0-100), default: 95.0"
+    ),
     output: str | None = typer.Option(
         None,
         "--output",
@@ -722,7 +724,7 @@ def check(
             source_lang,
             target_lang,
             lang,
-            threshold,
+            threshold if threshold is not None else 95.0,
             output,
             output_format,
             provider,
@@ -753,11 +755,15 @@ def check(
                         f"[dim]📋 Profile: {loaded_profile.name} - {loaded_profile.description}[/dim]"
                     )
                 # Override threshold from profile if not explicitly set
-                if threshold == 95.0:  # default value
+                if threshold is None:
                     threshold = loaded_profile.quality_threshold
             except ValueError as e:
                 console.print(f"[red]Error loading profile: {e}[/red]")
                 raise typer.Exit(code=1)
+
+        # Set default threshold if not provided by user or profile
+        if threshold is None:
+            threshold = 95.0
 
         # Parse agents selection
         selected_agents = None

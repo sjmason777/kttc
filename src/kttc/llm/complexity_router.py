@@ -31,6 +31,16 @@ from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)
 
+# Model name constants to avoid duplication
+MODEL_GPT_35_TURBO = "gpt-3.5-turbo"
+MODEL_GPT_4_TURBO = "gpt-4-turbo"
+MODEL_GPT_4 = "gpt-4"
+MODEL_CLAUDE_35_SONNET = "claude-3.5-sonnet"
+MODEL_CLAUDE_3_HAIKU = "claude-3-haiku"
+MODEL_CLAUDE_3_OPUS = "claude-3-opus"
+MODEL_YANDEXGPT = "yandexgpt/latest"
+MODEL_YANDEXGPT_LITE = "yandexgpt-lite/latest"
+
 
 @dataclass
 class ComplexityScore:
@@ -555,32 +565,32 @@ class ComplexityEstimator:
         """
         # Model recommendations by complexity tier
         if overall_score < 0.3:
-            preferred = "gpt-3.5-turbo"  # $0.001/1K tokens
+            preferred = MODEL_GPT_35_TURBO  # $0.001/1K tokens
             alternatives = [
-                "gpt-3.5-turbo",
-                "yandexgpt-lite/latest",
-                "claude-3-haiku",
-                "gpt-4-turbo",
-                "yandexgpt/latest",
-                "claude-3.5-sonnet",
+                MODEL_GPT_35_TURBO,
+                MODEL_YANDEXGPT_LITE,
+                MODEL_CLAUDE_3_HAIKU,
+                MODEL_GPT_4_TURBO,
+                MODEL_YANDEXGPT,
+                MODEL_CLAUDE_35_SONNET,
             ]
         elif overall_score < 0.7:
-            preferred = "gpt-4-turbo"  # $0.01/1K tokens
+            preferred = MODEL_GPT_4_TURBO  # $0.01/1K tokens
             alternatives = [
-                "gpt-4-turbo",
-                "yandexgpt/latest",
-                "claude-3.5-sonnet",
-                "gpt-3.5-turbo",
-                "yandexgpt-lite/latest",
+                MODEL_GPT_4_TURBO,
+                MODEL_YANDEXGPT,
+                MODEL_CLAUDE_35_SONNET,
+                MODEL_GPT_35_TURBO,
+                MODEL_YANDEXGPT_LITE,
             ]
         else:
-            preferred = "claude-3.5-sonnet"  # $0.03/1K tokens
+            preferred = MODEL_CLAUDE_35_SONNET  # $0.03/1K tokens
             alternatives = [
-                "claude-3.5-sonnet",
-                "gpt-4-turbo",
-                "yandexgpt/latest",
-                "claude-3-haiku",
-                "yandexgpt-lite/latest",
+                MODEL_CLAUDE_35_SONNET,
+                MODEL_GPT_4_TURBO,
+                MODEL_YANDEXGPT,
+                MODEL_CLAUDE_3_HAIKU,
+                MODEL_YANDEXGPT_LITE,
             ]
 
         # If no provider filtering needed, return preferred
@@ -589,14 +599,14 @@ class ComplexityEstimator:
 
         # Map models to providers
         model_to_provider = {
-            "gpt-3.5-turbo": "openai",
-            "gpt-4-turbo": "openai",
-            "gpt-4": "openai",
-            "claude-3.5-sonnet": "anthropic",
-            "claude-3-haiku": "anthropic",
-            "claude-3-opus": "anthropic",
-            "yandexgpt/latest": "yandex",
-            "yandexgpt-lite/latest": "yandex",
+            MODEL_GPT_35_TURBO: "openai",
+            MODEL_GPT_4_TURBO: "openai",
+            MODEL_GPT_4: "openai",
+            MODEL_CLAUDE_35_SONNET: "anthropic",
+            MODEL_CLAUDE_3_HAIKU: "anthropic",
+            MODEL_CLAUDE_3_OPUS: "anthropic",
+            MODEL_YANDEXGPT: "yandex",
+            MODEL_YANDEXGPT_LITE: "yandex",
         }
 
         # Filter alternatives to only available providers
@@ -614,24 +624,24 @@ class ComplexityEstimator:
         if "anthropic" in available_providers:
             logger.warning(
                 f"No optimal model available for complexity {overall_score:.2f}. "
-                "Falling back to anthropic/claude-3.5-sonnet"
+                f"Falling back to anthropic/{MODEL_CLAUDE_35_SONNET}"
             )
-            return "claude-3.5-sonnet"
+            return MODEL_CLAUDE_35_SONNET
         if "openai" in available_providers:
             logger.warning(
                 f"No optimal model available for complexity {overall_score:.2f}. "
-                "Falling back to openai/gpt-4-turbo"
+                f"Falling back to openai/{MODEL_GPT_4_TURBO}"
             )
-            return "gpt-4-turbo"
+            return MODEL_GPT_4_TURBO
         if "yandex" in available_providers:
             logger.warning(
                 f"No optimal model available for complexity {overall_score:.2f}. "
-                "Falling back to yandex/yandexgpt/latest"
+                f"Falling back to yandex/{MODEL_YANDEXGPT}"
             )
-            return "yandexgpt/latest"
+            return MODEL_YANDEXGPT
         # This should never happen if function called correctly
         logger.error("No available providers! Returning default model")
-        return "gpt-4-turbo"
+        return MODEL_GPT_4_TURBO
 
 
 class ComplexityRouter:

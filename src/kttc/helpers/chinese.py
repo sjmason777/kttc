@@ -301,6 +301,59 @@ class ChineseLanguageHelper(LanguageHelper):
 
         return errors
 
+    def _find_measure_position(
+        self, text: str, number: str, measure: str, noun: str
+    ) -> tuple[int, int] | None:
+        """Find the position of a measure word in text.
+
+        Args:
+            text: Original text
+            number: Number token
+            measure: Measure word token
+            noun: Noun token
+
+        Returns:
+            Tuple of (start, end) positions or None if not found
+        """
+        start_pos = text.find(f"{number}{measure}{noun}")
+        if start_pos == -1:
+            start_pos = text.find(f"{measure}{noun}")
+            if start_pos == -1:
+                return None
+            # When found without number, measure_start is at start_pos
+            return (start_pos, start_pos + len(measure))
+
+        measure_start = start_pos + len(number)
+        return (measure_start, measure_start + len(measure))
+
+    def _create_measure_word_error(
+        self, measure: str, noun: str, location: tuple[int, int], suggested: list[str]
+    ) -> ErrorAnnotation:
+        """Create an error annotation for incorrect measure word.
+
+        Args:
+            measure: The incorrect measure word
+            noun: The noun it modifies
+            location: Position tuple (start, end)
+            suggested: List of suggested measure words
+
+        Returns:
+            ErrorAnnotation for the measure word error
+        """
+        from kttc.core import ErrorSeverity
+
+        return ErrorAnnotation(
+            category="fluency",
+            subcategory="measure_word",
+            severity=ErrorSeverity.MINOR,
+            location=location,
+            description=(
+                f'Incorrect measure word: "{measure}" may not be appropriate '
+                f'for "{noun}". Consider using: {", ".join(suggested)}'
+            ),
+            suggestion=suggested[0],
+        )
+
     def _check_measure_words(self, text: str) -> list[ErrorAnnotation]:
         """Check measure word usage (量词检查).
 
@@ -321,50 +374,26 @@ class ChineseLanguageHelper(LanguageHelper):
             return []
 
         try:
-            # Get HanLP analysis
             result = self._hanlp(text)
             tokens = result["tok"]
             pos_tags = result["pos"]
-
             errors = []
 
-            # Find CD + M + NN patterns
             for i in range(len(pos_tags) - 2):
-                if pos_tags[i] == "CD" and pos_tags[i + 1] == "M" and pos_tags[i + 2] == "NN":
-                    number = tokens[i]
-                    measure = tokens[i + 1]
-                    noun = tokens[i + 2]
+                if not (pos_tags[i] == "CD" and pos_tags[i + 1] == "M" and pos_tags[i + 2] == "NN"):
+                    continue
 
-                    # Check if this measure word is appropriate for the noun
-                    suggested_measures = self._get_appropriate_measures(noun)
+                number, measure, noun = tokens[i], tokens[i + 1], tokens[i + 2]
+                suggested_measures = self._get_appropriate_measures(noun)
 
-                    if suggested_measures and measure not in suggested_measures:
-                        from kttc.core import ErrorSeverity
+                if not suggested_measures or measure in suggested_measures:
+                    continue
 
-                        # Calculate position in original text
-                        start_pos = text.find(f"{number}{measure}{noun}")
-                        if start_pos == -1:
-                            # Try without number
-                            start_pos = text.find(f"{measure}{noun}")
-                            if start_pos == -1:
-                                continue
-
-                        measure_start = start_pos + len(number)
-                        measure_end = measure_start + len(measure)
-
-                        errors.append(
-                            ErrorAnnotation(
-                                category="fluency",
-                                subcategory="measure_word",
-                                severity=ErrorSeverity.MINOR,
-                                location=(measure_start, measure_end),
-                                description=(
-                                    f'Incorrect measure word: "{measure}" may not be appropriate '
-                                    f'for "{noun}". Consider using: {", ".join(suggested_measures)}'
-                                ),
-                                suggestion=suggested_measures[0],
-                            )
-                        )
+                location = self._find_measure_position(text, number, measure, noun)
+                if location:
+                    errors.append(
+                        self._create_measure_word_error(measure, noun, location, suggested_measures)
+                    )
 
             logger.debug(f"Found {len(errors)} measure word errors")
             return errors

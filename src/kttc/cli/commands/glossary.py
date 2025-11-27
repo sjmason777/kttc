@@ -27,6 +27,9 @@ from kttc.core import Glossary, GlossaryManager
 
 console = Console()
 
+# Help text constants
+GLOSSARY_NAME_HELP = "Glossary name"
+
 # Create glossary subcommand app
 glossary_app = typer.Typer(
     name="glossary",
@@ -112,7 +115,7 @@ def _build_entry_row(entry: Any) -> tuple[str, str, str, str, str]:
 
 @glossary_app.command("show")
 def show_glossary(
-    name: str = typer.Argument(..., help="Glossary name"),
+    name: str = typer.Argument(..., help=GLOSSARY_NAME_HELP),
     lang_pair: str | None = typer.Option(
         None, "--lang-pair", "-l", help="Filter by language pair (e.g., en-ru)"
     ),
@@ -173,7 +176,7 @@ def show_glossary(
 
 @glossary_app.command("create")
 def create_glossary(
-    name: str = typer.Argument(..., help="Glossary name"),
+    name: str = typer.Argument(..., help=GLOSSARY_NAME_HELP),
     from_csv: Path | None = typer.Option(None, "--from-csv", help="Create from CSV file"),
     from_json: Path | None = typer.Option(None, "--from-json", help="Create from JSON file"),
     user: bool = typer.Option(False, "--user", help="Save to user directory (~/.kttc/glossaries)"),
@@ -273,7 +276,7 @@ def merge_glossaries(
 
 @glossary_app.command("export")
 def export_glossary(
-    name: str = typer.Argument(..., help="Glossary name"),
+    name: str = typer.Argument(..., help=GLOSSARY_NAME_HELP),
     output_format: str = typer.Option("csv", "--format", "-f", help="Output format (csv or json)"),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output file path"),
 ) -> None:

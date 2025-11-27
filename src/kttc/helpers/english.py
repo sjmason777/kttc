@@ -349,27 +349,61 @@ class EnglishLanguageHelper(LanguageHelper):
                 }
         return verb_tenses
 
+    def _find_noun_after_article(self, doc: Any, article_idx: int) -> int | None:
+        """Find the first noun within 4 tokens after an article.
+
+        Args:
+            doc: Spacy document
+            article_idx: Index of the article token
+
+        Returns:
+            Index of the noun token, or None if not found
+        """
+        for j in range(article_idx + 1, min(article_idx + 5, len(doc))):
+            if doc[j].pos_ in ["NOUN", "PROPN"]:
+                return j
+        return None
+
+    def _check_article_correctness(self, doc: Any, article_idx: int, article: str) -> bool:
+        """Check if article (a/an) is correct based on following word.
+
+        Args:
+            doc: Spacy document
+            article_idx: Index of the article token
+            article: The article text (lowercase)
+
+        Returns:
+            True if correct or if article is 'the'
+        """
+        if article == "the":
+            return True
+        next_word = doc[article_idx + 1].text if article_idx + 1 < len(doc) else ""
+        expected = "an" if next_word and next_word[0].lower() in "aeiou" else "a"
+        return article == expected
+
     def _analyze_article_noun_pairs(self, doc: Any) -> list[dict[str, Any]]:
         """Extract article-noun patterns from document."""
         pairs: list[dict[str, Any]] = []
+        articles = {"a", "an", "the"}
+
         for i, token in enumerate(doc):
-            if token.pos_ != "DET" or token.text.lower() not in ["a", "an", "the"]:
+            if token.pos_ != "DET" or token.text.lower() not in articles:
                 continue
-            for j in range(i + 1, min(i + 5, len(doc))):
-                if doc[j].pos_ not in ["NOUN", "PROPN"]:
-                    continue
-                next_word = doc[i + 1].text if i + 1 < len(doc) else ""
-                correct = "an" if next_word and next_word[0].lower() in "aeiou" else "a"
-                is_correct = token.text.lower() == correct if token.text.lower() != "the" else True
-                pairs.append(
-                    {
-                        "article": token.text.lower(),
-                        "noun": doc[j].text,
-                        "distance": j - i,
-                        "correct": is_correct,
-                    }
-                )
-                break
+
+            noun_idx = self._find_noun_after_article(doc, i)
+            if noun_idx is None:
+                continue
+
+            article = token.text.lower()
+            pairs.append(
+                {
+                    "article": article,
+                    "noun": doc[noun_idx].text,
+                    "distance": noun_idx - i,
+                    "correct": self._check_article_correctness(doc, i, article),
+                }
+            )
+
         return pairs
 
     def _analyze_subject_verb_pairs(self, doc: Any) -> list[dict[str, Any]]:

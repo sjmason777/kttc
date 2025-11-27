@@ -20,6 +20,7 @@ across all commands (check, translate, batch, compare, benchmark).
 
 from __future__ import annotations
 
+import math
 from typing import Any
 
 from rich.table import Table
@@ -28,6 +29,9 @@ from rich.text import Text
 from kttc.core import QAReport
 from kttc.i18n import _
 from kttc.utils.console import console
+
+# Style constants
+HEADER_STYLE_CYAN = "bold cyan"
 
 
 class ConsoleFormatter:
@@ -278,7 +282,7 @@ class ConsoleFormatter:
         # Results table (compact) - dynamic width
         table = Table(
             show_header=True,
-            header_style="bold cyan",
+            header_style=HEADER_STYLE_CYAN,
             box=None,
             padding=(0, 1),
             expand=True,
@@ -350,7 +354,7 @@ class ConsoleFormatter:
             # Results table (compact) - dynamic width
             table = Table(
                 show_header=True,
-                header_style="bold cyan",
+                header_style=HEADER_STYLE_CYAN,
                 box=None,
                 padding=(0, 1),
                 expand=True,
@@ -444,6 +448,116 @@ class ConsoleFormatter:
         )
         console.print()
 
+    @staticmethod
+    def _collect_all_issues(
+        errors: list[Any], nlp_insights: dict[str, Any] | None
+    ) -> list[dict[str, Any]]:
+        """Collect QA errors and NLP issues into a unified list.
+
+        Args:
+            errors: List of errors from QA report
+            nlp_insights: Optional NLP insights with issues
+
+        Returns:
+            List of issue dictionaries with unified format
+        """
+        all_issues = []
+
+        for error in errors:
+            all_issues.append(
+                {
+                    "category": error.category,
+                    "severity": error.severity.value,
+                    "description": error.description,
+                    "location": error.location,
+                    "suggestion": error.suggestion,
+                }
+            )
+
+        if nlp_insights and nlp_insights.get("issues"):
+            for issue in nlp_insights["issues"]:
+                all_issues.append(
+                    {
+                        "category": issue.get("category", "Linguistic"),
+                        "severity": issue.get("severity", "minor"),
+                        "description": issue.get("description", ""),
+                        "location": issue.get("location", [0, 0]),
+                        "suggestion": issue.get("suggestion"),
+                    }
+                )
+
+        return all_issues
+
+    @staticmethod
+    def _format_location(location: Any) -> str:
+        """Format location tuple/list as string."""
+        if isinstance(location, list | tuple) and len(location) >= 2:
+            return f"[{location[0]}:{location[1]}]"
+        return "N/A"
+
+    @staticmethod
+    def _get_severity_style(severity: str) -> str:
+        """Get Rich style string for severity level."""
+        if severity == "critical":
+            return "bold red"
+        if severity == "major":
+            return "bold yellow"
+        return "dim"
+
+    @classmethod
+    def _render_issues_table(cls, all_issues: list[dict[str, Any]], translation_text: str) -> None:
+        """Render issues as a compact table.
+
+        Args:
+            all_issues: List of issue dictionaries
+            translation_text: Full translation text for extracting fragments
+        """
+        widths = cls._calculate_column_widths(["#", "Location", "Fragment", "Issue"])
+
+        table = Table(
+            title=_("table_issues_found"),
+            show_header=True,
+            header_style=HEADER_STYLE_CYAN,
+            box=None,
+            padding=(0, 1),
+            expand=True,
+        )
+        table.add_column("#", style="dim", width=widths["#"], justify="right")
+        table.add_column(
+            _("table_location"), style="dim cyan", width=widths["location"], no_wrap=True
+        )
+        table.add_column(
+            _("table_fragment"),
+            style="yellow",
+            width=widths["fragment"],
+            no_wrap=False,
+            overflow="fold",
+        )
+        table.add_column(_("table_issue"), no_wrap=False, overflow="fold")
+
+        fragment_max = widths["fragment"] - 4 if widths["fragment"] else 25
+
+        for idx, issue in enumerate(all_issues, 1):
+            location = issue.get("location", [0, 0])
+            loc_str = cls._format_location(location)
+            fragment = cls._extract_fragment(translation_text, location, max_length=fragment_max)
+
+            description = issue["description"]
+            suggestion = issue.get("suggestion")
+            issue_text = f"{description} → {suggestion}" if suggestion else description
+
+            severity = issue["severity"]
+            severity_style = cls._get_severity_style(severity)
+            severity_badge = severity.upper()[0]
+            issue_display = f"[{severity_style}]{severity_badge}[/{severity_style}] {issue_text}"
+
+            table.add_row(str(idx), loc_str, f'"{fragment}"', issue_display)
+
+        console.print(table)
+        console.print()
+        console.print(f"[dim]💡 {_('check_hint_verbose')}[/dim]")
+        console.print()
+
     @classmethod
     def _print_issues_compact(
         cls,
@@ -460,116 +574,15 @@ class ConsoleFormatter:
             nlp_insights: Optional NLP insights with issues
             verbose: Show detailed descriptions
         """
-        # Combine QA errors and NLP issues
-        all_issues = []
-
-        for error in errors:
-            issue = {
-                "category": error.category,
-                "severity": error.severity.value,
-                "description": error.description,
-                "location": error.location,
-                "suggestion": error.suggestion,
-            }
-            all_issues.append(issue)
-
-        if nlp_insights and nlp_insights.get("issues"):
-            for issue in nlp_insights["issues"]:
-                all_issues.append(
-                    {
-                        "category": issue.get("category", "Linguistic"),
-                        "severity": issue.get("severity", "minor"),
-                        "description": issue.get("description", ""),
-                        "location": issue.get("location", [0, 0]),
-                        "suggestion": issue.get("suggestion"),
-                    }
-                )
+        all_issues = cls._collect_all_issues(errors, nlp_insights)
 
         if not all_issues:
             return
 
-        # Create compact issues table
         if verbose:
-            # Verbose: show numbered list with full context
             cls._print_issues_verbose(all_issues, translation_text)
         else:
-            # Compact: show table with location and fragment
-            # Calculate dynamic column widths
-            widths = cls._calculate_column_widths(["#", "Location", "Fragment", "Issue"])
-
-            table = Table(
-                title=_("table_issues_found"),
-                show_header=True,
-                header_style="bold cyan",
-                box=None,
-                padding=(0, 1),
-                expand=True,  # Use full terminal width
-            )
-            table.add_column("#", style="dim", width=widths["#"], justify="right")
-            table.add_column(
-                _("table_location"), style="dim cyan", width=widths["location"], no_wrap=True
-            )
-            table.add_column(
-                _("table_fragment"),
-                style="yellow",
-                width=widths["fragment"],
-                no_wrap=False,
-                overflow="fold",
-            )
-            table.add_column(_("table_issue"), no_wrap=False, overflow="fold")  # Auto-expand
-
-            # Calculate dynamic max lengths based on column widths
-            fragment_max = widths["fragment"] - 4 if widths["fragment"] else 25
-
-            for idx, issue in enumerate(all_issues, 1):
-                # Format location
-                location = issue.get("location", [0, 0])
-                if isinstance(location, list | tuple) and len(location) >= 2:
-                    loc_str = f"[{location[0]}:{location[1]}]"
-                else:
-                    loc_str = "N/A"
-
-                # Extract fragment (dynamic width)
-                fragment = cls._extract_fragment(
-                    translation_text, location, max_length=fragment_max
-                )
-
-                # Build issue description (no truncation - let table handle wrapping)
-                description = issue["description"]
-                suggestion = issue.get("suggestion")
-
-                # Add suggestion if available
-                if suggestion:
-                    issue_text = f"{description} → {suggestion}"
-                else:
-                    issue_text = description
-
-                # Color-code severity
-                severity = issue["severity"]
-                if severity == "critical":
-                    severity_style = "bold red"
-                elif severity == "major":
-                    severity_style = "bold yellow"
-                else:
-                    severity_style = "dim"
-
-                # Format issue with severity badge
-                severity_badge = severity.upper()[0]  # C, M, or m
-                issue_display = (
-                    f"[{severity_style}]{severity_badge}[/{severity_style}] {issue_text}"
-                )
-
-                table.add_row(
-                    str(idx),
-                    loc_str,
-                    f'"{fragment}"',
-                    issue_display,
-                )
-
-            console.print(table)
-            console.print()
-            console.print(f"[dim]💡 {_('check_hint_verbose')}[/dim]")
-            console.print()
+            cls._render_issues_table(all_issues, translation_text)
 
     @classmethod
     def _print_issues_verbose(
@@ -690,7 +703,7 @@ class ConsoleFormatter:
                 console.print(f"      [dim]• {dev_type}{': ' + examples if examples else ''}[/dim]")
 
         adjustments = style_profile.get_agent_weight_adjustments()
-        if adjustments.get("fluency", 1.0) != 1.0:
+        if not math.isclose(adjustments.get("fluency", 1.0), 1.0):
             console.print(
                 f"    [yellow]Fluency tolerance adjusted to {adjustments['fluency']:.0%}[/yellow]"
             )

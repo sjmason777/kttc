@@ -204,23 +204,52 @@ class GlossaryManager:
         path: list[str],
     ) -> None:
         """Recursively search dictionary for matching terms."""
-        if isinstance(data, dict):
-            for key, value in data.items():
-                # Check if key matches
-                if query in key.lower():
-                    results.append({"path": " > ".join(path + [key]), "data": value})
+        if not isinstance(data, dict):
+            return
 
-                # Check if value is string and matches
-                if isinstance(value, str) and query in value.lower():
-                    results.append({"path": " > ".join(path + [key]), "data": value})
+        for key, value in data.items():
+            current_path = path + [key]
+            self._check_key_match(key, value, query, results, current_path)
+            self._check_value_match(value, query, results, current_path)
+            self._recurse_into_value(value, query, results, current_path)
 
-                # Recurse into nested dictionaries
-                if isinstance(value, dict):
-                    self._search_in_dict(value, query, results, path + [key])
-                elif isinstance(value, list):
-                    for item in value:
-                        if isinstance(item, dict):
-                            self._search_in_dict(item, query, results, path + [key])
+    def _check_key_match(
+        self,
+        key: str,
+        value: Any,
+        query: str,
+        results: list[dict[str, Any]],
+        path: list[str],
+    ) -> None:
+        """Check if dictionary key matches the query."""
+        if query in key.lower():
+            results.append({"path": " > ".join(path), "data": value})
+
+    def _check_value_match(
+        self,
+        value: Any,
+        query: str,
+        results: list[dict[str, Any]],
+        path: list[str],
+    ) -> None:
+        """Check if string value matches the query."""
+        if isinstance(value, str) and query in value.lower():
+            results.append({"path": " > ".join(path), "data": value})
+
+    def _recurse_into_value(
+        self,
+        value: Any,
+        query: str,
+        results: list[dict[str, Any]],
+        path: list[str],
+    ) -> None:
+        """Recurse into nested dictionaries or lists."""
+        if isinstance(value, dict):
+            self._search_in_dict(value, query, results, path)
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, dict):
+                    self._search_in_dict(item, query, results, path)
 
     def get_metadata(self, language: str, glossary_type: str) -> GlossaryMetadata | None:
         """
