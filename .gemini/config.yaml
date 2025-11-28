@@ -1,0 +1,43 @@
+# Gemini Code Assist Configuration
+# Docs: https://developers.google.com/gemini-code-assist/docs/customize-gemini-behavior-github
+
+# Fun mode - adds poems to PR summaries
+have_fun: false
+
+# Files and directories to ignore (glob patterns)
+ignore_patterns:
+  - "*.lock"
+  - "*.min.js"
+  - "*.min.css"
+  - "dist/**"
+  - "build/**"
+  - ".venv/**"
+  - "venv/**"
+  - "node_modules/**"
+  - "**/__pycache__/**"
+  - "*.egg-info/**"
+  - "htmlcov/**"
+  - ".pytest_cache/**"
+  - ".mypy_cache/**"
+  - ".ruff_cache/**"
+
+# Persistent memory settings
+memory_config:
+  disabled: false  # Keep memory enabled for context
+
+# Code review settings
+code_review:
+  disable: false
+
+  # Minimum severity to report: LOW, MEDIUM, HIGH, CRITICAL
+  comment_severity_threshold: LOW
+
+  # Max comments per review (-1 = unlimited)
+  max_review_comments: 20
+
+  # Behavior on PR open
+  pull_request_opened:
+    help: false           # Don't post help message
+    summary: true         # Post PR summary
+    code_review: true     # Post code review
+    include_drafts: false # Skip draft PRs
