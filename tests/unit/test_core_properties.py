@@ -407,10 +407,8 @@ class TestTextProcessingProperties:
     @settings(max_examples=100)
     def test_lower_upper_roundtrip(self, text: str) -> None:
         """Property: Text case changes should be consistent."""
-        # lower().lower() == lower()
         assert text.lower().lower() == text.lower()
 
-        # upper().upper() == upper()
         assert text.upper().upper() == text.upper()
 
     @given(
