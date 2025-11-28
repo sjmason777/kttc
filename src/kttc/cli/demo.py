@@ -62,11 +62,8 @@ _RUSSIAN_ERRORS_JSON = """{
 }"""
 
 # Demo response templates for different agent types
+# Note: russian_specific is handled specially in _get_demo_response
 _DEMO_RESPONSES: dict[str, tuple[list[str], str]] = {
-    "russian_specific": (
-        ["russian-specific"],
-        _RUSSIAN_ERRORS_JSON,
-    ),
     "json_empty": (
         ["output only valid json"],
         _EMPTY_ERRORS_JSON,
@@ -150,6 +147,15 @@ Good quality translation with minor accuracy and fluency issues. Main meaning pr
 
 def _get_demo_response(prompt_lower: str) -> str:
     """Get appropriate demo response based on prompt content."""
+    # Special handling for Russian: only return errors if the text has the known error
+    # "Привет мир" without comma. If it has comma ("Привет, мир"), return empty errors.
+    if "russian speaker" in prompt_lower or "russian language" in prompt_lower:
+        # Check if the problematic text (without comma) is present
+        if "привет мир" in prompt_lower and "привет, мир" not in prompt_lower:
+            return _RUSSIAN_ERRORS_JSON
+        # If text has comma or is different, return empty errors (no issues)
+        return _EMPTY_ERRORS_JSON
+
     for _, (keywords, response) in _DEMO_RESPONSES.items():
         if any(kw in prompt_lower for kw in keywords):
             return response
