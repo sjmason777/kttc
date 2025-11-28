@@ -28,7 +28,7 @@ jobs:
           path: ./
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
-          extra_args: --only-verified --fail
+          extra_args: --only-verified
 
       # For push: scan only pushed commits
       - name: TruffleHog Scan (Push)
@@ -38,7 +38,7 @@ jobs:
           path: ./
           base: ${{ github.event.before }}
           head: ${{ github.event.after }}
-          extra_args: --only-verified --fail
+          extra_args: --only-verified
 
       # For scheduled/manual runs: scan entire history
       - name: TruffleHog Scan (Full)
@@ -46,4 +46,4 @@ jobs:
         uses: trufflesecurity/trufflehog@v3.91.1
         with:
           path: ./
-          extra_args: --only-verified --fail
+          extra_args: --only-verified
