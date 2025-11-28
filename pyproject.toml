@@ -263,6 +263,12 @@ module = ["kttc.utils.config"]
 disallow_any_expr = false
 disallow_subclassing_any = false
 
+# Chinese helper has conditional imports that may or may not have type stubs
+# depending on whether spacy is installed. Disable unused-ignore warnings.
+[[tool.mypy.overrides]]
+module = ["kttc.helpers.chinese"]
+warn_unused_ignores = false
+
 # Pytest configuration
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -25,10 +25,50 @@ from kttc.llm import BaseLLMProvider
 # Response constants
 _EMPTY_ERRORS_JSON = '{\n  "errors": []\n}'
 
+# Russian demo response with errors (for testing threshold failure)
+_RUSSIAN_ERRORS_JSON = """{
+  "text_type": "formal",
+  "verification_summary": "Checked 2 potential errors, filtered 0 false positives, reporting 2 real errors",
+  "errors": [
+    {
+      "subcategory": "punctuation",
+      "severity": "major",
+      "location": [0, 10],
+      "description": "According to the translation, the phrase 'Привет мир' has missing punctuation between greeting and noun",
+      "suggestion": "Привет, мир",
+      "verification": {
+        "location_verified": true,
+        "not_technical_term": true,
+        "not_plural_form": true,
+        "not_standard_phrase": true,
+        "source_context_supports": true
+      }
+    },
+    {
+      "subcategory": "style",
+      "severity": "minor",
+      "location": [0, 10],
+      "description": "According to the translation, the greeting style is informal and brief",
+      "suggestion": "Здравствуйте, мир",
+      "verification": {
+        "location_verified": true,
+        "not_technical_term": true,
+        "not_plural_form": true,
+        "not_standard_phrase": true,
+        "source_context_supports": true
+      }
+    }
+  ]
+}"""
+
 # Demo response templates for different agent types
 _DEMO_RESPONSES: dict[str, tuple[list[str], str]] = {
+    "russian_specific": (
+        ["russian-specific"],
+        _RUSSIAN_ERRORS_JSON,
+    ),
     "json_empty": (
-        ["russian-specific", "output only valid json"],
+        ["output only valid json"],
         _EMPTY_ERRORS_JSON,
     ),
     "entity": (
