@@ -1,0 +1,86 @@
+# DeepSource Configuration
+# https://docs.deepsource.com/docs/languages/python
+# Updated: November 2025
+
+version = 1
+
+# =============================================================================
+# Test Patterns
+# =============================================================================
+test_patterns = [
+    "tests/**",
+    "test_*.py",
+    "**/test_*.py",
+    "**/*_test.py",
+    "conftest.py"
+]
+
+# =============================================================================
+# Exclusions (aligned with SonarCloud and .gitignore)
+# =============================================================================
+exclude_patterns = [
+    "examples/**",
+    "scripts/**",
+    "docs/**",
+    "**/migrations/**",
+    "**/__pycache__/**",
+    ".venv/**",
+    "venv/**",
+    "build/**",
+    "dist/**",
+    "*.egg-info/**",
+    "**/*.pyc",
+    "**/*.pyo"
+]
+
+# =============================================================================
+# Python Analyzer
+# =============================================================================
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  # Python 3.11+ (use semver format)
+  runtime_version = "3.x.x"
+
+  # Line length (aligned with black/ruff config in pyproject.toml)
+  max_line_length = 100
+
+  # Type checker integration
+  type_checker = "mypy"
+
+  # Cyclomatic complexity threshold (2025 feature)
+  # Options: "low" (1-5), "medium" (6-15), "high" (16-25), "very-high" (26-50), "critical" (>50)
+  cyclomatic_complexity_threshold = "high"
+
+  # Skip documentation coverage for specific artifacts
+  skip_doc_coverage = [
+    "module",
+    "magic",
+    "init",
+    "class",
+    "nonpublic"
+  ]
+
+# =============================================================================
+# Code Transformers (Autofix)
+# =============================================================================
+[[transformers]]
+name = "black"
+enabled = true
+
+[[transformers]]
+name = "isort"
+enabled = true
+
+[[transformers]]
+name = "ruff"
+enabled = true
+
+# =============================================================================
+# Test Coverage Analyzer
+# =============================================================================
+[[analyzers]]
+name = "test-coverage"
+enabled = true
