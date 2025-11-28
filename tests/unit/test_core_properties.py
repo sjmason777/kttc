@@ -341,12 +341,8 @@ class TestErrorSeverityProperties:
         severity1: ErrorSeverity,
         severity2: ErrorSeverity,
     ) -> None:
-        """Property: Severity comparison should be reflexive."""
-        # Same severity should be equal
-        assert severity1 == severity1
-        assert severity2 == severity2
-
-        # Different severities should not be equal (unless same)
+        """Property: Severity comparison should be consistent."""
+        # Same severities should be equal, different ones should not
         if severity1 is severity2:
             assert severity1 == severity2
         else:
@@ -465,9 +461,6 @@ class TestLanguageCodeProperties:
     )
     @settings(max_examples=50)
     def test_language_code_equality(self, code1: str, code2: str) -> None:
-        """Property: Same language codes should be equal."""
+        """Property: Same language codes should have equal hashes."""
         if code1 == code2:
-            assert code1 == code2
             assert hash(code1) == hash(code2)
-        else:
-            assert code1 != code2
