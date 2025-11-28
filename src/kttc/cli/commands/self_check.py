@@ -63,7 +63,7 @@ def setup_self_check_llm(
         return None
 
 
-async def run_spelling_check(language: str, text: str) -> list[Any]:
+def run_spelling_check(language: str, text: str) -> list[Any]:
     """Run spelling check with progress indicator."""
     from kttc.agents.proofreading import SpellingAgent
 
@@ -296,7 +296,7 @@ async def self_check_async(
     llm_provider = setup_self_check_llm(provider, settings, verbose, demo)
 
     # Run proofreading agents
-    spelling_errors = await run_spelling_check(language, text)
+    spelling_errors = run_spelling_check(language, text)
     console.print(f"[green]✓[/green] Spelling check: found {len(spelling_errors)} issues")
 
     grammar_errors, all_errors = await run_grammar_check(

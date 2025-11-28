@@ -48,10 +48,10 @@ class ErrorParser:
     # in _parse_error_block() to avoid overlapping quantifiers (ReDoS safety).
     ERROR_BLOCK_PATTERN = re.compile(r"ERROR_START(.*?)ERROR_END", re.DOTALL | re.IGNORECASE)
 
-    # Pattern to extract FIELD: value pairs from error blocks.
-    # Applied per-line with length limits to prevent regex backtracking issues.
-    # Uses [^\r\n]+ instead of .+ to explicitly prevent backtracking on newlines (ReDoS safety).
-    FIELD_PATTERN = re.compile(r"^(\w+):\s*([^\r\n]+)$", re.MULTILINE)
+    # Pattern to extract FIELD: value pairs from a single line.
+    # Applied per-line after splitting (no MULTILINE mode needed).
+    # Uses [^\r\n]{1,2000} with bounded quantifier to prevent backtracking (ReDoS safety).
+    FIELD_PATTERN = re.compile(r"^(\w+):\s*([^\r\n]{1,2000})$")
 
     # Maximum LLM response length to process (ReDoS protection)
     _MAX_RESPONSE_LENGTH = 500_000
@@ -137,15 +137,16 @@ class ErrorParser:
             line[: cls._MAX_LINE_LENGTH] if len(line) > cls._MAX_LINE_LENGTH else line
             for line in lines
         ]
-        block = "\n".join(truncated_lines)
 
         fields: dict[str, str] = {}
 
-        # Extract all field: value pairs
-        for match in cls.FIELD_PATTERN.finditer(block):
-            field_name = match.group(1).lower().strip()
-            field_value = match.group(2).strip()
-            fields[field_name] = field_value
+        # Extract all field: value pairs (line by line for ReDoS safety)
+        for line in truncated_lines:
+            match = cls.FIELD_PATTERN.match(line.strip())
+            if match:
+                field_name = match.group(1).lower().strip()
+                field_value = match.group(2).strip()
+                fields[field_name] = field_value
 
         # Validate required fields
         required_fields = ["category", "subcategory", "severity", "location", "description"]

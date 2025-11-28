@@ -294,6 +294,7 @@ filterwarnings = [
     "ignore:builtin type Swig:DeprecationWarning",
     "ignore:unclosed event loop:ResourceWarning",
     "ignore::pytest.PytestCollectionWarning",
+    "ignore:install \"ipywidgets\" for Jupyter support:UserWarning",
 ]
 
 # Coverage configuration

@@ -161,11 +161,13 @@ class TestPersianHelperInitialization:
     def test_init_with_dadmatools_success(self) -> None:
         """Test successful initialization with DadmaTools."""
         mock_pipeline = MockPipeline()
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -176,10 +178,13 @@ class TestPersianHelperInitialization:
 
     def test_init_with_dadmatools_failure(self) -> None:
         """Test initialization when DadmaTools fails to initialize."""
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(side_effect=Exception("Pipeline init failed"))
+
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                side_effect=Exception("Pipeline init failed"),
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -223,11 +228,13 @@ class TestPersianHelperBasicMethods:
             MockToken("دنیا", 5, i=1),
         ]
         mock_pipeline._doc = MockDoc(tokens)
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -336,11 +343,13 @@ class TestPersianHelperTokenization:
             MockToken("دنیا", 5, i=1),
         ]
         mock_pipeline._doc = MockDoc(tokens)
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -355,11 +364,13 @@ class TestPersianHelperTokenization:
         """Test tokenize handles exceptions gracefully."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Tokenization error")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -395,11 +406,13 @@ class TestPersianHelperMorphology:
             MockToken("دنیا", 5, pos_="NOUN", i=1),
         ]
         mock_pipeline._doc = MockDoc(tokens)
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -415,11 +428,13 @@ class TestPersianHelperMorphology:
         """Test analyze_morphology handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Analysis failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -465,11 +480,13 @@ class TestPersianHelperGrammar:
         subject.head = verb
 
         mock_pipeline._doc = MockDoc([subject, verb])
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -497,11 +514,13 @@ class TestPersianHelperGrammar:
         subject.head = verb
 
         mock_pipeline._doc = MockDoc([subject, verb])
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -522,11 +541,13 @@ class TestPersianHelperGrammar:
         subject.head = verb
 
         mock_pipeline._doc = MockDoc([verb, subject])
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -547,11 +568,13 @@ class TestPersianHelperGrammar:
         verb = MockToken("می‌رود", 3, pos_="VERB", dep_="ROOT", i=1)
 
         mock_pipeline._doc = MockDoc([prep, verb])
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -569,11 +592,13 @@ class TestPersianHelperGrammar:
         noun = MockToken("کتاب", 0, pos_="NOUN", dep_="ROOT", i=0)
 
         mock_pipeline._doc = MockDoc([noun])
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -587,11 +612,13 @@ class TestPersianHelperGrammar:
         """Test check_grammar handles exceptions gracefully."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Grammar check failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -632,11 +659,13 @@ class TestPersianHelperSpelling:
         doc._.spell_corrected = text  # Same as original = no errors
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -681,11 +710,13 @@ class TestPersianHelperSpelling:
 
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = mock_call
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -704,11 +735,13 @@ class TestPersianHelperSpelling:
         delattr(doc._, "spell_corrected")
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -721,11 +754,13 @@ class TestPersianHelperSpelling:
         """Test check_spelling handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Spell check failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -760,11 +795,13 @@ class TestPersianHelperSentimentAndFormal:
         doc._.sentiment = "positive"
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -777,11 +814,13 @@ class TestPersianHelperSentimentAndFormal:
         """Test check_sentiment handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Sentiment failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -806,11 +845,13 @@ class TestPersianHelperSentimentAndFormal:
         doc._.formal_text = "حالتان چطور است"
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -823,11 +864,13 @@ class TestPersianHelperSentimentAndFormal:
         """Test convert_to_formal handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Conversion failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -873,11 +916,13 @@ class TestPersianHelperEnrichment:
         doc._.formal_text = "سلام دنیا"
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -895,11 +940,13 @@ class TestPersianHelperEnrichment:
         """Test get_enrichment_data handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("Enrichment failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -939,11 +986,13 @@ class TestPersianHelperEntities:
         doc = MockDoc([MockToken("تهران", 0)], entities)
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -958,11 +1007,13 @@ class TestPersianHelperEntities:
         """Test extract_entities handles exceptions."""
         mock_pipeline = MagicMock()
         mock_pipeline.side_effect = Exception("NER failed")
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -990,11 +1041,13 @@ class TestPersianHelperEntities:
         doc = MockDoc([MockToken("او", 0)], [])  # No entities
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -1016,11 +1069,13 @@ class TestPersianHelperEntities:
         doc = MockDoc([MockToken("جان", 0)], entities)
 
         mock_pipeline._doc = doc
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 
@@ -1050,11 +1105,13 @@ class TestPersianHelperEntities:
 
         mock_pipeline_obj = MagicMock()
         mock_pipeline_obj.side_effect = mock_call
+        mock_dadma_module = MagicMock()
+        mock_dadma_module.Pipeline = MagicMock(return_value=mock_pipeline_obj)
 
         with patch("kttc.helpers.persian.DADMATOOLS_AVAILABLE", True):
             with patch(
-                "kttc.helpers.persian.dadma_language.Pipeline",
-                return_value=mock_pipeline_obj,
+                "kttc.helpers.persian.dadma_language",
+                mock_dadma_module,
             ):
                 from kttc.helpers.persian import PersianLanguageHelper
 

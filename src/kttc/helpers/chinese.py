@@ -32,7 +32,6 @@ try:
     HANLP_AVAILABLE = True
     logger.info("HanLP available for Chinese grammar checking")
 except ImportError:
-    hanlp = None  # Allow patching in tests
     HANLP_AVAILABLE = False
     logger.warning(
         "HanLP not installed. "
@@ -47,7 +46,6 @@ try:
     JIEBA_AVAILABLE = True
     logger.info("Using jieba for Chinese word segmentation")
 except ImportError:
-    jieba = None  # Allow patching in tests
     JIEBA_AVAILABLE = False
     logger.warning(
         "jieba not installed. "
@@ -62,7 +60,6 @@ try:
     SPACY_AVAILABLE = True
     logger.info("Using spaCy for Chinese NLP")
 except ImportError:
-    spacy = None  # type: ignore[assignment]  # Allow patching in tests
     SPACY_AVAILABLE = False
     logger.warning(
         "spaCy not installed. "

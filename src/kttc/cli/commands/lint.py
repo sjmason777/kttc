@@ -16,9 +16,7 @@
 
 from __future__ import annotations
 
-import asyncio
 from pathlib import Path
-from typing import Any
 
 import typer
 
@@ -69,16 +67,13 @@ def lint(
         console.print(f"[cyan]Linting {file_path.name}...[/cyan]")
 
         # Run fast rule-based check only
-        async def run_lint() -> list[Any]:
-            agent = SpellingAgent(
-                llm_provider=None,
-                language=lang,
-                use_patterns=True,
-                use_school_rules=True,
-            )
-            return agent.check(text)
-
-        errors = asyncio.run(run_lint())
+        agent = SpellingAgent(
+            llm_provider=None,
+            language=lang,
+            use_patterns=True,
+            use_school_rules=True,
+        )
+        errors = agent.check(text)
 
         def get_severity_icon(severity_value: str) -> str:
             """Map severity value to display icon."""
