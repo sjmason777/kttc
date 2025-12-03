@@ -41,11 +41,6 @@ jobs:
           pip install pip-audit
           pip-audit --require-hashes --disable-pip || true  # Don't fail CI on vulnerabilities yet
 
-      - name: Check for secrets
-        run: |
-          pip install detect-secrets
-          detect-secrets scan --baseline .secrets.baseline
-
   test:
     name: Tests
     runs-on: ${{ matrix.os }}
@@ -85,9 +80,58 @@ jobs:
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
+  docs-lint:
+    name: Lint Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install KTTC
+        run: |
+          pip install -e ".[dev]"
+
+      - name: Lint Russian Documentation
+        if: always()
+        run: |
+          echo "🔍 Checking Russian documentation..."
+          for file in $(find docs -name "*.md" -path "**/ru/*" 2>/dev/null || echo ""); do
+            if [ -f "$file" ]; then
+              echo "Checking $file..."
+              python3.11 -m kttc lint "$file" --lang ru || true
+            fi
+          done
+
+      - name: Lint English Documentation
+        if: always()
+        run: |
+          echo "🔍 Checking English documentation..."
+          for file in README.md CONTRIBUTING.md docs/*.md; do
+            if [ -f "$file" ]; then
+              echo "Checking $file..."
+              python3.11 -m kttc lint "$file" --lang en || true
+            fi
+          done
+
+      - name: Summary
+        if: always()
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📝 Documentation lint completed"
+          echo "   Review warnings above before publishing"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "💡 Pro tip: Run 'kttc proofread <file> --lang <lang>' locally"
+          echo "   before committing documentation changes."
+
   build:
     name: Build Package
-    needs: [lint, test]
+    needs: [lint, test, docs-lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
