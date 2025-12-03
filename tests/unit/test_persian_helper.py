@@ -704,7 +704,7 @@ class TestPersianHelperSpelling:
             call_count[0] += 1
             if call_count[0] == 1:
                 return original_doc  # First call for spelling check
-            elif "سلام" in text:
+            if "سلام" in text:
                 return corrected_doc  # Tokenize corrected text
             return original_doc  # Tokenize original text
 

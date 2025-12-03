@@ -820,8 +820,7 @@ class TestHindiHelperSpelling:
             call_count[0] += 1
             if call_count[0] == 1:  # Original text
                 return ["मैं", "सकूल", "जाता", "हूं"]
-            else:  # Corrected text
-                return ["मैं", "स्कूल", "जाता", "हूं"]
+            return ["मैं", "स्कूल", "जाता", "हूं"]  # Corrected text
 
         with (
             patch("kttc.helpers.hindi.INDIC_NLP_AVAILABLE", True),
@@ -1094,7 +1093,8 @@ class TestHindiHelperEntities:
 
             helper = HindiLanguageHelper()
             errors = helper.check_entity_preservation(
-                "John Smith visited New York", "वह शहर गया"  # No entities preserved
+                "John Smith visited New York",
+                "वह शहर गया",  # No entities preserved
             )
 
             assert len(errors) >= 1
