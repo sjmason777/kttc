@@ -60,6 +60,7 @@ from .fluency_chinese import ChineseFluencyAgent
 from .fluency_hindi import HindiFluencyAgent
 from .fluency_persian import PersianFluencyAgent
 from .fluency_russian import RussianFluencyAgent
+from .fp_filter import ConfidenceRouter, GlossaryBasedFilter, SelfReflectionFilter
 from .hallucination import HallucinationAgent
 from .style_preservation import StylePreservationAgent
 from .terminology import TerminologyAgent
@@ -117,6 +118,10 @@ class AgentOrchestrator:
         enable_dynamic_selection: bool = True,
         quick_mode: bool = False,
         selected_agents: list[str] | None = None,
+        enable_glossary_filter: bool = True,
+        enable_self_reflection: bool = False,
+        enable_confidence_routing: bool = False,
+        confidence_threshold: float = 0.6,
     ):
         """Initialize orchestrator with LLM provider and configuration.
 
@@ -132,6 +137,10 @@ class AgentOrchestrator:
             quick_mode: Enable quick mode with only 3 core agents (default: False)
             selected_agents: List of agent names to use (default: None = use core agents)
                              Valid names: accuracy, fluency, terminology, hallucination, context, style
+            enable_glossary_filter: Enable glossary-based false positive filtering (default: True)
+            enable_self_reflection: Enable self-reflection filter for error verification (default: False)
+            enable_confidence_routing: Enable confidence-based routing to debate (default: False)
+            confidence_threshold: Threshold for confidence routing (default: 0.6)
         """
         self.llm_provider = llm_provider
         self.agent_temperature = agent_temperature
@@ -181,6 +190,15 @@ class AgentOrchestrator:
             )
             if self.enable_dynamic_selection
             else None
+        )
+
+        # Initialize false positive filters (2025 research-based)
+        self.glossary_filter = GlossaryBasedFilter() if enable_glossary_filter else None
+        self.self_reflection_filter = (
+            SelfReflectionFilter(llm_provider) if enable_self_reflection else None
+        )
+        self.confidence_router = (
+            ConfidenceRouter(confidence_threshold) if enable_confidence_routing else None
         )
 
     def _init_style_analyzer(self) -> StyleFingerprint | None:
@@ -506,6 +524,24 @@ class AgentOrchestrator:
                 agent_results[agent.category] = agent_errors
                 all_errors.extend(agent_errors)
 
+            # Deduplicate errors across agents
+            all_errors = self._deduplicate_errors(all_errors)
+
+            # Apply glossary-based false positive filtering
+            if self.glossary_filter:
+                original_count = len(all_errors)
+                all_errors = [
+                    e
+                    for e in all_errors
+                    if not self.glossary_filter.is_false_positive(
+                        e, task.source_lang, task.target_lang
+                    )
+                ]
+                if len(all_errors) < original_count:
+                    logger.info(
+                        f"Glossary filter removed {original_count - len(all_errors)} false positives"
+                    )
+
             # Calculate scores
             word_count = len(task.source_text.split())
             mqm_score, confidence, agent_agreement, agent_scores, consensus_metadata = (
@@ -540,6 +576,84 @@ class AgentOrchestrator:
             raise AgentEvaluationError(f"Orchestrator evaluation failed: {e}") from e
         except Exception as e:
             raise AgentEvaluationError(f"Unexpected error in orchestrator: {e}") from e
+
+    def _deduplicate_errors(self, errors: list[ErrorAnnotation]) -> list[ErrorAnnotation]:
+        """Remove duplicate errors across agents based on location overlap.
+
+        Two errors are considered duplicates if:
+        1. Their locations overlap (character ranges intersect)
+        2. They have the same category or similar descriptions
+
+        When duplicates are found, the error with higher severity is kept.
+        If severities are equal, the first error encountered is kept.
+
+        Args:
+            errors: List of errors from all agents
+
+        Returns:
+            Deduplicated list of errors
+        """
+        if not errors:
+            return []
+
+        # Sort by location start, then by severity (higher severity first)
+        severity_order = {"critical": 0, "major": 1, "minor": 2, "neutral": 3}
+        sorted_errors = sorted(
+            errors,
+            key=lambda e: (e.location[0], severity_order.get(e.severity.value, 4)),
+        )
+
+        unique_errors: list[ErrorAnnotation] = []
+        for error in sorted_errors:
+            is_duplicate = False
+            for existing in unique_errors:
+                if self._errors_overlap(error, existing):
+                    # Check if same category or similar error
+                    if error.category == existing.category:
+                        is_duplicate = True
+                        break
+                    # Check for similar descriptions (likely same issue reported by different agents)
+                    if self._descriptions_similar(error.description, existing.description):
+                        is_duplicate = True
+                        break
+            if not is_duplicate:
+                unique_errors.append(error)
+
+        if len(errors) != len(unique_errors):
+            logger.debug(
+                f"Deduplicated errors: {len(errors)} -> {len(unique_errors)} "
+                f"(removed {len(errors) - len(unique_errors)} duplicates)"
+            )
+
+        return unique_errors
+
+    def _errors_overlap(self, e1: ErrorAnnotation, e2: ErrorAnnotation) -> bool:
+        """Check if two errors have overlapping locations."""
+        start1, end1 = e1.location
+        start2, end2 = e2.location
+        # Two ranges overlap if NOT (end1 <= start2 OR end2 <= start1)
+        return not (end1 <= start2 or end2 <= start1)
+
+    def _descriptions_similar(self, desc1: str, desc2: str) -> bool:
+        """Check if two error descriptions are similar (likely same issue).
+
+        Uses simple heuristics to detect similar errors:
+        - Same key terms (translated terms, error types)
+        - High word overlap
+        """
+        # Normalize descriptions
+        words1 = set(desc1.lower().split())
+        words2 = set(desc2.lower().split())
+
+        # Calculate Jaccard similarity
+        intersection = len(words1 & words2)
+        union = len(words1 | words2)
+
+        if union == 0:
+            return False
+
+        similarity = intersection / union
+        return similarity > 0.5  # 50% word overlap threshold
 
     def _calculate_mqm_with_consensus_breakdown(
         self,
@@ -632,6 +746,24 @@ class AgentOrchestrator:
                 category = agent.category
                 breakdown[category] = agent_errors
                 all_errors.extend(agent_errors)
+
+            # Deduplicate errors across agents
+            all_errors = self._deduplicate_errors(all_errors)
+
+            # Apply glossary-based false positive filtering
+            if self.glossary_filter:
+                original_count = len(all_errors)
+                all_errors = [
+                    e
+                    for e in all_errors
+                    if not self.glossary_filter.is_false_positive(
+                        e, task.source_lang, task.target_lang
+                    )
+                ]
+                if len(all_errors) < original_count:
+                    logger.info(
+                        f"Glossary filter removed {original_count - len(all_errors)} false positives"
+                    )
 
             # Calculate word count
             word_count = len(task.source_text.split())

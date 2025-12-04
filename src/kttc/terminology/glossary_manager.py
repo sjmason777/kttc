@@ -313,3 +313,118 @@ class GlossaryManager:
         if isinstance(data, list):
             return sum(self._count_terms(item) for item in data)
         return 0
+
+    def get_do_not_translate_terms(self) -> set[str]:
+        """
+        Get all terms marked as do_not_translate from base glossaries.
+
+        Returns:
+            Set of terms that should NOT be flagged as untranslated.
+        """
+        terms: set[str] = set()
+
+        # Load from base.json and technical.json
+        for glossary_name in ["base", "technical"]:
+            try:
+                glossary_path = self.glossaries_dir / f"{glossary_name}.json"
+                if glossary_path.exists():
+                    with open(glossary_path, encoding="utf-8") as f:
+                        data = json.load(f)
+                    for entry in data.get("entries", []):
+                        if entry.get("do_not_translate", False):
+                            terms.add(entry["source"].lower())
+                            # Also add target if same (e.g., API -> API)
+                            if entry.get("target"):
+                                terms.add(entry["target"].lower())
+            except (FileNotFoundError, json.JSONDecodeError):
+                continue
+
+        return terms
+
+    def get_untranslatable_terms(self, language: str) -> dict[str, dict[str, Any]]:
+        """
+        Get culturally untranslatable terms for a language.
+
+        Args:
+            language: Language code (e.g., 'ru', 'fa')
+
+        Returns:
+            Dictionary mapping terms to their metadata
+        """
+        terms: dict[str, dict[str, Any]] = {}
+
+        try:
+            glossary = self.load_glossary(language, f"untranslatable_{language}")
+            untranslatable = glossary.get("untranslatable_words", {})
+
+            # Extract terms from nested structure
+            for category, category_data in untranslatable.items():
+                if isinstance(category_data, dict) and category not in [
+                    "description",
+                    "translation_strategy",
+                ]:
+                    for term, term_data in category_data.items():
+                        if isinstance(term_data, dict):
+                            terms[term.lower()] = {
+                                "category": category,
+                                "approximate_translations": term_data.get(
+                                    "approximate_translations", []
+                                ),
+                                "why_untranslatable": term_data.get("why_untranslatable", ""),
+                                "severity": term_data.get("severity", "minor"),
+                            }
+        except FileNotFoundError:
+            pass  # No untranslatable glossary for this language
+
+        return terms
+
+    def get_it_terminology(self, language: str = "en") -> set[str]:
+        """
+        Get IT terminology terms that are typically kept in English.
+
+        Args:
+            language: Language code (default: 'en')
+
+        Returns:
+            Set of IT terms that may be kept untranslated
+        """
+        terms: set[str] = set()
+
+        try:
+            glossary = self.load_glossary(language, f"it_terminology_{language}")
+            valid_terms = glossary.get("valid_terms", {})
+
+            # Flatten all valid_terms categories
+            for category_terms in valid_terms.values():
+                if isinstance(category_terms, list):
+                    for term in category_terms:
+                        terms.add(term.lower())
+        except FileNotFoundError:
+            pass
+
+        return terms
+
+    def get_cultural_adaptation_terms(self, target_lang: str) -> dict[str, str]:
+        """
+        Get terms that require cultural adaptation (not literal translation).
+
+        Args:
+            target_lang: Target language code
+
+        Returns:
+            Dictionary mapping English concepts to their cultural adaptations
+        """
+        # Known cultural adaptations
+        cultural_adaptations: dict[str, dict[str, str]] = {
+            "ru": {
+                "for you": "моё",  # Common Russian UI pattern
+                "my feed": "моё",
+                "personalized": "подобрано",
+            },
+            "zh": {
+                "for you": "推荐",  # Chinese equivalent
+                "follow": "关注",
+            },
+        }
+
+        return cultural_adaptations.get(target_lang, {})

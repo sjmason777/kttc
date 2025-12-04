@@ -59,6 +59,94 @@ class ErrorParser:
     # Maximum line length for field parsing (ReDoS protection)
     _MAX_LINE_LENGTH = 2000
 
+    # International terms that should NOT be flagged as untranslated/inconsistent
+    # These are universally recognized terms that are typically kept in English
+    INTERNATIONAL_TERMS_WHITELIST = {
+        # Technology & Internet
+        "email",
+        "e-mail",
+        "ok",
+        "okay",
+        "wifi",
+        "wi-fi",
+        "bluetooth",
+        "usb",
+        "url",
+        "http",
+        "https",
+        "api",
+        "sdk",
+        "ai",
+        "ml",
+        "webp",
+        "jpeg",
+        "jpg",
+        "png",
+        "gif",
+        "svg",
+        "pdf",
+        "html",
+        "css",
+        "json",
+        "xml",
+        "yaml",
+        "ip",
+        "dns",
+        "ssl",
+        "tls",
+        "vpn",
+        # Social Media & Apps
+        "app",
+        "apps",
+        "login",
+        "logout",
+        "online",
+        "offline",
+        "streaming",
+        "podcast",
+        "blog",
+        "vlog",
+        "hashtag",
+        "like",
+        "share",
+        "post",
+        "feed",
+        "story",
+        "stories",
+        "reel",
+        "reels",
+        # Brands (commonly kept)
+        "apple",
+        "google",
+        "facebook",
+        "instagram",
+        "twitter",
+        "youtube",
+        "whatsapp",
+        "telegram",
+        "tiktok",
+        "linkedin",
+        "github",
+        # Common UI/UX terms
+        "menu",
+        "push",
+        "pop-up",
+        "popup",
+        "toast",
+        "widget",
+        # Units & Standards
+        "kb",
+        "mb",
+        "gb",
+        "tb",
+        "hz",
+        "ghz",
+        "fps",
+        "hd",
+        "4k",
+        "8k",
+    }
+
     @classmethod
     def parse_errors(
         cls, llm_response: str, enrich_with_glossary: bool = True, language: str = "en"
@@ -102,6 +190,14 @@ class ErrorParser:
         for block in error_blocks:
             try:
                 error = cls._parse_error_block(block)
+                # Filter out self-contradicting errors (LLM says it's not really an error)
+                if cls._is_self_contradicting(error):
+                    logger.debug(f"Filtered LLM self-contradiction: {error.description[:50]}...")
+                    continue
+                # Filter out false positives for international terms
+                if cls._is_international_term_false_positive(error):
+                    logger.debug(f"Filtered international term FP: {error.description[:50]}...")
+                    continue
                 errors.append(error)
             except (ValueError, KeyError):
                 # Log warning but continue parsing other errors
@@ -170,6 +266,117 @@ class ErrorParser:
             description=fields["description"],
             suggestion=fields.get("suggestion"),  # Optional field
         )
+
+    @classmethod
+    def _is_self_contradicting(cls, error: ErrorAnnotation) -> bool:
+        """Check if error description contradicts itself (LLM false positive).
+
+        Detects cases where LLM reports an error but then admits in the
+        description or suggestion that it's actually acceptable/correct/consistent.
+
+        Args:
+            error: Parsed error annotation
+
+        Returns:
+            True if error appears to be self-contradicting (false positive)
+        """
+        # Check both description and suggestion
+        text_to_check = error.description.lower()
+        if error.suggestion:
+            text_to_check += " " + error.suggestion.lower()
+
+        # Phrases that indicate LLM is contradicting its own error report
+        self_contradiction_phrases = [
+            "actually consistent",
+            "upon closer review",
+            "is actually correct",
+            "is actually acceptable",
+            "is the standard choice",
+            "however, this is acceptable",
+            "however, this is correct",
+            "this is consistent",
+            "this is acceptable",
+            "not incorrect",
+            "is not an error",
+            "is technically correct",
+            "is commonly accepted",
+            "is widely accepted",
+            "is standard practice",
+            "is a valid",
+            "acceptable for",
+            "though current usage is acceptable",
+            "though leaving .* is acceptable",
+            "internationally recognized",
+        ]
+
+        for phrase in self_contradiction_phrases:
+            if phrase in text_to_check:
+                return True
+
+        # Check for pattern: "While X, this is actually Y" where Y is positive
+        positive_outcomes = ["consistent", "acceptable", "correct", "standard", "valid"]
+        for outcome in positive_outcomes:
+            if f"actually {outcome}" in text_to_check:
+                return True
+            if f"is {outcome}" in text_to_check and "not " not in text_to_check:
+                # Only filter if it's clearly stating the translation IS acceptable
+                if any(
+                    hedge in text_to_check for hedge in ["however", "though", "but", "upon review"]
+                ):
+                    return True
+
+        return False
+
+    @classmethod
+    def _is_international_term_false_positive(cls, error: ErrorAnnotation) -> bool:
+        """Check if error is about an international term that shouldn't be flagged.
+
+        Filters errors that complain about common international terms
+        being left untranslated or used inconsistently.
+
+        Args:
+            error: Parsed error annotation
+
+        Returns:
+            True if error is a false positive about international terms
+        """
+        # Only check terminology and some accuracy errors
+        if error.category not in ("terminology", "accuracy"):
+            return False
+
+        # Only check relevant subcategories
+        relevant_subcategories = {"untranslated", "inconsistency", "misuse"}
+        if error.subcategory not in relevant_subcategories:
+            return False
+
+        description_lower = error.description.lower()
+
+        # Check if any whitelisted term is mentioned in the error description
+        for term in cls.INTERNATIONAL_TERMS_WHITELIST:
+            # Check if the term appears in quotes or as a standalone word
+            patterns = [
+                f'"{term}"',
+                f"'{term}'",
+                f" {term} ",
+                f" {term}.",
+                f" {term},",
+                f"[{term}]",
+                f"({term})",
+            ]
+            for pattern in patterns:
+                if pattern in description_lower:
+                    # Additional check: make sure it's about leaving term untranslated
+                    untranslated_indicators = [
+                        "untranslated",
+                        "not translated",
+                        "left as",
+                        "kept as",
+                        "inconsisten",  # covers inconsistent/inconsistency
+                    ]
+                    if any(ind in description_lower for ind in untranslated_indicators):
+                        return True
+
+        return False
 
     @staticmethod
     def _parse_location(location_str: str) -> tuple[int, int]:
