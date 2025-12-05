@@ -164,7 +164,7 @@ class GlossaryBasedFilter:
 
         description_lower = error.description.lower()
 
-        for term, metadata in untranslatable.items():
+        for term, _metadata in untranslatable.items():
             if term in description_lower:
                 # Check if error is complaining about non-literal translation
                 non_literal_indicators = [

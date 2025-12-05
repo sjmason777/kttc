@@ -27,6 +27,7 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 ### Core Analysis
 - **Multi-Agent QA System** - Specialized agents analyze accuracy, fluency, terminology, style, hallucination, and context
 - **MQM Scoring** - Industry-standard quality metrics used in WMT benchmarks
+- **Translation Metrics** - BLEU, TER (Translation Edit Rate), chrF (character F-score) via sacrebleu
 - **Language-Specific Agents** - 5 native-level fluency agents for English, Chinese, Russian, Hindi, and Persian
 - **60+ Domain Glossaries** - Automotive, customs, financial, legal, logistics, medical + language traps
 
@@ -63,7 +64,11 @@ KTTC uses specialized multi-agent systems to automatically detect, analyze, and 
 - **Glossary Management** - Custom terminology + 60+ built-in multilingual glossaries
 - **Batch Processing** - Process thousands of translations in parallel with CSV/JSON filtering
 - **CI/CD Ready** - GitHub Actions integration, exit codes, JSON/Markdown/HTML/XLSX output
-- **Multi-LLM Support** - OpenAI, Anthropic, GigaChat, YandexGPT with LanguageTool integration
+- **Multi-LLM Support** - OpenAI, Anthropic, Google Gemini, GigaChat, YandexGPT with LanguageTool integration
+- **Machine Translation** - DeepL API integration for high-quality translations
+- **RAG Context** - BM25-based retrieval from glossaries (lightweight, CPU-only, disabled by default)
+- **Arbitration Workflow** - AI-assisted or human-in-the-loop dispute resolution for QA errors
+- **QA Triggers** - Proactive checks on file changes, threshold violations, schedules (CI/CD ready)
 - **Usage Analytics** - Token counts, API costs, and call statistics in reports
 
 **Performance:** 90% cost reduction vs manual review • 100-1000x faster • 95+ MQM quality target
@@ -108,6 +113,14 @@ pip install kttc[all-languages]  # All language helpers
 export KTTC_OPENAI_API_KEY="sk-..."
 # or
 export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
+# or
+export KTTC_GEMINI_API_KEY="AIza..."
+```
+
+**Optional (for machine translation and RAG):**
+```bash
+export KTTC_DEEPL_API_KEY="..."        # DeepL translation
+export KTTC_RAG_ENABLED="true"         # Enable BM25 context retrieval
 ```
 
 ### 3. Check Translation Quality

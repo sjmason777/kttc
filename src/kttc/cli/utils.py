@@ -128,6 +128,14 @@ def get_available_providers(settings: Any) -> list[str]:
         # Silently ignore missing OpenAI API key and continue checking other providers
         pass
 
+    # Check Gemini
+    try:
+        settings.get_llm_provider_credentials("gemini")
+        available.append("gemini")
+    except (ValueError, AttributeError):
+        # Silently ignore missing Gemini API key and continue checking other providers
+        pass
+
     return available
 
 
@@ -153,6 +161,7 @@ def _resolve_provider_name(provider: str | None, settings: Any) -> str:
             "No LLM providers configured. Please set at least one of:\n"
             "  - KTTC_OPENAI_API_KEY\n"
             "  - KTTC_ANTHROPIC_API_KEY\n"
+            "  - KTTC_GEMINI_API_KEY\n"
             "  - KTTC_GIGACHAT_CLIENT_ID and KTTC_GIGACHAT_CLIENT_SECRET"
         )
 
@@ -175,7 +184,7 @@ def _create_provider_instance(provider_name: str, settings: Any, model: str) -> 
     Raises:
         ValueError: If provider is unknown
     """
-    from kttc.llm import GigaChatProvider
+    from kttc.llm import GeminiProvider, GigaChatProvider
 
     if provider_name == "openai":
         api_key = settings.get_llm_provider_key(provider_name)
@@ -185,6 +194,12 @@ def _create_provider_instance(provider_name: str, settings: Any, model: str) -> 
         api_key = settings.get_llm_provider_key(provider_name)
         return AnthropicProvider(api_key=api_key, model=model)
 
+    if provider_name == "gemini":
+        api_key = settings.get_llm_provider_key(provider_name)
+        # Use gemini-2.0-flash as default if no model specified
+        gemini_model = model if "gemini" in model.lower() else "gemini-2.0-flash"
+        return GeminiProvider(api_key=api_key, model=gemini_model)
+
     if provider_name == "gigachat":
         credentials = settings.get_llm_provider_credentials(provider_name)
         return GigaChatProvider(
@@ -193,7 +208,9 @@ def _create_provider_instance(provider_name: str, settings: Any, model: str) -> 
             model=model,
         )
 
-    raise ValueError(f"Unknown provider: {provider_name}. Supported: openai, anthropic, gigachat")
+    raise ValueError(
+        f"Unknown provider: {provider_name}. " "Supported: openai, anthropic, gemini, gigachat"
+    )
 
 
 def setup_llm_provider(
@@ -463,6 +480,8 @@ def map_model_to_provider(selected_model: str | None, provider: str | None) -> s
         return "openai"
     if "claude" in model_lower:
         return "anthropic"
+    if "gemini" in model_lower:
+        return "gemini"
     if "yandex" in model_lower:
         return "yandex"
     return provider

@@ -12,17 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""WebUI Dashboard for KTTC.
+"""Machine Translation integration layer for KTTC.
 
-Provides web-based interface for:
-- Translation QA evaluation
-- Real-time quality metrics
-- Batch processing
-- Results visualization
+Provides interfaces and implementations for MT engines like DeepL.
+Used for generating reference translations during QA evaluation.
 """
 
-from __future__ import annotations
+from .base import BaseMTProvider, MTError, MTQuotaExceededError, TranslationResult
+from .deepl_provider import DeepLProvider
 
-from .server import create_app, run_server
-
-__all__ = ["create_app", "run_server"]
+__all__ = [
+    "BaseMTProvider",
+    "DeepLProvider",
+    "MTError",
+    "MTQuotaExceededError",
+    "TranslationResult",
+]

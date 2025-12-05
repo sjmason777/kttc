@@ -739,11 +739,10 @@ def print_available_extensions() -> None:
 
     Shows which optional dependencies are installed.
     """
-    from kttc.utils.dependencies import has_benchmark, has_webui
+    from kttc.utils.dependencies import has_benchmark
 
     console.print("[bold]Available Extensions:[/bold]")
     console.print(f"  • Benchmark: {'✓' if has_benchmark() else '✗'}")
-    console.print(f"  • WebUI: {'✓' if has_webui() else '✗'}")
     console.print()
 
 

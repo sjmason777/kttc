@@ -15,7 +15,7 @@
 """Console utilities for rich terminal output.
 
 This module provides shared console utilities that can be used across
-CLI, WebUI, and other interfaces.
+CLI and other interfaces.
 """
 
 from __future__ import annotations

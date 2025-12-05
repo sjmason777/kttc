@@ -47,17 +47,12 @@ from kttc.utils.console import (
 )
 
 # Optional dependency groups
-DependencyGroup = Literal["metrics", "webui", "benchmark"]
+DependencyGroup = Literal["metrics", "benchmark"]
 
 DEPENDENCY_GROUPS: dict[DependencyGroup, dict[str, str]] = {
     "metrics": {
         "sentence-transformers": "Sentence embeddings for semantic similarity (~500MB)",
         "sacrebleu": "BLEU and other classical metrics (lightweight)",
-    },
-    "webui": {
-        "fastapi": "Web framework for UI server",
-        "uvicorn": "ASGI server for FastAPI",
-        "websockets": "WebSocket support for real-time updates",
     },
     "benchmark": {
         "sentence-transformers": "Sentence embeddings (~500MB)",
@@ -300,25 +295,10 @@ def show_optimization_tips() -> None:
 # Convenience functions for specific features
 
 
-def has_webui() -> bool:
-    """Check if webui dependencies are available."""
-    all_installed, _ = check_dependency_group("webui")
-    return all_installed
-
-
 def has_benchmark() -> bool:
     """Check if benchmark dependencies are available."""
     all_installed, _ = check_dependency_group("benchmark")
     return all_installed
-
-
-def require_webui(command: str) -> None:
-    """Ensure webui dependencies are installed or exit.
-
-    Args:
-        command: Name of the command requiring webui
-    """
-    ensure_dependency_group("webui", command, required=True)
 
 
 def require_benchmark(command: str) -> None:

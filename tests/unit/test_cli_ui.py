@@ -854,13 +854,11 @@ class TestPrintAvailableExtensions:
 
     @patch("kttc.cli.ui.console")
     @patch("kttc.utils.dependencies.has_benchmark")
-    @patch("kttc.utils.dependencies.has_webui")
     def test_print_available_extensions(
-        self, mock_webui: MagicMock, mock_benchmark: MagicMock, mock_console: MagicMock
+        self, mock_benchmark: MagicMock, mock_console: MagicMock
     ) -> None:
         """Test printing available extensions."""
         mock_benchmark.return_value = True
-        mock_webui.return_value = False
         from kttc.cli.ui import print_available_extensions
 
         print_available_extensions()

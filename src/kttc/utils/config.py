@@ -87,10 +87,30 @@ class Settings(BaseSettings):
         json_schema_extra={"env": "KTTC_YANDEX_FOLDER_ID"},
     )
 
+    # Google Gemini credentials
+    gemini_api_key: str | None = Field(
+        default=None,
+        description="Google Gemini API key (from https://aistudio.google.com/)",
+        json_schema_extra={"env": "KTTC_GEMINI_API_KEY"},
+    )
+
+    # DeepL Machine Translation credentials
+    deepl_api_key: str | None = Field(
+        default=None,
+        description="DeepL API key (from https://www.deepl.com/pro-api)",
+        json_schema_extra={"env": "KTTC_DEEPL_API_KEY"},
+    )
+
+    deepl_use_free_api: bool = Field(
+        default=True,
+        description="Use DeepL free API endpoint (500k chars/month)",
+        json_schema_extra={"env": "KTTC_DEEPL_USE_FREE_API"},
+    )
+
     # Default LLM Configuration
     default_llm_provider: str = Field(
         default="openai",
-        description="Default LLM provider (openai, anthropic, gigachat, yandex)",
+        description="Default LLM provider (openai, anthropic, gemini, gigachat, yandex)",
         json_schema_extra={"env": "KTTC_DEFAULT_LLM_PROVIDER"},
     )
 
@@ -144,6 +164,30 @@ class Settings(BaseSettings):
         default="INFO",
         description="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)",
         json_schema_extra={"env": "KTTC_LOG_LEVEL"},
+    )
+
+    # RAG (Retrieval-Augmented Generation) Settings
+    # BM25 is lightweight and works on any laptop (no GPU required)
+    rag_enabled: bool = Field(
+        default=True,
+        description="Enable RAG for context-aware QA using BM25 retrieval",
+        json_schema_extra={"env": "KTTC_RAG_ENABLED"},
+    )
+
+    rag_top_k: int = Field(
+        default=3,
+        description="Number of documents to retrieve for RAG context",
+        ge=1,
+        le=10,
+        json_schema_extra={"env": "KTTC_RAG_TOP_K"},
+    )
+
+    rag_max_context_chars: int = Field(
+        default=1500,
+        description="Maximum characters in RAG context",
+        ge=100,
+        le=10000,
+        json_schema_extra={"env": "KTTC_RAG_MAX_CONTEXT_CHARS"},
     )
 
     # Model configuration
@@ -209,6 +253,15 @@ class Settings(BaseSettings):
                 "api_key": self.yandex_api_key,
                 "folder_id": self.yandex_folder_id,
             }
+
+        if provider == "gemini":
+            if not self.gemini_api_key:
+                raise ValueError(
+                    "Gemini API key not configured. "
+                    "Set KTTC_GEMINI_API_KEY (get from https://aistudio.google.com/)"
+                )
+            return {"api_key": self.gemini_api_key}
+
         raise ValueError(f"Unknown LLM provider: {provider}")
 
     def get_llm_provider_key(self, provider: str | None = None) -> str:

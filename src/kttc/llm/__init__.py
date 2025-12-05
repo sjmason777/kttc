@@ -15,7 +15,7 @@
 """LLM integration layer for KTTC.
 
 Provides abstract interface and concrete implementations for
-various LLM providers (OpenAI, Anthropic, Yandex, Sber GigaChat).
+various LLM providers (OpenAI, Anthropic, Google Gemini, Yandex, Sber GigaChat).
 """
 
 from .anthropic_provider import AnthropicProvider
@@ -27,6 +27,7 @@ from .base import (
     LLMTimeoutError,
 )
 from .complexity_router import ComplexityEstimator, ComplexityRouter, ComplexityScore
+from .gemini_provider import GeminiProvider
 from .gigachat_provider import GigaChatProvider
 from .openai_provider import OpenAIProvider
 from .prompts import PromptTemplate, PromptTemplateError
@@ -36,6 +37,7 @@ __all__ = [
     "BaseLLMProvider",
     "OpenAIProvider",
     "AnthropicProvider",
+    "GeminiProvider",
     "YandexGPTProvider",
     "GigaChatProvider",
     "PromptTemplate",

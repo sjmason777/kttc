@@ -25,6 +25,7 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 ### 核心分析
 - **多智能体质量保证系统** - 专门的智能体分析准确性、流畅性、术语、风格、幻觉和上下文
 - **MQM 评分** - WMT 基准测试中使用的行业标准质量指标
+- **翻译指标** - BLEU、TER（翻译编辑率）、chrF（字符 F 分数）通过 sacrebleu
 - **特定语言智能体** - 5 个母语级流畅度智能体：英语、中文、俄语、印地语、波斯语
 - **60+ 领域词汇表** - 汽车、海关、金融、法律、物流、医疗术语 + 语言陷阱
 
@@ -61,7 +62,11 @@ KTTC 使用专门的多智能体系统，根据行业标准 MQM（多维质量�
 - **术语表管理** - 自定义术语 + 60+ 内置多语言词汇表
 - **批量处理** - 并行处理数千个翻译，支持 CSV/JSON 过滤
 - **CI/CD 就绪** - GitHub Actions 集成、退出代码、JSON/Markdown/HTML/XLSX 输出
-- **多 LLM 支持** - OpenAI、Anthropic、GigaChat、YandexGPT，集成 LanguageTool
+- **多 LLM 支持** - OpenAI、Anthropic、Google Gemini、GigaChat、YandexGPT，集成 LanguageTool
+- **机器翻译** - DeepL API 集成，提供高质量翻译
+- **RAG 上下文** - 基于 BM25 的术语表检索（轻量级，仅 CPU，默认禁用）
+- **仲裁工作流** - AI 辅助或人工参与的 QA 错误争议解决
+- **QA 触发器** - 文件更改、阈值违规、计划任务时的主动检查（CI/CD 就绪）
 - **使用分析** - 报告中包含令牌计数、API 成本和调用统计
 
 **性能：** 相比人工审核降低 90% 成本 • 快 100-1000 倍 • MQM 质量目标 95+
@@ -106,6 +111,14 @@ pip install kttc[all-languages]  # 所有语言助手
 export KTTC_OPENAI_API_KEY="sk-..."
 # 或
 export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
+# 或
+export KTTC_GEMINI_API_KEY="AIza..."
+```
+
+**可选（用于机器翻译和 RAG）：**
+```bash
+export KTTC_DEEPL_API_KEY="..."        # DeepL 翻译
+export KTTC_RAG_ENABLED="true"         # 启用 BM25 上下文检索
 ```
 
 ### 3. 检查翻译质量

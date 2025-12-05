@@ -243,12 +243,12 @@ async def run_benchmark(
         verbose: Verbose output
     """
     from kttc.cli.ui import print_available_extensions
-    from kttc.utils.dependencies import has_benchmark, has_webui
+    from kttc.utils.dependencies import has_benchmark
 
     settings = get_settings()
 
     # Show available extensions status
-    if verbose and (not has_benchmark() or not has_webui()):
+    if verbose and not has_benchmark():
         print_available_extensions()
         console.print("[dim]You can continue, but some features require extensions.[/dim]")
         console.print()
