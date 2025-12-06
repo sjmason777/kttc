@@ -72,7 +72,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-class AgentOrchestrator:
+class AgentOrchestrator:  # pylint: disable=too-many-instance-attributes
     """Orchestrates multiple QA agents for comprehensive translation evaluation.
 
     Coordinates parallel execution of specialized agents (Accuracy, Fluency,

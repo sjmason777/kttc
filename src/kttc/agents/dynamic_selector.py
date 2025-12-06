@@ -299,6 +299,15 @@ class DynamicAgentSelector:
 
         return agent_set
 
+    # Mapping of target language to language-specific fluency agent
+    LANGUAGE_FLUENCY_AGENTS: dict[str, str] = {
+        "ru": "fluency_russian",
+        "zh": "fluency_chinese",
+        "en": "fluency_english",
+        "hi": "fluency_hindi",
+        "fa": "fluency_persian",
+    }
+
     def _add_language_specific_agents(
         self, agent_set: list[str], task: TranslationTask
     ) -> list[str]:
@@ -311,34 +320,10 @@ class DynamicAgentSelector:
         Returns:
             Agent set with language-specific agents added
         """
-        # Russian-specific fluency agent
-        if task.target_lang == "ru":
-            # Replace generic fluency with Russian-specific
-            if "fluency" in agent_set and "fluency_russian" not in agent_set:
-                agent_set.remove("fluency")
-                agent_set.append("fluency_russian")
-
-        # Add more language-specific agents
-        elif task.target_lang == "zh":
-            # Replace generic fluency with Chinese-specific
-            if "fluency" in agent_set and "fluency_chinese" not in agent_set:
-                agent_set.remove("fluency")
-                agent_set.append("fluency_chinese")
-        elif task.target_lang == "en":
-            # Replace generic fluency with English-specific
-            if "fluency" in agent_set and "fluency_english" not in agent_set:
-                agent_set.remove("fluency")
-                agent_set.append("fluency_english")
-        elif task.target_lang == "hi":
-            # Replace generic fluency with Hindi-specific
-            if "fluency" in agent_set and "fluency_hindi" not in agent_set:
-                agent_set.remove("fluency")
-                agent_set.append("fluency_hindi")
-        elif task.target_lang == "fa":
-            # Replace generic fluency with Persian-specific
-            if "fluency" in agent_set and "fluency_persian" not in agent_set:
-                agent_set.remove("fluency")
-                agent_set.append("fluency_persian")
+        lang_agent = self.LANGUAGE_FLUENCY_AGENTS.get(task.target_lang)
+        if lang_agent and "fluency" in agent_set and lang_agent not in agent_set:
+            agent_set.remove("fluency")
+            agent_set.append(lang_agent)
 
         return agent_set
 
@@ -398,6 +383,46 @@ class DynamicAgentSelector:
         """
         return sum(self.AGENT_TOKEN_ESTIMATES.get(agent, 700) for agent in agent_set)
 
+    def _create_language_fluency_agent(self, agent_id: str) -> BaseAgent | None:
+        """Create a language-specific fluency agent.
+
+        Args:
+            agent_id: Agent ID like 'fluency_russian', 'fluency_chinese', etc.
+
+        Returns:
+            Instantiated agent or None if not a language-specific fluency agent
+        """
+        from kttc.helpers import get_helper_for_language
+
+        from .fluency_chinese import ChineseFluencyAgent
+        from .fluency_english import EnglishFluencyAgent
+        from .fluency_hindi import HindiFluencyAgent
+        from .fluency_persian import PersianFluencyAgent
+        from .fluency_russian import RussianFluencyAgent
+
+        # Mapping: agent_id -> (lang_code, AgentClass)
+        lang_agent_map = {
+            "fluency_russian": ("ru", RussianFluencyAgent),
+            "fluency_chinese": ("zh", ChineseFluencyAgent),
+            "fluency_english": ("en", EnglishFluencyAgent),
+            "fluency_hindi": ("hi", HindiFluencyAgent),
+            "fluency_persian": ("fa", PersianFluencyAgent),
+        }
+
+        if agent_id not in lang_agent_map:
+            return None
+
+        lang_code, agent_class = lang_agent_map[agent_id]
+        helper = get_helper_for_language(lang_code)
+
+        agent: BaseAgent = agent_class(
+            self.llm_provider,
+            temperature=self.agent_temperature,
+            max_tokens=self.agent_max_tokens,
+            helper=helper,
+        )
+        return agent
+
     def _instantiate_agents(self, agent_set: list[str]) -> list[BaseAgent]:
         """Instantiate agent objects from agent IDs.
 
@@ -410,147 +435,34 @@ class DynamicAgentSelector:
         from .accuracy import AccuracyAgent
         from .context import ContextAgent
         from .fluency import FluencyAgent
-        from .fluency_chinese import ChineseFluencyAgent
-        from .fluency_english import EnglishFluencyAgent
-        from .fluency_hindi import HindiFluencyAgent
-        from .fluency_persian import PersianFluencyAgent
-        from .fluency_russian import RussianFluencyAgent
         from .hallucination import HallucinationAgent
         from .terminology import TerminologyAgent
+
+        # Simple agents (no helper required)
+        simple_agents = {
+            "accuracy": AccuracyAgent,
+            "fluency": FluencyAgent,
+            "terminology": TerminologyAgent,
+            "hallucination": HallucinationAgent,
+            "context": ContextAgent,
+        }
 
         agents: list[BaseAgent] = []
 
         for agent_id in agent_set:
-            if agent_id == "accuracy":
+            if agent_id in simple_agents:
+                agent_cls = simple_agents[agent_id]
                 agents.append(
-                    AccuracyAgent(
+                    agent_cls(
                         self.llm_provider,
                         temperature=self.agent_temperature,
                         max_tokens=self.agent_max_tokens,
-                    )
+                    )  # type: ignore[abstract]
                 )
-            elif agent_id == "fluency":
-                agents.append(
-                    FluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                    )
-                )
-            elif agent_id == "fluency_russian":
-                # Get Russian helper if available
-                from kttc.helpers import get_helper_for_language
-                from kttc.helpers.russian import RussianLanguageHelper
-
-                helper = get_helper_for_language("ru")
-                russian_helper: RussianLanguageHelper | None = None
-                if isinstance(helper, RussianLanguageHelper):
-                    russian_helper = helper
-
-                agents.append(
-                    RussianFluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                        helper=russian_helper,
-                    )
-                )
-            elif agent_id == "fluency_chinese":
-                # Get Chinese helper if available
-                from kttc.helpers import get_helper_for_language
-                from kttc.helpers.chinese import ChineseLanguageHelper
-
-                helper = get_helper_for_language("zh")
-                chinese_helper: ChineseLanguageHelper | None = None
-                if isinstance(helper, ChineseLanguageHelper):
-                    chinese_helper = helper
-
-                agents.append(
-                    ChineseFluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                        helper=chinese_helper,
-                    )
-                )
-            elif agent_id == "fluency_english":
-                # Get English helper if available
-                from kttc.helpers import get_helper_for_language
-                from kttc.helpers.english import EnglishLanguageHelper
-
-                helper = get_helper_for_language("en")
-                english_helper: EnglishLanguageHelper | None = None
-                if isinstance(helper, EnglishLanguageHelper):
-                    english_helper = helper
-
-                agents.append(
-                    EnglishFluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                        helper=english_helper,
-                    )
-                )
-            elif agent_id == "fluency_hindi":
-                # Get Hindi helper if available
-                from kttc.helpers import get_helper_for_language
-                from kttc.helpers.hindi import HindiLanguageHelper
-
-                helper = get_helper_for_language("hi")
-                hindi_helper: HindiLanguageHelper | None = None
-                if isinstance(helper, HindiLanguageHelper):
-                    hindi_helper = helper
-
-                agents.append(
-                    HindiFluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                        helper=hindi_helper,
-                    )
-                )
-            elif agent_id == "fluency_persian":
-                # Get Persian helper if available
-                from kttc.helpers import get_helper_for_language
-                from kttc.helpers.persian import PersianLanguageHelper
-
-                helper = get_helper_for_language("fa")
-                persian_helper: PersianLanguageHelper | None = None
-                if isinstance(helper, PersianLanguageHelper):
-                    persian_helper = helper
-
-                agents.append(
-                    PersianFluencyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                        helper=persian_helper,
-                    )
-                )
-            elif agent_id == "terminology":
-                agents.append(
-                    TerminologyAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                    )
-                )
-            elif agent_id == "hallucination":
-                agents.append(
-                    HallucinationAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                    )
-                )
-            elif agent_id == "context":
-                agents.append(
-                    ContextAgent(
-                        self.llm_provider,
-                        temperature=self.agent_temperature,
-                        max_tokens=self.agent_max_tokens,
-                    )
-                )
+            elif agent_id.startswith("fluency_"):
+                lang_agent = self._create_language_fluency_agent(agent_id)
+                if lang_agent:
+                    agents.append(lang_agent)
 
         return agents
 

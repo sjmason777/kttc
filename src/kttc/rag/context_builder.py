@@ -208,7 +208,7 @@ class ContextBuilder:
             return ""
 
         # Build index if not done
-        if not self.retriever._indexed:
+        if not self.retriever.is_indexed:
             self.retriever.build_index()
 
         return self.retriever.search_with_context(

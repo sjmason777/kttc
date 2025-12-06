@@ -29,6 +29,22 @@ from .base import (
 from .complexity_router import ComplexityEstimator, ComplexityRouter, ComplexityScore
 from .gemini_provider import GeminiProvider
 from .gigachat_provider import GigaChatProvider
+
+# Multi-provider orchestration
+from .multi_provider import (
+    AggregationStrategy,
+    CircuitBreaker,
+    CircuitState,
+    LLMSelectionConfig,
+    MultiProviderOrchestrator,
+    OrchestratorConfig,
+    ProviderConfig,
+    ProviderResult,
+    RoutingStrategy,
+    TokenAwareRateLimiter,
+    create_ensemble_config,
+    create_single_provider_config,
+)
 from .openai_provider import OpenAIProvider
 from .prompts import PromptTemplate, PromptTemplateError
 from .yandex_provider import YandexGPTProvider
@@ -49,4 +65,17 @@ __all__ = [
     "ComplexityEstimator",
     "ComplexityRouter",
     "ComplexityScore",
+    # Multi-provider orchestration
+    "MultiProviderOrchestrator",
+    "ProviderResult",
+    "CircuitBreaker",
+    "CircuitState",
+    "TokenAwareRateLimiter",
+    "ProviderConfig",
+    "OrchestratorConfig",
+    "AggregationStrategy",
+    "RoutingStrategy",
+    "LLMSelectionConfig",
+    "create_single_provider_config",
+    "create_ensemble_config",
 ]

@@ -34,13 +34,17 @@ from kttc.cli.commands.check_helpers import (
     calculate_lightweight_metrics,
     detect_check_mode,
     display_check_header,
+    display_usage_and_mode_info,
     handle_auto_correction,
     perform_smart_routing,
     print_verbose_autodetect_info,
+    run_debate_verification,
+    run_ensemble_evaluation,
     run_nlp_analysis,
     run_quality_evaluation,
     run_style_analysis,
     save_report,
+    setup_ensemble_providers,
 )
 from kttc.cli.commands.compare import run_compare as _run_compare_command
 from kttc.cli.commands.self_check import handle_self_check_mode
@@ -175,6 +179,8 @@ async def _check_async(
     profile: Any = None,
     selected_agents: list[str] | None = None,
     debate: bool = False,
+    llm_count: int = 1,
+    llm_providers: str | None = None,
 ) -> None:
     """Async implementation of check command."""
     # Configure logging
@@ -199,12 +205,9 @@ async def _check_async(
     # Load files and create task
     source_text, translation_text = load_translation_files(source, translation, verbose)
     task = create_translation_task(source_text, translation_text, source_lang, target_lang, verbose)
-
-    # Load glossaries
     load_glossaries_for_task(glossary, task, source_text, source_lang, target_lang, verbose)
 
     # Smart routing
-    selected_model = None
     if smart_routing:
         selected_model, _ = perform_smart_routing(
             source_text,
@@ -218,78 +221,70 @@ async def _check_async(
         )
         provider = map_model_to_provider(selected_model, provider)
 
-    # Setup LLM provider
-    llm_provider = setup_llm_provider(
-        provider, settings, verbose, task=task, auto_select_model=auto_select_model, demo=demo
+    # Setup ensemble or single provider mode
+    use_ensemble, multi_providers, providers_list = setup_ensemble_providers(
+        llm_providers, llm_count, settings, verbose, demo
     )
+
+    # Handle single provider from --llm flag
+    effective_provider = provider
+    if llm_providers and len(providers_list) == 1:
+        effective_provider = providers_list[0]
+        if verbose:
+            console.print(f"[dim]🤖 LLM provider from --llm flag: {effective_provider}[/dim]")
+
+    # Initialize variables
+    api_errors: list[str] = []
+    llm_provider: Any = None
+    orchestrator: Any = None
 
     # Show translation preview
     if verbose:
         print_translation_preview(source_text, translation_text)
 
-    # Run analysis steps
-    api_errors: list[str] = []
+    # Run NLP and style analysis
     nlp_insights = run_nlp_analysis(task, verbose, api_errors)
     style_profile = run_style_analysis(source_text, source_lang, verbose)
 
-    # Quality evaluation
-    report, orchestrator = await run_quality_evaluation(
-        llm_provider,
-        task,
-        threshold,
-        settings,
-        verbose,
-        api_errors,
-        quick,
-        profile,
-        selected_agents,
-    )
+    # Run evaluation (ensemble or single provider)
+    if use_ensemble:
+        report = await run_ensemble_evaluation(
+            multi_providers, task, threshold, quick, selected_agents, verbose
+        )
+    else:
+        llm_provider = setup_llm_provider(
+            effective_provider,
+            settings,
+            verbose,
+            task=task,
+            auto_select_model=auto_select_model,
+            demo=demo,
+        )
+        report, orchestrator = await run_quality_evaluation(
+            llm_provider,
+            task,
+            threshold,
+            settings,
+            verbose,
+            api_errors,
+            quick,
+            profile,
+            selected_agents,
+        )
 
-    # Debate mode: cross-verify errors between agents
-    debate_summary = None
-    if debate and report.errors:
-        from kttc.agents import DebateOrchestrator
-        from kttc.core import MQMScorer
+    # Debate mode (only in single-provider mode)
+    if debate and report.errors and not use_ensemble:
+        report, _ = await run_debate_verification(report, task, llm_provider, threshold, verbose)
+    elif debate and use_ensemble and verbose:
+        console.print(
+            "[dim]ℹ Debate mode skipped: Ensemble mode already includes cross-provider validation[/dim]"
+        )
 
-        if verbose:
-            console.print("\n[bold cyan]🎭 Debate Mode[/bold cyan]: Cross-verifying errors...")
-            console.print(f"[dim]   {len(report.errors)} errors to verify[/dim]")
-
-        debate_orchestrator = DebateOrchestrator(llm_provider)
-        verified_errors, debate_rounds = await debate_orchestrator.run_debate(report.errors, task)
-
-        # Calculate how many errors were filtered
-        original_count = len(report.errors)
-        verified_count = len(verified_errors)
-        rejected_count = original_count - verified_count
-
-        # Update report with verified errors
-        report.errors = verified_errors
-
-        # Recalculate MQM score with filtered errors
-        scorer = MQMScorer()
-        report.mqm_score = scorer.calculate_score(verified_errors, task.word_count)
-        report.status = "pass" if report.mqm_score >= threshold else "fail"
-
-        # Get debate summary for display
-        debate_summary = debate_orchestrator.get_debate_summary(debate_rounds)
-
-        if verbose:
-            console.print(
-                f"[green]   ✓ {verified_count} errors confirmed[/green], "
-                f"[yellow]{rejected_count} rejected as false positives[/yellow]"
-            )
-            if rejected_count > 0:
-                console.print(
-                    f"[dim]   Precision improvement: {debate_summary['precision_improvement']}[/dim]"
-                )
-
-    # Calculate metrics
+    # Calculate and display results
     lightweight_scores, rule_based_errors, rule_based_score = calculate_lightweight_metrics(
         source_text, translation_text, reference, verbose
     )
 
-    # Display results
     ConsoleFormatter.print_check_result(
         report=report,
         source_lang=source_lang,
@@ -302,40 +297,29 @@ async def _check_async(
         verbose=verbose,
     )
 
-    # Add usage stats to report for JSON output
-    if hasattr(llm_provider, "usage"):
-        usage = llm_provider.usage
-        report.usage_stats = {
-            "total_tokens": usage.total_tokens,
-            "input_tokens": usage.input_tokens,
-            "output_tokens": usage.output_tokens,
-            "total_cost_usd": usage.estimated_cost_usd,
-            "api_calls": usage.call_count,
-        }
+    display_usage_and_mode_info(report, llm_provider, use_ensemble, show_cost, quick)
 
-        # Show cost if requested
-        if show_cost:
-            console.print(f"\n[dim]💰 {usage.format_summary()}[/dim]")
-
-    # Show quick mode indicator
-    if quick:
-        console.print("[dim]⚡ Quick mode: 3 core agents, single pass[/dim]")
-
-    # Auto-correction
-    await handle_auto_correction(
-        auto_correct,
-        report,
-        task,
-        orchestrator,
-        llm_provider,
-        translation,
-        source_text,
-        source_lang,
-        target_lang,
-        correction_level,
-        settings,
-        verbose,
-    )
+    # Auto-correction (only in single-provider mode)
+    if not use_ensemble:
+        await handle_auto_correction(
+            auto_correct,
+            report,
+            task,
+            orchestrator,
+            llm_provider,
+            translation,
+            source_text,
+            source_lang,
+            target_lang,
+            correction_level,
+            settings,
+            verbose,
+        )
+    elif auto_correct:
+        console.print(
+            "[yellow]⚠ Auto-correction not available in ensemble mode. "
+            "Use single provider mode for corrections.[/yellow]"
+        )
 
     # Save output
     if output:
@@ -373,6 +357,8 @@ def _run_single_mode(
     profile: Any = None,
     selected_agents: list[str] | None = None,
     debate: bool = False,
+    llm_count: int = 1,
+    llm_providers: str | None = None,
 ) -> None:
     """Run single file check mode."""
     if not source_lang or not target_lang:
@@ -412,6 +398,8 @@ def _run_single_mode(
             profile,
             selected_agents,
             debate,
+            llm_count,
+            llm_providers,
         )
     )
 
@@ -484,6 +472,8 @@ def _route_check_mode(
     profile: Any = None,
     selected_agents: list[str] | None = None,
     debate: bool = False,
+    llm_count: int = 1,
+    llm_providers: str | None = None,
 ) -> None:
     """Route to appropriate handler based on detected mode."""
     if mode == "single":
@@ -511,6 +501,8 @@ def _route_check_mode(
             profile,
             selected_agents,
             debate,
+            llm_count,
+            llm_providers,
         )
     elif mode == "compare":
         translations_list = mode_params["translations"]
@@ -676,6 +668,20 @@ def check(
         "--debate",
         help="Enable debate mode: agents cross-verify errors to reduce false positives.",
     ),
+    llm_count: int = typer.Option(
+        1,
+        "--llm-count",
+        "-n",
+        help="Number of LLMs to use (1=single, 2-5=ensemble mode). Default: 1",
+        min=1,
+        max=5,
+    ),
+    llm_providers: str | None = typer.Option(
+        None,
+        "--llm-providers",
+        "--llm",
+        help="LLM provider(s) to use, comma-separated. Options: yandex, gigachat, openai, anthropic, gemini. Default: yandex",
+    ),
 ) -> None:
     """
     Smart translation quality checker with auto-detection.
@@ -817,6 +823,8 @@ def check(
             loaded_profile,
             selected_agents,
             debate,
+            llm_count,
+            llm_providers,
         )
 
     except KeyboardInterrupt:

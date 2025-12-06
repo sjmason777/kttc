@@ -296,3 +296,251 @@ class TestBatchCommand:
 
         # Assert
         assert result.exit_code != 0
+
+
+@pytest.mark.unit
+class TestEnsembleMode:
+    """Test ensemble mode CLI flags."""
+
+    def test_check_help_shows_ensemble_options(self) -> None:
+        """Test check --help shows ensemble-related options."""
+        result = runner.invoke(app, ["check", "--help"])
+
+        assert result.exit_code == 0
+        output = strip_ansi(result.stdout)
+        # Should show llm-count and llm options
+        assert "--llm-count" in output or "llm_count" in output.replace("-", "_")
+        assert "--llm" in output
+
+    def test_llm_count_activates_ensemble(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test --llm-count > 1 activates ensemble mode."""
+        source, translation = temp_text_files
+
+        # Add ensemble_metadata to the report to simulate ensemble mode result
+        sample_qa_report.ensemble_metadata = {
+            "ensemble_mode": True,
+            "providers_total": 2,
+            "providers_successful": 2,
+        }
+
+        with (
+            patch("kttc.agents.MultiProviderAgentOrchestrator") as mock_multi_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+            patch("kttc.cli.utils.setup_multi_llm_providers") as mock_setup,
+        ):
+            # Setup mocks
+            mock_multi_orch = MagicMock()
+            mock_multi_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_multi_orch_class.return_value = mock_multi_orch
+
+            mock_setup.return_value = {"openai": MagicMock(), "anthropic": MagicMock()}
+
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
+
+            # Act
+            result = runner.invoke(
+                app,
+                [
+                    "check",
+                    str(source),
+                    str(translation),
+                    "--source-lang",
+                    "en",
+                    "--target-lang",
+                    "es",
+                    "--llm-count",
+                    "2",
+                ],
+            )
+
+            # Assert
+            assert result.exit_code == 0
+            # MultiProviderAgentOrchestrator should be instantiated
+            mock_multi_orch_class.assert_called_once()
+
+    def test_multiple_llm_providers_activates_ensemble(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test multiple --llm providers activates ensemble mode."""
+        source, translation = temp_text_files
+
+        sample_qa_report.ensemble_metadata = {
+            "ensemble_mode": True,
+            "providers_total": 2,
+        }
+
+        with (
+            patch("kttc.agents.MultiProviderAgentOrchestrator") as mock_multi_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+            patch("kttc.cli.utils.setup_multi_llm_providers") as mock_setup,
+        ):
+            mock_multi_orch = MagicMock()
+            mock_multi_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_multi_orch_class.return_value = mock_multi_orch
+
+            mock_setup.return_value = {"openai": MagicMock(), "anthropic": MagicMock()}
+
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
+
+            # Act
+            result = runner.invoke(
+                app,
+                [
+                    "check",
+                    str(source),
+                    str(translation),
+                    "--source-lang",
+                    "en",
+                    "--target-lang",
+                    "es",
+                    "--llm",
+                    "openai,anthropic",
+                ],
+            )
+
+            # Assert
+            assert result.exit_code == 0
+            mock_multi_orch_class.assert_called_once()
+
+    def test_single_provider_does_not_activate_ensemble(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test single provider uses standard orchestrator, not ensemble."""
+        source, translation = temp_text_files
+
+        with (
+            patch("kttc.cli.commands.check_helpers.AgentOrchestrator") as mock_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+        ):
+            mock_orch = MagicMock()
+            mock_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_orch_class.return_value = mock_orch
+
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
+
+            with patch("kttc.cli.utils.OpenAIProvider"):
+                # Act - single provider (no --llm-count, single --llm)
+                result = runner.invoke(
+                    app,
+                    [
+                        "check",
+                        str(source),
+                        str(translation),
+                        "--source-lang",
+                        "en",
+                        "--target-lang",
+                        "es",
+                        "--llm",
+                        "openai",
+                    ],
+                )
+
+                # Assert
+                assert result.exit_code == 0
+                # Standard AgentOrchestrator should be used
+                mock_orch_class.assert_called_once()
+
+    def test_ensemble_orchestrator_receives_correct_providers(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test ensemble orchestrator receives providers from setup_multi_llm_providers."""
+        source, translation = temp_text_files
+
+        sample_qa_report.ensemble_metadata = {"ensemble_mode": True}
+
+        mock_providers = {"openai": MagicMock(), "anthropic": MagicMock()}
+
+        with (
+            patch("kttc.agents.MultiProviderAgentOrchestrator") as mock_multi_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+            # Patch where the function is used, not where it's defined
+            patch("kttc.cli.commands.check.setup_multi_llm_providers") as mock_setup,
+        ):
+            mock_multi_orch = MagicMock()
+            mock_multi_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_multi_orch_class.return_value = mock_multi_orch
+
+            mock_setup.return_value = mock_providers
+
+            settings = MagicMock()
+            settings.default_llm_provider = "openai"
+            settings.get_llm_provider_key.return_value = "test-key"
+            mock_settings.return_value = settings
+
+            # Act
+            result = runner.invoke(
+                app,
+                [
+                    "check",
+                    str(source),
+                    str(translation),
+                    "--source-lang",
+                    "en",
+                    "--target-lang",
+                    "es",
+                    "--llm-count",
+                    "2",
+                ],
+            )
+
+            # Assert
+            assert result.exit_code == 0
+            # Verify MultiProviderAgentOrchestrator was called with providers
+            mock_multi_orch_class.assert_called_once()
+            call_kwargs = mock_multi_orch_class.call_args
+            assert call_kwargs is not None
+            # Check providers were passed
+            if call_kwargs.kwargs:
+                assert "providers" in call_kwargs.kwargs
+                assert call_kwargs.kwargs["providers"] == mock_providers
+
+    def test_demo_mode_with_ensemble(
+        self, temp_text_files: tuple[Path, Path], sample_qa_report: QAReport
+    ) -> None:
+        """Test --demo with ensemble mode still works."""
+        source, translation = temp_text_files
+
+        sample_qa_report.ensemble_metadata = {"ensemble_mode": True}
+
+        with (
+            patch("kttc.agents.MultiProviderAgentOrchestrator") as mock_multi_orch_class,
+            patch("kttc.cli.commands.check.get_settings") as mock_settings,
+        ):
+            mock_multi_orch = MagicMock()
+            mock_multi_orch.evaluate = AsyncMock(return_value=sample_qa_report)
+            mock_multi_orch_class.return_value = mock_multi_orch
+
+            settings = MagicMock()
+            mock_settings.return_value = settings
+
+            # Act
+            result = runner.invoke(
+                app,
+                [
+                    "check",
+                    str(source),
+                    str(translation),
+                    "--source-lang",
+                    "en",
+                    "--target-lang",
+                    "es",
+                    "--llm-count",
+                    "2",
+                    "--demo",
+                ],
+            )
+
+            # Assert - demo mode should still use ensemble orchestrator
+            assert result.exit_code == 0
+            mock_multi_orch_class.assert_called_once()

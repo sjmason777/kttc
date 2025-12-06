@@ -271,6 +271,60 @@ def setup_llm_provider(
     return llm_provider
 
 
+def setup_multi_llm_providers(
+    provider_names: list[str],
+    settings: Any,
+    verbose: bool,
+    demo: bool = False,
+) -> dict[str, BaseLLMProvider]:
+    """Setup multiple LLM providers for ensemble mode.
+
+    Args:
+        provider_names: List of provider names to setup
+        settings: Application settings
+        verbose: Whether to show verbose output
+        demo: Whether to use demo mode
+
+    Returns:
+        Dict of provider_name -> LLM provider instance
+
+    Raises:
+        RuntimeError: If no providers could be configured
+    """
+    from kttc.cli.demo import DemoLLMProvider
+
+    if demo:
+        if verbose:
+            console.print(
+                f"[yellow]🎭 Demo mode: Creating {len(provider_names)} simulated providers[/yellow]\n"
+            )
+        return {name: DemoLLMProvider(model=f"demo-{name}") for name in provider_names}
+
+    providers: dict[str, BaseLLMProvider] = {}
+    model = settings.default_model
+
+    for name in provider_names:
+        try:
+            provider = _create_provider_instance(name, settings, model)
+            providers[name] = provider
+            if verbose:
+                console.print(f"[dim]✓ Configured provider: {name}[/dim]")
+        except Exception as e:
+            if verbose:
+                console.print(f"[yellow]⚠ Could not configure {name}: {e}[/yellow]")
+
+    if not providers:
+        raise RuntimeError(
+            "No LLM providers could be configured for ensemble mode. "
+            "Check your API keys in .env file."
+        )
+
+    if verbose:
+        console.print(f"[dim]Ensemble mode: {len(providers)} providers ready[/dim]\n")
+
+    return providers
+
+
 def load_translation_files(source: str, translation: str, verbose: bool) -> tuple[str, str]:
     """Load source and translation text files.
 

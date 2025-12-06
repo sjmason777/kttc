@@ -60,6 +60,11 @@ from .fluency_chinese import ChineseFluencyAgent
 from .fluency_english import EnglishFluencyAgent
 from .fluency_russian import RussianFluencyAgent
 from .hallucination import HallucinationAgent
+from .multi_provider_orchestrator import (
+    ErrorAggregator,
+    MultiProviderAgentOrchestrator,
+    ProviderEvaluationResult,
+)
 from .orchestrator import AgentOrchestrator
 from .parser import ErrorParser
 from .style_preservation import StylePreservationAgent
@@ -78,6 +83,9 @@ __all__ = [
     "ContextAgent",
     "StylePreservationAgent",
     "AgentOrchestrator",
+    "MultiProviderAgentOrchestrator",
+    "ErrorAggregator",
+    "ProviderEvaluationResult",
     "WeightedConsensus",
     "DomainProfile",
     "DomainDetector",

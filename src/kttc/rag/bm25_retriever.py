@@ -130,6 +130,11 @@ class BM25Retriever:
 
         self._indexed = False
 
+    @property
+    def is_indexed(self) -> bool:
+        """Check if documents have been indexed."""
+        return self._indexed
+
     def tokenize(self, text: str) -> list[str]:
         """Tokenize text into words.
 

@@ -33,11 +33,11 @@ from difflib import SequenceMatcher
 from functools import lru_cache
 from typing import TYPE_CHECKING, Any
 
+from kttc.terminology import GlossaryManager
+
 if TYPE_CHECKING:
     from kttc.core import ErrorAnnotation, TranslationTask
     from kttc.llm import BaseLLMProvider
-
-from kttc.terminology import GlossaryManager
 
 logger = logging.getLogger(__name__)
 

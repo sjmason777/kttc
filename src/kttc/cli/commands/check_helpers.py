@@ -444,3 +444,199 @@ def print_verbose_autodetect_info(
     if smart_routing:
         console.print("[dim]🧠 Smart routing: enabled[/dim]")
     console.print(f"[dim]📄 Output format: {detected_format}[/dim]\n")
+
+
+# ============================================================================
+# Ensemble Mode Helpers
+# ============================================================================
+
+
+def setup_ensemble_providers(
+    llm_providers: str | None,
+    llm_count: int,
+    settings: Any,
+    verbose: bool,
+    demo: bool,
+) -> tuple[bool, dict[str, BaseLLMProvider], list[str]]:
+    """Setup providers for ensemble mode.
+
+    Returns:
+        Tuple of (use_ensemble, providers_dict, parsed_provider_names)
+    """
+    from kttc.cli.utils import setup_multi_llm_providers
+
+    providers_list: list[str] = []
+    if llm_providers:
+        providers_list = [p.strip().lower() for p in llm_providers.split(",")]
+
+    use_ensemble = llm_count > 1 or len(providers_list) > 1
+    multi_providers: dict[str, BaseLLMProvider] = {}
+
+    if not use_ensemble:
+        return False, {}, providers_list
+
+    # Determine which providers to use
+    if len(providers_list) > 1:
+        ensemble_providers = providers_list[:llm_count] if llm_count > 1 else providers_list
+    else:
+        default_order = ["yandex", "gigachat", "openai", "anthropic", "gemini"]
+        ensemble_providers = default_order[:llm_count]
+
+    if verbose:
+        console.print(
+            f"\n[bold cyan]🔀 Ensemble Mode[/bold cyan]: "
+            f"Using {len(ensemble_providers)} LLM providers"
+        )
+        console.print(f"[dim]   Providers: {', '.join(ensemble_providers)}[/dim]")
+
+    try:
+        multi_providers = setup_multi_llm_providers(
+            ensemble_providers, settings, verbose, demo=demo
+        )
+    except RuntimeError as e:
+        console.print(f"[red]Error setting up ensemble providers: {e}[/red]")
+        console.print("[yellow]Falling back to single provider mode...[/yellow]")
+        return False, {}, providers_list
+
+    return True, multi_providers, providers_list
+
+
+async def run_ensemble_evaluation(
+    multi_providers: dict[str, BaseLLMProvider],
+    task: TranslationTask,
+    threshold: float,
+    quick: bool,
+    selected_agents: list[str] | None,
+    verbose: bool,
+) -> QAReport:
+    """Run evaluation in ensemble mode.
+
+    Returns:
+        QAReport with ensemble results
+    """
+    from kttc.agents import MultiProviderAgentOrchestrator
+
+    consensus_threshold = min(2, len(multi_providers))
+    multi_orchestrator = MultiProviderAgentOrchestrator(
+        providers=multi_providers,
+        quality_threshold=threshold,
+        consensus_threshold=consensus_threshold,
+        aggregation_strategy="weighted_vote",
+        quick_mode=quick,
+        selected_agents=selected_agents,
+    )
+
+    if verbose:
+        console.print("\n[cyan]Running ensemble evaluation...[/cyan]")
+
+    report = await multi_orchestrator.evaluate(task)
+
+    if verbose and report.ensemble_metadata:
+        _display_ensemble_results(report.ensemble_metadata)
+
+    return report
+
+
+def _display_ensemble_results(meta: dict[str, Any]) -> None:
+    """Display ensemble evaluation results."""
+    console.print("\n[bold green]✓ Ensemble Evaluation Complete[/bold green]")
+    console.print(
+        f"[dim]   Providers: {meta['providers_successful']}/{meta['providers_total']} successful[/dim]"
+    )
+    console.print(
+        f"[dim]   Errors: {meta['confirmed_errors']} confirmed, "
+        f"{meta['rejected_errors']} rejected by cross-validation[/dim]"
+    )
+    if meta.get("cross_validation_rate", 1.0) < 1.0:
+        console.print(f"[dim]   Cross-validation rate: {meta['cross_validation_rate']:.0%}[/dim]")
+
+
+# ============================================================================
+# Debate Mode Helpers
+# ============================================================================
+
+
+async def run_debate_verification(
+    report: QAReport,
+    task: TranslationTask,
+    llm_provider: BaseLLMProvider,
+    threshold: float,
+    verbose: bool,
+) -> tuple[QAReport, dict[str, Any] | None]:
+    """Run debate mode to cross-verify errors.
+
+    Returns:
+        Tuple of (updated_report, debate_summary)
+    """
+    from kttc.agents import DebateOrchestrator
+    from kttc.core import MQMScorer
+
+    if verbose:
+        console.print("\n[bold cyan]🎭 Debate Mode[/bold cyan]: Cross-verifying errors...")
+        console.print(f"[dim]   {len(report.errors)} errors to verify[/dim]")
+
+    debate_orchestrator = DebateOrchestrator(llm_provider)
+    verified_errors, debate_rounds = await debate_orchestrator.run_debate(report.errors, task)
+
+    # Calculate how many errors were filtered
+    original_count = len(report.errors)
+    verified_count = len(verified_errors)
+    rejected_count = original_count - verified_count
+
+    # Update report with verified errors
+    report.errors = verified_errors
+
+    # Recalculate MQM score with filtered errors
+    scorer = MQMScorer()
+    report.mqm_score = scorer.calculate_score(verified_errors, task.word_count)
+    report.status = "pass" if report.mqm_score >= threshold else "fail"
+
+    # Get debate summary for display
+    debate_summary = debate_orchestrator.get_debate_summary(debate_rounds)
+
+    if verbose:
+        console.print(
+            f"[green]   ✓ {verified_count} errors confirmed[/green], "
+            f"[yellow]{rejected_count} rejected as false positives[/yellow]"
+        )
+        if rejected_count > 0:
+            console.print(
+                f"[dim]   Precision improvement: {debate_summary['precision_improvement']}[/dim]"
+            )
+
+    return report, debate_summary
+
+
+# ============================================================================
+# Results Display Helpers
+# ============================================================================
+
+
+def display_usage_and_mode_info(
+    report: QAReport,
+    llm_provider: BaseLLMProvider | None,
+    use_ensemble: bool,
+    show_cost: bool,
+    quick: bool,
+) -> None:
+    """Display usage statistics and mode indicators."""
+    if not use_ensemble and llm_provider and hasattr(llm_provider, "usage"):
+        usage = llm_provider.usage
+        report.usage_stats = {
+            "total_tokens": usage.total_tokens,
+            "input_tokens": usage.input_tokens,
+            "output_tokens": usage.output_tokens,
+            "total_cost_usd": usage.estimated_cost_usd,
+            "api_calls": usage.call_count,
+        }
+        if show_cost:
+            console.print(f"\n[dim]💰 {usage.format_summary()}[/dim]")
+    elif use_ensemble and show_cost and report.ensemble_metadata:
+        meta = report.ensemble_metadata
+        console.print(f"\n[dim]⏱ Ensemble latency: {meta['total_latency']:.2f}s total[/dim]")
+
+    if quick:
+        console.print("[dim]⚡ Quick mode: 3 core agents, single pass[/dim]")
+
+    if use_ensemble:
+        console.print("[dim]🔀 Ensemble mode: Multi-provider cross-validation[/dim]")

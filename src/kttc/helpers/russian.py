@@ -32,6 +32,7 @@ try:
     MAWO_AVAILABLE = True
     logger.info("Using MAWO core for Russian NLP (morphology, tokenization, NER)")
 except ImportError as e:
+    Russian = None  # Placeholder for testing
     MAWO_AVAILABLE = False
     logger.warning(
         f"MAWO core not installed: {e}. "

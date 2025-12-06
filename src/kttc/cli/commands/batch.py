@@ -305,136 +305,139 @@ def _display_batch_summary(results: list[tuple[str, QAReport]]) -> None:
     )
 
 
-def _save_batch_report(
-    results: list[tuple[str, QAReport]],
-    output: str,
-    threshold: float,
-    output_format: str | None = None,
-) -> None:
-    """Save batch processing report to file."""
-    output_path = Path(output)
+def _get_batch_summary(results: list[tuple[str, QAReport]], threshold: float) -> dict[str, Any]:
+    """Calculate batch summary statistics.
 
-    # Auto-detect format from extension if not specified
-    if output_format is None:
-        ext = output_path.suffix.lower()
-        format_map = {
-            ".json": "json",
-            ".txt": "text",
-            ".md": "markdown",
-            ".html": "html",
-            ".htm": "html",
-        }
-        output_format = format_map.get(ext, "json")
-
-    # Normalize format
-    output_format = output_format.lower()
-    if output_format not in ("json", "text", "markdown", "html"):
-        console.print(f"[yellow]Warning: Unknown format '{output_format}', using json[/yellow]")
-        output_format = "json"
-
-    # Prepare aggregated data
+    Returns:
+        Dict with total, passed, failed, avg_score, total_errors, threshold
+    """
     total = len(results)
     passed = sum(1 for _, r in results if r.status == "pass")
-    failed = total - passed
-    avg_score = sum(r.mqm_score for _, r in results) / total if total > 0 else 0.0
-    total_errors = sum(len(r.errors) for _, r in results)
+    return {
+        "total": total,
+        "passed": passed,
+        "failed": total - passed,
+        "avg_score": sum(r.mqm_score for _, r in results) / total if total > 0 else 0.0,
+        "total_errors": sum(len(r.errors) for _, r in results),
+        "threshold": threshold,
+    }
 
-    if output_format == "json":
-        data = {
-            "summary": {
-                "total_files": total,
-                "passed": passed,
-                "failed": failed,
-                "average_score": avg_score,
-                "total_errors": total_errors,
-                "threshold": threshold,
-            },
-            "files": [
-                {
-                    "filename": filename,
-                    "status": report.status,
-                    "mqm_score": report.mqm_score,
-                    "error_count": len(report.errors),
-                    "errors": [
-                        {
-                            "category": e.category,
-                            "subcategory": e.subcategory,
-                            "severity": e.severity.value,
-                            "location": e.location,
-                            "description": e.description,
-                        }
-                        for e in report.errors
-                    ],
-                }
-                for filename, report in results
-            ],
-        }
-        output_path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
 
-    elif output_format == "text":
-        lines = [
-            "=" * 60,
-            "BATCH TRANSLATION QUALITY REPORT",
-            "=" * 60,
-            "",
-            "SUMMARY",
-            "-" * 40,
-            f"Total files:    {total}",
-            f"Passed:         {passed}",
-            f"Failed:         {failed}",
-            f"Average score:  {avg_score:.2f}",
-            f"Total errors:   {total_errors}",
-            f"Threshold:      {threshold}",
-            "",
-            "DETAILED RESULTS",
-            "-" * 40,
-        ]
-        for filename, report in results:
-            status_mark = "PASS" if report.status == "pass" else "FAIL"
-            lines.append(f"\n[{status_mark}] {filename}")
-            lines.append(f"  Score: {report.mqm_score:.2f} | Errors: {len(report.errors)}")
+def _format_batch_json(results: list[tuple[str, QAReport]], summary: dict[str, Any]) -> str:
+    """Format batch report as JSON."""
+    data = {
+        "summary": {
+            "total_files": summary["total"],
+            "passed": summary["passed"],
+            "failed": summary["failed"],
+            "average_score": summary["avg_score"],
+            "total_errors": summary["total_errors"],
+            "threshold": summary["threshold"],
+        },
+        "files": [
+            {
+                "filename": filename,
+                "status": report.status,
+                "mqm_score": report.mqm_score,
+                "error_count": len(report.errors),
+                "errors": [
+                    {
+                        "category": e.category,
+                        "subcategory": e.subcategory,
+                        "severity": e.severity.value,
+                        "location": e.location,
+                        "description": e.description,
+                    }
+                    for e in report.errors
+                ],
+            }
+            for filename, report in results
+        ],
+    }
+    return json.dumps(data, indent=2, ensure_ascii=False)
+
+
+def _format_batch_text(results: list[tuple[str, QAReport]], summary: dict[str, Any]) -> str:
+    """Format batch report as plain text."""
+    lines = [
+        "=" * 60,
+        "BATCH TRANSLATION QUALITY REPORT",
+        "=" * 60,
+        "",
+        "SUMMARY",
+        "-" * 40,
+        f"Total files:    {summary['total']}",
+        f"Passed:         {summary['passed']}",
+        f"Failed:         {summary['failed']}",
+        f"Average score:  {summary['avg_score']:.2f}",
+        f"Total errors:   {summary['total_errors']}",
+        f"Threshold:      {summary['threshold']}",
+        "",
+        "DETAILED RESULTS",
+        "-" * 40,
+    ]
+    for filename, report in results:
+        status_mark = "PASS" if report.status == "pass" else "FAIL"
+        lines.append(f"\n[{status_mark}] {filename}")
+        lines.append(f"  Score: {report.mqm_score:.2f} | Errors: {len(report.errors)}")
+        for e in report.errors:
+            lines.append(
+                f"    - [{e.severity.value}] {e.category}/{e.subcategory}: {e.description}"
+            )
+    return "\n".join(lines)
+
+
+def _format_batch_markdown(results: list[tuple[str, QAReport]], summary: dict[str, Any]) -> str:
+    """Format batch report as Markdown."""
+    lines = [
+        "# Batch Translation Quality Report",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Value |",
+        "|--------|-------|",
+        f"| Total files | {summary['total']} |",
+        f"| Passed | {summary['passed']} |",
+        f"| Failed | {summary['failed']} |",
+        f"| Average score | {summary['avg_score']:.2f} |",
+        f"| Total errors | {summary['total_errors']} |",
+        f"| Threshold | {summary['threshold']} |",
+        "",
+        "## Detailed Results",
+        "",
+    ]
+    for filename, report in results:
+        status_emoji = "+" if report.status == "pass" else "-"
+        lines.append(f"### [{status_emoji}] {filename}")
+        lines.append(f"**Score:** {report.mqm_score:.2f} | **Errors:** {len(report.errors)}")
+        lines.append("")
+        if report.errors:
+            lines.append("| Severity | Category | Description |")
+            lines.append("|----------|----------|-------------|")
             for e in report.errors:
-                lines.append(
-                    f"    - [{e.severity.value}] {e.category}/{e.subcategory}: {e.description}"
-                )
-        output_path.write_text("\n".join(lines), encoding="utf-8")
-
-    elif output_format == "markdown":
-        lines = [
-            "# Batch Translation Quality Report",
-            "",
-            "## Summary",
-            "",
-            "| Metric | Value |",
-            "|--------|-------|",
-            f"| Total files | {total} |",
-            f"| Passed | {passed} |",
-            f"| Failed | {failed} |",
-            f"| Average score | {avg_score:.2f} |",
-            f"| Total errors | {total_errors} |",
-            f"| Threshold | {threshold} |",
-            "",
-            "## Detailed Results",
-            "",
-        ]
-        for filename, report in results:
-            status_emoji = "✅" if report.status == "pass" else "❌"
-            lines.append(f"### {status_emoji} {filename}")
-            lines.append(f"**Score:** {report.mqm_score:.2f} | **Errors:** {len(report.errors)}")
+                desc = e.description.replace("|", "\\|").replace("\\", "\\\\")
+                lines.append(f"| {e.severity.value} | {e.category}/{e.subcategory} | {desc} |")
             lines.append("")
-            if report.errors:
-                lines.append("| Severity | Category | Description |")
-                lines.append("|----------|----------|-------------|")
-                for e in report.errors:
-                    # Escape special Markdown characters
-                    desc = e.description.replace("|", "\\|").replace("\\", "\\\\")
-                    lines.append(f"| {e.severity.value} | {e.category}/{e.subcategory} | {desc} |")
-                lines.append("")
-        output_path.write_text("\n".join(lines), encoding="utf-8")
+    return "\n".join(lines)
 
-    elif output_format == "html":
-        passed_pct = (passed / total * 100) if total > 0 else 0
-        html = f"""<!DOCTYPE html>
+
+def _format_batch_html(results: list[tuple[str, QAReport]], summary: dict[str, Any]) -> str:
+    """Format batch report as HTML."""
+    total = summary["total"]
+    passed_pct = (summary["passed"] / total * 100) if total > 0 else 0
+
+    html_parts = [_get_html_header(summary, passed_pct)]
+
+    for filename, report in results:
+        html_parts.append(_format_html_file_card(filename, report))
+
+    html_parts.append("    </div>\n</body>\n</html>")
+    return "".join(html_parts)
+
+
+def _get_html_header(summary: dict[str, Any], passed_pct: float) -> str:
+    """Generate HTML header and summary section."""
+    return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -466,45 +469,88 @@ def _save_batch_report(
 </head>
 <body>
     <div class="container">
-        <h1>📊 Batch Translation Quality Report</h1>
+        <h1>Batch Translation Quality Report</h1>
         <div class="summary">
-            <div class="summary-card"><div class="value">{total}</div><div class="label">Total Files</div></div>
-            <div class="summary-card"><div class="value" style="color:#28a745">{passed}</div><div class="label">Passed</div></div>
-            <div class="summary-card"><div class="value" style="color:#dc3545">{failed}</div><div class="label">Failed</div></div>
-            <div class="summary-card"><div class="value">{avg_score:.2f}</div><div class="label">Avg Score</div></div>
-            <div class="summary-card"><div class="value">{total_errors}</div><div class="label">Total Errors</div></div>
+            <div class="summary-card"><div class="value">{summary['total']}</div><div class="label">Total Files</div></div>
+            <div class="summary-card"><div class="value" style="color:#28a745">{summary['passed']}</div><div class="label">Passed</div></div>
+            <div class="summary-card"><div class="value" style="color:#dc3545">{summary['failed']}</div><div class="label">Failed</div></div>
+            <div class="summary-card"><div class="value">{summary['avg_score']:.2f}</div><div class="label">Avg Score</div></div>
+            <div class="summary-card"><div class="value">{summary['total_errors']}</div><div class="label">Total Errors</div></div>
             <div class="summary-card"><div class="value">{passed_pct:.0f}%</div><div class="label">Pass Rate</div></div>
         </div>
         <h2>Detailed Results</h2>
 """
-        for filename, report in results:
-            status_class = "pass" if report.status == "pass" else "fail"
-            badge_class = "pass-badge" if report.status == "pass" else "fail-badge"
-            badge_text = "PASS" if report.status == "pass" else "FAIL"
-            html += f"""
+
+
+def _format_html_file_card(filename: str, report: QAReport) -> str:
+    """Format a single file card for HTML report."""
+    status_class = "pass" if report.status == "pass" else "fail"
+    badge_class = "pass-badge" if report.status == "pass" else "fail-badge"
+    badge_text = "PASS" if report.status == "pass" else "FAIL"
+
+    html = f"""
         <div class="file-card">
             <div class="file-header {status_class}">
                 <span>{filename}</span>
                 <span><span class="{badge_class}">{badge_text}</span> Score: {report.mqm_score:.2f}</span>
             </div>
 """
-            if report.errors:
-                html += """            <div class="file-body">
+    if report.errors:
+        html += """            <div class="file-body">
                 <table class="error-table">
                     <tr><th>Severity</th><th>Category</th><th>Description</th></tr>
 """
-                for e in report.errors:
-                    sev_class = f"severity-{e.severity.value}"
-                    desc = e.description.replace("<", "&lt;").replace(">", "&gt;")
-                    html += f'                    <tr><td class="{sev_class}">{e.severity.value}</td><td>{e.category}/{e.subcategory}</td><td>{desc}</td></tr>\n'
-                html += """                </table>
+        for e in report.errors:
+            sev_class = f"severity-{e.severity.value}"
+            desc = e.description.replace("<", "&lt;").replace(">", "&gt;")
+            html += f'                    <tr><td class="{sev_class}">{e.severity.value}</td><td>{e.category}/{e.subcategory}</td><td>{desc}</td></tr>\n'
+        html += """                </table>
             </div>
 """
-            html += "        </div>\n"
-        html += """    </div>
-</body>
-</html>"""
-        output_path.write_text(html, encoding="utf-8")
+    html += "        </div>\n"
+    return html
+
+
+def _detect_output_format(output_path: Path, output_format: str | None) -> str:
+    """Detect and validate output format."""
+    if output_format is None:
+        ext = output_path.suffix.lower()
+        format_map = {
+            ".json": "json",
+            ".txt": "text",
+            ".md": "markdown",
+            ".html": "html",
+            ".htm": "html",
+        }
+        output_format = format_map.get(ext, "json")
+
+    output_format = output_format.lower()
+    if output_format not in ("json", "text", "markdown", "html"):
+        console.print(f"[yellow]Warning: Unknown format '{output_format}', using json[/yellow]")
+        return "json"
+    return output_format
+
+
+def _save_batch_report(
+    results: list[tuple[str, QAReport]],
+    output: str,
+    threshold: float,
+    output_format: str | None = None,
+) -> None:
+    """Save batch processing report to file."""
+    output_path = Path(output)
+    output_format = _detect_output_format(output_path, output_format)
+    summary = _get_batch_summary(results, threshold)
+
+    format_handlers = {
+        "json": _format_batch_json,
+        "text": _format_batch_text,
+        "markdown": _format_batch_markdown,
+        "html": _format_batch_html,
+    }
+
+    content = format_handlers[output_format](results, summary)
+    output_path.write_text(content, encoding="utf-8")
 
 
 async def batch_from_file_async(

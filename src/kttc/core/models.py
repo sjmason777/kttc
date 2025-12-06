@@ -230,6 +230,20 @@ class QAReport(BaseModel):
         description="Token usage and cost statistics",
     )
 
+    # Ensemble mode fields
+    ensemble_metadata: dict[str, Any] | None = Field(
+        default=None,
+        description="Multi-provider ensemble evaluation metadata "
+        "(providers used, cross-validation results, per-provider scores)",
+    )
+
+    @property
+    def is_ensemble(self) -> bool:
+        """Check if this report was generated using ensemble mode."""
+        return self.ensemble_metadata is not None and self.ensemble_metadata.get(
+            "ensemble_mode", False
+        )
+
     @property
     def error_count(self) -> int:
         """Total number of errors found."""
